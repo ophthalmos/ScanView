@@ -73,9 +73,16 @@ namespace ScanTest.Forms
             btnMoveRight = new ToolStripButton();
             btnRemove = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
-            btnZoomOut = new ToolStripButton();
-            btnZoomIn = new ToolStripButton();
+            btnCopyMode = new ToolStripButton();
             panelSettings = new Panel();
+            panelCopyMode = new Panel();
+            labelCopyTitle = new Label();
+            labelCopyPrinter = new Label();
+            comboCopyPrinter = new ComboBox();
+            btnCopyPrinterSettings = new Button();
+            labelCopyCount = new Label();
+            numCopies = new NumericUpDown();
+            chkCopyFit = new CheckBox();
             labelSettings = new Label();
             labelDpi = new Label();
             comboDpi = new ComboBox();
@@ -95,6 +102,8 @@ namespace ScanTest.Forms
             ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
             statusStrip.SuspendLayout();
             menuStrip.SuspendLayout();
+            panelCopyMode.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)numCopies).BeginInit();
             SuspendLayout();
             //
             // menuStrip
@@ -314,9 +323,9 @@ namespace ScanTest.Forms
             //
             // menuExtrasOptions
             //
-            menuExtrasOptions.Enabled = false;
             menuExtrasOptions.Name = "menuExtrasOptions";
             menuExtrasOptions.Text = "&Optionen …";
+            menuExtrasOptions.Click += MenuExtrasOptions_Click;
             //
             // menuHelp
             //
@@ -334,7 +343,7 @@ namespace ScanTest.Forms
             //
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, toolStripSeparator2, btnZoomOut, btnZoomIn });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, toolStripSeparator2, btnCopyMode });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
@@ -347,7 +356,6 @@ namespace ScanTest.Forms
             splitScan.AutoSize = false;
             splitScan.DisplayStyle = ToolStripItemDisplayStyle.Text;
             splitScan.DropDownButtonWidth = 28;
-            splitScan.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             splitScan.Name = "splitScan";
             splitScan.Size = new Size(150, 57);
             splitScan.Text = "&Scannen";
@@ -432,27 +440,16 @@ namespace ScanTest.Forms
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 60);
             //
-            // btnZoomOut
+            // btnCopyMode
             //
-            btnZoomOut.AutoSize = false;
-            btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnZoomOut.Font = new Font("Segoe UI", 12F);
-            btnZoomOut.Name = "btnZoomOut";
-            btnZoomOut.Size = new Size(32, 57);
-            btnZoomOut.Text = "−";
-            btnZoomOut.ToolTipText = "Miniaturen verkleinern";
-            btnZoomOut.Click += BtnZoomOut_Click;
-            //
-            // btnZoomIn
-            //
-            btnZoomIn.AutoSize = false;
-            btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnZoomIn.Font = new Font("Segoe UI", 12F);
-            btnZoomIn.Name = "btnZoomIn";
-            btnZoomIn.Size = new Size(32, 57);
-            btnZoomIn.Text = "+";
-            btnZoomIn.ToolTipText = "Miniaturen vergrößern";
-            btnZoomIn.Click += BtnZoomIn_Click;
+            btnCopyMode.Alignment = ToolStripItemAlignment.Right;
+            btnCopyMode.AutoSize = false;
+            btnCopyMode.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnCopyMode.Name = "btnCopyMode";
+            btnCopyMode.Size = new Size(130, 57);
+            btnCopyMode.Text = "&Kopiermodus";
+            btnCopyMode.ToolTipText = "Scans direkt drucken — der Scanner wird zum Kopierer";
+            btnCopyMode.Click += BtnCopyMode_Click;
             //
             // panelSettings
             //
@@ -575,6 +572,75 @@ namespace ScanTest.Forms
             trackBrightness.TickFrequency = 25;
             trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
             //
+            // panelCopyMode
+            //
+            panelCopyMode.Controls.Add(labelCopyTitle);
+            panelCopyMode.Controls.Add(labelCopyPrinter);
+            panelCopyMode.Controls.Add(comboCopyPrinter);
+            panelCopyMode.Controls.Add(btnCopyPrinterSettings);
+            panelCopyMode.Controls.Add(labelCopyCount);
+            panelCopyMode.Controls.Add(numCopies);
+            panelCopyMode.Controls.Add(chkCopyFit);
+            panelCopyMode.Dock = DockStyle.Fill;
+            panelCopyMode.Name = "panelCopyMode";
+            panelCopyMode.Padding = new Padding(16);
+            panelCopyMode.Visible = false;
+            //
+            // labelCopyTitle
+            //
+            labelCopyTitle.AutoSize = true;
+            labelCopyTitle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            labelCopyTitle.Location = new Point(16, 16);
+            labelCopyTitle.Name = "labelCopyTitle";
+            labelCopyTitle.Text = "Kopiermodus — jeder Scan wird direkt gedruckt";
+            //
+            // labelCopyPrinter
+            //
+            labelCopyPrinter.AutoSize = true;
+            labelCopyPrinter.Location = new Point(16, 56);
+            labelCopyPrinter.Name = "labelCopyPrinter";
+            labelCopyPrinter.Text = "&Drucker:";
+            //
+            // comboCopyPrinter
+            //
+            comboCopyPrinter.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCopyPrinter.Location = new Point(16, 74);
+            comboCopyPrinter.Name = "comboCopyPrinter";
+            comboCopyPrinter.Size = new Size(280, 23);
+            //
+            // btnCopyPrinterSettings
+            //
+            btnCopyPrinterSettings.Location = new Point(304, 73);
+            btnCopyPrinterSettings.Name = "btnCopyPrinterSettings";
+            btnCopyPrinterSettings.Size = new Size(110, 25);
+            btnCopyPrinterSettings.Text = "&Einstellungen …";
+            btnCopyPrinterSettings.Click += BtnCopyPrinterSettings_Click;
+            //
+            // labelCopyCount
+            //
+            labelCopyCount.AutoSize = true;
+            labelCopyCount.Location = new Point(16, 112);
+            labelCopyCount.Name = "labelCopyCount";
+            labelCopyCount.Text = "E&xemplare:";
+            //
+            // numCopies
+            //
+            numCopies.Location = new Point(16, 130);
+            numCopies.Maximum = 99;
+            numCopies.Minimum = 1;
+            numCopies.Name = "numCopies";
+            numCopies.Size = new Size(60, 23);
+            numCopies.Value = 1;
+            //
+            // chkCopyFit
+            //
+            chkCopyFit.AutoSize = true;
+            chkCopyFit.Checked = true;
+            chkCopyFit.CheckState = CheckState.Checked;
+            chkCopyFit.Location = new Point(16, 170);
+            chkCopyFit.Name = "chkCopyFit";
+            chkCopyFit.Text = "Seiten auf Druck&fläche skalieren";
+            //
             // flowPanel
             //
             flowPanel.AllowDrop = true;
@@ -609,6 +675,7 @@ namespace ScanTest.Forms
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(984, 461);
             Controls.Add(flowPanel);
+            Controls.Add(panelCopyMode);
             Controls.Add(panelSettings);
             Controls.Add(statusStrip);
             Controls.Add(toolStrip);
@@ -627,6 +694,9 @@ namespace ScanTest.Forms
             statusStrip.ResumeLayout(false);
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
+            panelCopyMode.ResumeLayout(false);
+            panelCopyMode.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numCopies).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -678,9 +748,16 @@ namespace ScanTest.Forms
         private System.Windows.Forms.ToolStripButton btnMoveRight;
         private System.Windows.Forms.ToolStripButton btnRemove;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton btnZoomOut;
-        private System.Windows.Forms.ToolStripButton btnZoomIn;
+        private System.Windows.Forms.ToolStripButton btnCopyMode;
         private System.Windows.Forms.Panel panelSettings;
+        private System.Windows.Forms.Panel panelCopyMode;
+        private System.Windows.Forms.Label labelCopyTitle;
+        private System.Windows.Forms.Label labelCopyPrinter;
+        private System.Windows.Forms.ComboBox comboCopyPrinter;
+        private System.Windows.Forms.Button btnCopyPrinterSettings;
+        private System.Windows.Forms.Label labelCopyCount;
+        private System.Windows.Forms.NumericUpDown numCopies;
+        private System.Windows.Forms.CheckBox chkCopyFit;
         private System.Windows.Forms.Label labelSettings;
         private System.Windows.Forms.Label labelDpi;
         private System.Windows.Forms.ComboBox comboDpi;
