@@ -37,6 +37,9 @@ namespace ScanTest.Forms
             btnMoveLeft = new ToolStripButton();
             btnMoveRight = new ToolStripButton();
             btnRemove = new ToolStripButton();
+            toolStripSeparator2 = new ToolStripSeparator();
+            btnZoomOut = new ToolStripButton();
+            btnZoomIn = new ToolStripButton();
             panelSettings = new Panel();
             labelSettings = new Label();
             labelDpi = new Label();
@@ -55,7 +58,7 @@ namespace ScanTest.Forms
             //
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, toolStripSeparator2, btnZoomOut, btnZoomIn });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
@@ -145,6 +148,33 @@ namespace ScanTest.Forms
             btnRemove.ToolTipText = "Markierte Seite aus der Übersicht entfernen";
             btnRemove.Click += BtnRemove_Click;
             //
+            // toolStripSeparator2
+            //
+            toolStripSeparator2.Name = "toolStripSeparator2";
+            toolStripSeparator2.Size = new Size(6, 60);
+            //
+            // btnZoomOut
+            //
+            btnZoomOut.AutoSize = false;
+            btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnZoomOut.Font = new Font("Segoe UI", 12F);
+            btnZoomOut.Name = "btnZoomOut";
+            btnZoomOut.Size = new Size(32, 57);
+            btnZoomOut.Text = "−";
+            btnZoomOut.ToolTipText = "Miniaturen verkleinern";
+            btnZoomOut.Click += BtnZoomOut_Click;
+            //
+            // btnZoomIn
+            //
+            btnZoomIn.AutoSize = false;
+            btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnZoomIn.Font = new Font("Segoe UI", 12F);
+            btnZoomIn.Name = "btnZoomIn";
+            btnZoomIn.Size = new Size(32, 57);
+            btnZoomIn.Text = "+";
+            btnZoomIn.ToolTipText = "Miniaturen vergrößern";
+            btnZoomIn.Click += BtnZoomIn_Click;
+            //
             // panelSettings
             //
             panelSettings.Controls.Add(labelSettings);
@@ -207,8 +237,11 @@ namespace ScanTest.Forms
             //
             // flowPanel
             //
+            flowPanel.AllowDrop = true;
             flowPanel.AutoScroll = true;
             flowPanel.BackColor = SystemColors.ControlDark;
+            flowPanel.DragEnter += FlowPanel_DragEnter;
+            flowPanel.DragOver += FlowPanel_DragOver;
             flowPanel.Dock = DockStyle.Fill;
             flowPanel.Location = new Point(150, 60);
             flowPanel.Name = "flowPanel";
@@ -264,6 +297,9 @@ namespace ScanTest.Forms
         private System.Windows.Forms.ToolStripButton btnMoveLeft;
         private System.Windows.Forms.ToolStripButton btnMoveRight;
         private System.Windows.Forms.ToolStripButton btnRemove;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton btnZoomOut;
+        private System.Windows.Forms.ToolStripButton btnZoomIn;
         private System.Windows.Forms.Panel panelSettings;
         private System.Windows.Forms.Label labelSettings;
         private System.Windows.Forms.Label labelDpi;
