@@ -28,8 +28,9 @@ internal static class ScanService
             {
                 if ((int)info.Type != 1) { continue; } // nur Scanner
                 string name;
-                try { name = (string)info.Properties["Name"].get_Value(); }
-                catch (System.Runtime.InteropServices.COMException) { name = (string)info.DeviceID; }
+                try { name = (string)info.Properties["Name"].Value; }
+                catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                { name = (string)info.DeviceID; }
                 result.Add(new ScannerInfo((string)info.DeviceID, name));
             }
         }
@@ -90,8 +91,9 @@ internal static class ScanService
 
     private static void TrySetProperty(dynamic item, int propertyId, int value)
     {
-        try { item.Properties[propertyId.ToString()].set_Value(value); }
-        catch (System.Runtime.InteropServices.COMException) { } // Gerät kennt die Eigenschaft nicht — Standard verwenden
+        try { item.Properties[propertyId.ToString()].Value = value; }
+        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+        { } // Gerät kennt die Eigenschaft nicht — Standard verwenden
     }
 
     /// <summary>Speichert eine WIA-ImageFile als TIFF; liefert das Gerät ein anderes Format,
