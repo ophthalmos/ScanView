@@ -1,4 +1,5 @@
 using System.Drawing.Printing;
+using System.Text.Json;
 using ScanTest.Classes;
 
 namespace ScanTest.Forms;
@@ -18,6 +19,9 @@ public partial class MainForm : Form
     private readonly bool selfTest;
     private int scanCounter;
     private const int NumberHeight = 18; // Streifen für die Seitenzahl unter dem Bild
+    private const int FramePadding = 8;  // Rahmen oben und seitlich um das Seitenbild
+    private static readonly Color SelectionColor = Color.FromArgb(0xA6, 0xD0, 0xF1); // Rahmen und Seitenzahl-Streifen der markierten Seite
+    private static readonly Color FrameColor = Color.LightGray; // derselbe Rahmen im Ruhezustand
 
     private Panel selected; // Miniatur-Container (Bild + Seitenzahl)
     private Point dragStart; // Mausposition beim Drücken — Start des Miniatur-Ziehens
@@ -34,11 +38,95 @@ public partial class MainForm : Form
     {
         InitializeComponent();
         toolStrip.Renderer = new BigArrowRenderer();
+        // Eigenes Menü statt des auto-generierten: das erbt in WinForms live die fette
+        // 11-pt-Schrift des Toolbar-Buttons (gleiche Lösung wie in PDFlight)
+        splitScan.DropDown = new ToolStripDropDownMenu { Font = new Font(Font.FontFamily, 9f) };
         this.selfTest = selfTest;
         Directory.CreateDirectory(sessionFolder);
         comboDpi.SelectedIndex = 2;   // 300 dpi — der OCR-Sweet-Spot
         comboColor.SelectedIndex = 0; // Farbe
         comboArea.SelectedIndex = 0;  // maximal
+        comboFeed.SelectedIndex = 0;  // Flachbett
+        try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
+        catch (Exception ex) when (ex is ArgumentException or IOException) { }
+        ApplyToolbarIcons();
+        if (!selfTest) { RestoreWindowBounds(); } // der Selbsttest-Screenshot soll deterministisch bleiben
+    }
+
+    /// <summary>Versieht die Toolbar-Buttons mit Symbolen aus der Windows-Symbolschrift
+    /// "Segoe MDL2 Assets" — fehlt sie, bleiben es reine Textbuttons.</summary>
+    private void ApplyToolbarIcons()
+    {
+        if (!ToolbarIcons.FontAvailable) { return; }
+        var edge = LogicalToDeviceUnits(24);
+        toolStrip.ImageScalingSize = new Size(edge, edge);
+        var size = toolStrip.ImageScalingSize;
+        void Set(ToolStripItem item, char glyph, bool imageOnly = false)
+        {
+            item.Image = ToolbarIcons.Get(glyph, size);
+            item.TextImageRelation = TextImageRelation.ImageAboveText;
+            item.DisplayStyle = imageOnly ? ToolStripItemDisplayStyle.Image : ToolStripItemDisplayStyle.ImageAndText;
+        }
+        Set(splitScan, ToolbarIcons.Scan);
+        Set(btnSave, ToolbarIcons.Save);
+        Set(btnPrint, ToolbarIcons.Print);
+        Set(btnNew, ToolbarIcons.Clear);
+        Set(btnMoveLeft, ToolbarIcons.Previous, imageOnly: true);
+        Set(btnMoveRight, ToolbarIcons.Next, imageOnly: true);
+        Set(btnRemove, ToolbarIcons.Delete);
+        Set(btnZoomOut, ToolbarIcons.ZoomOut, imageOnly: true);
+        Set(btnZoomIn, ToolbarIcons.ZoomIn, imageOnly: true);
+    }
+
+    // ------------------------------------------------------------------ Fensterposition merken
+
+    private static string SettingsPath => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScanTest", "settings.json");
+
+    private sealed class AppSettings
+    {
+        public int WindowX { get; set; }
+        public int WindowY { get; set; }
+        public int WindowWidth { get; set; }
+        public int WindowHeight { get; set; }
+        public bool WindowMaximized { get; set; }
+    }
+
+    private void RestoreWindowBounds()
+    {
+        try
+        {
+            var stored = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(SettingsPath));
+            Rectangle bounds = new(stored.WindowX, stored.WindowY, stored.WindowWidth, stored.WindowHeight);
+            if (bounds.Width >= MinimumSize.Width && bounds.Height >= MinimumSize.Height
+                && Screen.AllScreens.Any(screen => screen.WorkingArea.IntersectsWith(bounds))) // Monitor kann inzwischen fehlen
+            {
+                StartPosition = FormStartPosition.Manual;
+                Bounds = bounds;
+            }
+            if (stored.WindowMaximized) { WindowState = FormWindowState.Maximized; }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException) { } // erster Start oder defekte Datei
+    }
+
+    private void SaveWindowBounds()
+    {
+        var bounds = WindowState == FormWindowState.Normal ? Bounds : RestoreBounds;
+        AppSettings stored = new()
+        {
+            WindowX = bounds.X,
+            WindowY = bounds.Y,
+            WindowWidth = bounds.Width,
+            WindowHeight = bounds.Height,
+            // Vollbild (F11, ohne Rahmen) nicht als "maximiert" einfrieren
+            WindowMaximized = WindowState == FormWindowState.Maximized && FormBorderStyle != FormBorderStyle.None,
+        };
+        try
+        {
+            Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath));
+            File.WriteAllText(SettingsPath, JsonSerializer.Serialize(stored, new JsonSerializerOptions { WriteIndented = true }));
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
     }
 
     private void MainForm_Shown(object sender, EventArgs e)
@@ -110,7 +198,7 @@ public partial class MainForm : Form
             statusLabel.Text = "Scanne …";
             statusStrip.Refresh();
             scanned = selectedScannerId != null
-                ? ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value)
+                ? ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1)
                 : ScanService.WiaScanToTiff(NextScanPath()); // noch kein Gerät gewählt → Windows-Dialog
             if (scanned == null)
             {
@@ -288,8 +376,8 @@ public partial class MainForm : Form
 
     private void MenuViewFitPage_Click(object sender, EventArgs e)
     {
-        // Höhe der Miniatur = Breite × 7/5 + Seitenzahl-Streifen — nach der Breite aufgelöst
-        ApplyThumbWidth((flowPanel.ClientSize.Height - 32 - NumberHeight) * 5 / 7);
+        // Miniaturhöhe = Rahmen + Bild (Breite−16 × 7/5) + Seitenzahl-Streifen — nach der Breite aufgelöst
+        ApplyThumbWidth((flowPanel.ClientSize.Height - 32 - FramePadding - NumberHeight) * 5 / 7 + 2 * FramePadding);
     }
 
     private void MenuViewIcons_Click(object sender, EventArgs e)
@@ -337,18 +425,14 @@ public partial class MainForm : Form
     private void AddPage(string tiffPath)
     {
         if (tiffPath == null) { return; }
-        var width = thumbWidth;
         Panel thumb = new()
         {
-            Width = width,
-            Height = width * 7 / 5 + NumberHeight, // A4-Verhältnis plus Seitenzahl-Streifen
-            BackColor = Color.Transparent,
+            BackColor = FrameColor,
             Margin = new Padding(8),
             Tag = tiffPath,
         };
         PictureBox pic = new()
         {
-            Bounds = new Rectangle(0, 0, width, width * 7 / 5),
             SizeMode = PictureBoxSizeMode.Zoom,
             BackColor = Color.White,
             Image = ScanService.LoadUnlocked(tiffPath),
@@ -356,13 +440,20 @@ public partial class MainForm : Form
         };
         Label num = new()
         {
-            Bounds = new Rectangle(0, pic.Height, width, NumberHeight),
             TextAlign = ContentAlignment.MiddleCenter,
-            ForeColor = Color.White,
+            ForeColor = Color.Black,
             BackColor = Color.Transparent,
         };
         thumb.Controls.Add(pic);
         thumb.Controls.Add(num);
+        LayoutThumb(thumb);
+        thumb.Paint += (s, e) => // kleiner Schlagschatten des Seitenbilds auf dem Rahmen (rechts und unten)
+        {
+            var r = pic.Bounds;
+            using SolidBrush shadowBrush = new(Color.FromArgb(45, 0, 0, 0));
+            e.Graphics.FillRectangle(shadowBrush, r.Right, r.Top + 3, 3, r.Height);
+            e.Graphics.FillRectangle(shadowBrush, r.Left + 3, r.Bottom, r.Width - 3, 3);
+        };
         pic.Click += (s, e) => Select(thumb);
         num.Click += (s, e) => Select(thumb);
         pic.DoubleClick += (s, e) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tiffPath) { UseShellExecute = true });
@@ -382,6 +473,17 @@ public partial class MainForm : Form
         };
         flowPanel.Controls.Add(thumb);
         Select(thumb);
+    }
+
+    /// <summary>Setzt Panel-, Bild- und Seitenzahl-Bounds passend zur aktuellen Miniaturbreite.</summary>
+    private void LayoutThumb(Panel thumb)
+    {
+        var picWidth = thumbWidth - 2 * FramePadding;
+        var picHeight = picWidth * 7 / 5; // A4-Verhältnis
+        thumb.Size = new Size(thumbWidth, FramePadding + picHeight + NumberHeight);
+        PicOf(thumb).Bounds = new Rectangle(FramePadding, FramePadding, picWidth, picHeight);
+        NumOf(thumb).Bounds = new Rectangle(0, FramePadding + picHeight, thumbWidth, NumberHeight);
+        thumb.Invalidate(); // Schatten an der neuen Bildkante nachzeichnen
     }
 
     private static PictureBox PicOf(Panel thumb) => (PictureBox)thumb.Controls[0];
@@ -437,9 +539,7 @@ public partial class MainForm : Form
         flowPanel.SuspendLayout();
         foreach (var thumb in flowPanel.Controls.Cast<Panel>())
         {
-            thumb.Size = new Size(width, width * 7 / 5 + NumberHeight);
-            PicOf(thumb).Bounds = new Rectangle(0, 0, width, width * 7 / 5);
-            NumOf(thumb).Bounds = new Rectangle(0, width * 7 / 5, width, NumberHeight);
+            LayoutThumb(thumb);
         }
         flowPanel.ResumeLayout();
         UpdateUiState();
@@ -447,9 +547,10 @@ public partial class MainForm : Form
 
     private void Select(Panel thumb)
     {
-        if (selected != null) { PicOf(selected).BackColor = Color.White; PicOf(selected).Padding = Padding.Empty; }
+        // Der Rahmen (samt Seitenzahl-Streifen) bleibt immer stehen und wechselt nur die Farbe
+        if (selected != null) { selected.BackColor = FrameColor; }
         selected = thumb;
-        if (selected != null) { PicOf(selected).BackColor = Color.SteelBlue; PicOf(selected).Padding = new Padding(3); }
+        if (selected != null) { selected.BackColor = SelectionColor; }
         UpdateUiState();
     }
 
@@ -604,6 +705,7 @@ public partial class MainForm : Form
 
     private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
     {
+        SaveWindowBounds();
         try { Directory.Delete(sessionFolder, true); } catch (IOException) { } // Sitzungs-Scans aufräumen
     }
 
