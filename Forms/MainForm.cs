@@ -9,9 +9,10 @@ public partial class MainForm : Form
 {
     private const string TestPageId = "TESTSEITE"; // Pseudo-Scanner im Geräte-Menü
 
-    // Miniaturgrößen im A4-Verhältnis (Breite; Höhe = Breite × 1,4)
+    // Zoomstufen für −/+ im A4-Verhältnis (Breite; Höhe = Breite × 1,4)
     private static readonly int[] ThumbWidths = [100, 130, 160, 200, 240, 280];
-    private int thumbIndex = 2; // Start: 160 px
+    private const int IconThumbWidth = 160; // Ansicht „Symbole" und Startgröße
+    private int thumbWidth = IconThumbWidth; // Ansicht-Modi dürfen von den Zoomstufen abweichen
 
     private readonly string sessionFolder = Path.Combine(Path.GetTempPath(), "ScanTest_" + Guid.NewGuid().ToString("N"));
     private readonly bool selfTest;
@@ -22,6 +23,8 @@ public partial class MainForm : Form
     private Point dragStart; // Mausposition beim Drücken — Start des Miniatur-Ziehens
     private string selectedScannerId; // DeviceID, TestPageId oder null (= noch kein Gerät gewählt)
     private string selectedScannerName;
+    private string clipboardPath; // interne Seiten-Zwischenablage (Ausschneiden/Kopieren)
+    private FormWindowState previousWindowState; // zum Verlassen des Vollbildmodus
 
     public MainForm() : this(false) // parameterlos für den Windows-Forms-Designer
     {
@@ -30,6 +33,7 @@ public partial class MainForm : Form
     public MainForm(bool selfTest)
     {
         InitializeComponent();
+        toolStrip.Renderer = new BigArrowRenderer();
         this.selfTest = selfTest;
         Directory.CreateDirectory(sessionFolder);
         comboDpi.SelectedIndex = 2;   // 300 dpi — der OCR-Sweet-Spot
@@ -139,13 +143,201 @@ public partial class MainForm : Form
         splitScan.DropDownItems.Add(testPage);
     }
 
+    // ------------------------------------------------------------------ Menü „Aktion"
+
+    /// <summary>Bilddateien als Seiten aufnehmen — Kopien im Sitzungsordner, damit die
+    /// Originale unangetastet bleiben und die Aufräumlogik beim Beenden greift.</summary>
+    private void MenuImport_Click(object sender, EventArgs e)
+    {
+        using OpenFileDialog dialog = new()
+        {
+            Filter = "Bilddateien (*.tif;*.tiff;*.png;*.jpg;*.jpeg;*.bmp)|*.tif;*.tiff;*.png;*.jpg;*.jpeg;*.bmp|Alle Dateien (*.*)|*.*",
+            Multiselect = true,
+            Title = "Bilder importieren",
+        };
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        foreach (var file in dialog.FileNames)
+        {
+            var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(file).ToLowerInvariant()}");
+            try
+            {
+                File.Copy(file, copy);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                MessageBox.Show(this, ex.Message, "Importieren fehlgeschlagen", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                continue;
+            }
+            AddPage(copy);
+        }
+    }
+
+    private void MenuClose_Click(object sender, EventArgs e)
+    {
+        Close();
+    }
+
+    // ------------------------------------------------------------------ Menü „Bearbeiten"
+
+    private void MenuEditCut_Click(object sender, EventArgs e)
+    {
+        if (selected == null) { return; }
+        clipboardPath = (string)selected.Tag; // Datei bleibt im Sitzungsordner liegen
+        BtnRemove_Click(sender, e);
+    }
+
+    private void MenuEditCopy_Click(object sender, EventArgs e)
+    {
+        if (selected == null) { return; }
+        clipboardPath = (string)selected.Tag;
+        UpdateUiState();
+    }
+
+    /// <summary>Fügt eine Kopie der Zwischenablage-Seite hinter der Markierung ein (ohne Markierung: ans Ende).</summary>
+    private void MenuEditPaste_Click(object sender, EventArgs e)
+    {
+        if (clipboardPath == null || !File.Exists(clipboardPath)) { return; }
+        var insertAt = selected != null ? flowPanel.Controls.GetChildIndex(selected) + 1 : flowPanel.Controls.Count;
+        var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(clipboardPath)}");
+        File.Copy(clipboardPath, copy);
+        AddPage(copy);
+        flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt);
+        UpdateUiState();
+    }
+
+    private void MenuEditRotateLeft_Click(object sender, EventArgs e)
+    {
+        RotateSelected(RotateFlipType.Rotate270FlipNone);
+    }
+
+    private void MenuEditRotate180_Click(object sender, EventArgs e)
+    {
+        RotateSelected(RotateFlipType.Rotate180FlipNone);
+    }
+
+    private void MenuEditRotateRight_Click(object sender, EventArgs e)
+    {
+        RotateSelected(RotateFlipType.Rotate90FlipNone);
+    }
+
+    /// <summary>Dreht die Seitendatei selbst (nicht nur die Miniatur), damit auch OCR und PDF die Drehung sehen.</summary>
+    private void RotateSelected(RotateFlipType rotation)
+    {
+        if (selected == null) { return; }
+        var path = (string)selected.Tag;
+        var format = Path.GetExtension(path).ToLowerInvariant() switch
+        {
+            ".png" => System.Drawing.Imaging.ImageFormat.Png,
+            ".jpg" or ".jpeg" => System.Drawing.Imaging.ImageFormat.Jpeg,
+            ".bmp" => System.Drawing.Imaging.ImageFormat.Bmp,
+            _ => System.Drawing.Imaging.ImageFormat.Tiff,
+        };
+        using (var image = ScanService.LoadUnlocked(path))
+        {
+            image.RotateFlip(rotation);
+            image.Save(path, format);
+        }
+        var pic = PicOf(selected);
+        var old = pic.Image;
+        pic.Image = ScanService.LoadUnlocked(path);
+        old?.Dispose();
+    }
+
+    /// <summary>Duplex von Hand: erst alle Vorderseiten scannen, dann den Stapel gewendet — die
+    /// Rückseiten liegen dadurch in umgekehrter Reihenfolge und werden hier verzahnt einsortiert.</summary>
+    private void MenuEditBacks_Click(object sender, EventArgs e)
+    {
+        var panels = flowPanel.Controls.Cast<Panel>().ToList();
+        var half = panels.Count / 2;
+        List<Panel> order = [];
+        for (var i = 0; i < half; i++)
+        {
+            order.Add(panels[i]);
+            order.Add(panels[panels.Count - 1 - i]);
+        }
+        ReorderPages(order);
+    }
+
+    private void MenuEditReverse_Click(object sender, EventArgs e)
+    {
+        ReorderPages(flowPanel.Controls.Cast<Panel>().Reverse().ToList());
+    }
+
+    private void ReorderPages(List<Panel> order)
+    {
+        flowPanel.SuspendLayout();
+        for (var i = 0; i < order.Count; i++)
+        {
+            flowPanel.Controls.SetChildIndex(order[i], i);
+        }
+        flowPanel.ResumeLayout();
+        UpdateUiState();
+    }
+
+    // ------------------------------------------------------------------ Menü „Ansicht"
+
+    private void MenuViewFitWidth_Click(object sender, EventArgs e)
+    {
+        ApplyThumbWidth(ColumnThumbWidth(1));
+    }
+
+    private void MenuViewTwoPages_Click(object sender, EventArgs e)
+    {
+        ApplyThumbWidth(ColumnThumbWidth(2));
+    }
+
+    private void MenuViewFitPage_Click(object sender, EventArgs e)
+    {
+        // Höhe der Miniatur = Breite × 7/5 + Seitenzahl-Streifen — nach der Breite aufgelöst
+        ApplyThumbWidth((flowPanel.ClientSize.Height - 32 - NumberHeight) * 5 / 7);
+    }
+
+    private void MenuViewIcons_Click(object sender, EventArgs e)
+    {
+        ApplyThumbWidth(IconThumbWidth);
+    }
+
+    /// <summary>Miniaturbreite, bei der genau so viele Spalten in die Übersicht passen.</summary>
+    private int ColumnThumbWidth(int columns)
+    {
+        var scrollbar = flowPanel.VerticalScroll.Visible ? 0 : SystemInformation.VerticalScrollBarWidth;
+        return (flowPanel.ClientSize.Width - 16 - scrollbar) / columns - 16; // Panel-Padding bzw. Miniatur-Margins
+    }
+
+    private void MenuViewFullScreen_Click(object sender, EventArgs e)
+    {
+        if (!menuViewFullScreen.Checked)
+        {
+            previousWindowState = WindowState;
+            FormBorderStyle = FormBorderStyle.None;
+            WindowState = FormWindowState.Normal; // erzwingt die Neuberechnung, falls schon maximiert
+            WindowState = FormWindowState.Maximized;
+            menuViewFullScreen.Checked = true;
+        }
+        else
+        {
+            FormBorderStyle = FormBorderStyle.Sizable;
+            WindowState = previousWindowState;
+            menuViewFullScreen.Checked = false;
+        }
+    }
+
+    // ------------------------------------------------------------------ Menü „?"
+
+    private void MenuHelpAbout_Click(object sender, EventArgs e)
+    {
+        MessageBox.Show(this,
+            $"ScanTest {Application.ProductVersion}\n\nSeiten scannen (WIA), ordnen und per Texterkennung (Tesseract, deutsch)\nals durchsuchbare PDF speichern (PDFsharp).",
+            "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+    }
+
     // ------------------------------------------------------------------ Seitenverwaltung
 
     /// <summary>Hängt einen Scan als Miniatur (Bild mit Seitenzahl darunter) an die Übersicht an.</summary>
     private void AddPage(string tiffPath)
     {
         if (tiffPath == null) { return; }
-        var width = ThumbWidths[thumbIndex];
+        var width = thumbWidth;
         Panel thumb = new()
         {
             Width = width,
@@ -230,20 +422,19 @@ public partial class MainForm : Form
 
     private void BtnZoomOut_Click(object sender, EventArgs e)
     {
-        ApplyThumbSize(thumbIndex - 1);
+        ApplyThumbWidth(ThumbWidths.LastOrDefault(w => w < thumbWidth)); // nächstkleinere Zoomstufe
     }
 
     private void BtnZoomIn_Click(object sender, EventArgs e)
     {
-        ApplyThumbSize(thumbIndex + 1);
+        ApplyThumbWidth(ThumbWidths.FirstOrDefault(w => w > thumbWidth)); // nächstgrößere Zoomstufe
     }
 
-    private void ApplyThumbSize(int index)
+    private void ApplyThumbWidth(int width)
     {
-        if (index < 0 || index >= ThumbWidths.Length) { return; }
-        thumbIndex = index;
+        if (width < ThumbWidths[0]) { return; } // 0 = keine passende Zoomstufe mehr
+        thumbWidth = width;
         flowPanel.SuspendLayout();
-        var width = ThumbWidths[thumbIndex];
         foreach (var thumb in flowPanel.Controls.Cast<Panel>())
         {
             thumb.Size = new Size(width, width * 7 / 5 + NumberHeight);
@@ -269,12 +460,26 @@ public partial class MainForm : Form
         btnSave.Enabled = count > 0;
         btnPrint.Enabled = count > 0;
         btnNew.Enabled = count > 0;
+        menuActionSave.Enabled = count > 0;
+        menuActionPrint.Enabled = count > 0;
+        menuActionNew.Enabled = count > 0;
         btnRemove.Enabled = selected != null;
         var index = selected != null ? flowPanel.Controls.GetChildIndex(selected) : -1;
         btnMoveLeft.Enabled = index > 0;
         btnMoveRight.Enabled = index >= 0 && index < count - 1;
-        btnZoomOut.Enabled = thumbIndex > 0;
-        btnZoomIn.Enabled = thumbIndex < ThumbWidths.Length - 1;
+        btnZoomOut.Enabled = thumbWidth > ThumbWidths[0];
+        btnZoomIn.Enabled = thumbWidth < ThumbWidths[^1];
+        menuViewZoomOut.Enabled = btnZoomOut.Enabled;
+        menuViewZoomIn.Enabled = btnZoomIn.Enabled;
+        menuEditCut.Enabled = selected != null;
+        menuEditCopy.Enabled = selected != null;
+        menuEditPaste.Enabled = clipboardPath != null;
+        menuEditDelete.Enabled = selected != null;
+        menuEditRotateLeft.Enabled = selected != null;
+        menuEditRotate180.Enabled = selected != null;
+        menuEditRotateRight.Enabled = selected != null;
+        menuEditBacks.Enabled = count >= 2 && count % 2 == 0; // Vorder- und Rückseiten paarweise
+        menuEditReverse.Enabled = count >= 2;
         var scannerHint = selectedScannerName != null ? $"   ·   Scanner: {selectedScannerName}" : string.Empty;
         statusLabel.Text = (count == 0 ? "Noch keine Seiten" : count == 1 ? "1 Seite" : $"{count} Seiten") + scannerHint;
     }
@@ -347,6 +552,7 @@ public partial class MainForm : Form
     {
         var tiffFiles = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
         toolStrip.Enabled = false;
+        menuStrip.Enabled = false;
         Cursor.Current = Cursors.WaitCursor;
         try
         {
@@ -364,6 +570,7 @@ public partial class MainForm : Form
         {
             Cursor.Current = Cursors.Default;
             toolStrip.Enabled = true;
+            menuStrip.Enabled = true;
             UpdateUiState();
         }
     }
@@ -398,5 +605,20 @@ public partial class MainForm : Form
     private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
     {
         try { Directory.Delete(sessionFolder, true); } catch (IOException) { } // Sitzungs-Scans aufräumen
+    }
+
+    /// <summary>Zeichnet den Aufklapp-Pfeil des Scannen-SplitButtons größer, als der Standard-Renderer es tut.</summary>
+    private sealed class BigArrowRenderer : ToolStripProfessionalRenderer
+    {
+        protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
+        {
+            if (e.Item is not ToolStripSplitButton) { base.OnRenderArrow(e); return; }
+            var mid = new Point(e.ArrowRectangle.Left + e.ArrowRectangle.Width / 2, e.ArrowRectangle.Top + e.ArrowRectangle.Height / 2);
+            using SolidBrush brush = new(e.ArrowColor);
+            var smoothing = e.Graphics.SmoothingMode;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+            e.Graphics.FillPolygon(brush, new[] { new Point(mid.X - 6, mid.Y - 3), new Point(mid.X + 6, mid.Y - 3), new Point(mid.X, mid.Y + 4) });
+            e.Graphics.SmoothingMode = smoothing;
+        }
     }
 }

@@ -28,6 +28,41 @@ namespace ScanTest.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            menuStrip = new MenuStrip();
+            menuAction = new ToolStripMenuItem();
+            menuActionNew = new ToolStripMenuItem();
+            menuActionImport = new ToolStripMenuItem();
+            menuActionScan = new ToolStripMenuItem();
+            menuActionSave = new ToolStripMenuItem();
+            menuActionPrint = new ToolStripMenuItem();
+            menuActionSeparator = new ToolStripSeparator();
+            menuActionClose = new ToolStripMenuItem();
+            menuEdit = new ToolStripMenuItem();
+            menuEditCut = new ToolStripMenuItem();
+            menuEditCopy = new ToolStripMenuItem();
+            menuEditPaste = new ToolStripMenuItem();
+            menuEditDelete = new ToolStripMenuItem();
+            menuEditSeparator1 = new ToolStripSeparator();
+            menuEditRotateLeft = new ToolStripMenuItem();
+            menuEditRotate180 = new ToolStripMenuItem();
+            menuEditRotateRight = new ToolStripMenuItem();
+            menuEditSeparator2 = new ToolStripSeparator();
+            menuEditBacks = new ToolStripMenuItem();
+            menuEditReverse = new ToolStripMenuItem();
+            menuView = new ToolStripMenuItem();
+            menuViewFitWidth = new ToolStripMenuItem();
+            menuViewFitPage = new ToolStripMenuItem();
+            menuViewTwoPages = new ToolStripMenuItem();
+            menuViewIcons = new ToolStripMenuItem();
+            menuViewSeparator1 = new ToolStripSeparator();
+            menuViewZoomIn = new ToolStripMenuItem();
+            menuViewZoomOut = new ToolStripMenuItem();
+            menuViewSeparator2 = new ToolStripSeparator();
+            menuViewFullScreen = new ToolStripMenuItem();
+            menuExtras = new ToolStripMenuItem();
+            menuExtrasOptions = new ToolStripMenuItem();
+            menuHelp = new ToolStripMenuItem();
+            menuHelpAbout = new ToolStripMenuItem();
             toolStrip = new ToolStrip();
             splitScan = new ToolStripSplitButton();
             btnSave = new ToolStripButton();
@@ -57,7 +92,241 @@ namespace ScanTest.Forms
             panelSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
             statusStrip.SuspendLayout();
+            menuStrip.SuspendLayout();
             SuspendLayout();
+            //
+            // menuStrip
+            //
+            menuStrip.Items.AddRange(new ToolStripItem[] { menuAction, menuEdit, menuView, menuExtras, menuHelp });
+            menuStrip.Location = new Point(0, 0);
+            menuStrip.Name = "menuStrip";
+            menuStrip.ShowItemToolTips = true;
+            menuStrip.Size = new Size(984, 24);
+            menuStrip.TabIndex = 4;
+            //
+            // menuAction
+            //
+            menuAction.DropDownItems.AddRange(new ToolStripItem[] { menuActionNew, menuActionImport, menuActionScan, menuActionSave, menuActionPrint, menuActionSeparator, menuActionClose });
+            menuAction.Name = "menuAction";
+            menuAction.Text = "&Aktion";
+            //
+            // menuActionNew
+            //
+            menuActionNew.Enabled = false;
+            menuActionNew.Name = "menuActionNew";
+            menuActionNew.ShortcutKeys = Keys.F9;
+            menuActionNew.Text = "&Neu";
+            menuActionNew.ToolTipText = "Seitenübersicht leeren";
+            menuActionNew.Click += BtnNew_Click;
+            //
+            // menuActionImport
+            //
+            menuActionImport.Name = "menuActionImport";
+            menuActionImport.ShortcutKeys = Keys.Control | Keys.I;
+            menuActionImport.ShortcutKeyDisplayString = "Strg+I";
+            menuActionImport.Text = "&Importieren …";
+            menuActionImport.ToolTipText = "Bilddateien als Seiten in die Übersicht aufnehmen";
+            menuActionImport.Click += MenuImport_Click;
+            //
+            // menuActionScan
+            //
+            menuActionScan.Name = "menuActionScan";
+            menuActionScan.ShortcutKeys = Keys.F4;
+            menuActionScan.Text = "&Scannen";
+            menuActionScan.Click += SplitScan_ButtonClick;
+            //
+            // menuActionSave
+            //
+            menuActionSave.Enabled = false;
+            menuActionSave.Name = "menuActionSave";
+            menuActionSave.ShortcutKeys = Keys.F5;
+            menuActionSave.Text = "S&peichern …";
+            menuActionSave.Click += BtnSave_Click;
+            //
+            // menuActionPrint
+            //
+            menuActionPrint.Enabled = false;
+            menuActionPrint.Name = "menuActionPrint";
+            menuActionPrint.ShortcutKeys = Keys.F6;
+            menuActionPrint.Text = "&Drucken …";
+            menuActionPrint.Click += BtnPrint_Click;
+            //
+            // menuActionSeparator
+            //
+            menuActionSeparator.Name = "menuActionSeparator";
+            //
+            // menuActionClose
+            //
+            menuActionClose.Name = "menuActionClose";
+            menuActionClose.Text = "Schließen";
+            menuActionClose.Click += MenuClose_Click;
+            //
+            // menuEdit
+            //
+            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSeparator1, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
+            menuEdit.Name = "menuEdit";
+            menuEdit.Text = "&Bearbeiten";
+            //
+            // menuEditCut
+            //
+            menuEditCut.Enabled = false;
+            menuEditCut.Name = "menuEditCut";
+            menuEditCut.ShortcutKeys = Keys.Control | Keys.X;
+            menuEditCut.ShortcutKeyDisplayString = "Strg+X";
+            menuEditCut.Text = "&Ausschneiden";
+            menuEditCut.Click += MenuEditCut_Click;
+            //
+            // menuEditCopy
+            //
+            menuEditCopy.Enabled = false;
+            menuEditCopy.Name = "menuEditCopy";
+            menuEditCopy.ShortcutKeys = Keys.Control | Keys.C;
+            menuEditCopy.ShortcutKeyDisplayString = "Strg+C";
+            menuEditCopy.Text = "&Kopieren";
+            menuEditCopy.Click += MenuEditCopy_Click;
+            //
+            // menuEditPaste
+            //
+            menuEditPaste.Enabled = false;
+            menuEditPaste.Name = "menuEditPaste";
+            menuEditPaste.ShortcutKeys = Keys.Control | Keys.V;
+            menuEditPaste.ShortcutKeyDisplayString = "Strg+V";
+            menuEditPaste.Text = "Ein&fügen";
+            menuEditPaste.Click += MenuEditPaste_Click;
+            //
+            // menuEditDelete
+            //
+            menuEditDelete.Enabled = false;
+            menuEditDelete.Name = "menuEditDelete";
+            menuEditDelete.ShortcutKeys = Keys.Delete;
+            menuEditDelete.ShortcutKeyDisplayString = "Entf";
+            menuEditDelete.Text = "&Löschen";
+            menuEditDelete.Click += BtnRemove_Click;
+            //
+            // menuEditSeparator1
+            //
+            menuEditSeparator1.Name = "menuEditSeparator1";
+            //
+            // menuEditRotateLeft
+            //
+            menuEditRotateLeft.Enabled = false;
+            menuEditRotateLeft.Name = "menuEditRotateLeft";
+            menuEditRotateLeft.Text = "Drehen nach &links";
+            menuEditRotateLeft.Click += MenuEditRotateLeft_Click;
+            //
+            // menuEditRotate180
+            //
+            menuEditRotate180.Enabled = false;
+            menuEditRotate180.Name = "menuEditRotate180";
+            menuEditRotate180.Text = "Drehen um 1&80°";
+            menuEditRotate180.Click += MenuEditRotate180_Click;
+            //
+            // menuEditRotateRight
+            //
+            menuEditRotateRight.Enabled = false;
+            menuEditRotateRight.Name = "menuEditRotateRight";
+            menuEditRotateRight.Text = "Drehen nach &rechts";
+            menuEditRotateRight.Click += MenuEditRotateRight_Click;
+            //
+            // menuEditSeparator2
+            //
+            menuEditSeparator2.Name = "menuEditSeparator2";
+            //
+            // menuEditBacks
+            //
+            menuEditBacks.Enabled = false;
+            menuEditBacks.Name = "menuEditBacks";
+            menuEditBacks.Text = "Rück&seiten einfügen";
+            menuEditBacks.ToolTipText = "Zweite Hälfte der Seiten (Rückseiten in umgekehrter Reihenfolge) hinter die Vorderseiten einsortieren";
+            menuEditBacks.Click += MenuEditBacks_Click;
+            //
+            // menuEditReverse
+            //
+            menuEditReverse.Enabled = false;
+            menuEditReverse.Name = "menuEditReverse";
+            menuEditReverse.Text = "Sortierung &umkehren";
+            menuEditReverse.Click += MenuEditReverse_Click;
+            //
+            // menuView
+            //
+            menuView.DropDownItems.AddRange(new ToolStripItem[] { menuViewFitWidth, menuViewFitPage, menuViewTwoPages, menuViewIcons, menuViewSeparator1, menuViewZoomIn, menuViewZoomOut, menuViewSeparator2, menuViewFullScreen });
+            menuView.Name = "menuView";
+            menuView.Text = "A&nsicht";
+            //
+            // menuViewFitWidth
+            //
+            menuViewFitWidth.Name = "menuViewFitWidth";
+            menuViewFitWidth.Text = "&Optimale Breite";
+            menuViewFitWidth.Click += MenuViewFitWidth_Click;
+            //
+            // menuViewFitPage
+            //
+            menuViewFitPage.Name = "menuViewFitPage";
+            menuViewFitPage.Text = "&Ganze Seite";
+            menuViewFitPage.Click += MenuViewFitPage_Click;
+            //
+            // menuViewTwoPages
+            //
+            menuViewTwoPages.Name = "menuViewTwoPages";
+            menuViewTwoPages.Text = "&Zwei Seiten";
+            menuViewTwoPages.Click += MenuViewTwoPages_Click;
+            //
+            // menuViewIcons
+            //
+            menuViewIcons.Name = "menuViewIcons";
+            menuViewIcons.Text = "&Symbole";
+            menuViewIcons.Click += MenuViewIcons_Click;
+            //
+            // menuViewSeparator1
+            //
+            menuViewSeparator1.Name = "menuViewSeparator1";
+            //
+            // menuViewZoomIn
+            //
+            menuViewZoomIn.Name = "menuViewZoomIn";
+            menuViewZoomIn.Text = "&Vergrößern";
+            menuViewZoomIn.Click += BtnZoomIn_Click;
+            //
+            // menuViewZoomOut
+            //
+            menuViewZoomOut.Name = "menuViewZoomOut";
+            menuViewZoomOut.Text = "Ver&kleinern";
+            menuViewZoomOut.Click += BtnZoomOut_Click;
+            //
+            // menuViewSeparator2
+            //
+            menuViewSeparator2.Name = "menuViewSeparator2";
+            //
+            // menuViewFullScreen
+            //
+            menuViewFullScreen.Name = "menuViewFullScreen";
+            menuViewFullScreen.ShortcutKeys = Keys.F11;
+            menuViewFullScreen.Text = "Ganzer &Bildschirm";
+            menuViewFullScreen.Click += MenuViewFullScreen_Click;
+            //
+            // menuExtras
+            //
+            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasOptions });
+            menuExtras.Name = "menuExtras";
+            menuExtras.Text = "E&xtras";
+            //
+            // menuExtrasOptions
+            //
+            menuExtrasOptions.Enabled = false;
+            menuExtrasOptions.Name = "menuExtrasOptions";
+            menuExtrasOptions.Text = "&Optionen …";
+            //
+            // menuHelp
+            //
+            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuHelpAbout });
+            menuHelp.Name = "menuHelp";
+            menuHelp.Text = "?";
+            //
+            // menuHelpAbout
+            //
+            menuHelpAbout.Name = "menuHelpAbout";
+            menuHelpAbout.Text = "&Info …";
+            menuHelpAbout.Click += MenuHelpAbout_Click;
             //
             // toolStrip
             //
@@ -75,6 +344,7 @@ namespace ScanTest.Forms
             //
             splitScan.AutoSize = false;
             splitScan.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            splitScan.DropDownButtonWidth = 28;
             splitScan.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
             splitScan.Name = "splitScan";
             splitScan.Size = new Size(150, 57);
@@ -321,6 +591,8 @@ namespace ScanTest.Forms
             Controls.Add(panelSettings);
             Controls.Add(statusStrip);
             Controls.Add(toolStrip);
+            Controls.Add(menuStrip);
+            MainMenuStrip = menuStrip;
             MinimumSize = new Size(700, 420);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -332,12 +604,49 @@ namespace ScanTest.Forms
             panelSettings.ResumeLayout(false);
             panelSettings.PerformLayout();
             statusStrip.ResumeLayout(false);
+            menuStrip.ResumeLayout(false);
+            menuStrip.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
+        private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ToolStripMenuItem menuAction;
+        private System.Windows.Forms.ToolStripMenuItem menuActionNew;
+        private System.Windows.Forms.ToolStripMenuItem menuActionImport;
+        private System.Windows.Forms.ToolStripMenuItem menuActionScan;
+        private System.Windows.Forms.ToolStripMenuItem menuActionSave;
+        private System.Windows.Forms.ToolStripMenuItem menuActionPrint;
+        private System.Windows.Forms.ToolStripSeparator menuActionSeparator;
+        private System.Windows.Forms.ToolStripMenuItem menuActionClose;
+        private System.Windows.Forms.ToolStripMenuItem menuEdit;
+        private System.Windows.Forms.ToolStripMenuItem menuEditCut;
+        private System.Windows.Forms.ToolStripMenuItem menuEditCopy;
+        private System.Windows.Forms.ToolStripMenuItem menuEditPaste;
+        private System.Windows.Forms.ToolStripMenuItem menuEditDelete;
+        private System.Windows.Forms.ToolStripSeparator menuEditSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem menuEditRotateLeft;
+        private System.Windows.Forms.ToolStripMenuItem menuEditRotate180;
+        private System.Windows.Forms.ToolStripMenuItem menuEditRotateRight;
+        private System.Windows.Forms.ToolStripSeparator menuEditSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem menuEditBacks;
+        private System.Windows.Forms.ToolStripMenuItem menuEditReverse;
+        private System.Windows.Forms.ToolStripMenuItem menuView;
+        private System.Windows.Forms.ToolStripMenuItem menuViewFitWidth;
+        private System.Windows.Forms.ToolStripMenuItem menuViewFitPage;
+        private System.Windows.Forms.ToolStripMenuItem menuViewTwoPages;
+        private System.Windows.Forms.ToolStripMenuItem menuViewIcons;
+        private System.Windows.Forms.ToolStripSeparator menuViewSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem menuViewZoomIn;
+        private System.Windows.Forms.ToolStripMenuItem menuViewZoomOut;
+        private System.Windows.Forms.ToolStripSeparator menuViewSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem menuViewFullScreen;
+        private System.Windows.Forms.ToolStripMenuItem menuExtras;
+        private System.Windows.Forms.ToolStripMenuItem menuExtrasOptions;
+        private System.Windows.Forms.ToolStripMenuItem menuHelp;
+        private System.Windows.Forms.ToolStripMenuItem menuHelpAbout;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripSplitButton splitScan;
         private System.Windows.Forms.ToolStripButton btnSave;
