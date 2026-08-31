@@ -1,5 +1,4 @@
 using System.Drawing.Printing;
-using System.Text.Json;
 using ScanTest.Classes;
 
 namespace ScanTest.Forms;
@@ -29,6 +28,11 @@ public partial class MainForm : Form
     private string selectedScannerName;
     private string clipboardPath; // interne Seiten-Zwischenablage (Ausschneiden/Kopieren)
     private FormWindowState previousWindowState; // zum Verlassen des Vollbildmodus
+    private readonly AppSettings settings;
+    private readonly PrinterSettings copyPrinterSettings = new(); // Kopiermodus: gewählter Drucker samt Treiber-Einstellungen
+    private readonly ToolTip toolTip = new();
+    private Button btnZoomOut; // übereinander gestapelt in einem ToolStripControlHost (s. CreateZoomButtons)
+    private Button btnZoomIn;
 
     public MainForm() : this(false) // parameterlos für den Windows-Forms-Designer
     {
@@ -42,6 +46,7 @@ public partial class MainForm : Form
         // 11-pt-Schrift des Toolbar-Buttons (gleiche Lösung wie in PDFlight)
         splitScan.DropDown = new ToolStripDropDownMenu { Font = new Font(Font.FontFamily, 9f) };
         this.selfTest = selfTest;
+        settings = AppSettings.Load();
         Directory.CreateDirectory(sessionFolder);
         comboDpi.SelectedIndex = 2;   // 300 dpi — der OCR-Sweet-Spot
         comboColor.SelectedIndex = 0; // Farbe
@@ -49,8 +54,31 @@ public partial class MainForm : Form
         comboFeed.SelectedIndex = 0;  // Flachbett
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
+        CreateZoomButtons();
         ApplyToolbarIcons();
         if (!selfTest) { RestoreWindowBounds(); } // der Selbsttest-Screenshot soll deterministisch bleiben
+    }
+
+    /// <summary>Baut die beiden Zoom-Buttons übereinander in einen ToolStripControlHost — der
+    /// ToolStrip selbst kann Items nur nebeneinander anordnen.</summary>
+    private void CreateZoomButtons()
+    {
+        Button Make(string text, string tip, EventHandler onClick)
+        {
+            Button button = new() { Size = new Size(32, 27), Text = text, TabStop = false, FlatStyle = FlatStyle.Flat };
+            button.FlatAppearance.BorderSize = 0;
+            toolTip.SetToolTip(button, tip);
+            button.Click += onClick;
+            return button;
+        }
+        btnZoomIn = Make("+", "Miniaturen vergrößern", BtnZoomIn_Click);
+        btnZoomOut = Make("−", "Miniaturen verkleinern", BtnZoomOut_Click);
+        Panel host = new() { Size = new Size(32, 56) };
+        btnZoomIn.Location = new Point(0, 1);
+        btnZoomOut.Location = new Point(0, 28);
+        host.Controls.Add(btnZoomIn);
+        host.Controls.Add(btnZoomOut);
+        toolStrip.Items.Insert(toolStrip.Items.IndexOf(toolStripSeparator2) + 1, new ToolStripControlHost(host));
     }
 
     /// <summary>Versieht die Toolbar-Buttons mit Symbolen aus der Windows-Symbolschrift
@@ -70,63 +98,68 @@ public partial class MainForm : Form
         Set(splitScan, ToolbarIcons.Scan);
         Set(btnSave, ToolbarIcons.Save);
         Set(btnPrint, ToolbarIcons.Print);
-        Set(btnNew, ToolbarIcons.Clear);
         Set(btnMoveLeft, ToolbarIcons.Previous, imageOnly: true);
         Set(btnMoveRight, ToolbarIcons.Next, imageOnly: true);
         Set(btnRemove, ToolbarIcons.Delete);
-        Set(btnZoomOut, ToolbarIcons.ZoomOut, imageOnly: true);
-        Set(btnZoomIn, ToolbarIcons.ZoomIn, imageOnly: true);
+        btnNew.Image = ToolbarIcons.GetNewPage(size); // leeres Blatt mit Sternchen
+        btnNew.TextImageRelation = TextImageRelation.ImageAboveText;
+        btnNew.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+        var zoomEdge = LogicalToDeviceUnits(18);
+        btnZoomOut.Image = ToolbarIcons.Get(ToolbarIcons.ZoomOut, new Size(zoomEdge, zoomEdge));
+        btnZoomIn.Image = ToolbarIcons.Get(ToolbarIcons.ZoomIn, new Size(zoomEdge, zoomEdge));
+        btnZoomOut.Text = string.Empty;
+        btnZoomIn.Text = string.Empty;
     }
 
     // ------------------------------------------------------------------ Fensterposition merken
 
-    private static string SettingsPath => Path.Combine(
-        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScanTest", "settings.json");
-
-    private sealed class AppSettings
-    {
-        public int WindowX { get; set; }
-        public int WindowY { get; set; }
-        public int WindowWidth { get; set; }
-        public int WindowHeight { get; set; }
-        public bool WindowMaximized { get; set; }
-    }
-
     private void RestoreWindowBounds()
     {
-        try
+        Rectangle bounds = new(settings.WindowX, settings.WindowY, settings.WindowWidth, settings.WindowHeight);
+        if (bounds.Width >= MinimumSize.Width && bounds.Height >= MinimumSize.Height
+            && Screen.AllScreens.Any(screen => screen.WorkingArea.IntersectsWith(bounds))) // Monitor kann inzwischen fehlen
         {
-            var stored = JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(SettingsPath));
-            Rectangle bounds = new(stored.WindowX, stored.WindowY, stored.WindowWidth, stored.WindowHeight);
-            if (bounds.Width >= MinimumSize.Width && bounds.Height >= MinimumSize.Height
-                && Screen.AllScreens.Any(screen => screen.WorkingArea.IntersectsWith(bounds))) // Monitor kann inzwischen fehlen
-            {
-                StartPosition = FormStartPosition.Manual;
-                Bounds = bounds;
-            }
-            if (stored.WindowMaximized) { WindowState = FormWindowState.Maximized; }
+            StartPosition = FormStartPosition.Manual;
+            Bounds = bounds;
         }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException) { } // erster Start oder defekte Datei
+        if (settings.WindowMaximized) { WindowState = FormWindowState.Maximized; }
     }
 
     private void SaveWindowBounds()
     {
         var bounds = WindowState == FormWindowState.Normal ? Bounds : RestoreBounds;
-        AppSettings stored = new()
+        settings.WindowX = bounds.X;
+        settings.WindowY = bounds.Y;
+        settings.WindowWidth = bounds.Width;
+        settings.WindowHeight = bounds.Height;
+        // Vollbild (F11, ohne Rahmen) nicht als "maximiert" einfrieren
+        settings.WindowMaximized = WindowState == FormWindowState.Maximized && FormBorderStyle != FormBorderStyle.None;
+        settings.Save();
+    }
+
+    // ------------------------------------------------------------------ Beenden mit Escape (aus PDFlight übernommen)
+
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        switch (keyData)
         {
-            WindowX = bounds.X,
-            WindowY = bounds.Y,
-            WindowWidth = bounds.Width,
-            WindowHeight = bounds.Height,
-            // Vollbild (F11, ohne Rahmen) nicht als "maximiert" einfrieren
-            WindowMaximized = WindowState == FormWindowState.Maximized && FormBorderStyle != FormBorderStyle.None,
-        };
-        try
-        {
-            Directory.CreateDirectory(Path.GetDirectoryName(SettingsPath));
-            File.WriteAllText(SettingsPath, JsonSerializer.Serialize(stored, new JsonSerializerOptions { WriteIndented = true }));
+            case Keys.Escape | Keys.Shift when settings.CloseOnEscape: Close(); return true; // Umschalt+Esc beendet sofort
+            case Keys.Escape when menuViewFullScreen.Checked: MenuViewFullScreen_Click(this, EventArgs.Empty); return true;
+            case Keys.Escape when settings.CloseOnEscape: return HandleEscapeToClose();
         }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
+        return base.ProcessCmdKey(ref msg, keyData);
+    }
+
+    private DateTime lastEscape = DateTime.MinValue;
+
+    /// <summary>Beenden erst beim zweiten Esc kurz hintereinander.</summary>
+    private bool HandleEscapeToClose()
+    {
+        var now = DateTime.UtcNow;
+        if ((now - lastEscape).TotalMilliseconds <= 1500) { Close(); return true; }
+        lastEscape = now;
+        statusLabel.Text = "Esc erneut drücken, um das Programm zu beenden";
+        return true;
     }
 
     private void MainForm_Shown(object sender, EventArgs e)
@@ -148,6 +181,12 @@ public partial class MainForm : Form
         {
             DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest.png"));
+        }
+        BtnCopyMode_Click(this, EventArgs.Empty); // Kopiermodus-Ansicht ebenfalls festhalten
+        using (var shot = new Bitmap(Width, Height))
+        {
+            DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
+            shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-copymode.png"));
         }
         Environment.Exit(pageCount == 2 ? 0 : 1);
     }
@@ -206,7 +245,74 @@ public partial class MainForm : Form
                 return;
             }
         }
+        if (panelCopyMode.Visible) { PrintCopy(scanned); return; } // Kopiermodus: direkt drucken statt sammeln
         AddPage(scanned);
+    }
+
+    // ------------------------------------------------------------------ Kopiermodus
+
+    /// <summary>Kopiermodus umschalten: statt der Seitenübersicht erscheinen die Druckoptionen,
+    /// und jeder Scan geht direkt an den Drucker.</summary>
+    private void BtnCopyMode_Click(object sender, EventArgs e)
+    {
+        var active = !panelCopyMode.Visible;
+        if (active && comboCopyPrinter.Items.Count == 0) // Druckerliste erst beim ersten Aufruf füllen
+        {
+            foreach (string printer in PrinterSettings.InstalledPrinters) { comboCopyPrinter.Items.Add(printer); }
+            var defaultIndex = comboCopyPrinter.Items.IndexOf(copyPrinterSettings.PrinterName); // Standarddrucker
+            comboCopyPrinter.SelectedIndex = defaultIndex >= 0 ? defaultIndex : (comboCopyPrinter.Items.Count > 0 ? 0 : -1);
+        }
+        panelCopyMode.Visible = active;
+        flowPanel.Visible = !active;
+        btnCopyMode.Text = active ? "&Kopiermodus beenden" : "&Kopiermodus";
+        statusLabel.Text = active ? "Kopiermodus: jeder Scan wird direkt gedruckt" : string.Empty;
+        if (!active) { UpdateUiState(); }
+    }
+
+    /// <summary>Öffnet den Windows-Druckdialog für die Treiber-Einstellungen des gewählten Druckers
+    /// (Duplex, Papierfach, Farbe …) und übernimmt dort geänderte Werte.</summary>
+    private void BtnCopyPrinterSettings_Click(object sender, EventArgs e)
+    {
+        if (comboCopyPrinter.SelectedItem is string printer) { copyPrinterSettings.PrinterName = printer; }
+        copyPrinterSettings.Copies = (short)numCopies.Value;
+        using PrintDialog dialog = new() { PrinterSettings = copyPrinterSettings, UseEXDialog = true };
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        var index = comboCopyPrinter.Items.IndexOf(copyPrinterSettings.PrinterName); // Auswahl aus dem Dialog übernehmen
+        if (index >= 0) { comboCopyPrinter.SelectedIndex = index; }
+        numCopies.Value = Math.Clamp((int)copyPrinterSettings.Copies, (int)numCopies.Minimum, (int)numCopies.Maximum);
+    }
+
+    /// <summary>Druckt einen frischen Scan sofort mit den Kopiermodus-Einstellungen.</summary>
+    private void PrintCopy(string tiffPath)
+    {
+        using PrintDocument document = new();
+        document.DocumentName = "ScanTest Kopie";
+        if (comboCopyPrinter.SelectedItem is string printer) { copyPrinterSettings.PrinterName = printer; }
+        copyPrinterSettings.Copies = (short)numCopies.Value;
+        document.PrinterSettings = copyPrinterSettings;
+        document.PrintPage += (s, args) =>
+        {
+            using var image = ScanService.LoadUnlocked(tiffPath);
+            if (chkCopyFit.Checked)
+            {
+                args.Graphics.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
+            }
+            else
+            {
+                // Originalgröße: die Druck-Graphics rechnet in 1/100 Zoll
+                args.Graphics.DrawImage(image, 0, 0, image.Width * 100f / image.HorizontalResolution, image.Height * 100f / image.VerticalResolution);
+            }
+            args.HasMorePages = false;
+        };
+        try
+        {
+            document.Print();
+            statusLabel.Text = $"Kopie ({numCopies.Value}×) an {document.PrinterSettings.PrinterName} übergeben";
+        }
+        catch (InvalidPrinterException ex)
+        {
+            TaskDlg.ErrTaskDlg(Handle, "Drucken fehlgeschlagen.", ex);
+        }
     }
 
     /// <summary>Baut das Geräte-Menü auf: alle Scanner plus die Testseite, Auswahl per Häkchen.</summary>
@@ -253,7 +359,7 @@ public partial class MainForm : Form
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                MessageBox.Show(this, ex.Message, "Importieren fehlgeschlagen", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                TaskDlg.ErrTaskDlg(Handle, "Importieren fehlgeschlagen.", ex);
                 continue;
             }
             AddPage(copy);
@@ -410,13 +516,20 @@ public partial class MainForm : Form
         }
     }
 
-    // ------------------------------------------------------------------ Menü „?"
+    // ------------------------------------------------------------------ Menüs „Extras" und „?"
+
+    private void MenuExtrasOptions_Click(object sender, EventArgs e)
+    {
+        using SettingsForm dialog = new(settings.CloseOnEscape, settings.OcrLanguage);
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        settings.CloseOnEscape = dialog.CloseOnEscape;
+        settings.OcrLanguage = dialog.OcrLanguage;
+        settings.Save();
+    }
 
     private void MenuHelpAbout_Click(object sender, EventArgs e)
     {
-        MessageBox.Show(this,
-            $"ScanTest {Application.ProductVersion}\n\nSeiten scannen (WIA), ordnen und per Texterkennung (Tesseract, deutsch)\nals durchsuchbare PDF speichern (PDFsharp).",
-            "Info", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        TaskDlg.AboutTaskDlg(Handle, Icon);
     }
 
     // ------------------------------------------------------------------ Seitenverwaltung
@@ -617,8 +730,8 @@ public partial class MainForm : Form
 
     private void BtnNew_Click(object sender, EventArgs e)
     {
-        if (flowPanel.Controls.Count > 0 && MessageBox.Show(this, "Alle Seiten aus der Übersicht entfernen?", "Neu",
-            MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+        if (flowPanel.Controls.Count > 0 && !TaskDlg.ConfirmTaskDlg(Handle, "Alle Seiten aus der Übersicht entfernen?",
+            "Die gescannten Seiten dieser Sitzung gehen verloren.", defaultNo: true))
         {
             return;
         }
@@ -657,7 +770,7 @@ public partial class MainForm : Form
         Cursor.Current = Cursors.WaitCursor;
         try
         {
-            OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, "deu", (done, total) =>
+            OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, settings.OcrLanguage, (done, total) =>
             {
                 statusLabel.Text = $"Texterkennung {done}/{total} …";
                 statusStrip.Refresh();
@@ -665,7 +778,7 @@ public partial class MainForm : Form
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or Tesseract.TesseractException)
         {
-            MessageBox.Show(this, ex.Message, "PDF erstellen fehlgeschlagen", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            TaskDlg.ErrTaskDlg(Handle, "PDF erstellen fehlgeschlagen.", ex);
         }
         finally
         {
@@ -699,7 +812,7 @@ public partial class MainForm : Form
         }
         catch (InvalidPrinterException ex)
         {
-            MessageBox.Show(this, ex.Message, "Drucken fehlgeschlagen", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            TaskDlg.ErrTaskDlg(Handle, "Drucken fehlgeschlagen.", ex);
         }
     }
 
