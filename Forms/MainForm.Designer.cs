@@ -83,6 +83,8 @@ namespace ScanTest.Forms
             comboColor = new ComboBox();
             labelArea = new Label();
             comboArea = new ComboBox();
+            labelFeed = new Label();
+            comboFeed = new ComboBox();
             labelBrightness = new Label();
             trackBrightness = new TrackBar();
             flowPanel = new FlowLayoutPanel();
@@ -461,6 +463,8 @@ namespace ScanTest.Forms
             panelSettings.Controls.Add(comboColor);
             panelSettings.Controls.Add(labelArea);
             panelSettings.Controls.Add(comboArea);
+            panelSettings.Controls.Add(labelFeed);
+            panelSettings.Controls.Add(comboFeed);
             panelSettings.Controls.Add(labelBrightness);
             panelSettings.Controls.Add(trackBrightness);
             panelSettings.Dock = DockStyle.Left;
@@ -533,10 +537,27 @@ namespace ScanTest.Forms
             comboArea.Size = new Size(132, 23);
             comboArea.TabIndex = 6;
             //
+            // labelFeed
+            //
+            labelFeed.AutoSize = true;
+            labelFeed.Location = new Point(8, 200);
+            labelFeed.Name = "labelFeed";
+            labelFeed.TabIndex = 9;
+            labelFeed.Text = "Papier&zufuhr:";
+            //
+            // comboFeed
+            //
+            comboFeed.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboFeed.Items.AddRange(new object[] { "Flachbett", "Automatischer Einzug" });
+            comboFeed.Location = new Point(8, 218);
+            comboFeed.Name = "comboFeed";
+            comboFeed.Size = new Size(132, 23);
+            comboFeed.TabIndex = 10;
+            //
             // labelBrightness
             //
             labelBrightness.AutoSize = true;
-            labelBrightness.Location = new Point(8, 200);
+            labelBrightness.Location = new Point(8, 252);
             labelBrightness.Name = "labelBrightness";
             labelBrightness.TabIndex = 7;
             labelBrightness.Text = "&Helligkeit: 0";
@@ -545,7 +566,7 @@ namespace ScanTest.Forms
             //
             trackBrightness.AutoSize = false;
             trackBrightness.LargeChange = 25;
-            trackBrightness.Location = new Point(4, 218);
+            trackBrightness.Location = new Point(4, 270);
             trackBrightness.Maximum = 100;
             trackBrightness.Minimum = -100;
             trackBrightness.Name = "trackBrightness";
@@ -558,7 +579,7 @@ namespace ScanTest.Forms
             //
             flowPanel.AllowDrop = true;
             flowPanel.AutoScroll = true;
-            flowPanel.BackColor = SystemColors.ControlDark;
+            flowPanel.BackColor = Color.White;
             flowPanel.DragEnter += FlowPanel_DragEnter;
             flowPanel.DragOver += FlowPanel_DragOver;
             flowPanel.Dock = DockStyle.Fill;
@@ -667,6 +688,8 @@ namespace ScanTest.Forms
         private System.Windows.Forms.ComboBox comboColor;
         private System.Windows.Forms.Label labelArea;
         private System.Windows.Forms.ComboBox comboArea;
+        private System.Windows.Forms.Label labelFeed;
+        private System.Windows.Forms.ComboBox comboFeed;
         private System.Windows.Forms.Label labelBrightness;
         private System.Windows.Forms.TrackBar trackBrightness;
         private System.Windows.Forms.FlowLayoutPanel flowPanel;

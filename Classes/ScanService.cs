@@ -19,6 +19,7 @@ internal static class ScanService
     private const int WiaHorizontalExtent = 6151;
     private const int WiaVerticalExtent = 6152;
     private const int WiaBrightness = 6154;
+    private const int WiaDocumentHandlingSelect = 3088; // GERÄTE-Eigenschaft: 1 = Einzug, 2 = Flachbett
 
     /// <summary>Alle angeschlossenen Scanner (WIA-Gerätetyp 1).</summary>
     public static List<ScannerInfo> ListScanners()
@@ -47,10 +48,10 @@ internal static class ScanService
     }
 
     /// <summary>Scannt eine Seite direkt vom angegebenen Gerät (ohne Gerätewahl-Dialog) und
-    /// speichert sie als TIFF. Auflösung, Farbmodus, Scanfenster (areaMm, null = maximal) und
-    /// Helligkeit (−100 … +100, 0 = neutral) werden gesetzt, soweit das Gerät sie annimmt.
-    /// Null bei Fehlern.</summary>
-    public static string ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent)
+    /// speichert sie als TIFF. Auflösung, Farbmodus, Scanfenster (areaMm, null = maximal),
+    /// Helligkeit (−100 … +100, 0 = neutral) und Papierzufuhr werden gesetzt, soweit das
+    /// Gerät sie annimmt. Null bei Fehlern.</summary>
+    public static string ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder)
     {
         try
         {
@@ -63,6 +64,7 @@ internal static class ScanService
                 if ((string)info.DeviceID == deviceId) { device = info.Connect(); break; }
             }
             if (device == null) { return null; }
+            TrySetProperty(device, WiaDocumentHandlingSelect, useFeeder ? 1 : 2); // Geräte ohne Einzug kennen die Eigenschaft nicht
             dynamic item = device.Items[1];
             TrySetProperty(item, WiaCurrentIntent, colorIntent);
             TrySetProperty(item, WiaHorizontalResolution, dpi);
