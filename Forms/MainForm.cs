@@ -9,10 +9,15 @@ public partial class MainForm : Form
 {
     private const string TestPageId = "TESTSEITE"; // Pseudo-Scanner im Geräte-Menü
 
+    // Miniaturgrößen im A4-Verhältnis (Breite; Höhe = Breite × 1,4)
+    private static readonly int[] ThumbWidths = [100, 130, 160, 200, 240, 280];
+    private int thumbIndex = 2; // Start: 160 px
+
     private readonly string sessionFolder = Path.Combine(Path.GetTempPath(), "ScanTest_" + Guid.NewGuid().ToString("N"));
     private readonly bool selfTest;
     private int scanCounter;
     private PictureBox selected;
+    private Point dragStart; // Mausposition beim Drücken — Start des Miniatur-Ziehens
     private string selectedScannerId; // DeviceID, TestPageId oder null (= noch kein Gerät gewählt)
     private string selectedScannerName;
 
@@ -115,8 +120,8 @@ public partial class MainForm : Form
         if (tiffPath == null) { return; }
         PictureBox box = new()
         {
-            Width = 160,
-            Height = 224, // A4-Verhältnis
+            Width = ThumbWidths[thumbIndex],
+            Height = ThumbWidths[thumbIndex] * 7 / 5, // A4-Verhältnis
             SizeMode = PictureBoxSizeMode.Zoom,
             BackColor = Color.White,
             Margin = new Padding(8),
@@ -126,8 +131,68 @@ public partial class MainForm : Form
         };
         box.Click += (s, e) => Select(box);
         box.DoubleClick += (s, e) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tiffPath) { UseShellExecute = true });
+        box.MouseDown += (s, e) => dragStart = e.Location;
+        box.MouseMove += (s, e) =>
+        {
+            // Ziehen erst ab der System-Schwelle starten, damit ein normaler Klick ein Klick bleibt
+            if (e.Button != MouseButtons.Left
+                || (Math.Abs(e.X - dragStart.X) < SystemInformation.DragSize.Width
+                    && Math.Abs(e.Y - dragStart.Y) < SystemInformation.DragSize.Height))
+            {
+                return;
+            }
+            Select(box);
+            box.DoDragDrop(box, DragDropEffects.Move);
+            UpdateUiState();
+        };
         flowPanel.Controls.Add(box);
         Select(box);
+    }
+
+    private void FlowPanel_DragEnter(object sender, DragEventArgs e)
+    {
+        e.Effect = e.Data.GetDataPresent(typeof(PictureBox)) ? DragDropEffects.Move : DragDropEffects.None;
+    }
+
+    /// <summary>Sortiert die gezogene Miniatur schon während des Ziehens live an die Zielposition.</summary>
+    private void FlowPanel_DragOver(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetData(typeof(PictureBox)) is not PictureBox dragged) { return; }
+        e.Effect = DragDropEffects.Move;
+        var point = flowPanel.PointToClient(new Point(e.X, e.Y));
+        if (point.Y < 40 || point.Y > flowPanel.Height - 40) // am Rand weiterscrollen
+        {
+            var offset = -flowPanel.AutoScrollPosition.Y + (point.Y < 40 ? -20 : 20);
+            flowPanel.AutoScrollPosition = new Point(-flowPanel.AutoScrollPosition.X, Math.Max(0, offset));
+        }
+        if (flowPanel.GetChildAtPoint(point) is PictureBox target && target != dragged)
+        {
+            flowPanel.Controls.SetChildIndex(dragged, flowPanel.Controls.GetChildIndex(target));
+        }
+    }
+
+    private void BtnZoomOut_Click(object sender, EventArgs e)
+    {
+        ApplyThumbSize(thumbIndex - 1);
+    }
+
+    private void BtnZoomIn_Click(object sender, EventArgs e)
+    {
+        ApplyThumbSize(thumbIndex + 1);
+    }
+
+    private void ApplyThumbSize(int index)
+    {
+        if (index < 0 || index >= ThumbWidths.Length) { return; }
+        thumbIndex = index;
+        flowPanel.SuspendLayout();
+        foreach (var box in flowPanel.Controls.Cast<PictureBox>())
+        {
+            box.Width = ThumbWidths[thumbIndex];
+            box.Height = ThumbWidths[thumbIndex] * 7 / 5;
+        }
+        flowPanel.ResumeLayout();
+        UpdateUiState();
     }
 
     private void Select(PictureBox box)
@@ -148,6 +213,8 @@ public partial class MainForm : Form
         var index = selected != null ? flowPanel.Controls.GetChildIndex(selected) : -1;
         btnMoveLeft.Enabled = index > 0;
         btnMoveRight.Enabled = index >= 0 && index < count - 1;
+        btnZoomOut.Enabled = thumbIndex > 0;
+        btnZoomIn.Enabled = thumbIndex < ThumbWidths.Length - 1;
         var scannerHint = selectedScannerName != null ? $"   ·   Scanner: {selectedScannerName}" : string.Empty;
         statusLabel.Text = (count == 0 ? "Noch keine Seiten" : count == 1 ? "1 Seite" : $"{count} Seiten") + scannerHint;
     }
