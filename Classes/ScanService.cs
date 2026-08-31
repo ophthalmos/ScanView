@@ -14,6 +14,11 @@ internal static class ScanService
     private const int WiaCurrentIntent = 6146;        // 1 = Farbe, 2 = Graustufen, 4 = Schwarz-weiß
     private const int WiaHorizontalResolution = 6147;
     private const int WiaVerticalResolution = 6148;
+    private const int WiaHorizontalStart = 6149;      // Scanfenster in Pixeln bei der wirksamen Auflösung
+    private const int WiaVerticalStart = 6150;
+    private const int WiaHorizontalExtent = 6151;
+    private const int WiaVerticalExtent = 6152;
+    private const int WiaBrightness = 6154;
 
     /// <summary>Alle angeschlossenen Scanner (WIA-Gerätetyp 1).</summary>
     public static List<ScannerInfo> ListScanners()
@@ -42,9 +47,10 @@ internal static class ScanService
     }
 
     /// <summary>Scannt eine Seite direkt vom angegebenen Gerät (ohne Gerätewahl-Dialog) und
-    /// speichert sie als TIFF. Auflösung und Farbmodus werden gesetzt, soweit das Gerät sie annimmt.
+    /// speichert sie als TIFF. Auflösung, Farbmodus, Scanfenster (areaMm, null = maximal) und
+    /// Helligkeit (−100 … +100, 0 = neutral) werden gesetzt, soweit das Gerät sie annimmt.
     /// Null bei Fehlern.</summary>
-    public static string ScanFromDevice(string deviceId, string path, int dpi, int colorIntent)
+    public static string ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent)
     {
         try
         {
@@ -61,6 +67,16 @@ internal static class ScanService
             TrySetProperty(item, WiaCurrentIntent, colorIntent);
             TrySetProperty(item, WiaHorizontalResolution, dpi);
             TrySetProperty(item, WiaVerticalResolution, dpi);
+            if (areaMm is { } area)
+            {
+                // Das Fenster rechnet in Pixeln der WIRKSAMEN Auflösung — das Gerät darf unsere abgelehnt haben
+                var actualDpi = TryGetProperty(item, WiaHorizontalResolution, dpi);
+                TrySetProperty(item, WiaHorizontalStart, 0);
+                TrySetProperty(item, WiaVerticalStart, 0);
+                TrySetProperty(item, WiaHorizontalExtent, (int)Math.Round(area.Width / 25.4 * actualDpi));
+                TrySetProperty(item, WiaVerticalExtent, (int)Math.Round(area.Height / 25.4 * actualDpi));
+            }
+            if (brightnessPercent != 0) { TrySetScaledProperty(item, WiaBrightness, brightnessPercent); }
             dynamic image = item.Transfer(WiaFormatTiff); // Format ist ein Wunsch — das Gerät darf abweichen
             return SaveAsTiff(image, path);
         }
@@ -91,9 +107,47 @@ internal static class ScanService
 
     private static void TrySetProperty(dynamic item, int propertyId, int value)
     {
-        try { item.Properties[propertyId.ToString()].Value = value; }
+        try
+        {
+            dynamic prop = item.Properties[propertyId.ToString()];
+            try
+            {
+                if ((int)prop.SubType == 1) { value = Math.Clamp(value, (int)prop.SubTypeMin, (int)prop.SubTypeMax); } // 1 = Bereichs-Eigenschaft
+            }
+            catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException) { }
+            prop.Value = value;
+        }
         catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
         { } // Gerät kennt die Eigenschaft nicht — Standard verwenden
+    }
+
+    private static int TryGetProperty(dynamic item, int propertyId, int fallback)
+    {
+        try { return (int)item.Properties[propertyId.ToString()].Value; }
+        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException or InvalidCastException)
+        { return fallback; }
+    }
+
+    /// <summary>Setzt einen Prozentwert (−100 … +100, 0 = Mitte) skaliert auf den Wertebereich,
+    /// den das Gerät für die Eigenschaft meldet — Helligkeitsbereiche sind herstellerabhängig.</summary>
+    private static void TrySetScaledProperty(dynamic item, int propertyId, int percent)
+    {
+        try
+        {
+            dynamic prop = item.Properties[propertyId.ToString()];
+            var value = percent;
+            try
+            {
+                if ((int)prop.SubType == 1)
+                {
+                    int min = (int)prop.SubTypeMin, max = (int)prop.SubTypeMax;
+                    value = min + (int)Math.Round((percent + 100) / 200.0 * (max - min));
+                }
+            }
+            catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException) { }
+            prop.Value = value;
+        }
+        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException) { }
     }
 
     /// <summary>Speichert eine WIA-ImageFile als TIFF; liefert das Gerät ein anderes Format,

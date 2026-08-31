@@ -16,7 +16,9 @@ public partial class MainForm : Form
     private readonly string sessionFolder = Path.Combine(Path.GetTempPath(), "ScanTest_" + Guid.NewGuid().ToString("N"));
     private readonly bool selfTest;
     private int scanCounter;
-    private PictureBox selected;
+    private const int NumberHeight = 18; // Streifen für die Seitenzahl unter dem Bild
+
+    private Panel selected; // Miniatur-Container (Bild + Seitenzahl)
     private Point dragStart; // Mausposition beim Drücken — Start des Miniatur-Ziehens
     private string selectedScannerId; // DeviceID, TestPageId oder null (= noch kein Gerät gewählt)
     private string selectedScannerName;
@@ -32,6 +34,7 @@ public partial class MainForm : Form
         Directory.CreateDirectory(sessionFolder);
         comboDpi.SelectedIndex = 2;   // 300 dpi — der OCR-Sweet-Spot
         comboColor.SelectedIndex = 0; // Farbe
+        comboArea.SelectedIndex = 0;  // maximal
     }
 
     private void MainForm_Shown(object sender, EventArgs e)
@@ -63,6 +66,30 @@ public partial class MainForm : Form
 
     private int SelectedColorIntent => comboColor.SelectedIndex switch { 1 => 2, 2 => 4, _ => 1 }; // WIA: 1 Farbe, 2 Grau, 4 SW
 
+    /// <summary>Scanfenster in Millimetern — null steht für „maximal" (Gerätestandard).</summary>
+    private SizeF? SelectedAreaMm => comboArea.SelectedIndex switch
+    {
+        1 => new SizeF(210, 297),       // A4
+        2 => new SizeF(148, 210),       // A5
+        3 => new SizeF(105, 148),       // A6
+        4 => new SizeF(215.9f, 279.4f), // US-Letter
+        5 => new SizeF(85, 54),         // Visitenkarte
+        _ => null,                      // maximal
+    };
+
+    /// <summary>Verlängert die rechte Kante des Einstellungsbereichs optisch in die Toolbar —
+    /// Scannen-Button und Einstellungen bilden so eine gemeinsame Spalte.</summary>
+    private void ToolStrip_Paint(object sender, PaintEventArgs e)
+    {
+        using Pen pen = new(SystemColors.ControlDark);
+        e.Graphics.DrawLine(pen, panelSettings.Width - 1, 0, panelSettings.Width - 1, toolStrip.Height);
+    }
+
+    private void TrackBrightness_ValueChanged(object sender, EventArgs e)
+    {
+        labelBrightness.Text = $"&Helligkeit: {trackBrightness.Value}";
+    }
+
     // ------------------------------------------------------------------ Scannen
 
     private void SplitScan_ButtonClick(object sender, EventArgs e)
@@ -79,7 +106,7 @@ public partial class MainForm : Form
             statusLabel.Text = "Scanne …";
             statusStrip.Refresh();
             scanned = selectedScannerId != null
-                ? ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent)
+                ? ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value)
                 : ScanService.WiaScanToTiff(NextScanPath()); // noch kein Gerät gewählt → Windows-Dialog
             if (scanned == null)
             {
@@ -114,25 +141,41 @@ public partial class MainForm : Form
 
     // ------------------------------------------------------------------ Seitenverwaltung
 
-    /// <summary>Hängt einen Scan als Miniatur an die Übersicht an.</summary>
+    /// <summary>Hängt einen Scan als Miniatur (Bild mit Seitenzahl darunter) an die Übersicht an.</summary>
     private void AddPage(string tiffPath)
     {
         if (tiffPath == null) { return; }
-        PictureBox box = new()
+        var width = ThumbWidths[thumbIndex];
+        Panel thumb = new()
         {
-            Width = ThumbWidths[thumbIndex],
-            Height = ThumbWidths[thumbIndex] * 7 / 5, // A4-Verhältnis
+            Width = width,
+            Height = width * 7 / 5 + NumberHeight, // A4-Verhältnis plus Seitenzahl-Streifen
+            BackColor = Color.Transparent,
+            Margin = new Padding(8),
+            Tag = tiffPath,
+        };
+        PictureBox pic = new()
+        {
+            Bounds = new Rectangle(0, 0, width, width * 7 / 5),
             SizeMode = PictureBoxSizeMode.Zoom,
             BackColor = Color.White,
-            Margin = new Padding(8),
             Image = ScanService.LoadUnlocked(tiffPath),
-            Tag = tiffPath,
             Cursor = Cursors.Hand,
         };
-        box.Click += (s, e) => Select(box);
-        box.DoubleClick += (s, e) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tiffPath) { UseShellExecute = true });
-        box.MouseDown += (s, e) => dragStart = e.Location;
-        box.MouseMove += (s, e) =>
+        Label num = new()
+        {
+            Bounds = new Rectangle(0, pic.Height, width, NumberHeight),
+            TextAlign = ContentAlignment.MiddleCenter,
+            ForeColor = Color.White,
+            BackColor = Color.Transparent,
+        };
+        thumb.Controls.Add(pic);
+        thumb.Controls.Add(num);
+        pic.Click += (s, e) => Select(thumb);
+        num.Click += (s, e) => Select(thumb);
+        pic.DoubleClick += (s, e) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tiffPath) { UseShellExecute = true });
+        pic.MouseDown += (s, e) => dragStart = e.Location;
+        pic.MouseMove += (s, e) =>
         {
             // Ziehen erst ab der System-Schwelle starten, damit ein normaler Klick ein Klick bleibt
             if (e.Button != MouseButtons.Left
@@ -141,23 +184,36 @@ public partial class MainForm : Form
             {
                 return;
             }
-            Select(box);
-            box.DoDragDrop(box, DragDropEffects.Move);
+            Select(thumb);
+            pic.DoDragDrop(thumb, DragDropEffects.Move);
             UpdateUiState();
         };
-        flowPanel.Controls.Add(box);
-        Select(box);
+        flowPanel.Controls.Add(thumb);
+        Select(thumb);
+    }
+
+    private static PictureBox PicOf(Panel thumb) => (PictureBox)thumb.Controls[0];
+
+    private static Label NumOf(Panel thumb) => (Label)thumb.Controls[1];
+
+    /// <summary>Schreibt die laufenden Seitenzahlen unter alle Miniaturen.</summary>
+    private void RenumberPages()
+    {
+        for (var i = 0; i < flowPanel.Controls.Count; i++)
+        {
+            NumOf((Panel)flowPanel.Controls[i]).Text = (i + 1).ToString();
+        }
     }
 
     private void FlowPanel_DragEnter(object sender, DragEventArgs e)
     {
-        e.Effect = e.Data.GetDataPresent(typeof(PictureBox)) ? DragDropEffects.Move : DragDropEffects.None;
+        e.Effect = e.Data.GetDataPresent(typeof(Panel)) ? DragDropEffects.Move : DragDropEffects.None;
     }
 
     /// <summary>Sortiert die gezogene Miniatur schon während des Ziehens live an die Zielposition.</summary>
     private void FlowPanel_DragOver(object sender, DragEventArgs e)
     {
-        if (e.Data.GetData(typeof(PictureBox)) is not PictureBox dragged) { return; }
+        if (e.Data.GetData(typeof(Panel)) is not Panel dragged) { return; }
         e.Effect = DragDropEffects.Move;
         var point = flowPanel.PointToClient(new Point(e.X, e.Y));
         if (point.Y < 40 || point.Y > flowPanel.Height - 40) // am Rand weiterscrollen
@@ -165,9 +221,10 @@ public partial class MainForm : Form
             var offset = -flowPanel.AutoScrollPosition.Y + (point.Y < 40 ? -20 : 20);
             flowPanel.AutoScrollPosition = new Point(-flowPanel.AutoScrollPosition.X, Math.Max(0, offset));
         }
-        if (flowPanel.GetChildAtPoint(point) is PictureBox target && target != dragged)
+        if (flowPanel.GetChildAtPoint(point) is Panel target && target != dragged)
         {
             flowPanel.Controls.SetChildIndex(dragged, flowPanel.Controls.GetChildIndex(target));
+            RenumberPages();
         }
     }
 
@@ -186,25 +243,28 @@ public partial class MainForm : Form
         if (index < 0 || index >= ThumbWidths.Length) { return; }
         thumbIndex = index;
         flowPanel.SuspendLayout();
-        foreach (var box in flowPanel.Controls.Cast<PictureBox>())
+        var width = ThumbWidths[thumbIndex];
+        foreach (var thumb in flowPanel.Controls.Cast<Panel>())
         {
-            box.Width = ThumbWidths[thumbIndex];
-            box.Height = ThumbWidths[thumbIndex] * 7 / 5;
+            thumb.Size = new Size(width, width * 7 / 5 + NumberHeight);
+            PicOf(thumb).Bounds = new Rectangle(0, 0, width, width * 7 / 5);
+            NumOf(thumb).Bounds = new Rectangle(0, width * 7 / 5, width, NumberHeight);
         }
         flowPanel.ResumeLayout();
         UpdateUiState();
     }
 
-    private void Select(PictureBox box)
+    private void Select(Panel thumb)
     {
-        if (selected != null) { selected.BackColor = Color.White; selected.Padding = Padding.Empty; }
-        selected = box;
-        if (selected != null) { selected.BackColor = Color.SteelBlue; selected.Padding = new Padding(3); }
+        if (selected != null) { PicOf(selected).BackColor = Color.White; PicOf(selected).Padding = Padding.Empty; }
+        selected = thumb;
+        if (selected != null) { PicOf(selected).BackColor = Color.SteelBlue; PicOf(selected).Padding = new Padding(3); }
         UpdateUiState();
     }
 
     private void UpdateUiState()
     {
+        RenumberPages();
         var count = flowPanel.Controls.Count;
         btnSave.Enabled = count > 0;
         btnPrint.Enabled = count > 0;
@@ -244,7 +304,7 @@ public partial class MainForm : Form
         var box = selected;
         Select(null);
         flowPanel.Controls.Remove(box);
-        box.Image?.Dispose();
+        PicOf(box).Image?.Dispose();
         box.Dispose();
         UpdateUiState();
     }
@@ -257,10 +317,10 @@ public partial class MainForm : Form
             return;
         }
         Select(null);
-        foreach (var box in flowPanel.Controls.Cast<PictureBox>().ToList())
+        foreach (var box in flowPanel.Controls.Cast<Panel>().ToList())
         {
             flowPanel.Controls.Remove(box);
-            box.Image?.Dispose();
+            PicOf(box).Image?.Dispose();
             box.Dispose();
         }
         UpdateUiState();
@@ -285,7 +345,7 @@ public partial class MainForm : Form
     /// <summary>Texterkennung (deutsch) über alle Seiten in der aktuellen Reihenfolge, dann Zusammenbau.</summary>
     private void CreatePdf(string outputPdf)
     {
-        var tiffFiles = flowPanel.Controls.Cast<PictureBox>().Select(b => (string)b.Tag).ToList();
+        var tiffFiles = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
         toolStrip.Enabled = false;
         Cursor.Current = Cursors.WaitCursor;
         try
@@ -310,7 +370,7 @@ public partial class MainForm : Form
 
     private void BtnPrint_Click(object sender, EventArgs e)
     {
-        var pages = flowPanel.Controls.Cast<PictureBox>().Select(b => (string)b.Tag).ToList();
+        var pages = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
         if (pages.Count == 0) { return; }
         using PrintDocument document = new();
         document.DocumentName = "ScanTest";

@@ -46,11 +46,16 @@ namespace ScanTest.Forms
             comboDpi = new ComboBox();
             labelColor = new Label();
             comboColor = new ComboBox();
+            labelArea = new Label();
+            comboArea = new ComboBox();
+            labelBrightness = new Label();
+            trackBrightness = new TrackBar();
             flowPanel = new FlowLayoutPanel();
             statusStrip = new StatusStrip();
             statusLabel = new ToolStripStatusLabel();
             toolStrip.SuspendLayout();
             panelSettings.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
             statusStrip.SuspendLayout();
             SuspendLayout();
             //
@@ -64,6 +69,7 @@ namespace ScanTest.Forms
             toolStrip.Padding = new Padding(0);
             toolStrip.Size = new Size(984, 60);
             toolStrip.TabIndex = 0;
+            toolStrip.Paint += ToolStrip_Paint;
             //
             // splitScan
             //
@@ -80,6 +86,7 @@ namespace ScanTest.Forms
             // btnSave
             //
             btnSave.AutoSize = false;
+            btnSave.Margin = new Padding(8, 1, 0, 2);
             btnSave.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnSave.Enabled = false;
             btnSave.Name = "btnSave";
@@ -182,6 +189,10 @@ namespace ScanTest.Forms
             panelSettings.Controls.Add(comboDpi);
             panelSettings.Controls.Add(labelColor);
             panelSettings.Controls.Add(comboColor);
+            panelSettings.Controls.Add(labelArea);
+            panelSettings.Controls.Add(comboArea);
+            panelSettings.Controls.Add(labelBrightness);
+            panelSettings.Controls.Add(trackBrightness);
             panelSettings.Dock = DockStyle.Left;
             panelSettings.Location = new Point(0, 60);
             panelSettings.Name = "panelSettings";
@@ -235,6 +246,44 @@ namespace ScanTest.Forms
             comboColor.Size = new Size(132, 23);
             comboColor.TabIndex = 4;
             //
+            // labelArea
+            //
+            labelArea.AutoSize = true;
+            labelArea.Location = new Point(8, 148);
+            labelArea.Name = "labelArea";
+            labelArea.TabIndex = 5;
+            labelArea.Text = "Scan&bereich:";
+            //
+            // comboArea
+            //
+            comboArea.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboArea.Items.AddRange(new object[] { "maximal", "A4", "A5", "A6", "US-Letter", "Visitenkarte" });
+            comboArea.Location = new Point(8, 166);
+            comboArea.Name = "comboArea";
+            comboArea.Size = new Size(132, 23);
+            comboArea.TabIndex = 6;
+            //
+            // labelBrightness
+            //
+            labelBrightness.AutoSize = true;
+            labelBrightness.Location = new Point(8, 200);
+            labelBrightness.Name = "labelBrightness";
+            labelBrightness.TabIndex = 7;
+            labelBrightness.Text = "&Helligkeit: 0";
+            //
+            // trackBrightness
+            //
+            trackBrightness.AutoSize = false;
+            trackBrightness.LargeChange = 25;
+            trackBrightness.Location = new Point(4, 218);
+            trackBrightness.Maximum = 100;
+            trackBrightness.Minimum = -100;
+            trackBrightness.Name = "trackBrightness";
+            trackBrightness.Size = new Size(142, 30);
+            trackBrightness.SmallChange = 5;
+            trackBrightness.TickFrequency = 25;
+            trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
+            //
             // flowPanel
             //
             flowPanel.AllowDrop = true;
@@ -278,6 +327,7 @@ namespace ScanTest.Forms
             Text = "ScanTest";
             FormClosed += MainForm_FormClosed;
             Shown += MainForm_Shown;
+            ((System.ComponentModel.ISupportInitialize)trackBrightness).EndInit();
             toolStrip.ResumeLayout(false);
             panelSettings.ResumeLayout(false);
             panelSettings.PerformLayout();
@@ -306,6 +356,10 @@ namespace ScanTest.Forms
         private System.Windows.Forms.ComboBox comboDpi;
         private System.Windows.Forms.Label labelColor;
         private System.Windows.Forms.ComboBox comboColor;
+        private System.Windows.Forms.Label labelArea;
+        private System.Windows.Forms.ComboBox comboArea;
+        private System.Windows.Forms.Label labelBrightness;
+        private System.Windows.Forms.TrackBar trackBrightness;
         private System.Windows.Forms.FlowLayoutPanel flowPanel;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
