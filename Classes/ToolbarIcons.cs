@@ -43,6 +43,8 @@ internal static class ToolbarIcons
 
     public const char Help = '';       // Fragezeichen im Kreis
 
+    public const char Crop = '';
+
     private const string FontName = "Segoe MDL2 Assets";
     private static readonly Dictionary<(char Glyph, int Size), Image> cache = [];
 

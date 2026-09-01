@@ -10,6 +10,34 @@ internal static class OcrPdfService
 {
     private static string TessData => Path.Combine(AppContext.BaseDirectory, "tessdata");
 
+    /// <summary>Erstellt eine PDF ohne Textschicht: jede Seite als JPEG in Originalgröße —
+    /// für Scans, bei denen keine Texterkennung gewünscht ist.</summary>
+    public static void CreateImagePdf(IReadOnlyList<string> tiffFiles, string outputPdf, int jpgQuality, Action<int, int> progress)
+    {
+        var encoder = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders()
+            .First(c => c.FormatID == System.Drawing.Imaging.ImageFormat.Jpeg.Guid);
+        using System.Drawing.Imaging.EncoderParameters encoderParams = new(1);
+        encoderParams.Param[0] = new System.Drawing.Imaging.EncoderParameter(System.Drawing.Imaging.Encoder.Quality, (long)jpgQuality);
+        using PdfDocument result = new();
+        result.Info.Title = Path.GetFileNameWithoutExtension(outputPdf);
+        result.Info.Author = Environment.UserName;
+        for (var i = 0; i < tiffFiles.Count; i++)
+        {
+            using var image = ScanService.LoadUnlocked(tiffFiles[i]);
+            using MemoryStream jpeg = new();
+            image.Save(jpeg, encoder, encoderParams); // als JPEG einbetten — PDFsharp übernimmt den Stream unverändert
+            jpeg.Position = 0;
+            using var ximage = PdfSharp.Drawing.XImage.FromStream(jpeg);
+            var page = result.AddPage();
+            page.Width = PdfSharp.Drawing.XUnit.FromPoint(ximage.PointWidth); // Seitengröße = physische Bildgröße (dpi)
+            page.Height = PdfSharp.Drawing.XUnit.FromPoint(ximage.PointHeight);
+            using var gfx = PdfSharp.Drawing.XGraphics.FromPdfPage(page);
+            gfx.DrawImage(ximage, 0, 0, page.Width.Point, page.Height.Point);
+            progress?.Invoke(i + 1, tiffFiles.Count);
+        }
+        result.Save(outputPdf);
+    }
+
     /// <summary>Erstellt aus den TIFF-Scans eine durchsuchbare PDF; progress meldet (fertige Seite, Gesamtzahl).</summary>
     public static void CreateSearchablePdf(IReadOnlyList<string> tiffFiles, string outputPdf, string language, int jpgQuality, Action<int, int> progress)
     {

@@ -44,6 +44,7 @@
             menuEditPaste = new ToolStripMenuItem();
             menuEditDelete = new ToolStripMenuItem();
             menuEditSeparator1 = new ToolStripSeparator();
+            menuEditCrop = new ToolStripMenuItem();
             menuEditRotateLeft = new ToolStripMenuItem();
             menuEditRotate180 = new ToolStripMenuItem();
             menuEditRotateRight = new ToolStripMenuItem();
@@ -74,6 +75,7 @@
             btnMoveLeft = new ToolStripButton();
             btnMoveRight = new ToolStripButton();
             btnRemove = new ToolStripButton();
+            btnCrop = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
             toolStripSeparatorRight = new ToolStripSeparator();
             btnCopyMode = new ToolStripButton();
@@ -95,6 +97,8 @@
             comboArea = new ComboBox();
             labelFeed = new Label();
             comboFeed = new ComboBox();
+            labelOcr = new Label();
+            comboOcr = new ComboBox();
             labelBrightness = new Label();
             trackBrightness = new TrackBar();
             flowPanel = new FlowLayoutPanel();
@@ -185,7 +189,7 @@
             //
             // menuEdit
             //
-            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSeparator1, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
+            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
             menuEdit.Name = "menuEdit";
             menuEdit.Text = "&Bearbeiten";
             //
@@ -228,6 +232,14 @@
             // menuEditSeparator1
             //
             menuEditSeparator1.Name = "menuEditSeparator1";
+            //
+            // menuEditCrop
+            //
+            menuEditCrop.Enabled = false;
+            menuEditCrop.Name = "menuEditCrop";
+            menuEditCrop.ShortcutKeys = Keys.F10;
+            menuEditCrop.Text = "&Zuschneiden …";
+            menuEditCrop.Click += MenuEditCrop_Click;
             //
             // menuEditRotateLeft
             //
@@ -386,7 +398,7 @@
             //
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, toolStripSeparator2, btnCopyMode, toolStripSeparatorRight });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnCopyMode, toolStripSeparatorRight });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
@@ -478,6 +490,17 @@
             btnRemove.ToolTipText = "Markierte Seite aus der Übersicht entfernen (Entf)";
             btnRemove.Click += BtnRemove_Click;
             //
+            // btnCrop
+            //
+            btnCrop.AutoSize = false;
+            btnCrop.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnCrop.Enabled = false;
+            btnCrop.Name = "btnCrop";
+            btnCrop.Size = new Size(100, 57);
+            btnCrop.Text = "&Zuschneiden";
+            btnCrop.ToolTipText = "Markierte Seite zuschneiden (F10)";
+            btnCrop.Click += MenuEditCrop_Click;
+            //
             // toolStripSeparator2
             //
             toolStripSeparator2.Name = "toolStripSeparator2";
@@ -511,6 +534,8 @@
             panelSettings.Controls.Add(comboArea);
             panelSettings.Controls.Add(labelFeed);
             panelSettings.Controls.Add(comboFeed);
+            panelSettings.Controls.Add(labelOcr);
+            panelSettings.Controls.Add(comboOcr);
             panelSettings.Controls.Add(labelBrightness);
             panelSettings.Controls.Add(trackBrightness);
             panelSettings.BackColor = Color.FromArgb(233, 241, 248);
@@ -601,10 +626,26 @@
             comboFeed.Size = new Size(132, 23);
             comboFeed.TabIndex = 10;
             //
+            // labelOcr
+            //
+            labelOcr.AutoSize = true;
+            labelOcr.Location = new Point(8, 252);
+            labelOcr.Name = "labelOcr";
+            labelOcr.TabIndex = 11;
+            labelOcr.Text = "&Texterkennung:";
+            //
+            // comboOcr
+            //
+            comboOcr.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboOcr.Location = new Point(8, 270);
+            comboOcr.Name = "comboOcr";
+            comboOcr.Size = new Size(132, 23);
+            comboOcr.TabIndex = 12;
+            //
             // labelBrightness
             //
             labelBrightness.AutoSize = true;
-            labelBrightness.Location = new Point(8, 252);
+            labelBrightness.Location = new Point(8, 304);
             labelBrightness.Name = "labelBrightness";
             labelBrightness.TabIndex = 7;
             labelBrightness.Text = "&Helligkeit: 0";
@@ -613,7 +654,7 @@
             //
             trackBrightness.AutoSize = false;
             trackBrightness.LargeChange = 25;
-            trackBrightness.Location = new Point(4, 270);
+            trackBrightness.Location = new Point(4, 322);
             trackBrightness.Maximum = 100;
             trackBrightness.Minimum = -100;
             trackBrightness.Name = "trackBrightness";
@@ -732,7 +773,7 @@
             Controls.Add(toolStrip);
             Controls.Add(menuStrip);
             MainMenuStrip = menuStrip;
-            MinimumSize = new Size(700, 420);
+            MinimumSize = new Size(700, 480);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ScanView";
@@ -770,6 +811,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuEditPaste;
         private System.Windows.Forms.ToolStripMenuItem menuEditDelete;
         private System.Windows.Forms.ToolStripSeparator menuEditSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem menuEditCrop;
         private System.Windows.Forms.ToolStripMenuItem menuEditRotateLeft;
         private System.Windows.Forms.ToolStripMenuItem menuEditRotate180;
         private System.Windows.Forms.ToolStripMenuItem menuEditRotateRight;
@@ -800,6 +842,7 @@
         private System.Windows.Forms.ToolStripButton btnMoveLeft;
         private System.Windows.Forms.ToolStripButton btnMoveRight;
         private System.Windows.Forms.ToolStripButton btnRemove;
+        private System.Windows.Forms.ToolStripButton btnCrop;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparatorRight;
         private System.Windows.Forms.ToolStripButton btnCopyMode;
@@ -821,6 +864,8 @@
         private System.Windows.Forms.ComboBox comboArea;
         private System.Windows.Forms.Label labelFeed;
         private System.Windows.Forms.ComboBox comboFeed;
+        private System.Windows.Forms.Label labelOcr;
+        private System.Windows.Forms.ComboBox comboOcr;
         private System.Windows.Forms.Label labelBrightness;
         private System.Windows.Forms.TrackBar trackBrightness;
         private System.Windows.Forms.FlowLayoutPanel flowPanel;

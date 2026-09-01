@@ -94,6 +94,7 @@ internal static class TaskDlg
         ("Strg+I", "Bilddateien als Seiten importieren", null),
         ("Strg+X / C / V", "Seite ausschneiden / kopieren / einfügen", null),
         ("Entf", "markierte Seite entfernen", null),
+        ("F10", "markierte Seite zuschneiden", null),
         ("Strg+L / Strg+R", "Seite nach links / rechts drehen", null),
         ("Strg+Umschalt+R", "Seite um 180° drehen", null),
         ("Strg+D", "Rückseiten einfügen",

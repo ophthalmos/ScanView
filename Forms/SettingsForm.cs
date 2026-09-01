@@ -1,3 +1,5 @@
+using ScanView.Classes;
+
 namespace ScanView.Forms;
 
 /// <summary>Einstellungsdialog (Extras → Optionen): Allgemein und Texterkennung.
@@ -11,28 +13,11 @@ internal sealed class SettingsForm : Form
     private readonly ComboBox comboLanguage;
     private readonly NumericUpDown numJpgQuality;
 
-    /// <summary>Anzeigenamen der gängigen Tesseract-Sprachcodes; unbekannte Codes erscheinen roh.</summary>
-    private static readonly Dictionary<string, string> LanguageNames = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["deu"] = "Deutsch",
-        ["eng"] = "Englisch",
-        ["deu+eng"] = "Deutsch + Englisch",
-        ["fra"] = "Französisch",
-        ["ita"] = "Italienisch",
-        ["spa"] = "Spanisch",
-        ["nld"] = "Niederländisch",
-    };
-
-    private sealed record LanguageItem(string Code, string Name)
-    {
-        public override string ToString() => $"{Name} ({Code})";
-    }
-
     public bool CloseOnEscape => cbCloseOnEscape.Checked;
 
     public int ExitAction => rbExitAsk.Checked ? 1 : rbExitClear.Checked ? 2 : 0;
 
-    public string OcrLanguage => comboLanguage.SelectedItem is LanguageItem item ? item.Code : "deu";
+    public string OcrLanguage => comboLanguage.SelectedItem is OcrLanguageItem item ? item.Code : "deu";
 
     public int OcrJpgQuality => (int)numJpgQuality.Value;
 
@@ -67,13 +52,13 @@ internal sealed class SettingsForm : Form
         groupExit.Controls.AddRange([rbExitKeep, rbExitAsk, rbExitClear]);
         tabGeneral.Controls.AddRange([cbCloseOnEscape, groupExit]);
 
-        Label labelLanguage = new() { AutoSize = true, Location = new Point(16, 20), Text = "&Sprache der Texterkennung:" };
+        Label labelLanguage = new() { AutoSize = true, Location = new Point(16, 20), Text = "Bevorzugte &Sprache der Texterkennung (Vorgabe für neue Sitzungen):" };
         comboLanguage = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(16, 40), Width = 220 };
-        foreach (var code in ListInstalledLanguages())
+        foreach (var code in OcrLanguages.Installed())
         {
-            comboLanguage.Items.Add(new LanguageItem(code, LanguageNames.TryGetValue(code, out var name) ? name : code));
+            comboLanguage.Items.Add(new OcrLanguageItem(code));
         }
-        var current = comboLanguage.Items.Cast<LanguageItem>().FirstOrDefault(i => string.Equals(i.Code, ocrLanguage, StringComparison.OrdinalIgnoreCase));
+        var current = comboLanguage.Items.Cast<OcrLanguageItem>().FirstOrDefault(i => string.Equals(i.Code, ocrLanguage, StringComparison.OrdinalIgnoreCase));
         if (current != null) { comboLanguage.SelectedItem = current; }
         else if (comboLanguage.Items.Count > 0) { comboLanguage.SelectedIndex = 0; }
         Label labelLanguageHint = new()
@@ -107,26 +92,5 @@ internal sealed class SettingsForm : Form
         CancelButton = btnCancel;
 
         Controls.AddRange([tabs, btnOk, btnCancel]);
-    }
-
-    /// <summary>Sprachcodes aller .traineddata-Dateien im tessdata-Ordner (mindestens "deu");
-    /// sind Deutsch und Englisch vorhanden, kommt die Kombination "deu+eng" dazu.</summary>
-    private static List<string> ListInstalledLanguages()
-    {
-        List<string> result = [];
-        try
-        {
-            var folder = Path.Combine(AppContext.BaseDirectory, "tessdata");
-            result.AddRange(Directory.EnumerateFiles(folder, "*.traineddata")
-                .Select(Path.GetFileNameWithoutExtension)
-                .OrderBy(code => code, StringComparer.OrdinalIgnoreCase));
-        }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or DirectoryNotFoundException) { }
-        if (result.Count == 0) { result.Add("deu"); }
-        if (result.Contains("deu", StringComparer.OrdinalIgnoreCase) && result.Contains("eng", StringComparer.OrdinalIgnoreCase))
-        {
-            result.Add("deu+eng"); // Tesseract erkennt beide Sprachen gemischt
-        }
-        return result;
     }
 }
