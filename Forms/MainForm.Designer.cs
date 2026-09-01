@@ -1,4 +1,4 @@
-namespace ScanTest.Forms
+﻿namespace ScanView.Forms
 {
     partial class MainForm
     {
@@ -73,6 +73,7 @@ namespace ScanTest.Forms
             btnMoveRight = new ToolStripButton();
             btnRemove = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
+            toolStripSeparatorRight = new ToolStripSeparator();
             btnCopyMode = new ToolStripButton();
             panelSettings = new Panel();
             panelCopyMode = new Panel();
@@ -222,6 +223,8 @@ namespace ScanTest.Forms
             //
             menuEditRotateLeft.Enabled = false;
             menuEditRotateLeft.Name = "menuEditRotateLeft";
+            menuEditRotateLeft.ShortcutKeys = Keys.Control | Keys.L;
+            menuEditRotateLeft.ShortcutKeyDisplayString = "Strg+L";
             menuEditRotateLeft.Text = "Drehen nach &links";
             menuEditRotateLeft.Click += MenuEditRotateLeft_Click;
             //
@@ -229,6 +232,8 @@ namespace ScanTest.Forms
             //
             menuEditRotate180.Enabled = false;
             menuEditRotate180.Name = "menuEditRotate180";
+            menuEditRotate180.ShortcutKeys = Keys.Control | Keys.Shift | Keys.R;
+            menuEditRotate180.ShortcutKeyDisplayString = "Strg+Umschalt+R";
             menuEditRotate180.Text = "Drehen um 1&80°";
             menuEditRotate180.Click += MenuEditRotate180_Click;
             //
@@ -236,6 +241,8 @@ namespace ScanTest.Forms
             //
             menuEditRotateRight.Enabled = false;
             menuEditRotateRight.Name = "menuEditRotateRight";
+            menuEditRotateRight.ShortcutKeys = Keys.Control | Keys.R;
+            menuEditRotateRight.ShortcutKeyDisplayString = "Strg+R";
             menuEditRotateRight.Text = "Drehen nach &rechts";
             menuEditRotateRight.Click += MenuEditRotateRight_Click;
             //
@@ -247,6 +254,8 @@ namespace ScanTest.Forms
             //
             menuEditBacks.Enabled = false;
             menuEditBacks.Name = "menuEditBacks";
+            menuEditBacks.ShortcutKeys = Keys.Control | Keys.D;
+            menuEditBacks.ShortcutKeyDisplayString = "Strg+D";
             menuEditBacks.Text = "Rück&seiten einfügen";
             menuEditBacks.ToolTipText = "Zweite Hälfte der Seiten (Rückseiten in umgekehrter Reihenfolge) hinter die Vorderseiten einsortieren";
             menuEditBacks.Click += MenuEditBacks_Click;
@@ -255,6 +264,8 @@ namespace ScanTest.Forms
             //
             menuEditReverse.Enabled = false;
             menuEditReverse.Name = "menuEditReverse";
+            menuEditReverse.ShortcutKeys = Keys.Control | Keys.U;
+            menuEditReverse.ShortcutKeyDisplayString = "Strg+U";
             menuEditReverse.Text = "Sortierung &umkehren";
             menuEditReverse.Click += MenuEditReverse_Click;
             //
@@ -267,24 +278,32 @@ namespace ScanTest.Forms
             // menuViewFitWidth
             //
             menuViewFitWidth.Name = "menuViewFitWidth";
+            menuViewFitWidth.ShortcutKeys = Keys.Control | Keys.D1;
+            menuViewFitWidth.ShortcutKeyDisplayString = "Strg+1";
             menuViewFitWidth.Text = "&Optimale Breite";
             menuViewFitWidth.Click += MenuViewFitWidth_Click;
             //
             // menuViewFitPage
             //
             menuViewFitPage.Name = "menuViewFitPage";
+            menuViewFitPage.ShortcutKeys = Keys.Control | Keys.D2;
+            menuViewFitPage.ShortcutKeyDisplayString = "Strg+2";
             menuViewFitPage.Text = "&Ganze Seite";
             menuViewFitPage.Click += MenuViewFitPage_Click;
             //
             // menuViewTwoPages
             //
             menuViewTwoPages.Name = "menuViewTwoPages";
+            menuViewTwoPages.ShortcutKeys = Keys.Control | Keys.D3;
+            menuViewTwoPages.ShortcutKeyDisplayString = "Strg+3";
             menuViewTwoPages.Text = "&Zwei Seiten";
             menuViewTwoPages.Click += MenuViewTwoPages_Click;
             //
             // menuViewIcons
             //
             menuViewIcons.Name = "menuViewIcons";
+            menuViewIcons.ShortcutKeys = Keys.Control | Keys.D4;
+            menuViewIcons.ShortcutKeyDisplayString = "Strg+4";
             menuViewIcons.Text = "&Symbole";
             menuViewIcons.Click += MenuViewIcons_Click;
             //
@@ -295,12 +314,16 @@ namespace ScanTest.Forms
             // menuViewZoomIn
             //
             menuViewZoomIn.Name = "menuViewZoomIn";
+            menuViewZoomIn.ShortcutKeys = Keys.Control | Keys.Oemplus;
+            menuViewZoomIn.ShortcutKeyDisplayString = "Strg++";
             menuViewZoomIn.Text = "&Vergrößern";
             menuViewZoomIn.Click += BtnZoomIn_Click;
             //
             // menuViewZoomOut
             //
             menuViewZoomOut.Name = "menuViewZoomOut";
+            menuViewZoomOut.ShortcutKeys = Keys.Control | Keys.OemMinus;
+            menuViewZoomOut.ShortcutKeyDisplayString = "Strg+−";
             menuViewZoomOut.Text = "Ver&kleinern";
             menuViewZoomOut.Click += BtnZoomOut_Click;
             //
@@ -324,6 +347,8 @@ namespace ScanTest.Forms
             // menuExtrasOptions
             //
             menuExtrasOptions.Name = "menuExtrasOptions";
+            menuExtrasOptions.ShortcutKeys = Keys.Control | Keys.Oemcomma;
+            menuExtrasOptions.ShortcutKeyDisplayString = "Strg+,";
             menuExtrasOptions.Text = "&Optionen …";
             menuExtrasOptions.Click += MenuExtrasOptions_Click;
             //
@@ -343,7 +368,7 @@ namespace ScanTest.Forms
             //
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, toolStripSeparator2, btnCopyMode });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, toolStripSeparator2, btnCopyMode, toolStripSeparatorRight });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
@@ -359,7 +384,7 @@ namespace ScanTest.Forms
             splitScan.Name = "splitScan";
             splitScan.Size = new Size(150, 57);
             splitScan.Text = "&Scannen";
-            splitScan.ToolTipText = "Seite vom gewählten Scanner holen — Pfeil: Scanner auswählen";
+            splitScan.ToolTipText = "Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen";
             splitScan.ButtonClick += SplitScan_ButtonClick;
             splitScan.DropDownOpening += SplitScan_DropDownOpening;
             //
@@ -372,7 +397,7 @@ namespace ScanTest.Forms
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(90, 57);
             btnSave.Text = "S&peichern";
-            btnSave.ToolTipText = "Alle Seiten per Texterkennung als durchsuchbare PDF speichern";
+            btnSave.ToolTipText = "Alle Seiten per Texterkennung als durchsuchbare PDF speichern (F5)";
             btnSave.Click += BtnSave_Click;
             //
             // btnPrint
@@ -383,7 +408,7 @@ namespace ScanTest.Forms
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(90, 57);
             btnPrint.Text = "&Drucken";
-            btnPrint.ToolTipText = "Alle Seiten drucken";
+            btnPrint.ToolTipText = "Alle Seiten drucken (F6)";
             btnPrint.Click += BtnPrint_Click;
             //
             // btnNew
@@ -394,7 +419,7 @@ namespace ScanTest.Forms
             btnNew.Name = "btnNew";
             btnNew.Size = new Size(90, 57);
             btnNew.Text = "&Neu";
-            btnNew.ToolTipText = "Seitenübersicht leeren";
+            btnNew.ToolTipText = "Seitenübersicht leeren (F9)";
             btnNew.Click += BtnNew_Click;
             //
             // toolStripSeparator1
@@ -410,7 +435,7 @@ namespace ScanTest.Forms
             btnMoveLeft.Name = "btnMoveLeft";
             btnMoveLeft.Size = new Size(32, 57);
             btnMoveLeft.Text = "◀";
-            btnMoveLeft.ToolTipText = "Markierte Seite nach vorn schieben";
+            btnMoveLeft.ToolTipText = "Markierte Seite nach vorn schieben (Alt+←)";
             btnMoveLeft.Click += BtnMoveLeft_Click;
             //
             // btnMoveRight
@@ -421,7 +446,7 @@ namespace ScanTest.Forms
             btnMoveRight.Name = "btnMoveRight";
             btnMoveRight.Size = new Size(32, 57);
             btnMoveRight.Text = "▶";
-            btnMoveRight.ToolTipText = "Markierte Seite nach hinten schieben";
+            btnMoveRight.ToolTipText = "Markierte Seite nach hinten schieben (Alt+→)";
             btnMoveRight.Click += BtnMoveRight_Click;
             //
             // btnRemove
@@ -432,13 +457,19 @@ namespace ScanTest.Forms
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(80, 57);
             btnRemove.Text = "&Entfernen";
-            btnRemove.ToolTipText = "Markierte Seite aus der Übersicht entfernen";
+            btnRemove.ToolTipText = "Markierte Seite aus der Übersicht entfernen (Entf)";
             btnRemove.Click += BtnRemove_Click;
             //
             // toolStripSeparator2
             //
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 60);
+            //
+            // toolStripSeparatorRight
+            //
+            toolStripSeparatorRight.Alignment = ToolStripItemAlignment.Right;
+            toolStripSeparatorRight.Name = "toolStripSeparatorRight";
+            toolStripSeparatorRight.Size = new Size(6, 60);
             //
             // btnCopyMode
             //
@@ -448,7 +479,7 @@ namespace ScanTest.Forms
             btnCopyMode.Name = "btnCopyMode";
             btnCopyMode.Size = new Size(130, 57);
             btnCopyMode.Text = "&Kopiermodus";
-            btnCopyMode.ToolTipText = "Scans direkt drucken — der Scanner wird zum Kopierer";
+            btnCopyMode.ToolTipText = "Scans direkt drucken — der Scanner wird zum Kopierer (F7)";
             btnCopyMode.Click += BtnCopyMode_Click;
             //
             // panelSettings
@@ -464,6 +495,7 @@ namespace ScanTest.Forms
             panelSettings.Controls.Add(comboFeed);
             panelSettings.Controls.Add(labelBrightness);
             panelSettings.Controls.Add(trackBrightness);
+            panelSettings.BackColor = Color.FromArgb(233, 241, 248);
             panelSettings.Dock = DockStyle.Left;
             panelSettings.Location = new Point(0, 60);
             panelSettings.Name = "panelSettings";
@@ -581,6 +613,7 @@ namespace ScanTest.Forms
             panelCopyMode.Controls.Add(labelCopyCount);
             panelCopyMode.Controls.Add(numCopies);
             panelCopyMode.Controls.Add(chkCopyFit);
+            panelCopyMode.BackColor = Color.FromArgb(233, 241, 248);
             panelCopyMode.Dock = DockStyle.Fill;
             panelCopyMode.Name = "panelCopyMode";
             panelCopyMode.Padding = new Padding(16);
@@ -684,7 +717,7 @@ namespace ScanTest.Forms
             MinimumSize = new Size(700, 420);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "ScanTest";
+            Text = "ScanView";
             FormClosed += MainForm_FormClosed;
             Shown += MainForm_Shown;
             ((System.ComponentModel.ISupportInitialize)trackBrightness).EndInit();
@@ -748,6 +781,7 @@ namespace ScanTest.Forms
         private System.Windows.Forms.ToolStripButton btnMoveRight;
         private System.Windows.Forms.ToolStripButton btnRemove;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparatorRight;
         private System.Windows.Forms.ToolStripButton btnCopyMode;
         private System.Windows.Forms.Panel panelSettings;
         private System.Windows.Forms.Panel panelCopyMode;

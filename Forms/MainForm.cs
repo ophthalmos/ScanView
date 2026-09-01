@@ -1,20 +1,18 @@
-using System.Drawing.Printing;
-using ScanTest.Classes;
+﻿using System.Drawing.Printing;
+using ScanView.Classes;
 
-namespace ScanTest.Forms;
+namespace ScanView.Forms;
 
-/// <summary>Arbeitstitel "ScanTest": Seiten scannen (WIA), als Miniaturen ordnen und per
+/// <summary>ScanView: Seiten scannen (WIA), als Miniaturen ordnen und per
 /// Tesseract + PDFsharp in eine durchsuchbare PDF schreiben.</summary>
 public partial class MainForm : Form
 {
-    private const string TestPageId = "TESTSEITE"; // Pseudo-Scanner im Geräte-Menü
-
     // Zoomstufen für −/+ im A4-Verhältnis (Breite; Höhe = Breite × 1,4)
     private static readonly int[] ThumbWidths = [100, 130, 160, 200, 240, 280];
     private const int IconThumbWidth = 160; // Ansicht „Symbole" und Startgröße
     private int thumbWidth = IconThumbWidth; // Ansicht-Modi dürfen von den Zoomstufen abweichen
 
-    private readonly string sessionFolder = Path.Combine(Path.GetTempPath(), "ScanTest_" + Guid.NewGuid().ToString("N"));
+    private readonly string sessionFolder = Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"));
     private readonly bool selfTest;
     private int scanCounter;
     private const int NumberHeight = 18; // Streifen für die Seitenzahl unter dem Bild
@@ -48,15 +46,24 @@ public partial class MainForm : Form
         this.selfTest = selfTest;
         settings = AppSettings.Load();
         Directory.CreateDirectory(sessionFolder);
-        comboDpi.SelectedIndex = 2;   // 300 dpi — der OCR-Sweet-Spot
-        comboColor.SelectedIndex = 0; // Farbe
-        comboArea.SelectedIndex = 0;  // maximal
-        comboFeed.SelectedIndex = 0;  // Flachbett
+        int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
+        comboDpi.SelectedIndex = Clamped(settings.DpiIndex, comboDpi, 2);      // Standard: 300 dpi — der OCR-Sweet-Spot
+        comboColor.SelectedIndex = Clamped(settings.ColorIndex, comboColor, 0);
+        comboArea.SelectedIndex = Clamped(settings.AreaIndex, comboArea, 0);
+        comboFeed.SelectedIndex = Clamped(settings.FeedIndex, comboFeed, 0);
+        trackBrightness.Value = Math.Clamp(settings.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
         CreateZoomButtons();
         ApplyToolbarIcons();
-        if (!selfTest) { RestoreWindowBounds(); } // der Selbsttest-Screenshot soll deterministisch bleiben
+        ApplyMenuIcons();
+        if (!selfTest) // der Selbsttest-Screenshot soll deterministisch bleiben
+        {
+            RestoreWindowBounds();
+            thumbWidth = Math.Max(ThumbWidths[0], settings.ThumbWidth);
+            selectedScannerId = settings.ScannerId; // zuletzt benutzter Scanner; geprüft wird erst beim Scannen
+            selectedScannerName = settings.ScannerName;
+        }
     }
 
     /// <summary>Baut die beiden Zoom-Buttons übereinander in einen ToolStripControlHost — der
@@ -71,8 +78,8 @@ public partial class MainForm : Form
             button.Click += onClick;
             return button;
         }
-        btnZoomIn = Make("+", "Miniaturen vergrößern", BtnZoomIn_Click);
-        btnZoomOut = Make("−", "Miniaturen verkleinern", BtnZoomOut_Click);
+        btnZoomIn = Make("+", "Miniaturen vergrößern (Strg++)", BtnZoomIn_Click);
+        btnZoomOut = Make("−", "Miniaturen verkleinern (Strg+−)", BtnZoomOut_Click);
         Panel host = new() { Size = new Size(32, 56) };
         btnZoomIn.Location = new Point(0, 1);
         btnZoomOut.Location = new Point(0, 28);
@@ -111,6 +118,39 @@ public partial class MainForm : Form
         btnZoomIn.Text = string.Empty;
     }
 
+    /// <summary>Symbole für alle Menüeinträge (16 px, wie in PDFlight).</summary>
+    private void ApplyMenuIcons()
+    {
+        if (!ToolbarIcons.FontAvailable) { return; }
+        var size = LogicalToDeviceUnits(new Size(16, 16));
+        menuStrip.ImageScalingSize = size;
+        Image Icon16(char glyph) => ToolbarIcons.Get(glyph, size);
+        menuActionNew.Image = ToolbarIcons.GetNewPage(size);
+        menuActionImport.Image = Icon16(ToolbarIcons.Import);
+        menuActionScan.Image = Icon16(ToolbarIcons.Scan);
+        menuActionSave.Image = Icon16(ToolbarIcons.Save);
+        menuActionPrint.Image = Icon16(ToolbarIcons.Print);
+        menuActionClose.Image = Icon16(ToolbarIcons.Power);
+        menuEditCut.Image = Icon16(ToolbarIcons.Cut);
+        menuEditCopy.Image = Icon16(ToolbarIcons.Copy);
+        menuEditPaste.Image = Icon16(ToolbarIcons.Paste);
+        menuEditDelete.Image = Icon16(ToolbarIcons.Delete);
+        menuEditRotateLeft.Image = ToolbarIcons.GetMirrored(ToolbarIcons.Rotate, size);
+        menuEditRotate180.Image = Icon16(ToolbarIcons.Rotate180);
+        menuEditRotateRight.Image = Icon16(ToolbarIcons.Rotate);
+        menuEditBacks.Image = Icon16(ToolbarIcons.Interleave);
+        menuEditReverse.Image = Icon16(ToolbarIcons.Sort);
+        menuViewFitWidth.Image = Icon16(ToolbarIcons.FitFrame);
+        menuViewFitPage.Image = Icon16(ToolbarIcons.SinglePage);
+        menuViewTwoPages.Image = Icon16(ToolbarIcons.TwoPages);
+        menuViewIcons.Image = Icon16(ToolbarIcons.GridView);
+        menuViewZoomIn.Image = Icon16(ToolbarIcons.ZoomIn);
+        menuViewZoomOut.Image = Icon16(ToolbarIcons.ZoomOut);
+        menuViewFullScreen.Image = Icon16(ToolbarIcons.FullScreen);
+        menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
+        menuHelpAbout.Image = Icon16(ToolbarIcons.Info);
+    }
+
     // ------------------------------------------------------------------ Fensterposition merken
 
     private void RestoreWindowBounds()
@@ -143,6 +183,11 @@ public partial class MainForm : Form
     {
         switch (keyData)
         {
+            case Keys.F7: BtnCopyMode_Click(this, EventArgs.Empty); return true;
+            case Keys.Control | Keys.Add: BtnZoomIn_Click(this, EventArgs.Empty); return true;      // Ziffernblock; Strg+± liegt auf den Menükürzeln
+            case Keys.Control | Keys.Subtract: BtnZoomOut_Click(this, EventArgs.Empty); return true;
+            case Keys.Alt | Keys.Left: MoveSelected(-1); return true;
+            case Keys.Alt | Keys.Right: MoveSelected(1); return true;
             case Keys.Escape | Keys.Shift when settings.CloseOnEscape: Close(); return true; // Umschalt+Esc beendet sofort
             case Keys.Escape when menuViewFullScreen.Checked: MenuViewFullScreen_Click(this, EventArgs.Empty); return true;
             case Keys.Escape when settings.CloseOnEscape: return HandleEscapeToClose();
@@ -225,25 +270,30 @@ public partial class MainForm : Form
 
     private void SplitScan_ButtonClick(object sender, EventArgs e)
     {
-        string scanned;
-        if (selectedScannerId == TestPageId)
+        if (selectedScannerId == null) // noch kein Gerät gewählt: einzigen Scanner automatisch nehmen
         {
-            scanned = ScanService.RenderTestPage(NextScanPath(), $"Testseite {scanCounter + 1}",
-                "Diese Seite wurde ohne Scanner erzeugt.",
-                "Sie dient zum Ausprobieren von Übersicht und Texterkennung.");
-        }
-        else
-        {
-            statusLabel.Text = "Scanne …";
-            statusStrip.Refresh();
-            scanned = selectedScannerId != null
-                ? ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1)
-                : ScanService.WiaScanToTiff(NextScanPath()); // noch kein Gerät gewählt → Windows-Dialog
-            if (scanned == null)
+            var scanners = ScanService.ListScanners();
+            if (scanners.Count == 1)
             {
-                statusLabel.Text = "Scan abgebrochen oder fehlgeschlagen";
+                selectedScannerId = scanners[0].Id;
+                selectedScannerName = scanners[0].Name;
+                UpdateUiState();
+            }
+            else if (scanners.Count > 1) { splitScan.ShowDropDown(); return; } // Auswahl im Gerätemenü statt Windows-Dialog
+            else
+            {
+                TaskDlg.MsgTaskDlg(Handle, "Kein Scanner gefunden.",
+                    "Bitte schließe einen Scanner an oder schalte ihn ein.", TaskDialogIcon.Warning);
                 return;
             }
+        }
+        statusLabel.Text = "Scanne …";
+        statusStrip.Refresh();
+        var scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1);
+        if (scanned == null)
+        {
+            statusLabel.Text = "Scan abgebrochen oder fehlgeschlagen";
+            return;
         }
         if (panelCopyMode.Visible) { PrintCopy(scanned); return; } // Kopiermodus: direkt drucken statt sammeln
         AddPage(scanned);
@@ -286,7 +336,7 @@ public partial class MainForm : Form
     private void PrintCopy(string tiffPath)
     {
         using PrintDocument document = new();
-        document.DocumentName = "ScanTest Kopie";
+        document.DocumentName = "ScanView Kopie";
         if (comboCopyPrinter.SelectedItem is string printer) { copyPrinterSettings.PrinterName = printer; }
         copyPrinterSettings.Copies = (short)numCopies.Value;
         document.PrinterSettings = copyPrinterSettings;
@@ -315,7 +365,7 @@ public partial class MainForm : Form
         }
     }
 
-    /// <summary>Baut das Geräte-Menü auf: alle Scanner plus die Testseite, Auswahl per Häkchen.</summary>
+    /// <summary>Baut das Geräte-Menü auf: alle Scanner, Auswahl per Häkchen.</summary>
     private void SplitScan_DropDownOpening(object sender, EventArgs e)
     {
         splitScan.DropDownItems.Clear();
@@ -331,10 +381,10 @@ public partial class MainForm : Form
             };
             splitScan.DropDownItems.Add(item);
         }
-        if (splitScan.DropDownItems.Count > 0) { splitScan.DropDownItems.Add(new ToolStripSeparator()); }
-        ToolStripMenuItem testPage = new("Testseite (ohne Scanner)") { Checked = selectedScannerId == TestPageId };
-        testPage.Click += (s, args) => { selectedScannerId = TestPageId; selectedScannerName = "Testseite"; UpdateUiState(); };
-        splitScan.DropDownItems.Add(testPage);
+        if (splitScan.DropDownItems.Count == 0)
+        {
+            splitScan.DropDownItems.Add(new ToolStripMenuItem("(kein Scanner gefunden)") { Enabled = false });
+        }
     }
 
     // ------------------------------------------------------------------ Menü „Aktion"
@@ -794,7 +844,7 @@ public partial class MainForm : Form
         var pages = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
         if (pages.Count == 0) { return; }
         using PrintDocument document = new();
-        document.DocumentName = "ScanTest";
+        document.DocumentName = "ScanView";
         var pageIndex = 0;
         document.PrintPage += (s, args) =>
         {
@@ -818,7 +868,15 @@ public partial class MainForm : Form
 
     private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
     {
-        SaveWindowBounds();
+        settings.DpiIndex = comboDpi.SelectedIndex;
+        settings.ColorIndex = comboColor.SelectedIndex;
+        settings.AreaIndex = comboArea.SelectedIndex;
+        settings.FeedIndex = comboFeed.SelectedIndex;
+        settings.Brightness = trackBrightness.Value;
+        settings.ThumbWidth = thumbWidth;
+        settings.ScannerId = selectedScannerId;
+        settings.ScannerName = selectedScannerName;
+        SaveWindowBounds(); // ruft settings.Save()
         try { Directory.Delete(sessionFolder, true); } catch (IOException) { } // Sitzungs-Scans aufräumen
     }
 
