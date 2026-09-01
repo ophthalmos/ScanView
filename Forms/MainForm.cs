@@ -29,6 +29,7 @@ public partial class MainForm : Form
     private readonly AppSettings settings;
     private readonly PrinterSettings copyPrinterSettings = new(); // Kopiermodus: gewählter Drucker samt Treiber-Einstellungen
     private readonly List<PaperSize> copyPaperSizes = []; // Papierformate des gewählten Druckers (parallel zur Combo)
+    private readonly List<PaperSource> copyPaperSources = []; // Papierzufuhren des gewählten Druckers (parallel zur Combo)
     private readonly ToolTip toolTip = new();
     private Button btnZoomOut; // übereinander gestapelt in einem ToolStripControlHost (s. CreateZoomButtons)
     private Button btnZoomIn;
@@ -149,6 +150,7 @@ public partial class MainForm : Form
         Set(btnMoveRight, ToolbarIcons.Next, imageOnly: true);
         Set(btnRemove, ToolbarIcons.Delete);
         Set(btnCrop, ToolbarIcons.Crop);
+        Set(btnCopyMode, ToolbarIcons.Copy);
         btnNew.Image = ToolbarIcons.GetNewPage(size); // leeres Blatt mit Sternchen
         btnNew.TextImageRelation = TextImageRelation.ImageAboveText;
         btnNew.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
@@ -415,12 +417,26 @@ public partial class MainForm : Form
         if (active && comboCopyPrinter.Items.Count == 0) // Druckerliste erst beim ersten Aufruf füllen
         {
             foreach (string printer in PrinterSettings.InstalledPrinters) { comboCopyPrinter.Items.Add(printer); }
-            var defaultIndex = comboCopyPrinter.Items.IndexOf(copyPrinterSettings.PrinterName); // Standarddrucker
+            var storedIndex = settings.CopyPrinter != null ? comboCopyPrinter.Items.IndexOf(settings.CopyPrinter) : -1;
+            var defaultIndex = storedIndex >= 0 ? storedIndex : comboCopyPrinter.Items.IndexOf(copyPrinterSettings.PrinterName); // sonst Standarddrucker
             comboCopyPrinter.SelectedIndex = defaultIndex >= 0 ? defaultIndex : (comboCopyPrinter.Items.Count > 0 ? 0 : -1);
+            // gespeicherte Einstellungen wiederherstellen (nach dem Laden der Druckerfähigkeiten)
+            var paperIndex = copyPaperSizes.FindIndex(p => p.RawKind == settings.CopyPaperRawKind);
+            if (paperIndex >= 0) { comboCopyPaper.SelectedIndex = paperIndex; }
+            var sourceIndex = copyPaperSources.FindIndex(s => s.RawKind == settings.CopyPaperSourceRawKind);
+            if (sourceIndex >= 0) { comboCopySource.SelectedIndex = sourceIndex; }
+            if (comboCopyDuplex.Enabled) { comboCopyDuplex.SelectedIndex = Math.Clamp(settings.CopyDuplexIndex, 0, comboCopyDuplex.Items.Count - 1); }
+            numCopies.Value = Math.Clamp(settings.CopyCopies, (int)numCopies.Minimum, (int)numCopies.Maximum);
+            if (chkCopyColor.Enabled) { chkCopyColor.Checked = settings.CopyColor; }
+            chkCopyFit.Checked = settings.CopyFit;
         }
         panelCopyMode.Visible = active;
         flowPanel.Visible = !active;
-        btnCopyMode.Text = active ? "&Kopiermodus beenden" : "&Kopiermodus";
+        // Aktiv: zweizeilig und ohne Symbol — inaktiv: einzeilig mit Symbol
+        btnCopyMode.Text = active ? "Kopiermodus\nbeenden" : "&Kopiermodus";
+        btnCopyMode.DisplayStyle = active || !ToolbarIcons.FontAvailable
+            ? ToolStripItemDisplayStyle.Text
+            : ToolStripItemDisplayStyle.ImageAndText;
         menuActionCopyMode.Checked = active;
         statusLabel.Text = active ? "Kopiermodus: jeder Scan wird direkt gedruckt" : string.Empty;
         if (!active) { UpdateUiState(); }
@@ -434,6 +450,8 @@ public partial class MainForm : Form
         copyPrinterSettings.PrinterName = printer;
         comboCopyPaper.Items.Clear();
         copyPaperSizes.Clear();
+        comboCopySource.Items.Clear();
+        copyPaperSources.Clear();
         try
         {
             foreach (PaperSize paper in copyPrinterSettings.PaperSizes)
@@ -444,6 +462,14 @@ public partial class MainForm : Form
             var defaultPaper = copyPrinterSettings.DefaultPageSettings.PaperSize;
             var index = defaultPaper != null ? copyPaperSizes.FindIndex(p => p.RawKind == defaultPaper.RawKind) : -1;
             if (comboCopyPaper.Items.Count > 0) { comboCopyPaper.SelectedIndex = Math.Max(0, index); }
+            foreach (PaperSource source in copyPrinterSettings.PaperSources)
+            {
+                copyPaperSources.Add(source);
+                comboCopySource.Items.Add(source.SourceName);
+            }
+            var defaultSource = copyPrinterSettings.DefaultPageSettings.PaperSource;
+            var sourceIndex = defaultSource != null ? copyPaperSources.FindIndex(s => s.RawKind == defaultSource.RawKind) : -1;
+            if (comboCopySource.Items.Count > 0) { comboCopySource.SelectedIndex = Math.Max(0, sourceIndex); }
             comboCopyDuplex.Enabled = copyPrinterSettings.CanDuplex;
             comboCopyDuplex.SelectedIndex = 0; // Einseitig
             chkCopyColor.Enabled = copyPrinterSettings.SupportsColor;
@@ -467,6 +493,10 @@ public partial class MainForm : Form
         if (comboCopyPaper.SelectedIndex >= 0 && comboCopyPaper.SelectedIndex < copyPaperSizes.Count)
         {
             document.DefaultPageSettings.PaperSize = copyPaperSizes[comboCopyPaper.SelectedIndex];
+        }
+        if (comboCopySource.SelectedIndex >= 0 && comboCopySource.SelectedIndex < copyPaperSources.Count)
+        {
+            document.DefaultPageSettings.PaperSource = copyPaperSources[comboCopySource.SelectedIndex];
         }
         document.PrintPage += (s, args) =>
         {
@@ -1032,7 +1062,9 @@ public partial class MainForm : Form
             pageIndex++;
             args.HasMorePages = pageIndex < pages.Count;
         };
-        using PrintDialog dialog = new() { Document = document, UseEXDialog = true };
+        // UseEXDialog=false: der klassische Windows-Druckdialog — der moderne zeigt eine Vorschau an,
+        // die für WinForms-PrintDocuments nicht funktioniert
+        using PrintDialog dialog = new() { Document = document, UseEXDialog = false };
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         try
         {
@@ -1055,6 +1087,18 @@ public partial class MainForm : Form
         settings.ThumbWidth = thumbWidth;
         settings.ScannerId = selectedScannerId;
         settings.ScannerName = selectedScannerName;
+        if (comboCopyPrinter.SelectedItem is string copyPrinter) // Kopiermodus war in Benutzung
+        {
+            settings.CopyPrinter = copyPrinter;
+            settings.CopyPaperRawKind = comboCopyPaper.SelectedIndex >= 0 && comboCopyPaper.SelectedIndex < copyPaperSizes.Count
+                ? copyPaperSizes[comboCopyPaper.SelectedIndex].RawKind : -1;
+            settings.CopyPaperSourceRawKind = comboCopySource.SelectedIndex >= 0 && comboCopySource.SelectedIndex < copyPaperSources.Count
+                ? copyPaperSources[comboCopySource.SelectedIndex].RawKind : -1;
+            settings.CopyDuplexIndex = Math.Max(0, comboCopyDuplex.SelectedIndex);
+            settings.CopyCopies = (int)numCopies.Value;
+            settings.CopyColor = chkCopyColor.Checked;
+            settings.CopyFit = chkCopyFit.Checked;
+        }
         SaveWindowBounds(); // ruft settings.Save()
         if (selfTest) { try { Directory.Delete(sessionFolder, true); } catch (IOException) { } } // Wegwerf-Ordner des Selbsttests
     }
