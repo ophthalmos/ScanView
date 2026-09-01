@@ -45,6 +45,8 @@ internal static class ToolbarIcons
 
     public const char Crop = '';
 
+    public const char Accept = '';     // Haken (Uebernehmen)
+
     private const string FontName = "Segoe MDL2 Assets";
     private static readonly Dictionary<(char Glyph, int Size), Image> cache = [];
 
