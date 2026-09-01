@@ -36,6 +36,8 @@ internal sealed class AppSettings
     public bool CopyColor { get; set; }
     public bool CopyFit { get; set; } = true;
 
+    private static readonly JsonSerializerOptions SerializerOptions = new() { WriteIndented = true }; // CA1869: eine Instanz wiederverwenden
+
     private static string FilePath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScanView", "settings.json");
 
@@ -57,7 +59,7 @@ internal sealed class AppSettings
         try
         {
             Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
-            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, new JsonSerializerOptions { WriteIndented = true }));
+            File.WriteAllText(FilePath, JsonSerializer.Serialize(this, SerializerOptions));
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
     }
