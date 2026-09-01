@@ -9,7 +9,10 @@ namespace ScanView.Forms;
 /// lassen sich beliebig kombinieren; „Übernehmen" liefert das Gesamtergebnis, Esc verwirft.</summary>
 internal sealed class CropForm : Form
 {
-    private enum DragHandle { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight, Inside }
+    private enum DragHandle
+    {
+        None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight, Inside
+    }
 
     private readonly PictureBox pictureBox;
     private readonly Panel scrollPanel;
@@ -33,7 +36,10 @@ internal sealed class CropForm : Form
     private bool isNewSelection;
 
     /// <summary>Der aktuelle Ausschnitt in Bildpixeln (für die laufende Auswahl).</summary>
-    public Rectangle SelectionInImage { get; private set; }
+    public Rectangle SelectionInImage
+    {
+        get; private set;
+    }
 
     /// <summary>Das bearbeitete Bild (gültig nach DialogResult.OK, wenn Edited true ist).</summary>
     public Image ResultImage => workingImage;
@@ -483,6 +489,25 @@ internal sealed class CropForm : Form
             _ => Cursors.Default,
         };
     }
+
+    private void InitializeComponent()
+    {
+
+    }
+
+    //private void InitializeComponent()
+    //{
+    //    var resources = new System.ComponentModel.ComponentResourceManager(typeof(CropForm));
+    //    SuspendLayout();
+    //    // 
+    //    // CropForm
+    //    // 
+    //    ClientSize = new Size(284, 261);
+    //    Icon = (Icon)resources.GetObject("$this.Icon");
+    //    Name = "CropForm";
+    //    ResumeLayout(false);
+
+    //}
 
     private static Rectangle Normalize(Rectangle r) => new(
         r.Width < 0 ? r.X + r.Width : r.X,

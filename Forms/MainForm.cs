@@ -261,10 +261,10 @@ public partial class MainForm : Form
     {
         switch (keyData)
         {
-            case Keys.Control | Keys.Add: BtnZoomIn_Click(this, EventArgs.Empty); return true;      // Ziffernblock; Strg+± liegt auf den Menükürzeln
-            case Keys.Control | Keys.Subtract: BtnZoomOut_Click(this, EventArgs.Empty); return true;
-            case Keys.Alt | Keys.Left: MoveSelected(-1); return true;
-            case Keys.Alt | Keys.Right: MoveSelected(1); return true;
+            case Keys.Control | Keys.Add when !panelCopyMode.Visible: BtnZoomIn_Click(this, EventArgs.Empty); return true; // Ziffernblock; Strg+± liegt auf den Menükürzeln
+            case Keys.Control | Keys.Subtract when !panelCopyMode.Visible: BtnZoomOut_Click(this, EventArgs.Empty); return true;
+            case Keys.Alt | Keys.Left when !panelCopyMode.Visible: MoveSelected(-1); return true;
+            case Keys.Alt | Keys.Right when !panelCopyMode.Visible: MoveSelected(1); return true;
             case Keys.Escape | Keys.Shift when settings.CloseOnEscape: Close(); return true; // Umschalt+Esc beendet sofort
             case Keys.Escape when menuViewFullScreen.Checked: MenuViewFullScreen_Click(this, EventArgs.Empty); return true;
             case Keys.Escape when settings.CloseOnEscape: return HandleEscapeToClose();
@@ -430,8 +430,9 @@ public partial class MainForm : Form
             ? ToolStripItemDisplayStyle.Text
             : ToolStripItemDisplayStyle.ImageAndText;
         menuActionCopyMode.Checked = active;
-        statusLabel.Text = active ? "Kopiermodus: jeder Scan wird direkt gedruckt" : string.Empty;
-        if (!active) { StoreCopyUiInSettings(); UpdateUiState(); } // Änderungen sofort als gemeinsame Vorgabe übernehmen
+        if (!active) { StoreCopyUiInSettings(); } // Änderungen sofort als gemeinsame Vorgabe übernehmen
+        UpdateUiState(); // sperrt bzw. reaktiviert alles Seitenbezogene
+        if (active) { statusLabel.Text = "Kopiermodus: jeder Scan wird direkt gedruckt"; }
     }
 
     /// <summary>Überträgt die gespeicherten Druckvorgaben auf die Kopiermodus-Controls
@@ -991,33 +992,42 @@ public partial class MainForm : Form
     {
         RenumberPages();
         var count = flowPanel.Controls.Count;
-        btnSave.Enabled = count > 0;
-        btnPrint.Enabled = count > 0;
-        btnNew.Enabled = count > 0;
-        menuActionSave.Enabled = count > 0;
-        menuActionPrint.Enabled = count > 0;
-        menuActionNew.Enabled = count > 0;
-        btnRemove.Enabled = selected != null;
+        var pagesVisible = !panelCopyMode.Visible; // im Kopiermodus ist die Übersicht ausgeblendet — alles Seitenbezogene sperren
+        btnSave.Enabled = pagesVisible && count > 0;
+        btnPrint.Enabled = pagesVisible && count > 0;
+        btnNew.Enabled = pagesVisible && count > 0;
+        menuActionSave.Enabled = pagesVisible && count > 0;
+        menuActionPrint.Enabled = pagesVisible && count > 0;
+        menuActionNew.Enabled = pagesVisible && count > 0;
+        menuActionImport.Enabled = pagesVisible;
+        btnRemove.Enabled = pagesVisible && selected != null;
         var index = selected != null ? flowPanel.Controls.GetChildIndex(selected) : -1;
-        btnMoveLeft.Enabled = index > 0;
-        btnMoveRight.Enabled = index >= 0 && index < count - 1;
-        btnZoomOut.Enabled = thumbWidth > ThumbWidths[0];
-        btnZoomIn.Enabled = thumbWidth < ThumbWidths[^1];
+        btnMoveLeft.Enabled = pagesVisible && index > 0;
+        btnMoveRight.Enabled = pagesVisible && index >= 0 && index < count - 1;
+        btnZoomOut.Enabled = pagesVisible && thumbWidth > ThumbWidths[0];
+        btnZoomIn.Enabled = pagesVisible && thumbWidth < ThumbWidths[^1];
         menuViewZoomOut.Enabled = btnZoomOut.Enabled;
         menuViewZoomIn.Enabled = btnZoomIn.Enabled;
-        menuEditCut.Enabled = selected != null;
-        menuEditCopy.Enabled = selected != null;
-        menuEditPaste.Enabled = clipboardPath != null;
-        menuEditDelete.Enabled = selected != null;
-        menuEditRotateLeft.Enabled = selected != null;
-        menuEditRotate180.Enabled = selected != null;
-        menuEditRotateRight.Enabled = selected != null;
-        menuEditCrop.Enabled = selected != null;
-        btnCrop.Enabled = selected != null;
-        menuEditBacks.Enabled = count >= 2 && count % 2 == 0; // Vorder- und Rückseiten paarweise
-        menuEditReverse.Enabled = count >= 2;
-        var scannerHint = selectedScannerName != null ? $"   ·   Scanner: {selectedScannerName}" : string.Empty;
-        statusLabel.Text = (count == 0 ? "Noch keine Seiten" : count == 1 ? "1 Seite" : $"{count} Seiten") + scannerHint;
+        menuViewFitWidth.Enabled = pagesVisible;
+        menuViewFitPage.Enabled = pagesVisible;
+        menuViewTwoPages.Enabled = pagesVisible;
+        menuViewIcons.Enabled = pagesVisible;
+        menuEditCut.Enabled = pagesVisible && selected != null;
+        menuEditCopy.Enabled = pagesVisible && selected != null;
+        menuEditPaste.Enabled = pagesVisible && clipboardPath != null;
+        menuEditDelete.Enabled = pagesVisible && selected != null;
+        menuEditRotateLeft.Enabled = pagesVisible && selected != null;
+        menuEditRotate180.Enabled = pagesVisible && selected != null;
+        menuEditRotateRight.Enabled = pagesVisible && selected != null;
+        menuEditCrop.Enabled = pagesVisible && selected != null;
+        btnCrop.Enabled = pagesVisible && selected != null;
+        menuEditBacks.Enabled = pagesVisible && count >= 2 && count % 2 == 0; // Vorder- und Rückseiten paarweise
+        menuEditReverse.Enabled = pagesVisible && count >= 2;
+        if (pagesVisible) // im Kopiermodus gehört die Statuszeile dem Kopiermodus
+        {
+            var scannerHint = selectedScannerName != null ? $"   ·   Scanner: {selectedScannerName}" : string.Empty;
+            statusLabel.Text = (count == 0 ? "Noch keine Seiten" : count == 1 ? "1 Seite" : $"{count} Seiten") + scannerHint;
+        }
     }
 
     private void BtnMoveLeft_Click(object sender, EventArgs e)
