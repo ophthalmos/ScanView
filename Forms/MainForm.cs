@@ -58,7 +58,7 @@ public partial class MainForm : Form
             if (int.TryParse(Path.GetFileNameWithoutExtension(file).AsSpan(5), out var number)) { scanCounter = Math.Max(scanCounter, number); }
         }
         FormClosing += MainForm_FormClosing;
-        int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
+        static int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
         comboDpi.SelectedIndex = Clamped(settings.DpiIndex, comboDpi, 2);      // Standard: 300 dpi — der OCR-Sweet-Spot
         comboColor.SelectedIndex = Clamped(settings.ColorIndex, comboColor, 0);
         comboArea.SelectedIndex = Clamped(settings.AreaIndex, comboArea, 0);
@@ -687,10 +687,7 @@ public partial class MainForm : Form
         ReorderPages(order);
     }
 
-    private void MenuEditReverse_Click(object sender, EventArgs e)
-    {
-        ReorderPages(flowPanel.Controls.Cast<Panel>().Reverse().ToList());
-    }
+    private void MenuEditReverse_Click(object sender, EventArgs e) => ReorderPages([.. flowPanel.Controls.Cast<Panel>().Reverse()]);
 
     private void ReorderPages(List<Panel> order)
     {
@@ -705,15 +702,9 @@ public partial class MainForm : Form
 
     // ------------------------------------------------------------------ Menü „Ansicht"
 
-    private void MenuViewFitWidth_Click(object sender, EventArgs e)
-    {
-        ApplyThumbWidth(ColumnThumbWidth(1));
-    }
+    private void MenuViewFitWidth_Click(object sender, EventArgs e) => ApplyThumbWidth(ColumnThumbWidth(1));
 
-    private void MenuViewTwoPages_Click(object sender, EventArgs e)
-    {
-        ApplyThumbWidth(ColumnThumbWidth(2));
-    }
+    private void MenuViewTwoPages_Click(object sender, EventArgs e) => ApplyThumbWidth(ColumnThumbWidth(2));
 
     private void MenuViewFitPage_Click(object sender, EventArgs e)
     {
@@ -913,9 +904,9 @@ public partial class MainForm : Form
     private void Select(Panel thumb)
     {
         // Der Rahmen (samt Seitenzahl-Streifen) bleibt immer stehen und wechselt nur die Farbe
-        if (selected != null) { selected.BackColor = FrameColor; }
+        selected?.BackColor = FrameColor;
         selected = thumb;
-        if (selected != null) { selected.BackColor = SelectionColor; }
+        selected?.BackColor = SelectionColor;
         UpdateUiState();
     }
 
@@ -1113,7 +1104,7 @@ public partial class MainForm : Form
             using SolidBrush brush = new(e.ArrowColor);
             var smoothing = e.Graphics.SmoothingMode;
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
-            e.Graphics.FillPolygon(brush, new[] { new Point(mid.X - 6, mid.Y - 3), new Point(mid.X + 6, mid.Y - 3), new Point(mid.X, mid.Y + 4) });
+            e.Graphics.FillPolygon(brush, [new Point(mid.X - 6, mid.Y - 3), new Point(mid.X + 6, mid.Y - 3), new Point(mid.X, mid.Y + 4)]);
             e.Graphics.SmoothingMode = smoothing;
         }
     }

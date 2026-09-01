@@ -30,7 +30,7 @@ internal static class ScanService
             var managerType = Type.GetTypeFromProgID("WIA.DeviceManager");
             if (managerType == null) { return result; }
             dynamic manager = Activator.CreateInstance(managerType);
-            foreach (dynamic info in manager.DeviceInfos)
+            foreach (var info in manager.DeviceInfos)
             {
                 if ((int)info.Type != 1) { continue; } // nur Scanner
                 string name;
@@ -59,7 +59,7 @@ internal static class ScanService
             if (managerType == null) { return null; }
             dynamic manager = Activator.CreateInstance(managerType);
             dynamic device = null;
-            foreach (dynamic info in manager.DeviceInfos)
+            foreach (var info in manager.DeviceInfos)
             {
                 if ((string)info.DeviceID == deviceId) { device = info.Connect(); break; }
             }

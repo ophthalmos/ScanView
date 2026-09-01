@@ -67,7 +67,7 @@ internal sealed class CropForm : Form
         btnZoomIn.Click += (s, e) => comboZoom.SelectedIndex = Math.Min(comboZoom.Items.Count - 1, comboZoom.SelectedIndex + 1);
 
         // Die drei Aktionen als echte Buttons: sie wirken sofort auf das Vorschaubild
-        ToolStripButton MakeAction(string text, string tip, EventHandler onClick)
+        static ToolStripButton MakeAction(string text, string tip, EventHandler onClick)
         {
             ToolStripButton button = new(text) { DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, Enabled = false, ToolTipText = tip };
             button.Click += onClick;
@@ -112,8 +112,8 @@ internal sealed class CropForm : Form
             btnZoomOut.Text = "−";
             btnZoomIn.Text = "+";
         }
-        toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, btnZoomOut, btnZoomIn,
-            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, applyHost, cancelHost }); // rechts: Übernehmen ganz außen, Abbrechen links davon
+        toolStrip.Items.AddRange([ labelZoom, comboZoom, btnZoomOut, btnZoomIn,
+            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, applyHost, cancelHost ]); // rechts: Übernehmen ganz außen, Abbrechen links davon
 
         StatusStrip statusStrip = new();
         statusLabel = new ToolStripStatusLabel("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
