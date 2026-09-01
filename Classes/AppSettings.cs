@@ -10,6 +10,10 @@ internal sealed class AppSettings
     public int WindowWidth { get; set; }
     public int WindowHeight { get; set; }
     public bool WindowMaximized { get; set; }
+    public int CropX { get; set; }
+    public int CropY { get; set; }
+    public int CropWidth { get; set; }
+    public int CropHeight { get; set; }
     public bool CloseOnEscape { get; set; } = true;
     public int ExitAction { get; set; }      // 0 = Seiten behalten, 1 = nach Rückfrage leeren, 2 = ohne Rückfrage leeren
     public string SaveDirectory { get; set; } = ""; // bevorzugter Speicherort für PDFs (leer = zuletzt verwendeter)

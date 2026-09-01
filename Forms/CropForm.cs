@@ -45,7 +45,7 @@ internal sealed class CropForm : Form
         : rbRemove.Checked ? CropMode.RemoveSelection
         : CropMode.IsolateSelection;
 
-    public CropForm(Image image)
+    public CropForm(Image image, Rectangle storedBounds)
     {
         this.image = image;
         Text = "Zuschneiden";
@@ -137,12 +137,20 @@ internal sealed class CropForm : Form
         Controls.Add(statusStrip);
         Controls.Add(toolStrip);
 
-        // Dialoggröße: Bild möglichst groß, aber in den Arbeitsbereich eingepasst
-        var work = Screen.FromPoint(Cursor.Position).WorkingArea;
-        var chrome = toolStrip.Height + statusStrip.Height;
-        var scale = Math.Min(0.85 * work.Width / image.Width, 0.85 * (work.Height - chrome) / image.Height);
-        scale = Math.Min(scale, 1.0);
-        ClientSize = new Size(Math.Max(560, (int)(image.Width * scale)), Math.Max(360, (int)(image.Height * scale) + chrome));
+        if (storedBounds.Width >= MinimumSize.Width && storedBounds.Height >= MinimumSize.Height
+            && Screen.AllScreens.Any(screen => screen.WorkingArea.IntersectsWith(storedBounds))) // gemerkte Größe/Position
+        {
+            StartPosition = FormStartPosition.Manual;
+            Bounds = storedBounds;
+        }
+        else // erster Aufruf: Bild möglichst groß, aber in den Arbeitsbereich eingepasst
+        {
+            var work = Screen.FromPoint(Cursor.Position).WorkingArea;
+            var chrome = toolStrip.Height + statusStrip.Height;
+            var scale = Math.Min(0.85 * work.Width / image.Width, 0.85 * (work.Height - chrome) / image.Height);
+            scale = Math.Min(scale, 1.0);
+            ClientSize = new Size(Math.Max(560, (int)(image.Width * scale)), Math.Max(360, (int)(image.Height * scale) + chrome));
+        }
         Shown += (s, e) => ApplyZoom();
     }
 
