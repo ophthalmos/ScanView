@@ -7,8 +7,8 @@ namespace ScanView.Forms;
 /// Tesseract + PDFsharp in eine durchsuchbare PDF schreiben.</summary>
 public partial class MainForm : Form
 {
-    // Zoomstufen für −/+ im A4-Verhältnis (Breite; Höhe = Breite × 1,4)
-    private static readonly int[] ThumbWidths = [100, 130, 160, 200, 240, 280];
+    // Zoomstufen für −/+ im A4-Verhältnis (Breite; Höhe = Breite × 1,4); die oberen Stufen für große Bildschirme
+    private static readonly int[] ThumbWidths = [100, 130, 160, 200, 240, 280, 340, 410, 490, 590, 700];
     private const int IconThumbWidth = 160; // Ansicht „Symbole" und Startgröße
     private int thumbWidth = IconThumbWidth; // Ansicht-Modi dürfen von den Zoomstufen abweichen
 
@@ -57,7 +57,6 @@ public partial class MainForm : Form
         {
             if (int.TryParse(Path.GetFileNameWithoutExtension(file).AsSpan(5), out var number)) { scanCounter = Math.Max(scanCounter, number); }
         }
-        FormClosing += MainForm_FormClosing;
         static int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
         comboDpi.SelectedIndex = Clamped(settings.DpiIndex, comboDpi, 2);      // Standard: 300 dpi — der OCR-Sweet-Spot
         comboColor.SelectedIndex = Clamped(settings.ColorIndex, comboColor, 0);
@@ -549,7 +548,12 @@ public partial class MainForm : Form
         if (comboCopyPrinter.SelectedItem is string printer) { copyPrinterSettings.PrinterName = printer; }
         copyPrinterSettings.Copies = (short)numCopies.Value;
         copyPrinterSettings.Duplex = comboCopyDuplex.Enabled
-            ? comboCopyDuplex.SelectedIndex switch { 1 => Duplex.Vertical, 2 => Duplex.Horizontal, _ => Duplex.Simplex }
+            ? comboCopyDuplex.SelectedIndex switch
+            {
+                1 => Duplex.Vertical,
+                2 => Duplex.Horizontal,
+                _ => Duplex.Simplex
+            }
             : Duplex.Default;
         document.PrinterSettings = copyPrinterSettings;
         document.DefaultPageSettings.Color = chkCopyColor.Checked;
