@@ -84,7 +84,11 @@
             labelCopyTitle = new Label();
             labelCopyPrinter = new Label();
             comboCopyPrinter = new ComboBox();
-            btnCopyPrinterSettings = new Button();
+            labelCopyPaper = new Label();
+            comboCopyPaper = new ComboBox();
+            labelCopyDuplex = new Label();
+            comboCopyDuplex = new ComboBox();
+            chkCopyColor = new CheckBox();
             labelCopyCount = new Label();
             numCopies = new NumericUpDown();
             chkCopyFit = new CheckBox();
@@ -668,9 +672,13 @@
             panelCopyMode.Controls.Add(labelCopyTitle);
             panelCopyMode.Controls.Add(labelCopyPrinter);
             panelCopyMode.Controls.Add(comboCopyPrinter);
-            panelCopyMode.Controls.Add(btnCopyPrinterSettings);
+            panelCopyMode.Controls.Add(labelCopyPaper);
+            panelCopyMode.Controls.Add(comboCopyPaper);
+            panelCopyMode.Controls.Add(labelCopyDuplex);
+            panelCopyMode.Controls.Add(comboCopyDuplex);
             panelCopyMode.Controls.Add(labelCopyCount);
             panelCopyMode.Controls.Add(numCopies);
+            panelCopyMode.Controls.Add(chkCopyColor);
             panelCopyMode.Controls.Add(chkCopyFit);
             panelCopyMode.BackColor = Color.FromArgb(233, 241, 248);
             panelCopyMode.Dock = DockStyle.Fill;
@@ -698,38 +706,67 @@
             comboCopyPrinter.DropDownStyle = ComboBoxStyle.DropDownList;
             comboCopyPrinter.Location = new Point(16, 74);
             comboCopyPrinter.Name = "comboCopyPrinter";
-            comboCopyPrinter.Size = new Size(280, 23);
+            comboCopyPrinter.Size = new Size(300, 23);
+            comboCopyPrinter.SelectedIndexChanged += ComboCopyPrinter_SelectedIndexChanged;
             //
-            // btnCopyPrinterSettings
+            // labelCopyPaper
             //
-            btnCopyPrinterSettings.Location = new Point(304, 73);
-            btnCopyPrinterSettings.Name = "btnCopyPrinterSettings";
-            btnCopyPrinterSettings.Size = new Size(110, 25);
-            btnCopyPrinterSettings.Text = "&Einstellungen …";
-            btnCopyPrinterSettings.Click += BtnCopyPrinterSettings_Click;
+            labelCopyPaper.AutoSize = true;
+            labelCopyPaper.Location = new Point(16, 112);
+            labelCopyPaper.Name = "labelCopyPaper";
+            labelCopyPaper.Text = "&Papierformat:";
+            //
+            // comboCopyPaper
+            //
+            comboCopyPaper.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCopyPaper.Location = new Point(16, 130);
+            comboCopyPaper.Name = "comboCopyPaper";
+            comboCopyPaper.Size = new Size(300, 23);
+            //
+            // labelCopyDuplex
+            //
+            labelCopyDuplex.AutoSize = true;
+            labelCopyDuplex.Location = new Point(16, 168);
+            labelCopyDuplex.Name = "labelCopyDuplex";
+            labelCopyDuplex.Text = "&Beidseitiger Druck:";
+            //
+            // comboCopyDuplex
+            //
+            comboCopyDuplex.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboCopyDuplex.Items.AddRange(new object[] { "Einseitig", "Beidseitig (lange Kante)", "Beidseitig (kurze Kante)" });
+            comboCopyDuplex.Location = new Point(16, 186);
+            comboCopyDuplex.Name = "comboCopyDuplex";
+            comboCopyDuplex.Size = new Size(300, 23);
             //
             // labelCopyCount
             //
             labelCopyCount.AutoSize = true;
-            labelCopyCount.Location = new Point(16, 112);
+            labelCopyCount.Location = new Point(16, 224);
             labelCopyCount.Name = "labelCopyCount";
             labelCopyCount.Text = "E&xemplare:";
             //
             // numCopies
             //
-            numCopies.Location = new Point(16, 130);
+            numCopies.Location = new Point(16, 242);
             numCopies.Maximum = 99;
             numCopies.Minimum = 1;
             numCopies.Name = "numCopies";
             numCopies.Size = new Size(60, 23);
             numCopies.Value = 1;
             //
+            // chkCopyColor
+            //
+            chkCopyColor.AutoSize = true;
+            chkCopyColor.Location = new Point(16, 282);
+            chkCopyColor.Name = "chkCopyColor";
+            chkCopyColor.Text = "Far&big drucken";
+            //
             // chkCopyFit
             //
             chkCopyFit.AutoSize = true;
             chkCopyFit.Checked = true;
             chkCopyFit.CheckState = CheckState.Checked;
-            chkCopyFit.Location = new Point(16, 170);
+            chkCopyFit.Location = new Point(16, 310);
             chkCopyFit.Name = "chkCopyFit";
             chkCopyFit.Text = "Seiten auf Druck&fläche skalieren";
             //
@@ -851,7 +888,11 @@
         private System.Windows.Forms.Label labelCopyTitle;
         private System.Windows.Forms.Label labelCopyPrinter;
         private System.Windows.Forms.ComboBox comboCopyPrinter;
-        private System.Windows.Forms.Button btnCopyPrinterSettings;
+        private System.Windows.Forms.Label labelCopyPaper;
+        private System.Windows.Forms.ComboBox comboCopyPaper;
+        private System.Windows.Forms.Label labelCopyDuplex;
+        private System.Windows.Forms.ComboBox comboCopyDuplex;
+        private System.Windows.Forms.CheckBox chkCopyColor;
         private System.Windows.Forms.Label labelCopyCount;
         private System.Windows.Forms.NumericUpDown numCopies;
         private System.Windows.Forms.CheckBox chkCopyFit;

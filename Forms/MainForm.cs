@@ -28,9 +28,12 @@ public partial class MainForm : Form
     private FormWindowState previousWindowState; // zum Verlassen des Vollbildmodus
     private readonly AppSettings settings;
     private readonly PrinterSettings copyPrinterSettings = new(); // Kopiermodus: gewählter Drucker samt Treiber-Einstellungen
+    private readonly List<PaperSize> copyPaperSizes = []; // Papierformate des gewählten Druckers (parallel zur Combo)
     private readonly ToolTip toolTip = new();
     private Button btnZoomOut; // übereinander gestapelt in einem ToolStripControlHost (s. CreateZoomButtons)
     private Button btnZoomIn;
+    private ContextMenuStrip thumbContextMenu; // Rechtsklick auf eine Miniatur
+    private ToolStripMenuItem contextPaste;    // einziger zustandsabhängiger Eintrag darin
 
     public MainForm() : this(false) // parameterlos für den Windows-Forms-Designer
     {
@@ -66,6 +69,7 @@ public partial class MainForm : Form
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
         CreateZoomButtons();
+        CreateThumbContextMenu();
         ApplyToolbarIcons();
         ApplyMenuIcons();
         if (!selfTest) // der Selbsttest-Screenshot soll deterministisch bleiben
@@ -188,6 +192,39 @@ public partial class MainForm : Form
         menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
         menuHelpShortcuts.Image = Icon16(ToolbarIcons.Help);
         menuHelpAbout.Image = Icon16(ToolbarIcons.Info);
+    }
+
+    /// <summary>Kontextmenü der Miniaturen: die wichtigsten Punkte aus dem Bearbeiten-Menü
+    /// plus „Im Bildbetrachter öffnen" (der Doppelklick führt jetzt in den Zuschneiden-Dialog).</summary>
+    private void CreateThumbContextMenu()
+    {
+        thumbContextMenu = new ContextMenuStrip();
+        var size = LogicalToDeviceUnits(new Size(16, 16));
+        thumbContextMenu.ImageScalingSize = size;
+        var icons = ToolbarIcons.FontAvailable;
+        ToolStripMenuItem Add(string text, Image image, EventHandler onClick, string shortcut = null)
+        {
+            ToolStripMenuItem item = new(text) { Image = icons ? image : null, ShortcutKeyDisplayString = shortcut };
+            item.Click += onClick;
+            thumbContextMenu.Items.Add(item);
+            return item;
+        }
+        Add("&Zuschneiden …", ToolbarIcons.Get(ToolbarIcons.Crop, size), MenuEditCrop_Click, "F10");
+        Add("Drehen nach &links", ToolbarIcons.GetMirrored(ToolbarIcons.Rotate, size), MenuEditRotateLeft_Click, "Strg+L");
+        Add("Drehen um 1&80°", ToolbarIcons.Get(ToolbarIcons.Rotate180, size), MenuEditRotate180_Click, "Strg+Umschalt+R");
+        Add("Drehen nach &rechts", ToolbarIcons.Get(ToolbarIcons.Rotate, size), MenuEditRotateRight_Click, "Strg+R");
+        thumbContextMenu.Items.Add(new ToolStripSeparator());
+        Add("&Ausschneiden", ToolbarIcons.Get(ToolbarIcons.Cut, size), MenuEditCut_Click, "Strg+X");
+        Add("&Kopieren", ToolbarIcons.Get(ToolbarIcons.Copy, size), MenuEditCopy_Click, "Strg+C");
+        contextPaste = Add("Ein&fügen", ToolbarIcons.Get(ToolbarIcons.Paste, size), MenuEditPaste_Click, "Strg+V");
+        Add("&Löschen", ToolbarIcons.Get(ToolbarIcons.Delete, size), BtnRemove_Click, "Entf");
+        thumbContextMenu.Items.Add(new ToolStripSeparator());
+        Add("Im &Bildbetrachter öffnen", ToolbarIcons.Get(ToolbarIcons.OpenFile, size), (s, e) =>
+        {
+            if (selected == null) { return; }
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo((string)selected.Tag) { UseShellExecute = true });
+        });
+        thumbContextMenu.Opening += (s, e) => contextPaste.Enabled = clipboardPath != null; // Rechtsklick hat bereits markiert
     }
 
     // ------------------------------------------------------------------ Fensterposition merken
@@ -389,17 +426,30 @@ public partial class MainForm : Form
         if (!active) { UpdateUiState(); }
     }
 
-    /// <summary>Öffnet den Windows-Druckdialog für die Treiber-Einstellungen des gewählten Druckers
-    /// (Duplex, Papierfach, Farbe …) und übernimmt dort geänderte Werte.</summary>
-    private void BtnCopyPrinterSettings_Click(object sender, EventArgs e)
+    /// <summary>Lädt Papierformate, Duplex- und Farbfähigkeit des gewählten Druckers in die Controls —
+    /// die Einstellungen stehen direkt auf dem Panel, ein Treiber-Dialog ist nicht mehr nötig.</summary>
+    private void ComboCopyPrinter_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (comboCopyPrinter.SelectedItem is string printer) { copyPrinterSettings.PrinterName = printer; }
-        copyPrinterSettings.Copies = (short)numCopies.Value;
-        using PrintDialog dialog = new() { PrinterSettings = copyPrinterSettings, UseEXDialog = true };
-        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
-        var index = comboCopyPrinter.Items.IndexOf(copyPrinterSettings.PrinterName); // Auswahl aus dem Dialog übernehmen
-        if (index >= 0) { comboCopyPrinter.SelectedIndex = index; }
-        numCopies.Value = Math.Clamp((int)copyPrinterSettings.Copies, (int)numCopies.Minimum, (int)numCopies.Maximum);
+        if (comboCopyPrinter.SelectedItem is not string printer) { return; }
+        copyPrinterSettings.PrinterName = printer;
+        comboCopyPaper.Items.Clear();
+        copyPaperSizes.Clear();
+        try
+        {
+            foreach (PaperSize paper in copyPrinterSettings.PaperSizes)
+            {
+                copyPaperSizes.Add(paper);
+                comboCopyPaper.Items.Add(paper.PaperName);
+            }
+            var defaultPaper = copyPrinterSettings.DefaultPageSettings.PaperSize;
+            var index = defaultPaper != null ? copyPaperSizes.FindIndex(p => p.RawKind == defaultPaper.RawKind) : -1;
+            if (comboCopyPaper.Items.Count > 0) { comboCopyPaper.SelectedIndex = Math.Max(0, index); }
+            comboCopyDuplex.Enabled = copyPrinterSettings.CanDuplex;
+            comboCopyDuplex.SelectedIndex = 0; // Einseitig
+            chkCopyColor.Enabled = copyPrinterSettings.SupportsColor;
+            chkCopyColor.Checked = copyPrinterSettings.SupportsColor && copyPrinterSettings.DefaultPageSettings.Color;
+        }
+        catch (InvalidPrinterException) { } // Drucker gerade entfernt — die Combos bleiben leer
     }
 
     /// <summary>Druckt einen frischen Scan sofort mit den Kopiermodus-Einstellungen.</summary>
@@ -409,7 +459,15 @@ public partial class MainForm : Form
         document.DocumentName = "ScanView Kopie";
         if (comboCopyPrinter.SelectedItem is string printer) { copyPrinterSettings.PrinterName = printer; }
         copyPrinterSettings.Copies = (short)numCopies.Value;
+        copyPrinterSettings.Duplex = comboCopyDuplex.Enabled
+            ? comboCopyDuplex.SelectedIndex switch { 1 => Duplex.Vertical, 2 => Duplex.Horizontal, _ => Duplex.Simplex }
+            : Duplex.Default;
         document.PrinterSettings = copyPrinterSettings;
+        document.DefaultPageSettings.Color = chkCopyColor.Checked;
+        if (comboCopyPaper.SelectedIndex >= 0 && comboCopyPaper.SelectedIndex < copyPaperSizes.Count)
+        {
+            document.DefaultPageSettings.PaperSize = copyPaperSizes[comboCopyPaper.SelectedIndex];
+        }
         document.PrintPage += (s, args) =>
         {
             using var image = ScanService.LoadUnlocked(tiffPath);
@@ -725,8 +783,16 @@ public partial class MainForm : Form
         };
         pic.Click += (s, e) => Select(thumb);
         num.Click += (s, e) => Select(thumb);
-        pic.DoubleClick += (s, e) => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(tiffPath) { UseShellExecute = true });
-        pic.MouseDown += (s, e) => dragStart = e.Location;
+        pic.DoubleClick += (s, e) => { Select(thumb); MenuEditCrop_Click(thumb, EventArgs.Empty); }; // direkt in den Zuschneiden-Dialog
+        pic.MouseDown += (s, e) =>
+        {
+            dragStart = e.Location;
+            if (e.Button == MouseButtons.Right) { Select(thumb); } // fürs Kontextmenü zuerst markieren
+        };
+        num.MouseDown += (s, e) => { if (e.Button == MouseButtons.Right) { Select(thumb); } };
+        thumb.ContextMenuStrip = thumbContextMenu;
+        pic.ContextMenuStrip = thumbContextMenu;
+        num.ContextMenuStrip = thumbContextMenu;
         pic.MouseMove += (s, e) =>
         {
             // Ziehen erst ab der System-Schwelle starten, damit ein normaler Klick ein Klick bleibt
