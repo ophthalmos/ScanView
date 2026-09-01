@@ -34,8 +34,6 @@ public partial class MainForm : Form
     private Button btnZoomOut; // übereinander gestapelt in einem ToolStripControlHost (s. CreateZoomButtons)
     private Button btnZoomIn;
     private Font copyModeBoldFont; // „Kopiermodus beenden" fett, solange der Modus aktiv ist
-    private ContextMenuStrip thumbContextMenu; // Rechtsklick auf eine Miniatur
-    private ToolStripMenuItem contextPaste;    // einziger zustandsabhängiger Eintrag darin
 
     public MainForm() : this(false) // parameterlos für den Windows-Forms-Designer
     {
@@ -70,7 +68,6 @@ public partial class MainForm : Form
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
         CreateZoomButtons();
-        CreateThumbContextMenu();
         ApplyToolbarIcons();
         ApplyMenuIcons();
         if (!selfTest) // der Selbsttest-Screenshot soll deterministisch bleiben
@@ -195,39 +192,28 @@ public partial class MainForm : Form
         menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
         menuHelpShortcuts.Image = Icon16(ToolbarIcons.Help);
         menuHelpAbout.Image = Icon16(ToolbarIcons.Info);
+        thumbContextMenu.ImageScalingSize = size; // Kontextmenü der Miniaturen
+        contextCrop.Image = Icon16(ToolbarIcons.Crop);
+        contextRotateLeft.Image = ToolbarIcons.GetMirrored(ToolbarIcons.Rotate, size);
+        contextRotate180.Image = Icon16(ToolbarIcons.Rotate180);
+        contextRotateRight.Image = Icon16(ToolbarIcons.Rotate);
+        contextCut.Image = Icon16(ToolbarIcons.Cut);
+        contextCopy.Image = Icon16(ToolbarIcons.Copy);
+        contextPaste.Image = Icon16(ToolbarIcons.Paste);
+        contextDelete.Image = Icon16(ToolbarIcons.Delete);
+        contextOpenViewer.Image = Icon16(ToolbarIcons.OpenFile);
     }
 
-    /// <summary>Kontextmenü der Miniaturen: die wichtigsten Punkte aus dem Bearbeiten-Menü
-    /// plus „Im Bildbetrachter öffnen" (der Doppelklick führt jetzt in den Zuschneiden-Dialog).</summary>
-    private void CreateThumbContextMenu()
+    /// <summary>Der Rechtsklick hat die Miniatur bereits markiert — nur Einfügen hängt vom Zustand ab.</summary>
+    private void ThumbContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        thumbContextMenu = new ContextMenuStrip();
-        var size = LogicalToDeviceUnits(new Size(16, 16));
-        thumbContextMenu.ImageScalingSize = size;
-        var icons = ToolbarIcons.FontAvailable;
-        ToolStripMenuItem Add(string text, Image image, EventHandler onClick, string shortcut = null)
-        {
-            ToolStripMenuItem item = new(text) { Image = icons ? image : null, ShortcutKeyDisplayString = shortcut };
-            item.Click += onClick;
-            thumbContextMenu.Items.Add(item);
-            return item;
-        }
-        Add("&Zuschneiden …", ToolbarIcons.Get(ToolbarIcons.Crop, size), MenuEditCrop_Click, "F10");
-        Add("Drehen nach &links", ToolbarIcons.GetMirrored(ToolbarIcons.Rotate, size), MenuEditRotateLeft_Click, "Strg+L");
-        Add("Drehen um 1&80°", ToolbarIcons.Get(ToolbarIcons.Rotate180, size), MenuEditRotate180_Click, "Strg+Umschalt+R");
-        Add("Drehen nach &rechts", ToolbarIcons.Get(ToolbarIcons.Rotate, size), MenuEditRotateRight_Click, "Strg+R");
-        thumbContextMenu.Items.Add(new ToolStripSeparator());
-        Add("&Ausschneiden", ToolbarIcons.Get(ToolbarIcons.Cut, size), MenuEditCut_Click, "Strg+X");
-        Add("&Kopieren", ToolbarIcons.Get(ToolbarIcons.Copy, size), MenuEditCopy_Click, "Strg+C");
-        contextPaste = Add("Ein&fügen", ToolbarIcons.Get(ToolbarIcons.Paste, size), MenuEditPaste_Click, "Strg+V");
-        Add("&Löschen", ToolbarIcons.Get(ToolbarIcons.Delete, size), BtnRemove_Click, "Entf");
-        thumbContextMenu.Items.Add(new ToolStripSeparator());
-        Add("Im &Bildbetrachter öffnen", ToolbarIcons.Get(ToolbarIcons.OpenFile, size), (s, e) =>
-        {
-            if (selected == null) { return; }
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo((string)selected.Tag) { UseShellExecute = true });
-        });
-        thumbContextMenu.Opening += (s, e) => contextPaste.Enabled = clipboardPath != null; // Rechtsklick hat bereits markiert
+        contextPaste.Enabled = clipboardPath != null;
+    }
+
+    private void ContextOpenViewer_Click(object sender, EventArgs e)
+    {
+        if (selected == null) { return; }
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo((string)selected.Tag) { UseShellExecute = true });
     }
 
     // ------------------------------------------------------------------ Fensterposition merken

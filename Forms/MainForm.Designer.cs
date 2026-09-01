@@ -28,6 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
+            thumbContextMenu = new ContextMenuStrip(components);
+            contextCrop = new ToolStripMenuItem();
+            contextRotateLeft = new ToolStripMenuItem();
+            contextRotate180 = new ToolStripMenuItem();
+            contextRotateRight = new ToolStripMenuItem();
+            contextSeparator1 = new ToolStripSeparator();
+            contextCut = new ToolStripMenuItem();
+            contextCopy = new ToolStripMenuItem();
+            contextPaste = new ToolStripMenuItem();
+            contextDelete = new ToolStripMenuItem();
+            contextSeparator2 = new ToolStripSeparator();
+            contextOpenViewer = new ToolStripMenuItem();
             menuStrip = new MenuStrip();
             menuAction = new ToolStripMenuItem();
             menuActionNew = new ToolStripMenuItem();
@@ -119,6 +132,94 @@
             ((System.ComponentModel.ISupportInitialize)numCopies).BeginInit();
             statusStrip.SuspendLayout();
             SuspendLayout();
+            // 
+            // thumbContextMenu
+            // 
+            thumbContextMenu.Items.AddRange(new ToolStripItem[] { contextCrop, contextRotateLeft, contextRotate180, contextRotateRight, contextSeparator1, contextCut, contextCopy, contextPaste, contextDelete, contextSeparator2, contextOpenViewer });
+            thumbContextMenu.Name = "thumbContextMenu";
+            thumbContextMenu.Size = new Size(230, 220);
+            thumbContextMenu.Opening += ThumbContextMenu_Opening;
+            // 
+            // contextCrop
+            // 
+            contextCrop.Name = "contextCrop";
+            contextCrop.ShortcutKeyDisplayString = "F10";
+            contextCrop.Size = new Size(229, 22);
+            contextCrop.Text = "&Zuschneiden …";
+            contextCrop.Click += MenuEditCrop_Click;
+            // 
+            // contextRotateLeft
+            // 
+            contextRotateLeft.Name = "contextRotateLeft";
+            contextRotateLeft.ShortcutKeyDisplayString = "Strg+L";
+            contextRotateLeft.Size = new Size(229, 22);
+            contextRotateLeft.Text = "Drehen nach &links";
+            contextRotateLeft.Click += MenuEditRotateLeft_Click;
+            // 
+            // contextRotate180
+            // 
+            contextRotate180.Name = "contextRotate180";
+            contextRotate180.ShortcutKeyDisplayString = "Strg+Umschalt+R";
+            contextRotate180.Size = new Size(229, 22);
+            contextRotate180.Text = "Drehen um 1&80°";
+            contextRotate180.Click += MenuEditRotate180_Click;
+            // 
+            // contextRotateRight
+            // 
+            contextRotateRight.Name = "contextRotateRight";
+            contextRotateRight.ShortcutKeyDisplayString = "Strg+R";
+            contextRotateRight.Size = new Size(229, 22);
+            contextRotateRight.Text = "Drehen nach &rechts";
+            contextRotateRight.Click += MenuEditRotateRight_Click;
+            // 
+            // contextSeparator1
+            // 
+            contextSeparator1.Name = "contextSeparator1";
+            contextSeparator1.Size = new Size(226, 6);
+            // 
+            // contextCut
+            // 
+            contextCut.Name = "contextCut";
+            contextCut.ShortcutKeyDisplayString = "Strg+X";
+            contextCut.Size = new Size(229, 22);
+            contextCut.Text = "&Ausschneiden";
+            contextCut.Click += MenuEditCut_Click;
+            // 
+            // contextCopy
+            // 
+            contextCopy.Name = "contextCopy";
+            contextCopy.ShortcutKeyDisplayString = "Strg+C";
+            contextCopy.Size = new Size(229, 22);
+            contextCopy.Text = "&Kopieren";
+            contextCopy.Click += MenuEditCopy_Click;
+            // 
+            // contextPaste
+            // 
+            contextPaste.Name = "contextPaste";
+            contextPaste.ShortcutKeyDisplayString = "Strg+V";
+            contextPaste.Size = new Size(229, 22);
+            contextPaste.Text = "Ein&fügen";
+            contextPaste.Click += MenuEditPaste_Click;
+            // 
+            // contextDelete
+            // 
+            contextDelete.Name = "contextDelete";
+            contextDelete.ShortcutKeyDisplayString = "Entf";
+            contextDelete.Size = new Size(229, 22);
+            contextDelete.Text = "&Löschen";
+            contextDelete.Click += BtnRemove_Click;
+            // 
+            // contextSeparator2
+            // 
+            contextSeparator2.Name = "contextSeparator2";
+            contextSeparator2.Size = new Size(226, 6);
+            // 
+            // contextOpenViewer
+            // 
+            contextOpenViewer.Name = "contextOpenViewer";
+            contextOpenViewer.Size = new Size(229, 22);
+            contextOpenViewer.Text = "Im &Bildbetrachter öffnen";
+            contextOpenViewer.Click += ContextOpenViewer_Click;
             // 
             // menuStrip
             // 
@@ -931,6 +1032,18 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip;
+        private System.Windows.Forms.ContextMenuStrip thumbContextMenu;
+        private System.Windows.Forms.ToolStripMenuItem contextCrop;
+        private System.Windows.Forms.ToolStripMenuItem contextRotateLeft;
+        private System.Windows.Forms.ToolStripMenuItem contextRotate180;
+        private System.Windows.Forms.ToolStripMenuItem contextRotateRight;
+        private System.Windows.Forms.ToolStripSeparator contextSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem contextCut;
+        private System.Windows.Forms.ToolStripMenuItem contextCopy;
+        private System.Windows.Forms.ToolStripMenuItem contextPaste;
+        private System.Windows.Forms.ToolStripMenuItem contextDelete;
+        private System.Windows.Forms.ToolStripSeparator contextSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem contextOpenViewer;
         private System.Windows.Forms.ToolStripMenuItem menuAction;
         private System.Windows.Forms.ToolStripMenuItem menuActionNew;
         private System.Windows.Forms.ToolStripMenuItem menuActionImport;
