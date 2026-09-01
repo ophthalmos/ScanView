@@ -564,9 +564,8 @@ public partial class MainForm : Form
         ReloadSelectedThumbnail();
     }
 
-    /// <summary>Zuschneide-Dialog für die markierte Seite; das Ergebnis ersetzt die Seitendatei.
-    /// Bei „Bildgröße beibehalten" wird außerhalb der Auswahl weiß aufgefüllt (z.B. schwarze
-    /// Scanränder entfernen, ohne das A4-Format zu verlieren), sonst klassisch beschnitten.</summary>
+    /// <summary>Zuschneide-Dialog für die markierte Seite: die Aktionen (Freistellen/Zuschneiden/
+    /// Ausschneiden) wirken dort sofort auf die Vorschau; „Übernehmen" ersetzt die Seitendatei.</summary>
     private void MenuEditCrop_Click(object sender, EventArgs e)
     {
         if (selected == null) { return; }
@@ -579,51 +578,10 @@ public partial class MainForm : Form
         settings.CropY = bounds.Y;
         settings.CropWidth = bounds.Width;
         settings.CropHeight = bounds.Height;
-        if (result != DialogResult.OK) { return; }
-        var rect = dialog.SelectionInImage;
-        if (rect.Width < 5 || rect.Height < 5) { return; }
-        switch (dialog.Mode)
-        {
-            case CropMode.IsolateSelection: // außerhalb weiß, Bildgröße bleibt
-                using (Bitmap kept = new(image.Width, image.Height))
-                {
-                    kept.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-                    using (var g = Graphics.FromImage(kept))
-                    {
-                        g.Clear(Color.White);
-                        g.DrawImage(image, rect, rect, GraphicsUnit.Pixel); // Auswahl bleibt an ihrer Position
-                    }
-                    kept.Save(path, ImageFormatFor(path));
-                }
-                statusLabel.Text = "Freigestellt: außerhalb der Auswahl weiß aufgefüllt — Bildgröße unverändert";
-                break;
-            case CropMode.RemoveSelection: // Auswahl weiß entfernen, Bildgröße bleibt
-                using (Bitmap kept = new(image.Width, image.Height))
-                {
-                    kept.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-                    using (var g = Graphics.FromImage(kept))
-                    {
-                        g.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
-                        g.FillRectangle(Brushes.White, rect);
-                    }
-                    kept.Save(path, ImageFormatFor(path));
-                }
-                statusLabel.Text = "Ausgeschnitten: die Auswahl wurde weiß entfernt — Bildgröße unverändert";
-                break;
-            default: // klassisch auf die Auswahl verkleinern
-                using (Bitmap cropped = new(rect.Width, rect.Height))
-                {
-                    cropped.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-                    using (var g = Graphics.FromImage(cropped))
-                    {
-                        g.DrawImage(image, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
-                    }
-                    cropped.Save(path, ImageFormatFor(path));
-                }
-                statusLabel.Text = $"Seite zugeschnitten auf {rect.Width} × {rect.Height} Pixel";
-                break;
-        }
+        if (result != DialogResult.OK || !dialog.Edited) { return; }
+        dialog.ResultImage.Save(path, ImageFormatFor(path));
         ReloadSelectedThumbnail();
+        statusLabel.Text = $"Seite bearbeitet übernommen ({dialog.ResultImage.Width} × {dialog.ResultImage.Height} Pixel)";
     }
 
     /// <summary>Duplex von Hand: erst alle Vorderseiten scannen, dann den Stapel gewendet — die

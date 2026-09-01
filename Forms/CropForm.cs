@@ -3,17 +3,10 @@ using ScanView.Classes;
 
 namespace ScanView.Forms;
 
-/// <summary>Was mit der Auswahl geschehen soll.</summary>
-internal enum CropMode
-{
-    IsolateSelection, // Freistellen: außerhalb weiß, Bildgröße bleibt
-    CropToSelection,  // Zuschneiden: Bild wird auf die Auswahl verkleinert
-    RemoveSelection,  // Ausschneiden: die Auswahl wird weiß entfernt, Bildgröße bleibt
-}
-
 /// <summary>Zuschneide-Dialog: Auswahlrahmen mit acht Griffen über der Seitenvorschau —
 /// Interaktionslogik nach dem Vorbild von Wilhelms ImageCropper (ohne Seitenverhältnis-Zwang).
-/// Alle Einstell-Controls sitzen in einem ToolStrip am Oberrand, unten nur ein StatusStrip.</summary>
+/// Die Aktionen (Freistellen/Zuschneiden/Ausschneiden) wirken sofort auf das Vorschaubild und
+/// lassen sich beliebig kombinieren; „Übernehmen" liefert das Gesamtergebnis, Esc verwirft.</summary>
 internal sealed class CropForm : Form
 {
     private enum DragHandle { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight, Inside }
@@ -21,13 +14,15 @@ internal sealed class CropForm : Form
     private readonly PictureBox pictureBox;
     private readonly Panel scrollPanel;
     private readonly ToolStripComboBox comboZoom;
-    private readonly RadioButton rbIsolate;
-    private readonly RadioButton rbCrop;
-    private readonly RadioButton rbRemove;
+    private readonly ToolStripButton btnIsolate;
+    private readonly ToolStripButton btnCropAction;
+    private readonly ToolStripButton btnRemove;
     private readonly Button btnApply;
     private readonly ToolStripStatusLabel statusLabel;
     private readonly ToolTip toolTip = new();
-    private readonly Image image;
+    private readonly Image image; // Original (gehört dem Aufrufer)
+    private Image workingImage;   // Arbeitskopie, auf der die Aktionen sichtbar ausgeführt werden
+    private string lastActionText;
     private readonly int handleSize;
     private static readonly Color AccentColor = Color.FromArgb(0x2B, 0x77, 0xC0); // Übernehmen hervorheben
     private Rectangle selectionRect = Rectangle.Empty; // in PictureBox-Koordinaten
@@ -37,17 +32,19 @@ internal sealed class CropForm : Form
     private bool isDragging;
     private bool isNewSelection;
 
-    /// <summary>Der gewählte Ausschnitt in Bildpixeln (gültig nach DialogResult.OK).</summary>
+    /// <summary>Der aktuelle Ausschnitt in Bildpixeln (für die laufende Auswahl).</summary>
     public Rectangle SelectionInImage { get; private set; }
 
-    /// <summary>Gewählter Modus — Standard ist Freistellen (außerhalb weiß, Bildgröße bleibt).</summary>
-    public CropMode Mode => rbCrop.Checked ? CropMode.CropToSelection
-        : rbRemove.Checked ? CropMode.RemoveSelection
-        : CropMode.IsolateSelection;
+    /// <summary>Das bearbeitete Bild (gültig nach DialogResult.OK, wenn Edited true ist).</summary>
+    public Image ResultImage => workingImage;
+
+    /// <summary>True, sobald mindestens eine Aktion ausgeführt wurde.</summary>
+    public bool Edited => !ReferenceEquals(workingImage, image);
 
     public CropForm(Image image, Rectangle storedBounds)
     {
         this.image = image;
+        workingImage = image;
         Text = "Zuschneiden";
         StartPosition = FormStartPosition.CenterParent;
         MinimumSize = new Size(560, 400);
@@ -69,25 +66,22 @@ internal sealed class CropForm : Form
         btnZoomOut.Click += (s, e) => comboZoom.SelectedIndex = Math.Max(0, comboZoom.SelectedIndex - 1);
         btnZoomIn.Click += (s, e) => comboZoom.SelectedIndex = Math.Min(comboZoom.Items.Count - 1, comboZoom.SelectedIndex + 1);
 
-        // Die drei Modi als RadioButtons (in einem ControlHost — der ToolStrip kennt selbst keine)
-        RadioButton MakeRadio(string text, string tip)
+        // Die drei Aktionen als echte Buttons: sie wirken sofort auf das Vorschaubild
+        ToolStripButton MakeAction(string text, string tip, EventHandler onClick)
         {
-            RadioButton radio = new() { AutoSize = true, Text = text, Font = toolStrip.Font, BackColor = Color.Transparent, Margin = new Padding(6, 0, 6, 0) };
-            toolTip.SetToolTip(radio, tip);
-            return radio;
+            ToolStripButton button = new(text) { DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, Enabled = false, ToolTipText = tip };
+            button.Click += onClick;
+            return button;
         }
-        rbIsolate = MakeRadio("&Freistellen", "Außerhalb der Auswahl wird weiß — die Bildgröße (z.B. A4) bleibt erhalten");
-        rbCrop = MakeRadio("&Zuschneiden", "Das Bild wird auf die Auswahl verkleinert");
-        rbRemove = MakeRadio("&Ausschneiden", "Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten");
-        rbIsolate.Checked = true;
-        FlowLayoutPanel modePanel = new() { AutoSize = true, WrapContents = false, BackColor = Color.Transparent };
-        modePanel.Controls.AddRange([rbIsolate, rbCrop, rbRemove]);
+        btnIsolate = MakeAction("&Freistellen", "Außerhalb der Auswahl wird weiß — die Bildgröße (z.B. A4) bleibt erhalten", (s, e) => IsolateSelection());
+        btnCropAction = MakeAction("&Zuschneiden", "Das Bild wird auf die Auswahl verkleinert", (s, e) => CropToSelection());
+        btnRemove = MakeAction("&Ausschneiden", "Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten", (s, e) => RemoveSelection());
 
         btnApply = new Button()
         {
             Text = "&Übernehmen",
             FlatStyle = FlatStyle.Flat,
-            BackColor = Color.Gainsboro, // bis eine Auswahl existiert
+            BackColor = Color.Gainsboro, // bis eine Aktion ausgeführt wurde
             ForeColor = Color.White,
             Font = new Font(Font.FontFamily, 10f, FontStyle.Bold),
             Size = new Size(130, 30),
@@ -95,13 +89,16 @@ internal sealed class CropForm : Form
         };
         btnApply.FlatAppearance.BorderSize = 0;
         btnApply.Click += (s, e) => DialogResult = DialogResult.OK;
-        toolTip.SetToolTip(btnApply, "Auswahl anwenden (Enter)");
+        toolTip.SetToolTip(btnApply, "Ergebnis in die Seite übernehmen (Enter)");
         ToolStripControlHost applyHost = new(btnApply) { Alignment = ToolStripItemAlignment.Right, Margin = new Padding(0, 2, 8, 2) };
 
         if (ToolbarIcons.FontAvailable)
         {
             btnZoomOut.Image = ToolbarIcons.Get(ToolbarIcons.ZoomOut, toolStrip.ImageScalingSize);
             btnZoomIn.Image = ToolbarIcons.Get(ToolbarIcons.ZoomIn, toolStrip.ImageScalingSize);
+            btnIsolate.Image = ToolbarIcons.Get(ToolbarIcons.SinglePage, toolStrip.ImageScalingSize);
+            btnCropAction.Image = ToolbarIcons.Get(ToolbarIcons.Crop, toolStrip.ImageScalingSize);
+            btnRemove.Image = ToolbarIcons.Get(ToolbarIcons.Cut, toolStrip.ImageScalingSize);
         }
         else
         {
@@ -111,7 +108,7 @@ internal sealed class CropForm : Form
             btnZoomIn.Text = "+";
         }
         toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, btnZoomOut, btnZoomIn,
-            new ToolStripSeparator(), new ToolStripControlHost(modePanel), applyHost });
+            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, applyHost });
 
         StatusStrip statusStrip = new();
         statusLabel = new ToolStripStatusLabel("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
@@ -164,6 +161,71 @@ internal sealed class CropForm : Form
         return base.ProcessCmdKey(ref msg, keyData);
     }
 
+    protected override void OnFormClosed(FormClosedEventArgs e)
+    {
+        base.OnFormClosed(e);
+        if (DialogResult != DialogResult.OK && Edited) // verworfen — die Arbeitskopie aufräumen
+        {
+            pictureBox.Image = image;
+            workingImage.Dispose();
+            workingImage = image;
+        }
+    }
+
+    // ------------------------------------------------------------------ Aktionen (sofort sichtbar, wiederholbar)
+
+    /// <summary>Freistellen: außerhalb der Auswahl weiß, Bildgröße bleibt.</summary>
+    private void IsolateSelection()
+    {
+        var rect = SelectionInImage;
+        Bitmap result = new(workingImage.Width, workingImage.Height);
+        result.SetResolution(workingImage.HorizontalResolution, workingImage.VerticalResolution);
+        using (var g = Graphics.FromImage(result))
+        {
+            g.Clear(Color.White);
+            g.DrawImage(workingImage, rect, rect, GraphicsUnit.Pixel); // Auswahl bleibt an ihrer Position
+        }
+        ReplaceWorkingImage(result, "Freigestellt: außerhalb der Auswahl weiß");
+    }
+
+    /// <summary>Zuschneiden: das Bild wird auf die Auswahl verkleinert.</summary>
+    private void CropToSelection()
+    {
+        var rect = SelectionInImage;
+        Bitmap result = new(rect.Width, rect.Height);
+        result.SetResolution(workingImage.HorizontalResolution, workingImage.VerticalResolution);
+        using (var g = Graphics.FromImage(result))
+        {
+            g.DrawImage(workingImage, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
+        }
+        ReplaceWorkingImage(result, $"Zugeschnitten auf {rect.Width} × {rect.Height} Pixel");
+    }
+
+    /// <summary>Ausschneiden: die Auswahl wird weiß entfernt, Bildgröße bleibt.</summary>
+    private void RemoveSelection()
+    {
+        var rect = SelectionInImage;
+        Bitmap result = new(workingImage.Width, workingImage.Height);
+        result.SetResolution(workingImage.HorizontalResolution, workingImage.VerticalResolution);
+        using (var g = Graphics.FromImage(result))
+        {
+            g.DrawImage(workingImage, new Rectangle(0, 0, result.Width, result.Height), new Rectangle(0, 0, result.Width, result.Height), GraphicsUnit.Pixel);
+            g.FillRectangle(Brushes.White, rect);
+        }
+        ReplaceWorkingImage(result, "Ausgeschnitten: die Auswahl wurde weiß entfernt");
+    }
+
+    /// <summary>Tauscht die Arbeitskopie aus und zeigt das Ergebnis sofort in der Vorschau.</summary>
+    private void ReplaceWorkingImage(Bitmap result, string actionText)
+    {
+        var previous = workingImage;
+        workingImage = result;
+        pictureBox.Image = workingImage;
+        if (!ReferenceEquals(previous, image)) { previous.Dispose(); }
+        lastActionText = actionText + "   ·   Übernehmen speichert, Esc verwirft alles";
+        ApplyZoom(); // Bildgröße kann sich geändert haben; erstellt auch die neue Standardauswahl
+    }
+
     /// <summary>Setzt die Bildgröße gemäß Zoomstufe (Index 0 = Einpassen) und erstellt die Startauswahl neu.</summary>
     private void ApplyZoom()
     {
@@ -171,13 +233,13 @@ internal sealed class CropForm : Form
         if (comboZoom.SelectedIndex <= 0)
         {
             var client = scrollPanel.ClientSize;
-            var scale = Math.Min((double)client.Width / image.Width, (double)client.Height / image.Height);
-            target = new Size(Math.Max(1, (int)(image.Width * scale)), Math.Max(1, (int)(image.Height * scale)));
+            var scale = Math.Min((double)client.Width / workingImage.Width, (double)client.Height / workingImage.Height);
+            target = new Size(Math.Max(1, (int)(workingImage.Width * scale)), Math.Max(1, (int)(workingImage.Height * scale)));
         }
         else
         {
             var percent = int.Parse(comboZoom.Text.Split(' ')[0]);
-            target = new Size(image.Width * percent / 100, image.Height * percent / 100);
+            target = new Size(workingImage.Width * percent / 100, workingImage.Height * percent / 100);
         }
         if (pictureBox.Size != target) { pictureBox.Size = target; } // der Resize-Handler leert die Auswahl
         scrollPanel.AutoScrollPosition = Point.Empty;
@@ -315,17 +377,20 @@ internal sealed class CropForm : Form
     private void UpdateUiState()
     {
         var valid = selectionRect.Width > 4 && selectionRect.Height > 4;
-        btnApply.Enabled = valid;
-        btnApply.BackColor = valid ? AccentColor : Color.Gainsboro; // hervorheben, sobald die Auswahl steht
+        btnIsolate.Enabled = valid;
+        btnCropAction.Enabled = valid;
+        btnRemove.Enabled = valid;
+        btnApply.Enabled = Edited;
+        btnApply.BackColor = Edited ? AccentColor : Color.Gainsboro; // hervorheben, sobald es etwas zu übernehmen gibt
         if (valid)
         {
             var real = TranslateToImage(selectionRect);
             SelectionInImage = real;
-            statusLabel.Text = $"Ausschnitt: {real.Width} × {real.Height} Pixel";
+            statusLabel.Text = $"Auswahl: {real.Width} × {real.Height} Pixel" + (lastActionText == null ? string.Empty : "   ·   " + lastActionText);
         }
         else
         {
-            statusLabel.Text = "Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung";
+            statusLabel.Text = lastActionText ?? "Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung";
         }
         pictureBox.Invalidate();
     }
