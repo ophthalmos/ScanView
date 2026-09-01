@@ -191,6 +191,7 @@ public partial class MainForm : Form
         menuViewZoomIn.Image = Icon16(ToolbarIcons.ZoomIn);
         menuViewZoomOut.Image = Icon16(ToolbarIcons.ZoomOut);
         menuViewFullScreen.Image = Icon16(ToolbarIcons.FullScreen);
+        menuExtrasScanner.Image = Icon16(ToolbarIcons.Scan);
         menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
         menuHelpShortcuts.Image = Icon16(ToolbarIcons.Help);
         menuHelpAbout.Image = Icon16(ToolbarIcons.Info);
@@ -420,15 +421,7 @@ public partial class MainForm : Form
             var storedIndex = settings.CopyPrinter != null ? comboCopyPrinter.Items.IndexOf(settings.CopyPrinter) : -1;
             var defaultIndex = storedIndex >= 0 ? storedIndex : comboCopyPrinter.Items.IndexOf(copyPrinterSettings.PrinterName); // sonst Standarddrucker
             comboCopyPrinter.SelectedIndex = defaultIndex >= 0 ? defaultIndex : (comboCopyPrinter.Items.Count > 0 ? 0 : -1);
-            // gespeicherte Einstellungen wiederherstellen (nach dem Laden der Druckerfähigkeiten)
-            var paperIndex = copyPaperSizes.FindIndex(p => p.RawKind == settings.CopyPaperRawKind);
-            if (paperIndex >= 0) { comboCopyPaper.SelectedIndex = paperIndex; }
-            var sourceIndex = copyPaperSources.FindIndex(s => s.RawKind == settings.CopyPaperSourceRawKind);
-            if (sourceIndex >= 0) { comboCopySource.SelectedIndex = sourceIndex; }
-            if (comboCopyDuplex.Enabled) { comboCopyDuplex.SelectedIndex = Math.Clamp(settings.CopyDuplexIndex, 0, comboCopyDuplex.Items.Count - 1); }
-            numCopies.Value = Math.Clamp(settings.CopyCopies, (int)numCopies.Minimum, (int)numCopies.Maximum);
-            if (chkCopyColor.Enabled) { chkCopyColor.Checked = settings.CopyColor; }
-            chkCopyFit.Checked = settings.CopyFit;
+            ApplyStoredCopySelections(); // gespeicherte Einstellungen (nach dem Laden der Druckerfähigkeiten)
         }
         panelCopyMode.Visible = active;
         flowPanel.Visible = !active;
@@ -439,7 +432,76 @@ public partial class MainForm : Form
             : ToolStripItemDisplayStyle.ImageAndText;
         menuActionCopyMode.Checked = active;
         statusLabel.Text = active ? "Kopiermodus: jeder Scan wird direkt gedruckt" : string.Empty;
-        if (!active) { UpdateUiState(); }
+        if (!active) { StoreCopyUiInSettings(); UpdateUiState(); } // Änderungen sofort als gemeinsame Vorgabe übernehmen
+    }
+
+    /// <summary>Überträgt die gespeicherten Druckvorgaben auf die Kopiermodus-Controls
+    /// (nachdem die Fähigkeiten des gewählten Druckers geladen sind).</summary>
+    private void ApplyStoredCopySelections()
+    {
+        var paperIndex = copyPaperSizes.FindIndex(p => p.RawKind == settings.CopyPaperRawKind);
+        if (paperIndex >= 0) { comboCopyPaper.SelectedIndex = paperIndex; }
+        var sourceIndex = copyPaperSources.FindIndex(s => s.RawKind == settings.CopyPaperSourceRawKind);
+        if (sourceIndex >= 0) { comboCopySource.SelectedIndex = sourceIndex; }
+        if (comboCopyDuplex.Enabled) { comboCopyDuplex.SelectedIndex = Math.Clamp(settings.CopyDuplexIndex, 0, comboCopyDuplex.Items.Count - 1); }
+        numCopies.Value = Math.Clamp(settings.CopyCopies, (int)numCopies.Minimum, (int)numCopies.Maximum);
+        if (chkCopyColor.Enabled) { chkCopyColor.Checked = settings.CopyColor; }
+        chkCopyFit.Checked = settings.CopyFit;
+    }
+
+    /// <summary>Wendet die gespeicherten Druckvorgaben (Drucker, Exemplare, Duplex, Papier, Zufuhr,
+    /// Farbe) auf ein Druckdokument an — dieselbe Voreinstellung wie im Kopiermodus.</summary>
+    private void ApplySharedPrinterSettings(PrintDocument document)
+    {
+        var printerSettings = document.PrinterSettings;
+        if (!string.IsNullOrEmpty(settings.CopyPrinter)
+            && PrinterSettings.InstalledPrinters.Cast<string>().Contains(settings.CopyPrinter))
+        {
+            printerSettings.PrinterName = settings.CopyPrinter;
+        }
+        printerSettings.Copies = (short)Math.Clamp(settings.CopyCopies, 1, 99);
+        try
+        {
+            if (printerSettings.CanDuplex)
+            {
+                printerSettings.Duplex = settings.CopyDuplexIndex switch { 1 => Duplex.Vertical, 2 => Duplex.Horizontal, _ => Duplex.Simplex };
+            }
+            foreach (PaperSize paper in printerSettings.PaperSizes)
+            {
+                if (paper.RawKind == settings.CopyPaperRawKind) { document.DefaultPageSettings.PaperSize = paper; break; }
+            }
+            foreach (PaperSource source in printerSettings.PaperSources)
+            {
+                if (source.RawKind == settings.CopyPaperSourceRawKind) { document.DefaultPageSettings.PaperSource = source; break; }
+            }
+            if (printerSettings.SupportsColor) { document.DefaultPageSettings.Color = settings.CopyColor; }
+        }
+        catch (InvalidPrinterException) { }
+    }
+
+    /// <summary>Schreibt die Kopiermodus-Controls in die gespeicherten Druckvorgaben —
+    /// dieselben Werte nutzt auch der normale Drucken-Dialog als Voreinstellung.</summary>
+    private void StoreCopyUiInSettings()
+    {
+        if (comboCopyPrinter.SelectedItem is not string copyPrinter) { return; } // Kopiermodus wurde nie benutzt
+        settings.CopyPrinter = copyPrinter;
+        settings.CopyPaperRawKind = comboCopyPaper.SelectedIndex >= 0 && comboCopyPaper.SelectedIndex < copyPaperSizes.Count
+            ? copyPaperSizes[comboCopyPaper.SelectedIndex].RawKind : -1;
+        settings.CopyPaperSourceRawKind = comboCopySource.SelectedIndex >= 0 && comboCopySource.SelectedIndex < copyPaperSources.Count
+            ? copyPaperSources[comboCopySource.SelectedIndex].RawKind : -1;
+        settings.CopyDuplexIndex = Math.Max(0, comboCopyDuplex.SelectedIndex);
+        settings.CopyCopies = (int)numCopies.Value;
+        settings.CopyColor = chkCopyColor.Checked;
+        settings.CopyFit = chkCopyFit.Checked;
+    }
+
+    /// <summary>Gleicht die Kopiermodus-Controls an die (z.B. vom Druckdialog geänderten) Vorgaben an.</summary>
+    private void SyncCopyModeUi()
+    {
+        if (comboCopyPrinter.Items.Count == 0) { return; } // Kopiermodus wurde noch nie geöffnet
+        var index = comboCopyPrinter.Items.IndexOf(settings.CopyPrinter);
+        if (index >= 0 && index != comboCopyPrinter.SelectedIndex) { comboCopyPrinter.SelectedIndex = index; } // lädt die Fähigkeiten neu
+        ApplyStoredCopySelections();
     }
 
     /// <summary>Lädt Papierformate, Duplex- und Farbfähigkeit des gewählten Druckers in die Controls —
@@ -481,6 +543,7 @@ public partial class MainForm : Form
     /// <summary>Druckt einen frischen Scan sofort mit den Kopiermodus-Einstellungen.</summary>
     private void PrintCopy(string tiffPath)
     {
+        StoreCopyUiInSettings(); // die aktuellen Werte sind zugleich die gemeinsame Druckvorgabe
         using PrintDocument document = new();
         document.DocumentName = "ScanView Kopie";
         if (comboCopyPrinter.SelectedItem is string printer) { copyPrinterSettings.PrinterName = printer; }
@@ -743,6 +806,16 @@ public partial class MainForm : Form
     }
 
     // ------------------------------------------------------------------ Menüs „Extras" und „?"
+
+    /// <summary>Extras → Scanner: Gerät wählen; die Gerätetasten verwaltet der Windows-Dialog.</summary>
+    private void MenuExtrasScanner_Click(object sender, EventArgs e)
+    {
+        using ScannerForm dialog = new(selectedScannerId);
+        if (dialog.ShowDialog(this) != DialogResult.OK || dialog.SelectedScanner == null) { return; }
+        selectedScannerId = dialog.SelectedScanner.Id;
+        selectedScannerName = dialog.SelectedScanner.Name;
+        UpdateUiState();
+    }
 
     private void MenuExtrasOptions_Click(object sender, EventArgs e)
     {
@@ -1045,6 +1118,7 @@ public partial class MainForm : Form
         if (pages.Count == 0) { return; }
         using PrintDocument document = new();
         document.DocumentName = "ScanView";
+        ApplySharedPrinterSettings(document); // dieselben Vorgaben wie im Kopiermodus
         var pageIndex = 0;
         document.PrintPage += (s, args) =>
         {
@@ -1061,6 +1135,11 @@ public partial class MainForm : Form
         {
             document.Print();
             statusLabel.Text = $"{pages.Count} Seite(n) an den Drucker übergeben";
+            // Grundeinstellungen aus dem Dialog als gemeinsame Vorgabe übernehmen (gilt auch für den Kopiermodus)
+            settings.CopyPrinter = document.PrinterSettings.PrinterName;
+            settings.CopyCopies = Math.Clamp((int)document.PrinterSettings.Copies, 1, 99);
+            settings.CopyDuplexIndex = document.PrinterSettings.Duplex switch { Duplex.Vertical => 1, Duplex.Horizontal => 2, _ => 0 };
+            SyncCopyModeUi();
         }
         catch (InvalidPrinterException ex)
         {
@@ -1078,18 +1157,7 @@ public partial class MainForm : Form
         settings.ThumbWidth = thumbWidth;
         settings.ScannerId = selectedScannerId;
         settings.ScannerName = selectedScannerName;
-        if (comboCopyPrinter.SelectedItem is string copyPrinter) // Kopiermodus war in Benutzung
-        {
-            settings.CopyPrinter = copyPrinter;
-            settings.CopyPaperRawKind = comboCopyPaper.SelectedIndex >= 0 && comboCopyPaper.SelectedIndex < copyPaperSizes.Count
-                ? copyPaperSizes[comboCopyPaper.SelectedIndex].RawKind : -1;
-            settings.CopyPaperSourceRawKind = comboCopySource.SelectedIndex >= 0 && comboCopySource.SelectedIndex < copyPaperSources.Count
-                ? copyPaperSources[comboCopySource.SelectedIndex].RawKind : -1;
-            settings.CopyDuplexIndex = Math.Max(0, comboCopyDuplex.SelectedIndex);
-            settings.CopyCopies = (int)numCopies.Value;
-            settings.CopyColor = chkCopyColor.Checked;
-            settings.CopyFit = chkCopyFit.Checked;
-        }
+        StoreCopyUiInSettings();
         SaveWindowBounds(); // ruft settings.Save()
         if (selfTest) { try { Directory.Delete(sessionFolder, true); } catch (IOException) { } } // Wegwerf-Ordner des Selbsttests
     }
