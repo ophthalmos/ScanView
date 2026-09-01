@@ -11,7 +11,7 @@ internal static class OcrPdfService
     private static string TessData => Path.Combine(AppContext.BaseDirectory, "tessdata");
 
     /// <summary>Erstellt aus den TIFF-Scans eine durchsuchbare PDF; progress meldet (fertige Seite, Gesamtzahl).</summary>
-    public static void CreateSearchablePdf(IReadOnlyList<string> tiffFiles, string outputPdf, string language, Action<int, int> progress)
+    public static void CreateSearchablePdf(IReadOnlyList<string> tiffFiles, string outputPdf, string language, int jpgQuality, Action<int, int> progress)
     {
         TesseractEnviornment.CustomSearchPath = Path.Combine(AppContext.BaseDirectory, "x64"); // native DLLs des NuGet-Pakets
         List<string> pagePdfs = [];
@@ -28,7 +28,7 @@ internal static class OcrPdfService
                     // Zeichenskalierung der Erkennung und PDF-Seitengröße nicht
                     var dpi = pix.XRes >= 70 ? pix.XRes : 300;
                     using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
-                        new Dictionary<string, object> { { "user_defined_dpi", dpi }, { "jpg_quality", 75 } }, false);
+                        new Dictionary<string, object> { { "user_defined_dpi", dpi }, { "jpg_quality", jpgQuality } }, false);
                     // zweiter Parameter = Bilddateiname: daraus lädt der PDF-Renderer das einzubettende Bild
                     using var page = engine.Process(pix, tiffFiles[i], PageSegMode.Auto);
                     renderer.AddPage(page);

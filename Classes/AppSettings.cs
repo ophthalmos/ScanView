@@ -11,7 +11,10 @@ internal sealed class AppSettings
     public int WindowHeight { get; set; }
     public bool WindowMaximized { get; set; }
     public bool CloseOnEscape { get; set; } = true;
+    public int ExitAction { get; set; }      // 0 = Seiten behalten, 1 = nach Rückfrage leeren, 2 = ohne Rückfrage leeren
     public string OcrLanguage { get; set; } = "deu";
+    public int OcrJpgQuality { get; set; } = 75; // JPEG-Qualität der Bilder in der erzeugten PDF
+    public List<string> PageFiles { get; set; } = []; // Seiten der letzten Sitzung (bei "behalten")
     public string ScannerId { get; set; }
     public string ScannerName { get; set; }
     public int DpiIndex { get; set; } = 2;   // 300 dpi

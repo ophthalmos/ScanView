@@ -12,7 +12,7 @@ public partial class MainForm : Form
     private const int IconThumbWidth = 160; // Ansicht „Symbole" und Startgröße
     private int thumbWidth = IconThumbWidth; // Ansicht-Modi dürfen von den Zoomstufen abweichen
 
-    private readonly string sessionFolder = Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"));
+    private readonly string sessionFolder; // Seitenablage: persistent, damit „Seiten behalten" beim Beenden möglich ist
     private readonly bool selfTest;
     private int scanCounter;
     private const int NumberHeight = 18; // Streifen für die Seitenzahl unter dem Bild
@@ -45,7 +45,15 @@ public partial class MainForm : Form
         splitScan.DropDown = new ToolStripDropDownMenu { Font = new Font(Font.FontFamily, 9f) };
         this.selfTest = selfTest;
         settings = AppSettings.Load();
+        sessionFolder = selfTest // der Selbsttest bleibt in einem Wegwerf-Ordner
+            ? Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"))
+            : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ScanView", "Seiten");
         Directory.CreateDirectory(sessionFolder);
+        foreach (var file in Directory.EnumerateFiles(sessionFolder, "scan_*")) // Zähler hinter vorhandene Seiten setzen
+        {
+            if (int.TryParse(Path.GetFileNameWithoutExtension(file).AsSpan(5), out var number)) { scanCounter = Math.Max(scanCounter, number); }
+        }
+        FormClosing += MainForm_FormClosing;
         int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
         comboDpi.SelectedIndex = Clamped(settings.DpiIndex, comboDpi, 2);      // Standard: 300 dpi — der OCR-Sweet-Spot
         comboColor.SelectedIndex = Clamped(settings.ColorIndex, comboColor, 0);
@@ -63,7 +71,32 @@ public partial class MainForm : Form
             thumbWidth = Math.Max(ThumbWidths[0], settings.ThumbWidth);
             selectedScannerId = settings.ScannerId; // zuletzt benutzter Scanner; geprüft wird erst beim Scannen
             selectedScannerName = settings.ScannerName;
+            foreach (var file in settings.PageFiles.Where(File.Exists)) { AddPage(file); } // „Seiten behalten"
+            Select(null);
         }
+    }
+
+    /// <summary>Beenden-Verhalten aus den Optionen: Seiten behalten, nach Rückfrage leeren oder still leeren.</summary>
+    private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+    {
+        if (selfTest) { return; }
+        var pages = flowPanel.Controls.Cast<Panel>().Select(p => (string)p.Tag).ToList();
+        var keep = pages.Count > 0 && (settings.ExitAction == 0
+            || (settings.ExitAction == 1 && !TaskDlg.ConfirmTaskDlg(Handle, "Seitenübersicht leeren?",
+                "Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht.")));
+        settings.PageFiles = keep ? pages : [];
+        try
+        {
+            if (keep) // nicht mehr referenzierte Dateien (entfernte Seiten, Zwischenablage-Reste) trotzdem aufräumen
+            {
+                foreach (var file in Directory.EnumerateFiles(sessionFolder).Where(f => !pages.Contains(f, StringComparer.OrdinalIgnoreCase)))
+                {
+                    File.Delete(file);
+                }
+            }
+            else { Directory.Delete(sessionFolder, true); }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
     }
 
     /// <summary>Baut die beiden Zoom-Buttons übereinander in einen ToolStripControlHost — der
@@ -148,6 +181,7 @@ public partial class MainForm : Form
         menuViewZoomOut.Image = Icon16(ToolbarIcons.ZoomOut);
         menuViewFullScreen.Image = Icon16(ToolbarIcons.FullScreen);
         menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
+        menuHelpShortcuts.Image = Icon16(ToolbarIcons.Help);
         menuHelpAbout.Image = Icon16(ToolbarIcons.Info);
     }
 
@@ -183,7 +217,6 @@ public partial class MainForm : Form
     {
         switch (keyData)
         {
-            case Keys.F7: BtnCopyMode_Click(this, EventArgs.Empty); return true;
             case Keys.Control | Keys.Add: BtnZoomIn_Click(this, EventArgs.Empty); return true;      // Ziffernblock; Strg+± liegt auf den Menükürzeln
             case Keys.Control | Keys.Subtract: BtnZoomOut_Click(this, EventArgs.Empty); return true;
             case Keys.Alt | Keys.Left: MoveSelected(-1); return true;
@@ -232,6 +265,14 @@ public partial class MainForm : Form
         {
             DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-copymode.png"));
+        }
+        using (SettingsForm settingsDialog = new(true, 0, "deu", 75)) // und der Optionen-Dialog
+        {
+            settingsDialog.StartPosition = FormStartPosition.Manual;
+            settingsDialog.Show(this);
+            using var shot = new Bitmap(settingsDialog.Width, settingsDialog.Height);
+            settingsDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, settingsDialog.Size));
+            shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-settings.png"));
         }
         Environment.Exit(pageCount == 2 ? 0 : 1);
     }
@@ -315,6 +356,7 @@ public partial class MainForm : Form
         panelCopyMode.Visible = active;
         flowPanel.Visible = !active;
         btnCopyMode.Text = active ? "&Kopiermodus beenden" : "&Kopiermodus";
+        menuActionCopyMode.Checked = active;
         statusLabel.Text = active ? "Kopiermodus: jeder Scan wird direkt gedruckt" : string.Empty;
         if (!active) { UpdateUiState(); }
     }
@@ -570,11 +612,18 @@ public partial class MainForm : Form
 
     private void MenuExtrasOptions_Click(object sender, EventArgs e)
     {
-        using SettingsForm dialog = new(settings.CloseOnEscape, settings.OcrLanguage);
+        using SettingsForm dialog = new(settings.CloseOnEscape, settings.ExitAction, settings.OcrLanguage, settings.OcrJpgQuality);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.CloseOnEscape = dialog.CloseOnEscape;
+        settings.ExitAction = dialog.ExitAction;
         settings.OcrLanguage = dialog.OcrLanguage;
+        settings.OcrJpgQuality = dialog.OcrJpgQuality;
         settings.Save();
+    }
+
+    private void MenuHelpShortcuts_Click(object sender, EventArgs e)
+    {
+        TaskDlg.ShowShortcutsPdf(Handle, Icon);
     }
 
     private void MenuHelpAbout_Click(object sender, EventArgs e)
@@ -820,7 +869,7 @@ public partial class MainForm : Form
         Cursor.Current = Cursors.WaitCursor;
         try
         {
-            OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, settings.OcrLanguage, (done, total) =>
+            OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, settings.OcrLanguage, settings.OcrJpgQuality, (done, total) =>
             {
                 statusLabel.Text = $"Texterkennung {done}/{total} …";
                 statusStrip.Refresh();
@@ -877,7 +926,7 @@ public partial class MainForm : Form
         settings.ScannerId = selectedScannerId;
         settings.ScannerName = selectedScannerName;
         SaveWindowBounds(); // ruft settings.Save()
-        try { Directory.Delete(sessionFolder, true); } catch (IOException) { } // Sitzungs-Scans aufräumen
+        if (selfTest) { try { Directory.Delete(sessionFolder, true); } catch (IOException) { } } // Wegwerf-Ordner des Selbsttests
     }
 
     /// <summary>Zeichnet den Aufklapp-Pfeil des Scannen-SplitButtons größer, als der Standard-Renderer es tut.</summary>

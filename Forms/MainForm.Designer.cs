@@ -35,6 +35,7 @@
             menuActionScan = new ToolStripMenuItem();
             menuActionSave = new ToolStripMenuItem();
             menuActionPrint = new ToolStripMenuItem();
+            menuActionCopyMode = new ToolStripMenuItem();
             menuActionSeparator = new ToolStripSeparator();
             menuActionClose = new ToolStripMenuItem();
             menuEdit = new ToolStripMenuItem();
@@ -62,6 +63,7 @@
             menuExtras = new ToolStripMenuItem();
             menuExtrasOptions = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
+            menuHelpShortcuts = new ToolStripMenuItem();
             menuHelpAbout = new ToolStripMenuItem();
             toolStrip = new ToolStrip();
             splitScan = new ToolStripSplitButton();
@@ -118,7 +120,7 @@
             //
             // menuAction
             //
-            menuAction.DropDownItems.AddRange(new ToolStripItem[] { menuActionNew, menuActionImport, menuActionScan, menuActionSave, menuActionPrint, menuActionSeparator, menuActionClose });
+            menuAction.DropDownItems.AddRange(new ToolStripItem[] { menuActionNew, menuActionImport, menuActionScan, menuActionSave, menuActionPrint, menuActionCopyMode, menuActionSeparator, menuActionClose });
             menuAction.Name = "menuAction";
             menuAction.Text = "&Aktion";
             //
@@ -162,6 +164,14 @@
             menuActionPrint.ShortcutKeys = Keys.F6;
             menuActionPrint.Text = "&Drucken …";
             menuActionPrint.Click += BtnPrint_Click;
+            //
+            // menuActionCopyMode
+            //
+            menuActionCopyMode.Name = "menuActionCopyMode";
+            menuActionCopyMode.ShortcutKeys = Keys.F7;
+            menuActionCopyMode.Text = "Kopier&modus";
+            menuActionCopyMode.ToolTipText = "Scans direkt drucken — der Scanner wird zum Kopierer";
+            menuActionCopyMode.Click += BtnCopyMode_Click;
             //
             // menuActionSeparator
             //
@@ -354,9 +364,17 @@
             //
             // menuHelp
             //
-            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuHelpAbout });
+            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuHelpShortcuts, menuHelpAbout });
             menuHelp.Name = "menuHelp";
             menuHelp.Text = "?";
+            //
+            // menuHelpShortcuts
+            //
+            menuHelpShortcuts.Name = "menuHelpShortcuts";
+            menuHelpShortcuts.ShortcutKeys = Keys.F1;
+            menuHelpShortcuts.Text = "&Hilfe (Tastenkürzel)";
+            menuHelpShortcuts.ToolTipText = "Tastenkürzel-Übersicht als PDF erstellen und anzeigen";
+            menuHelpShortcuts.Click += MenuHelpShortcuts_Click;
             //
             // menuHelpAbout
             //
@@ -743,6 +761,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuActionScan;
         private System.Windows.Forms.ToolStripMenuItem menuActionSave;
         private System.Windows.Forms.ToolStripMenuItem menuActionPrint;
+        private System.Windows.Forms.ToolStripMenuItem menuActionCopyMode;
         private System.Windows.Forms.ToolStripSeparator menuActionSeparator;
         private System.Windows.Forms.ToolStripMenuItem menuActionClose;
         private System.Windows.Forms.ToolStripMenuItem menuEdit;
@@ -770,6 +789,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuExtras;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasOptions;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
+        private System.Windows.Forms.ToolStripMenuItem menuHelpShortcuts;
         private System.Windows.Forms.ToolStripMenuItem menuHelpAbout;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripSplitButton splitScan;

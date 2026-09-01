@@ -82,6 +82,77 @@ internal static class TaskDlg
         if (result == paypalButton) { StartLink(hwnd, "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S8DVXHKFC2CVS&source=url"); }
     }
 
+    /// <summary>Alle Tastenkürzel: Kürzel, Kurztext und optionale Zusatzerklärung für die PDF-Übersicht.</summary>
+    public static readonly (string Key, string Text, string Detail)[] ShortcutRows =
+    [
+        ("F4", "Seite scannen", null),
+        ("F5", "durchsuchbare PDF speichern (mit Texterkennung)", null),
+        ("F6", "alle Seiten drucken", null),
+        ("F7", "Kopiermodus ein/aus",
+            "Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein."),
+        ("F9", "Seitenübersicht leeren (Neu)", null),
+        ("Strg+I", "Bilddateien als Seiten importieren", null),
+        ("Strg+X / C / V", "Seite ausschneiden / kopieren / einfügen", null),
+        ("Entf", "markierte Seite entfernen", null),
+        ("Strg+L / Strg+R", "Seite nach links / rechts drehen", null),
+        ("Strg+Umschalt+R", "Seite um 180° drehen", null),
+        ("Strg+D", "Rückseiten einfügen",
+            "Duplex von Hand: erst alle Vorderseiten scannen, dann den gewendeten Stapel — die Rückseiten werden verzahnt einsortiert."),
+        ("Strg+U", "Sortierung umkehren", null),
+        ("Strg+1 … 4", "Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole", null),
+        ("Strg++ / Strg+−", "Miniaturen vergrößern / verkleinern", null),
+        ("Alt+← / →", "markierte Seite verschieben (auch: Ziehen mit der Maus)", null),
+        ("Doppelklick", "Seite im Bildbetrachter öffnen", null),
+        ("F11", "Vollbild ein/aus", null),
+        ("Strg+,", "Optionen öffnen", null),
+        ("2× Esc / Umschalt+Esc", "Programm beenden (Option)", null),
+        ("F1", "diese Kürzel-Übersicht", null),
+    ];
+
+    /// <summary>Kürzel-Übersicht (F1 und ?-Menü): erstellt die PDF im Downloads-Ordner und öffnet sie
+    /// im Standard-PDF-Programm. Existiert die Datei schon, fragt ein Dialog, ob sie geöffnet oder
+    /// neu erstellt werden soll (Muster aus PDFlight).</summary>
+    public static void ShowShortcutsPdf(nint hwnd, Icon icon)
+    {
+        var path = ShortcutsPdf.DefaultPath;
+        if (File.Exists(path))
+        {
+            TaskDialogButton openButton = new TaskDialogCommandLinkButton("Vorhandene öffnen", path);
+            TaskDialogButton recreateButton = new TaskDialogCommandLinkButton("Neu erstellen", "z.B. nach einem Update");
+            using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante
+            var page = new TaskDialogPage()
+            {
+                Caption = Application.ProductName,
+                Heading = "Kürzel-Übersicht bereits vorhanden",
+                Icon = icon32 == null ? null : new TaskDialogIcon(icon32),
+                AllowCancel = true,
+                SizeToContent = true,
+                Buttons = { openButton, recreateButton, TaskDialogButton.Cancel },
+                DefaultButton = openButton
+            };
+            var result = TaskDialog.ShowDialog(hwnd, page);
+            if (result != openButton && result != recreateButton) { return; }
+            if (result == openButton) { OpenShell(hwnd, path); return; }
+        }
+        try
+        {
+            OpenShell(hwnd, ShortcutsPdf.Create());
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or PdfSharp.PdfSharpException)
+        {
+            ErrTaskDlg(hwnd, "Die PDF-Übersicht konnte nicht erstellt werden.", ex);
+        }
+    }
+
+    private static void OpenShell(nint hwnd, string path)
+    {
+        try { Process.Start(new ProcessStartInfo(path) { UseShellExecute = true }); }
+        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
+        {
+            ErrTaskDlg(hwnd, "Die Datei konnte nicht geöffnet werden.", ex);
+        }
+    }
+
     internal static void StartLink(nint hwnd, string url)
     {
         try
