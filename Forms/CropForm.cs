@@ -20,14 +20,13 @@ internal sealed class CropForm : Form
     private readonly ToolStripButton btnIsolate;
     private readonly ToolStripButton btnCropAction;
     private readonly ToolStripButton btnRemove;
-    private readonly Button btnApply;
+    private readonly ToolStripButton btnApply;
+    private readonly Font applyBoldFont; // Übernehmen wird fett, sobald es Änderungen gibt
     private readonly ToolStripStatusLabel statusLabel;
-    private readonly ToolTip toolTip = new();
     private readonly Image image; // Original (gehört dem Aufrufer)
     private Image workingImage;   // Arbeitskopie, auf der die Aktionen sichtbar ausgeführt werden
     private string lastActionText;
     private readonly int handleSize;
-    private static readonly Color AccentColor = Color.FromArgb(0x2B, 0x77, 0xC0); // Übernehmen hervorheben
     private Rectangle selectionRect = Rectangle.Empty; // in PictureBox-Koordinaten
     private Point mouseDownPoint;
     private Point dragStartPoint;
@@ -83,25 +82,22 @@ internal sealed class CropForm : Form
         btnCropAction = MakeAction("&Zuschneiden", "Das Bild wird auf die Auswahl verkleinert", (s, e) => CropToSelection());
         btnRemove = MakeAction("&Ausschneiden", "Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten", (s, e) => RemoveSelection());
 
-        btnApply = new Button()
+        applyBoldFont = new Font(toolStrip.Font, FontStyle.Bold);
+        btnApply = new ToolStripButton("&Übernehmen")
         {
-            Text = "&Übernehmen",
-            FlatStyle = FlatStyle.Flat,
-            BackColor = Color.Gainsboro, // bis eine Aktion ausgeführt wurde
-            ForeColor = Color.White,
-            Font = new Font(Font.FontFamily, 10f, FontStyle.Bold),
-            Size = new Size(130, 30),
+            Alignment = ToolStripItemAlignment.Right,
+            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
             Enabled = false,
+            ToolTipText = "Ergebnis in die Seite übernehmen (Enter)",
         };
-        btnApply.FlatAppearance.BorderSize = 0;
         btnApply.Click += (s, e) => DialogResult = DialogResult.OK;
-        toolTip.SetToolTip(btnApply, "Ergebnis in die Seite übernehmen (Enter)");
-        ToolStripControlHost applyHost = new(btnApply) { Alignment = ToolStripItemAlignment.Right, Margin = new Padding(0, 2, 8, 2) };
-
-        Button btnCancel = new() { Text = "Abbrechen", Font = toolStrip.Font, Size = new Size(100, 30) };
+        ToolStripButton btnCancel = new("Abbrechen")
+        {
+            Alignment = ToolStripItemAlignment.Right,
+            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
+            ToolTipText = "Alle Aktionen verwerfen und schließen (Esc)",
+        };
         btnCancel.Click += (s, e) => DialogResult = DialogResult.Cancel;
-        toolTip.SetToolTip(btnCancel, "Alle Aktionen verwerfen und schließen (Esc)");
-        ToolStripControlHost cancelHost = new(btnCancel) { Alignment = ToolStripItemAlignment.Right, Margin = new Padding(0, 2, 6, 2) };
 
         if (ToolbarIcons.FontAvailable)
         {
@@ -110,6 +106,8 @@ internal sealed class CropForm : Form
             btnIsolate.Image = ToolbarIcons.Get(ToolbarIcons.SinglePage, toolStrip.ImageScalingSize);
             btnCropAction.Image = ToolbarIcons.Get(ToolbarIcons.Crop, toolStrip.ImageScalingSize);
             btnRemove.Image = ToolbarIcons.Get(ToolbarIcons.Cut, toolStrip.ImageScalingSize);
+            btnApply.Image = ToolbarIcons.Get(ToolbarIcons.Accept, toolStrip.ImageScalingSize);
+            btnCancel.Image = ToolbarIcons.Get(ToolbarIcons.Cancel, toolStrip.ImageScalingSize);
         }
         else
         {
@@ -119,7 +117,7 @@ internal sealed class CropForm : Form
             btnZoomIn.Text = "+";
         }
         toolStrip.Items.AddRange([ labelZoom, comboZoom, btnZoomOut, btnZoomIn,
-            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, applyHost, cancelHost ]); // rechts: Übernehmen ganz außen, Abbrechen links davon
+            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, btnApply, btnCancel ]); // rechts: Übernehmen ganz außen, Abbrechen links davon
 
         StatusStrip statusStrip = new();
         statusLabel = new ToolStripStatusLabel("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
@@ -394,7 +392,7 @@ internal sealed class CropForm : Form
         btnCropAction.Enabled = valid;
         btnRemove.Enabled = valid;
         btnApply.Enabled = Edited;
-        btnApply.BackColor = Edited ? AccentColor : Color.Gainsboro; // hervorheben, sobald es etwas zu übernehmen gibt
+        btnApply.Font = Edited ? applyBoldFont : null; // fett, sobald es etwas zu übernehmen gibt (null = ToolStrip-Schrift)
         if (valid)
         {
             var real = TranslateToImage(selectionRect);

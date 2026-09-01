@@ -49,6 +49,8 @@ internal static class ToolbarIcons
 
     public const char OpenFile = '';   // Im Bildbetrachter öffnen
 
+    public const char Cancel = '';     // X (Abbrechen)
+
     private const string FontName = "Segoe MDL2 Assets";
     private static readonly Dictionary<(char Glyph, int Size), Image> cache = [];
 
