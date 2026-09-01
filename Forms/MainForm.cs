@@ -280,7 +280,7 @@ public partial class MainForm : Form
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-settings.png"));
         }
         using (var image = ScanService.LoadUnlocked((string)((Panel)flowPanel.Controls[0]).Tag)) // und der Zuschneide-Dialog
-        using (CropForm cropDialog = new(image))
+        using (CropForm cropDialog = new(image, Rectangle.Empty))
         {
             cropDialog.StartPosition = FormStartPosition.Manual;
             cropDialog.Show(this);
@@ -572,8 +572,14 @@ public partial class MainForm : Form
         if (selected == null) { return; }
         var path = (string)selected.Tag;
         using var image = ScanService.LoadUnlocked(path);
-        using CropForm dialog = new(image);
-        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        using CropForm dialog = new(image, new Rectangle(settings.CropX, settings.CropY, settings.CropWidth, settings.CropHeight));
+        var result = dialog.ShowDialog(this);
+        var bounds = dialog.WindowState == FormWindowState.Normal ? dialog.Bounds : dialog.RestoreBounds;
+        settings.CropX = bounds.X; // Größe/Position des Dialogs merken — auch bei Abbruch
+        settings.CropY = bounds.Y;
+        settings.CropWidth = bounds.Width;
+        settings.CropHeight = bounds.Height;
+        if (result != DialogResult.OK) { return; }
         var rect = dialog.SelectionInImage;
         if (rect.Width < 5 || rect.Height < 5) { return; }
         switch (dialog.Mode)
