@@ -1,12 +1,12 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 
-namespace ScanTest.Classes;
+namespace ScanView.Classes;
 
 /// <summary>TaskDialog-Helfer als moderner Ersatz für MessageBox — aus PDFlight übernommen
-/// und auf ScanTest zugeschnitten (ohne Mehrsprachigkeit und Updatesuche).</summary>
+/// und auf ScanView zugeschnitten (ohne Mehrsprachigkeit und Updatesuche).</summary>
 internal static class TaskDlg
 {
     public static void MsgTaskDlg(nint hwnd, string heading, string message, TaskDialogIcon icon = null)
@@ -53,7 +53,7 @@ internal static class TaskDlg
         var curVersion = Assembly.GetExecutingAssembly().GetName().Version;
         var threeVersion = curVersion?.ToString(3) ?? "unbekannt";
         var buildDate = GetBuildDate();
-        var msg = "ScanTest scannt Seiten per WIA, ordnet sie als Miniaturen" + Environment.NewLine +
+        var msg = "ScanView scannt Seiten per WIA, ordnet sie als Miniaturen" + Environment.NewLine +
             "und speichert sie mit Texterkennung (Tesseract) als durch-" + Environment.NewLine +
             "suchbare PDF. Der Kopiermodus druckt Scans direkt — der" + Environment.NewLine +
             "Scanner wird zum Kopierer.";
@@ -96,7 +96,7 @@ internal static class TaskDlg
     }
 
     private static DateTime GetBuildDate()
-    { // s. <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId> in ScanTest.csproj
+    { // s. <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId> in ScanView.csproj
         const string BuildVersionMetadataPrefix = "+build";
         var attribute = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>();
         if (attribute?.InformationalVersion != null)

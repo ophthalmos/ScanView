@@ -1,8 +1,8 @@
-using PdfSharp.Pdf;
+﻿using PdfSharp.Pdf;
 using PdfSharp.Pdf.IO;
 using Tesseract;
 
-namespace ScanTest.Classes;
+namespace ScanView.Classes;
 
 /// <summary>OCR und PDF-Zusammenbau: Tesseract macht aus jedem Scan eine durchsuchbare
 /// Einzelseiten-PDF (Bild + unsichtbare Textschicht), PDFsharp fügt sie zum Enddokument zusammen.</summary>
@@ -19,13 +19,16 @@ internal static class OcrPdfService
         {
             for (var i = 0; i < tiffFiles.Count; i++)
             {
-                var pdfBase = Path.Combine(Path.GetTempPath(), "ScanTest_" + Guid.NewGuid().ToString("N"));
+                var pdfBase = Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"));
                 using (var renderer = ResultRenderer.CreatePdfRenderer(pdfBase, TessData, false))
-                using (renderer.BeginDocument("ScanTest"))
+                using (renderer.BeginDocument("ScanView"))
                 {
-                    using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
-                        new Dictionary<string, object> { { "user_defined_dpi", 300 }, { "jpg_quality", 75 } }, false);
                     using var pix = Pix.LoadFromFile(tiffFiles[i]);
+                    // Echte Auflösung der Seite an Tesseract melden (wie in PDFMover) — sonst stimmen
+                    // Zeichenskalierung der Erkennung und PDF-Seitengröße nicht
+                    var dpi = pix.XRes >= 70 ? pix.XRes : 300;
+                    using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
+                        new Dictionary<string, object> { { "user_defined_dpi", dpi }, { "jpg_quality", 75 } }, false);
                     // zweiter Parameter = Bilddateiname: daraus lädt der PDF-Renderer das einzubettende Bild
                     using var page = engine.Process(pix, tiffFiles[i], PageSegMode.Auto);
                     renderer.AddPage(page);

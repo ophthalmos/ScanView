@@ -1,6 +1,6 @@
-using System.Drawing.Text;
+﻿using System.Drawing.Text;
 
-namespace ScanTest.Classes;
+namespace ScanView.Classes;
 
 /// <summary>
 /// Rendert Symbole für die Toolbar aus der Windows-Symbolschrift "Segoe MDL2 Assets"
@@ -24,6 +24,23 @@ internal static class ToolbarIcons
     private const char Star = '';       // FavoriteStarFill
     private const char NewPageKey = ''; // Cache-Schlüssel für das zusammengesetzte "Neu"-Symbol
 
+    public const char Import = '';
+    public const char Power = '';      // Schließen
+    public const char Cut = '';
+    public const char Copy = '';
+    public const char Paste = '';
+    public const char Rotate = '';     // im Uhrzeigersinn; links = GetMirrored
+    public const char Rotate180 = '';  // Refresh (Kreispfeil)
+    public const char Interleave = ''; // Switch: Rückseiten verzahnen
+    public const char Sort = '';
+    public const char FitFrame = '';   // Optimale Breite
+    public const char SinglePage = ''; // Ganze Seite
+    public const char TwoPages = '';
+    public const char GridView = '';   // Symbole
+    public const char FullScreen = '';
+    public const char Settings = '';
+    public const char Info = '';
+
     private const string FontName = "Segoe MDL2 Assets";
     private static readonly Dictionary<(char Glyph, int Size), Image> cache = [];
 
@@ -34,6 +51,21 @@ internal static class ToolbarIcons
     {
         using Font font = new(FontName, 10f);
         return string.Equals(font.Name, FontName, StringComparison.OrdinalIgnoreCase); // GDI fällt sonst stumm auf eine Standardschrift zurück
+    }
+
+    private static readonly Dictionary<(char Glyph, int Size), Image> mirroredCache = [];
+
+    /// <summary>Horizontal gespiegelte Glyphe — z.B. der Dreh-Pfeil für "Drehen nach links".</summary>
+    public static Image GetMirrored(char glyph, Size size)
+    {
+        if (!mirroredCache.TryGetValue((glyph, size.Width), out var image))
+        {
+            var mirrored = new Bitmap(Get(glyph, size));
+            mirrored.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            image = mirrored;
+            mirroredCache[(glyph, size.Width)] = image;
+        }
+        return image;
     }
 
     /// <summary>Zusammengesetztes Symbol für "Neu": leeres Blatt mit Sternchen rechts oben.</summary>

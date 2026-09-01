@@ -1,6 +1,6 @@
-using System.Drawing.Imaging;
+﻿using System.Drawing.Imaging;
 
-namespace ScanTest.Classes;
+namespace ScanView.Classes;
 
 internal sealed record ScannerInfo(string Id, string Name);
 
@@ -79,8 +79,11 @@ internal static class ScanService
                 TrySetProperty(item, WiaVerticalExtent, (int)Math.Round(area.Height / 25.4 * actualDpi));
             }
             if (brightnessPercent != 0) { TrySetScaledProperty(item, WiaBrightness, brightnessPercent); }
-            dynamic image = item.Transfer(WiaFormatTiff); // Format ist ein Wunsch — das Gerät darf abweichen
-            return SaveAsTiff(image, path);
+            // ShowTransfer zeigt nur eine schlichte Fortschrittsanzeige (keinen Einstellungsdialog)
+            var dialogType = Type.GetTypeFromProgID("WIA.CommonDialog");
+            dynamic dialog = Activator.CreateInstance(dialogType);
+            dynamic image = dialog.ShowTransfer(item, WiaFormatTiff, false); // Format ist ein Wunsch — das Gerät darf abweichen
+            return image == null ? null : SaveAsTiff(image, path);
         }
         catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException)
         {
@@ -195,11 +198,13 @@ internal static class ScanService
         return path;
     }
 
-    /// <summary>Lädt ein Bild ohne Dateisperre (Kopie im Speicher) — für die Miniaturansichten.</summary>
+    /// <summary>Lädt ein Bild ohne Dateisperre (Kopie im Speicher) — für Miniaturen, Druck und Drehen.</summary>
     public static Image LoadUnlocked(string path)
     {
         using var stream = new MemoryStream(File.ReadAllBytes(path));
         using var original = Image.FromStream(stream);
-        return new Bitmap(original); // vom Stream gelöste Kopie
+        Bitmap copy = new(original); // vom Stream gelöste Kopie …
+        copy.SetResolution(original.HorizontalResolution, original.VerticalResolution); // … erbt aber sonst 96 dpi (GDI+)
+        return copy;
     }
 }

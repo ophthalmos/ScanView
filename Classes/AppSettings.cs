@@ -1,8 +1,8 @@
-using System.Text.Json;
+﻿using System.Text.Json;
 
-namespace ScanTest.Classes;
+namespace ScanView.Classes;
 
-/// <summary>Programmeinstellungen, gespeichert als JSON in %APPDATA%\ScanTest\settings.json.</summary>
+/// <summary>Programmeinstellungen, gespeichert als JSON in %APPDATA%\ScanView\settings.json.</summary>
 internal sealed class AppSettings
 {
     public int WindowX { get; set; }
@@ -12,15 +12,29 @@ internal sealed class AppSettings
     public bool WindowMaximized { get; set; }
     public bool CloseOnEscape { get; set; } = true;
     public string OcrLanguage { get; set; } = "deu";
+    public string ScannerId { get; set; }
+    public string ScannerName { get; set; }
+    public int DpiIndex { get; set; } = 2;   // 300 dpi
+    public int ColorIndex { get; set; }      // Farbe
+    public int AreaIndex { get; set; }       // maximal
+    public int FeedIndex { get; set; }       // Flachbett
+    public int Brightness { get; set; }
+    public int ThumbWidth { get; set; } = 160;
 
     private static string FilePath => Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScanView", "settings.json");
+
+    private static string LegacyFilePath => Path.Combine( // vor der Umbenennung von ScanTest
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScanTest", "settings.json");
 
     public static AppSettings Load()
     {
-        try { return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(FilePath)) ?? new AppSettings(); }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException)
-        { return new AppSettings(); } // erster Start oder defekte Datei
+        foreach (var path in new[] { FilePath, LegacyFilePath })
+        {
+            try { return JsonSerializer.Deserialize<AppSettings>(File.ReadAllText(path)) ?? new AppSettings(); }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or JsonException) { } // erster Start oder defekte Datei
+        }
+        return new AppSettings();
     }
 
     public void Save()

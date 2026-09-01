@@ -1,6 +1,6 @@
-using ScanTest.Forms;
+﻿using ScanView.Forms;
 
-namespace ScanTest;
+namespace ScanView;
 
 internal static class Program
 {

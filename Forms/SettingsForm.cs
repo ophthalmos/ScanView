@@ -1,4 +1,4 @@
-namespace ScanTest.Forms;
+﻿namespace ScanView.Forms;
 
 /// <summary>Einstellungsdialog (Extras → Optionen): Allgemein und Texterkennung.
 /// Bewusst ohne Designer-Datei — der Dialog ist klein und komplett in Code aufgebaut.</summary>
