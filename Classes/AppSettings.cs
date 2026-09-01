@@ -28,6 +28,13 @@ internal sealed class AppSettings
     public int FeedIndex { get; set; }       // Flachbett
     public int Brightness { get; set; }
     public int ThumbWidth { get; set; } = 160;
+    public string CopyPrinter { get; set; }            // Kopiermodus: Drucker samt Einstellungen
+    public int CopyPaperRawKind { get; set; } = -1;    // -1 = Druckerstandard
+    public int CopyPaperSourceRawKind { get; set; } = -1;
+    public int CopyDuplexIndex { get; set; }           // 0 = Einseitig
+    public int CopyCopies { get; set; } = 1;
+    public bool CopyColor { get; set; }
+    public bool CopyFit { get; set; } = true;
 
     private static string FilePath => Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "ScanView", "settings.json");
