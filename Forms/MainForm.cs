@@ -60,6 +60,9 @@ public partial class MainForm : Form
         comboArea.SelectedIndex = Clamped(settings.AreaIndex, comboArea, 0);
         comboFeed.SelectedIndex = Clamped(settings.FeedIndex, comboFeed, 0);
         trackBrightness.Value = Math.Clamp(settings.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
+        comboOcr.Items.Add("Ohne Texterkennung");
+        foreach (var code in OcrLanguages.Installed()) { comboOcr.Items.Add(new OcrLanguageItem(code)); }
+        SelectOcrLanguage(settings.OcrLanguage); // bevorzugte Sprache aus den Optionen als Vorgabe
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
         CreateZoomButtons();
@@ -141,6 +144,7 @@ public partial class MainForm : Form
         Set(btnMoveLeft, ToolbarIcons.Previous, imageOnly: true);
         Set(btnMoveRight, ToolbarIcons.Next, imageOnly: true);
         Set(btnRemove, ToolbarIcons.Delete);
+        Set(btnCrop, ToolbarIcons.Crop);
         btnNew.Image = ToolbarIcons.GetNewPage(size); // leeres Blatt mit Sternchen
         btnNew.TextImageRelation = TextImageRelation.ImageAboveText;
         btnNew.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
@@ -168,6 +172,7 @@ public partial class MainForm : Form
         menuEditCopy.Image = Icon16(ToolbarIcons.Copy);
         menuEditPaste.Image = Icon16(ToolbarIcons.Paste);
         menuEditDelete.Image = Icon16(ToolbarIcons.Delete);
+        menuEditCrop.Image = Icon16(ToolbarIcons.Crop);
         menuEditRotateLeft.Image = ToolbarIcons.GetMirrored(ToolbarIcons.Rotate, size);
         menuEditRotate180.Image = Icon16(ToolbarIcons.Rotate180);
         menuEditRotateRight.Image = Icon16(ToolbarIcons.Rotate);
@@ -274,8 +279,31 @@ public partial class MainForm : Form
             settingsDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, settingsDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-settings.png"));
         }
+        using (var image = ScanService.LoadUnlocked((string)((Panel)flowPanel.Controls[0]).Tag)) // und der Zuschneide-Dialog
+        using (CropForm cropDialog = new(image))
+        {
+            cropDialog.StartPosition = FormStartPosition.Manual;
+            cropDialog.Show(this);
+            Application.DoEvents(); // Shown-Ereignis (Startauswahl) braucht die Nachrichtenschleife
+            using var shot = new Bitmap(cropDialog.Width, cropDialog.Height);
+            cropDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, cropDialog.Size));
+            shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-crop.png"));
+        }
         Environment.Exit(pageCount == 2 ? 0 : 1);
     }
+
+    /// <summary>Stellt die Texterkennungs-Combo auf die Sprache mit dem angegebenen Code.</summary>
+    private void SelectOcrLanguage(string code)
+    {
+        var match = comboOcr.Items.OfType<OcrLanguageItem>()
+            .FirstOrDefault(item => string.Equals(item.Code, code, StringComparison.OrdinalIgnoreCase));
+        if (match != null) { comboOcr.SelectedItem = match; }
+        else if (comboOcr.Items.Count > 1) { comboOcr.SelectedIndex = 1; } // erste Sprache
+        else { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
+    }
+
+    /// <summary>Gewählte OCR-Sprache des aktuellen Scans — null bei „Ohne Texterkennung".</summary>
+    private string CurrentOcrLanguage => comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
 
     private string NextScanPath() => Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}.tif");
 
@@ -506,27 +534,57 @@ public partial class MainForm : Form
         RotateSelected(RotateFlipType.Rotate90FlipNone);
     }
 
+    private static System.Drawing.Imaging.ImageFormat ImageFormatFor(string path) => Path.GetExtension(path).ToLowerInvariant() switch
+    {
+        ".png" => System.Drawing.Imaging.ImageFormat.Png,
+        ".jpg" or ".jpeg" => System.Drawing.Imaging.ImageFormat.Jpeg,
+        ".bmp" => System.Drawing.Imaging.ImageFormat.Bmp,
+        _ => System.Drawing.Imaging.ImageFormat.Tiff,
+    };
+
+    /// <summary>Lädt die Miniatur der markierten Seite neu — nach Drehen oder Zuschneiden.</summary>
+    private void ReloadSelectedThumbnail()
+    {
+        var pic = PicOf(selected);
+        var old = pic.Image;
+        pic.Image = ScanService.LoadUnlocked((string)selected.Tag);
+        old?.Dispose();
+    }
+
     /// <summary>Dreht die Seitendatei selbst (nicht nur die Miniatur), damit auch OCR und PDF die Drehung sehen.</summary>
     private void RotateSelected(RotateFlipType rotation)
     {
         if (selected == null) { return; }
         var path = (string)selected.Tag;
-        var format = Path.GetExtension(path).ToLowerInvariant() switch
-        {
-            ".png" => System.Drawing.Imaging.ImageFormat.Png,
-            ".jpg" or ".jpeg" => System.Drawing.Imaging.ImageFormat.Jpeg,
-            ".bmp" => System.Drawing.Imaging.ImageFormat.Bmp,
-            _ => System.Drawing.Imaging.ImageFormat.Tiff,
-        };
         using (var image = ScanService.LoadUnlocked(path))
         {
             image.RotateFlip(rotation);
-            image.Save(path, format);
+            image.Save(path, ImageFormatFor(path));
         }
-        var pic = PicOf(selected);
-        var old = pic.Image;
-        pic.Image = ScanService.LoadUnlocked(path);
-        old?.Dispose();
+        ReloadSelectedThumbnail();
+    }
+
+    /// <summary>Zuschneide-Dialog für die markierte Seite; das Ergebnis ersetzt die Seitendatei.</summary>
+    private void MenuEditCrop_Click(object sender, EventArgs e)
+    {
+        if (selected == null) { return; }
+        var path = (string)selected.Tag;
+        using var image = ScanService.LoadUnlocked(path);
+        using CropForm dialog = new(image);
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        var rect = dialog.SelectionInImage;
+        if (rect.Width < 5 || rect.Height < 5) { return; }
+        using (Bitmap cropped = new(rect.Width, rect.Height))
+        {
+            cropped.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+            using (var g = Graphics.FromImage(cropped))
+            {
+                g.DrawImage(image, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
+            }
+            cropped.Save(path, ImageFormatFor(path));
+        }
+        ReloadSelectedThumbnail();
+        statusLabel.Text = $"Seite zugeschnitten auf {rect.Width} × {rect.Height} Pixel";
     }
 
     /// <summary>Duplex von Hand: erst alle Vorderseiten scannen, dann den Stapel gewendet — die
@@ -619,6 +677,7 @@ public partial class MainForm : Form
         settings.OcrLanguage = dialog.OcrLanguage;
         settings.OcrJpgQuality = dialog.OcrJpgQuality;
         settings.Save();
+        SelectOcrLanguage(settings.OcrLanguage); // neue bevorzugte Sprache auch für den aktuellen Scan übernehmen
     }
 
     private void MenuHelpShortcuts_Click(object sender, EventArgs e)
@@ -791,6 +850,8 @@ public partial class MainForm : Form
         menuEditRotateLeft.Enabled = selected != null;
         menuEditRotate180.Enabled = selected != null;
         menuEditRotateRight.Enabled = selected != null;
+        menuEditCrop.Enabled = selected != null;
+        btnCrop.Enabled = selected != null;
         menuEditBacks.Enabled = count >= 2 && count % 2 == 0; // Vorder- und Rückseiten paarweise
         menuEditReverse.Enabled = count >= 2;
         var scannerHint = selectedScannerName != null ? $"   ·   Scanner: {selectedScannerName}" : string.Empty;
@@ -860,20 +921,24 @@ public partial class MainForm : Form
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(dialog.FileName) { UseShellExecute = true });
     }
 
-    /// <summary>Texterkennung (deutsch) über alle Seiten in der aktuellen Reihenfolge, dann Zusammenbau.</summary>
+    /// <summary>PDF über alle Seiten in der aktuellen Reihenfolge — je nach Auswahl im
+    /// Einstellungsbereich mit Texterkennung (durchsuchbar) oder als reine Bild-PDF.</summary>
     private void CreatePdf(string outputPdf)
     {
         var tiffFiles = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
+        var language = CurrentOcrLanguage;
         toolStrip.Enabled = false;
         menuStrip.Enabled = false;
         Cursor.Current = Cursors.WaitCursor;
         try
         {
-            OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, settings.OcrLanguage, settings.OcrJpgQuality, (done, total) =>
+            void Progress(int done, int total)
             {
-                statusLabel.Text = $"Texterkennung {done}/{total} …";
+                statusLabel.Text = language != null ? $"Texterkennung {done}/{total} …" : $"Seite {done}/{total} …";
                 statusStrip.Refresh();
-            });
+            }
+            if (language != null) { OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, language, settings.OcrJpgQuality, Progress); }
+            else { OcrPdfService.CreateImagePdf(tiffFiles, outputPdf, settings.OcrJpgQuality, Progress); }
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or Tesseract.TesseractException)
         {
