@@ -1,18 +1,21 @@
 using System.Drawing.Drawing2D;
+using ScanView.Classes;
 
 namespace ScanView.Forms;
 
 /// <summary>Zuschneide-Dialog: Auswahlrahmen mit acht Griffen über der Seitenvorschau —
-/// Interaktionslogik nach dem Vorbild von Wilhelms ImageCropper (ohne Seitenverhältnis-Zwang).</summary>
+/// Interaktionslogik nach dem Vorbild von Wilhelms ImageCropper (ohne Seitenverhältnis-Zwang).
+/// Alle Einstell-Controls sitzen in einem ToolStrip am Oberrand, unten nur ein StatusStrip.</summary>
 internal sealed class CropForm : Form
 {
     private enum DragHandle { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight, Inside }
 
     private readonly PictureBox pictureBox;
     private readonly Panel scrollPanel;
-    private readonly ComboBox comboZoom;
-    private readonly Button btnCrop;
-    private readonly Label labelSize;
+    private readonly ToolStripComboBox comboZoom;
+    private readonly ToolStripButton btnKeepSize;
+    private readonly ToolStripButton btnApply;
+    private readonly ToolStripStatusLabel statusLabel;
     private readonly Image image;
     private readonly int handleSize;
     private Rectangle selectionRect = Rectangle.Empty; // in PictureBox-Koordinaten
@@ -25,38 +28,53 @@ internal sealed class CropForm : Form
     /// <summary>Der gewählte Ausschnitt in Bildpixeln (gültig nach DialogResult.OK).</summary>
     public Rectangle SelectionInImage { get; private set; }
 
+    /// <summary>True (Standard): Bildgröße bleibt erhalten, der Bereich außerhalb der Auswahl wird
+    /// weiß aufgefüllt — z.B. um schwarze Scanränder zu entfernen, ohne das A4-Format zu verlieren.</summary>
+    public bool KeepImageSize => btnKeepSize.Checked;
+
     public CropForm(Image image)
     {
         this.image = image;
         Text = "Zuschneiden";
         StartPosition = FormStartPosition.CenterParent;
-        MinimumSize = new Size(500, 400);
+        MinimumSize = new Size(560, 400);
         ShowIcon = false;
         ShowInTaskbar = false;
-        KeyPreview = true;
         handleSize = (int)(16 * DeviceDpi / 96.0);
 
-        Panel bottom = new() { Dock = DockStyle.Bottom, Height = 44 };
-        labelSize = new Label() { AutoSize = true, Location = new Point(12, 14), Text = "Rahmen aufziehen oder Griffe verschieben" };
-        btnCrop = new Button() { Text = "&Zuschneiden", DialogResult = DialogResult.OK, Size = new Size(100, 26), Enabled = false,
-            Anchor = AnchorStyles.Right | AnchorStyles.Top };
-        Button btnCancel = new() { Text = "Abbrechen", DialogResult = DialogResult.Cancel, Size = new Size(90, 26),
-            Anchor = AnchorStyles.Right | AnchorStyles.Top };
-        Label labelZoom = new() { AutoSize = true, Text = "&Zoom:", Anchor = AnchorStyles.Right | AnchorStyles.Top };
-        comboZoom = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 96, Anchor = AnchorStyles.Right | AnchorStyles.Top };
+        ToolStrip toolStrip = new() { GripStyle = ToolStripGripStyle.Hidden };
+        var edge = LogicalToDeviceUnits(24); // 24-px-Symbole wie in PDFlight
+        toolStrip.ImageScalingSize = new Size(edge, edge);
+        ToolStripLabel labelZoom = new("&Zoom:");
+        comboZoom = new ToolStripComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, AutoSize = false, Width = 110 };
         comboZoom.Items.AddRange(["Einpassen", "50 %", "75 %", "100 %", "150 %", "200 %"]);
         comboZoom.SelectedIndex = 0;
         comboZoom.SelectedIndexChanged += (s, e) => ApplyZoom();
-        bottom.Controls.AddRange([labelSize, labelZoom, comboZoom, btnCrop, btnCancel]);
-        bottom.Resize += (s, e) =>
+        btnKeepSize = new ToolStripButton("&Bildgröße beibehalten")
         {
-            btnCancel.Location = new Point(bottom.Width - 102, 9);
-            btnCrop.Location = new Point(bottom.Width - 210, 9);
-            comboZoom.Location = new Point(bottom.Width - 322, 10);
-            labelZoom.Location = new Point(bottom.Width - 366, 14);
+            CheckOnClick = true,
+            Checked = true,
+            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
+            ToolTipText = "An: der Bereich außerhalb der Auswahl wird weiß aufgefüllt — das Format (z.B. A4) bleibt erhalten.\nAus: das Bild wird auf die Auswahl verkleinert.",
         };
-        AcceptButton = btnCrop;
-        CancelButton = btnCancel;
+        btnApply = new ToolStripButton("&Übernehmen")
+        {
+            Alignment = ToolStripItemAlignment.Right,
+            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
+            Enabled = false,
+            ToolTipText = "Auswahl anwenden (Enter)",
+        };
+        btnApply.Click += (s, e) => DialogResult = DialogResult.OK;
+        if (ToolbarIcons.FontAvailable)
+        {
+            btnKeepSize.Image = ToolbarIcons.Get(ToolbarIcons.SinglePage, toolStrip.ImageScalingSize);
+            btnApply.Image = ToolbarIcons.Get(ToolbarIcons.Accept, toolStrip.ImageScalingSize);
+        }
+        toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, new ToolStripSeparator(), btnKeepSize, btnApply });
+
+        StatusStrip statusStrip = new();
+        statusLabel = new ToolStripStatusLabel("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
+        statusStrip.Items.Add(statusLabel);
 
         pictureBox = new PictureBox()
         {
@@ -75,14 +93,26 @@ internal sealed class CropForm : Form
         scrollPanel.Resize += (s, e) => { if (comboZoom.SelectedIndex == 0) { ApplyZoom(); } else { CenterPictureBox(); } };
 
         Controls.Add(scrollPanel);
-        Controls.Add(bottom);
+        Controls.Add(statusStrip);
+        Controls.Add(toolStrip);
 
         // Dialoggröße: Bild möglichst groß, aber in den Arbeitsbereich eingepasst
         var work = Screen.FromPoint(Cursor.Position).WorkingArea;
-        var scale = Math.Min(0.85 * work.Width / image.Width, 0.85 * (work.Height - bottom.Height) / image.Height);
+        var chrome = toolStrip.Height + statusStrip.Height;
+        var scale = Math.Min(0.85 * work.Width / image.Width, 0.85 * (work.Height - chrome) / image.Height);
         scale = Math.Min(scale, 1.0);
-        ClientSize = new Size(Math.Max(500, (int)(image.Width * scale)), Math.Max(360, (int)(image.Height * scale) + bottom.Height));
+        ClientSize = new Size(Math.Max(560, (int)(image.Width * scale)), Math.Max(360, (int)(image.Height * scale) + chrome));
         Shown += (s, e) => ApplyZoom();
+    }
+
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+    {
+        switch (keyData)
+        {
+            case Keys.Escape: DialogResult = DialogResult.Cancel; return true; // kein Abbrechen-Button — Esc schließt
+            case Keys.Enter when btnApply.Enabled: DialogResult = DialogResult.OK; return true;
+        }
+        return base.ProcessCmdKey(ref msg, keyData);
     }
 
     /// <summary>Setzt die Bildgröße gemäß Zoomstufe (Index 0 = Einpassen) und erstellt die Startauswahl neu.</summary>
@@ -236,16 +266,16 @@ internal sealed class CropForm : Form
     private void UpdateUiState()
     {
         var valid = selectionRect.Width > 4 && selectionRect.Height > 4;
-        btnCrop.Enabled = valid;
+        btnApply.Enabled = valid;
         if (valid)
         {
             var real = TranslateToImage(selectionRect);
             SelectionInImage = real;
-            labelSize.Text = $"Ausschnitt: {real.Width} × {real.Height} Pixel";
+            statusLabel.Text = $"Ausschnitt: {real.Width} × {real.Height} Pixel";
         }
         else
         {
-            labelSize.Text = "Rahmen aufziehen oder Griffe verschieben";
+            statusLabel.Text = "Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung";
         }
         pictureBox.Invalidate();
     }
