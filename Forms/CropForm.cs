@@ -228,11 +228,12 @@ internal sealed class CropForm : Form
         pictureBox.Image = workingImage;
         if (!ReferenceEquals(previous, image)) { previous.Dispose(); }
         lastActionText = actionText + "   ·   Übernehmen speichert, Esc verwirft alles";
-        ApplyZoom(); // Bildgröße kann sich geändert haben; erstellt auch die neue Standardauswahl
+        ApplyZoom(createDefaultSelection: false); // Ergebnis unverdeckt zeigen — die nächste Auswahl zieht man neu auf
     }
 
-    /// <summary>Setzt die Bildgröße gemäß Zoomstufe (Index 0 = Einpassen) und erstellt die Startauswahl neu.</summary>
-    private void ApplyZoom()
+    /// <summary>Setzt die Bildgröße gemäß Zoomstufe (Index 0 = Einpassen) und erstellt die Startauswahl
+    /// neu — nach einer Aktion bleibt die Auswahl ausgeblendet, damit das Ergebnis unverdeckt sichtbar ist.</summary>
+    private void ApplyZoom(bool createDefaultSelection = true)
     {
         Size target;
         if (comboZoom.SelectedIndex <= 0)
@@ -249,7 +250,8 @@ internal sealed class CropForm : Form
         if (pictureBox.Size != target) { pictureBox.Size = target; } // der Resize-Handler leert die Auswahl
         scrollPanel.AutoScrollPosition = Point.Empty;
         CenterPictureBox();
-        CreateDefaultSelection();
+        if (createDefaultSelection) { CreateDefaultSelection(); }
+        else { selectionRect = Rectangle.Empty; UpdateUiState(); }
     }
 
     /// <summary>Zentriert das Bild im Scrollbereich, solange es kleiner als der Bereich ist.</summary>
