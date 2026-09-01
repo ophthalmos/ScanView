@@ -3,6 +3,14 @@ using ScanView.Classes;
 
 namespace ScanView.Forms;
 
+/// <summary>Was mit der Auswahl geschehen soll.</summary>
+internal enum CropMode
+{
+    IsolateSelection, // Freistellen: außerhalb weiß, Bildgröße bleibt
+    CropToSelection,  // Zuschneiden: Bild wird auf die Auswahl verkleinert
+    RemoveSelection,  // Ausschneiden: die Auswahl wird weiß entfernt, Bildgröße bleibt
+}
+
 /// <summary>Zuschneide-Dialog: Auswahlrahmen mit acht Griffen über der Seitenvorschau —
 /// Interaktionslogik nach dem Vorbild von Wilhelms ImageCropper (ohne Seitenverhältnis-Zwang).
 /// Alle Einstell-Controls sitzen in einem ToolStrip am Oberrand, unten nur ein StatusStrip.</summary>
@@ -13,11 +21,15 @@ internal sealed class CropForm : Form
     private readonly PictureBox pictureBox;
     private readonly Panel scrollPanel;
     private readonly ToolStripComboBox comboZoom;
-    private readonly ToolStripButton btnKeepSize;
-    private readonly ToolStripButton btnApply;
+    private readonly RadioButton rbIsolate;
+    private readonly RadioButton rbCrop;
+    private readonly RadioButton rbRemove;
+    private readonly Button btnApply;
     private readonly ToolStripStatusLabel statusLabel;
+    private readonly ToolTip toolTip = new();
     private readonly Image image;
     private readonly int handleSize;
+    private static readonly Color AccentColor = Color.FromArgb(0x2B, 0x77, 0xC0); // Übernehmen hervorheben
     private Rectangle selectionRect = Rectangle.Empty; // in PictureBox-Koordinaten
     private Point mouseDownPoint;
     private Point dragStartPoint;
@@ -28,9 +40,10 @@ internal sealed class CropForm : Form
     /// <summary>Der gewählte Ausschnitt in Bildpixeln (gültig nach DialogResult.OK).</summary>
     public Rectangle SelectionInImage { get; private set; }
 
-    /// <summary>True (Standard): Bildgröße bleibt erhalten, der Bereich außerhalb der Auswahl wird
-    /// weiß aufgefüllt — z.B. um schwarze Scanränder zu entfernen, ohne das A4-Format zu verlieren.</summary>
-    public bool KeepImageSize => btnKeepSize.Checked;
+    /// <summary>Gewählter Modus — Standard ist Freistellen (außerhalb weiß, Bildgröße bleibt).</summary>
+    public CropMode Mode => rbCrop.Checked ? CropMode.CropToSelection
+        : rbRemove.Checked ? CropMode.RemoveSelection
+        : CropMode.IsolateSelection;
 
     public CropForm(Image image)
     {
@@ -45,32 +58,60 @@ internal sealed class CropForm : Form
         ToolStrip toolStrip = new() { GripStyle = ToolStripGripStyle.Hidden };
         var edge = LogicalToDeviceUnits(24); // 24-px-Symbole wie in PDFlight
         toolStrip.ImageScalingSize = new Size(edge, edge);
+        toolStrip.Font = new Font(Font.FontFamily, 10f);
         ToolStripLabel labelZoom = new("&Zoom:");
         comboZoom = new ToolStripComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, AutoSize = false, Width = 110 };
         comboZoom.Items.AddRange(["Einpassen", "50 %", "75 %", "100 %", "150 %", "200 %"]);
         comboZoom.SelectedIndex = 0;
         comboZoom.SelectedIndexChanged += (s, e) => ApplyZoom();
-        btnKeepSize = new ToolStripButton("&Bildgröße beibehalten")
+        ToolStripButton btnZoomOut = new() { DisplayStyle = ToolStripItemDisplayStyle.Image, ToolTipText = "Verkleinern" };
+        ToolStripButton btnZoomIn = new() { DisplayStyle = ToolStripItemDisplayStyle.Image, ToolTipText = "Vergrößern" };
+        btnZoomOut.Click += (s, e) => comboZoom.SelectedIndex = Math.Max(0, comboZoom.SelectedIndex - 1);
+        btnZoomIn.Click += (s, e) => comboZoom.SelectedIndex = Math.Min(comboZoom.Items.Count - 1, comboZoom.SelectedIndex + 1);
+
+        // Die drei Modi als RadioButtons (in einem ControlHost — der ToolStrip kennt selbst keine)
+        RadioButton MakeRadio(string text, string tip)
         {
-            CheckOnClick = true,
-            Checked = true,
-            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-            ToolTipText = "An: der Bereich außerhalb der Auswahl wird weiß aufgefüllt — das Format (z.B. A4) bleibt erhalten.\nAus: das Bild wird auf die Auswahl verkleinert.",
-        };
-        btnApply = new ToolStripButton("&Übernehmen")
+            RadioButton radio = new() { AutoSize = true, Text = text, Font = toolStrip.Font, BackColor = Color.Transparent, Margin = new Padding(6, 0, 6, 0) };
+            toolTip.SetToolTip(radio, tip);
+            return radio;
+        }
+        rbIsolate = MakeRadio("&Freistellen", "Außerhalb der Auswahl wird weiß — die Bildgröße (z.B. A4) bleibt erhalten");
+        rbCrop = MakeRadio("&Zuschneiden", "Das Bild wird auf die Auswahl verkleinert");
+        rbRemove = MakeRadio("&Ausschneiden", "Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten");
+        rbIsolate.Checked = true;
+        FlowLayoutPanel modePanel = new() { AutoSize = true, WrapContents = false, BackColor = Color.Transparent };
+        modePanel.Controls.AddRange([rbIsolate, rbCrop, rbRemove]);
+
+        btnApply = new Button()
         {
-            Alignment = ToolStripItemAlignment.Right,
-            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
+            Text = "&Übernehmen",
+            FlatStyle = FlatStyle.Flat,
+            BackColor = Color.Gainsboro, // bis eine Auswahl existiert
+            ForeColor = Color.White,
+            Font = new Font(Font.FontFamily, 10f, FontStyle.Bold),
+            Size = new Size(130, 30),
             Enabled = false,
-            ToolTipText = "Auswahl anwenden (Enter)",
         };
+        btnApply.FlatAppearance.BorderSize = 0;
         btnApply.Click += (s, e) => DialogResult = DialogResult.OK;
+        toolTip.SetToolTip(btnApply, "Auswahl anwenden (Enter)");
+        ToolStripControlHost applyHost = new(btnApply) { Alignment = ToolStripItemAlignment.Right, Margin = new Padding(0, 2, 8, 2) };
+
         if (ToolbarIcons.FontAvailable)
         {
-            btnKeepSize.Image = ToolbarIcons.Get(ToolbarIcons.SinglePage, toolStrip.ImageScalingSize);
-            btnApply.Image = ToolbarIcons.Get(ToolbarIcons.Accept, toolStrip.ImageScalingSize);
+            btnZoomOut.Image = ToolbarIcons.Get(ToolbarIcons.ZoomOut, toolStrip.ImageScalingSize);
+            btnZoomIn.Image = ToolbarIcons.Get(ToolbarIcons.ZoomIn, toolStrip.ImageScalingSize);
         }
-        toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, new ToolStripSeparator(), btnKeepSize, btnApply });
+        else
+        {
+            btnZoomOut.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnZoomIn.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnZoomOut.Text = "−";
+            btnZoomIn.Text = "+";
+        }
+        toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, btnZoomOut, btnZoomIn,
+            new ToolStripSeparator(), new ToolStripControlHost(modePanel), applyHost });
 
         StatusStrip statusStrip = new();
         statusLabel = new ToolStripStatusLabel("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
@@ -267,6 +308,7 @@ internal sealed class CropForm : Form
     {
         var valid = selectionRect.Width > 4 && selectionRect.Height > 4;
         btnApply.Enabled = valid;
+        btnApply.BackColor = valid ? AccentColor : Color.Gainsboro; // hervorheben, sobald die Auswahl steht
         if (valid)
         {
             var real = TranslateToImage(selectionRect);

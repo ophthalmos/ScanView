@@ -576,28 +576,46 @@ public partial class MainForm : Form
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         var rect = dialog.SelectionInImage;
         if (rect.Width < 5 || rect.Height < 5) { return; }
-        if (dialog.KeepImageSize)
+        switch (dialog.Mode)
         {
-            using Bitmap kept = new(image.Width, image.Height);
-            kept.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-            using (var g = Graphics.FromImage(kept))
-            {
-                g.Clear(Color.White);
-                g.DrawImage(image, rect, rect, GraphicsUnit.Pixel); // Auswahl bleibt an ihrer Position
-            }
-            kept.Save(path, ImageFormatFor(path));
-            statusLabel.Text = "Rand außerhalb der Auswahl weiß aufgefüllt — Bildgröße unverändert";
-        }
-        else
-        {
-            using Bitmap cropped = new(rect.Width, rect.Height);
-            cropped.SetResolution(image.HorizontalResolution, image.VerticalResolution);
-            using (var g = Graphics.FromImage(cropped))
-            {
-                g.DrawImage(image, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
-            }
-            cropped.Save(path, ImageFormatFor(path));
-            statusLabel.Text = $"Seite zugeschnitten auf {rect.Width} × {rect.Height} Pixel";
+            case CropMode.IsolateSelection: // außerhalb weiß, Bildgröße bleibt
+                using (Bitmap kept = new(image.Width, image.Height))
+                {
+                    kept.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+                    using (var g = Graphics.FromImage(kept))
+                    {
+                        g.Clear(Color.White);
+                        g.DrawImage(image, rect, rect, GraphicsUnit.Pixel); // Auswahl bleibt an ihrer Position
+                    }
+                    kept.Save(path, ImageFormatFor(path));
+                }
+                statusLabel.Text = "Freigestellt: außerhalb der Auswahl weiß aufgefüllt — Bildgröße unverändert";
+                break;
+            case CropMode.RemoveSelection: // Auswahl weiß entfernen, Bildgröße bleibt
+                using (Bitmap kept = new(image.Width, image.Height))
+                {
+                    kept.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+                    using (var g = Graphics.FromImage(kept))
+                    {
+                        g.DrawImage(image, new Rectangle(0, 0, image.Width, image.Height), new Rectangle(0, 0, image.Width, image.Height), GraphicsUnit.Pixel);
+                        g.FillRectangle(Brushes.White, rect);
+                    }
+                    kept.Save(path, ImageFormatFor(path));
+                }
+                statusLabel.Text = "Ausgeschnitten: die Auswahl wurde weiß entfernt — Bildgröße unverändert";
+                break;
+            default: // klassisch auf die Auswahl verkleinern
+                using (Bitmap cropped = new(rect.Width, rect.Height))
+                {
+                    cropped.SetResolution(image.HorizontalResolution, image.VerticalResolution);
+                    using (var g = Graphics.FromImage(cropped))
+                    {
+                        g.DrawImage(image, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
+                    }
+                    cropped.Save(path, ImageFormatFor(path));
+                }
+                statusLabel.Text = $"Seite zugeschnitten auf {rect.Width} × {rect.Height} Pixel";
+                break;
         }
         ReloadSelectedThumbnail();
     }
