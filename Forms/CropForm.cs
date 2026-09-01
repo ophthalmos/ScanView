@@ -7,22 +7,14 @@ namespace ScanView.Forms;
 /// Interaktionslogik nach dem Vorbild von Wilhelms ImageCropper (ohne Seitenverhältnis-Zwang).
 /// Die Aktionen (Freistellen/Zuschneiden/Ausschneiden) wirken sofort auf das Vorschaubild und
 /// lassen sich beliebig kombinieren; „Übernehmen" liefert das Gesamtergebnis, Esc verwirft.</summary>
-internal sealed class CropForm : Form
+internal sealed partial class CropForm : Form
 {
     private enum DragHandle
     {
         None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight, Inside
     }
 
-    private readonly PictureBox pictureBox;
-    private readonly Panel scrollPanel;
-    private readonly ToolStripComboBox comboZoom;
-    private readonly ToolStripButton btnIsolate;
-    private readonly ToolStripButton btnCropAction;
-    private readonly ToolStripButton btnRemove;
-    private readonly ToolStripButton btnApply;
     private readonly Font applyBoldFont; // Übernehmen wird fett, sobald es Änderungen gibt
-    private readonly ToolStripStatusLabel statusLabel;
     private readonly Image image; // Original (gehört dem Aufrufer)
     private Image workingImage;   // Arbeitskopie, auf der die Aktionen sichtbar ausgeführt werden
     private string lastActionText;
@@ -50,54 +42,14 @@ internal sealed class CropForm : Form
     {
         this.image = image;
         workingImage = image;
-        Text = "Zuschneiden";
-        StartPosition = FormStartPosition.CenterParent;
-        MinimumSize = new Size(560, 400);
-        ShowIcon = false;
-        ShowInTaskbar = false;
+        InitializeComponent();
         handleSize = (int)(16 * DeviceDpi / 96.0);
-
-        ToolStrip toolStrip = new() { GripStyle = ToolStripGripStyle.Hidden };
-        var edge = LogicalToDeviceUnits(24); // 24-px-Symbole wie in PDFlight
+        var edge = LogicalToDeviceUnits(24); // 24-px-Symbole wie in PDFlight; der Designer-Wert gilt für 96 dpi
         toolStrip.ImageScalingSize = new Size(edge, edge);
-        toolStrip.Font = new Font(Font.FontFamily, 10f);
-        ToolStripLabel labelZoom = new("&Zoom:");
-        comboZoom = new ToolStripComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, AutoSize = false, Width = 110 };
-        comboZoom.Items.AddRange(["Einpassen", "50 %", "75 %", "100 %", "150 %", "200 %"]);
-        comboZoom.SelectedIndex = 0;
-        comboZoom.SelectedIndexChanged += (s, e) => ApplyZoom();
-        ToolStripButton btnZoomOut = new() { DisplayStyle = ToolStripItemDisplayStyle.Image, ToolTipText = "Verkleinern" };
-        ToolStripButton btnZoomIn = new() { DisplayStyle = ToolStripItemDisplayStyle.Image, ToolTipText = "Vergrößern" };
-        btnZoomOut.Click += (s, e) => comboZoom.SelectedIndex = Math.Max(0, comboZoom.SelectedIndex - 1);
-        btnZoomIn.Click += (s, e) => comboZoom.SelectedIndex = Math.Min(comboZoom.Items.Count - 1, comboZoom.SelectedIndex + 1);
-
-        // Die drei Aktionen als echte Buttons: sie wirken sofort auf das Vorschaubild
-        static ToolStripButton MakeAction(string text, string tip, EventHandler onClick)
-        {
-            ToolStripButton button = new(text) { DisplayStyle = ToolStripItemDisplayStyle.ImageAndText, Enabled = false, ToolTipText = tip };
-            button.Click += onClick;
-            return button;
-        }
-        btnIsolate = MakeAction("&Freistellen", "Außerhalb der Auswahl wird weiß — die Bildgröße (z.B. A4) bleibt erhalten", (s, e) => IsolateSelection());
-        btnCropAction = MakeAction("&Zuschneiden", "Das Bild wird auf die Auswahl verkleinert", (s, e) => CropToSelection());
-        btnRemove = MakeAction("&Ausschneiden", "Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten", (s, e) => RemoveSelection());
-
         applyBoldFont = new Font(toolStrip.Font, FontStyle.Bold);
-        btnApply = new ToolStripButton("&Übernehmen")
-        {
-            Alignment = ToolStripItemAlignment.Right,
-            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-            Enabled = false,
-            ToolTipText = "Ergebnis in die Seite übernehmen (Enter)",
-        };
-        btnApply.Click += (s, e) => DialogResult = DialogResult.OK;
-        ToolStripButton btnCancel = new("Abbrechen")
-        {
-            Alignment = ToolStripItemAlignment.Right,
-            DisplayStyle = ToolStripItemDisplayStyle.ImageAndText,
-            ToolTipText = "Alle Aktionen verwerfen und schließen (Esc)",
-        };
-        btnCancel.Click += (s, e) => DialogResult = DialogResult.Cancel;
+        try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Programm-Icon in der Titelzeile
+        catch (Exception ex) when (ex is ArgumentException or IOException) { }
+        pictureBox.Image = image;
 
         if (ToolbarIcons.FontAvailable)
         {
@@ -116,32 +68,7 @@ internal sealed class CropForm : Form
             btnZoomOut.Text = "−";
             btnZoomIn.Text = "+";
         }
-        toolStrip.Items.AddRange([ labelZoom, comboZoom, btnZoomOut, btnZoomIn,
-            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, btnApply, btnCancel ]); // rechts: Übernehmen ganz außen, Abbrechen links davon
-
-        StatusStrip statusStrip = new();
-        statusLabel = new ToolStripStatusLabel("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
-        statusStrip.Items.Add(statusLabel);
-
-        pictureBox = new PictureBox()
-        {
-            SizeMode = PictureBoxSizeMode.Zoom,
-            BackColor = Color.FromArgb(48, 48, 48),
-            Image = image,
-        };
-        pictureBox.MouseDown += PictureBox_MouseDown;
-        pictureBox.MouseMove += PictureBox_MouseMove;
-        pictureBox.MouseUp += PictureBox_MouseUp;
-        pictureBox.Paint += PictureBox_Paint;
-        pictureBox.Resize += (s, e) => { selectionRect = Rectangle.Empty; UpdateUiState(); }; // die Umrechnung stimmt sonst nicht mehr
-
-        scrollPanel = new Panel() { Dock = DockStyle.Fill, AutoScroll = true, BackColor = Color.FromArgb(48, 48, 48) };
-        scrollPanel.Controls.Add(pictureBox);
-        scrollPanel.Resize += (s, e) => { if (comboZoom.SelectedIndex == 0) { ApplyZoom(); } else { CenterPictureBox(); } };
-
-        Controls.Add(scrollPanel);
-        Controls.Add(statusStrip);
-        Controls.Add(toolStrip);
+        comboZoom.SelectedIndex = 0; // Einpassen
 
         if (storedBounds.Width >= MinimumSize.Width && storedBounds.Height >= MinimumSize.Height
             && Screen.AllScreens.Any(screen => screen.WorkingArea.IntersectsWith(storedBounds))) // gemerkte Größe/Position
@@ -157,14 +84,13 @@ internal sealed class CropForm : Form
             scale = Math.Min(scale, 1.0);
             ClientSize = new Size(Math.Max(560, (int)(image.Width * scale)), Math.Max(360, (int)(image.Height * scale) + chrome));
         }
-        Shown += (s, e) => ApplyZoom();
     }
 
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
         switch (keyData)
         {
-            case Keys.Escape: DialogResult = DialogResult.Cancel; return true; // kein Abbrechen-Button — Esc schließt
+            case Keys.Escape: DialogResult = DialogResult.Cancel; return true; // Esc verwirft und schließt
             case Keys.Enter when btnApply.Enabled: DialogResult = DialogResult.OK; return true;
         }
         return base.ProcessCmdKey(ref msg, keyData);
@@ -179,6 +105,65 @@ internal sealed class CropForm : Form
             workingImage.Dispose();
             workingImage = image;
         }
+    }
+
+    // ------------------------------------------------------------------ Ereignishandler des Designers
+
+    private void CropForm_Shown(object sender, EventArgs e)
+    {
+        ApplyZoom();
+    }
+
+    private void ComboZoom_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ApplyZoom();
+    }
+
+    private void BtnZoomOut_Click(object sender, EventArgs e)
+    {
+        comboZoom.SelectedIndex = Math.Max(0, comboZoom.SelectedIndex - 1);
+    }
+
+    private void BtnZoomIn_Click(object sender, EventArgs e)
+    {
+        comboZoom.SelectedIndex = Math.Min(comboZoom.Items.Count - 1, comboZoom.SelectedIndex + 1);
+    }
+
+    private void BtnIsolate_Click(object sender, EventArgs e)
+    {
+        IsolateSelection();
+    }
+
+    private void BtnCropAction_Click(object sender, EventArgs e)
+    {
+        CropToSelection();
+    }
+
+    private void BtnRemove_Click(object sender, EventArgs e)
+    {
+        RemoveSelection();
+    }
+
+    private void BtnApply_Click(object sender, EventArgs e)
+    {
+        DialogResult = DialogResult.OK;
+    }
+
+    private void BtnCancel_Click(object sender, EventArgs e)
+    {
+        DialogResult = DialogResult.Cancel;
+    }
+
+    private void ScrollPanel_Resize(object sender, EventArgs e)
+    {
+        if (comboZoom.SelectedIndex == 0) { ApplyZoom(); }
+        else { CenterPictureBox(); }
+    }
+
+    private void PictureBox_Resize(object sender, EventArgs e)
+    {
+        selectionRect = Rectangle.Empty; // die Umrechnung stimmt sonst nicht mehr
+        UpdateUiState();
     }
 
     // ------------------------------------------------------------------ Aktionen (sofort sichtbar, wiederholbar)
@@ -487,25 +472,6 @@ internal sealed class CropForm : Form
             _ => Cursors.Default,
         };
     }
-
-    private void InitializeComponent()
-    {
-
-    }
-
-    //private void InitializeComponent()
-    //{
-    //    var resources = new System.ComponentModel.ComponentResourceManager(typeof(CropForm));
-    //    SuspendLayout();
-    //    // 
-    //    // CropForm
-    //    // 
-    //    ClientSize = new Size(284, 261);
-    //    Icon = (Icon)resources.GetObject("$this.Icon");
-    //    Name = "CropForm";
-    //    ResumeLayout(false);
-
-    //}
 
     private static Rectangle Normalize(Rectangle r) => new(
         r.Width < 0 ? r.X + r.Width : r.X,
