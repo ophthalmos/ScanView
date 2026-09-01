@@ -397,7 +397,17 @@ public partial class MainForm : Form
         }
         statusLabel.Text = "Scanne …";
         statusStrip.Refresh();
-        var scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1);
+        // UseWaitCursor statt Cursor.Current: die WIA-Fortschrittsanzeige pumpt Nachrichten und würde Cursor.Current sofort zurücksetzen
+        Application.UseWaitCursor = true;
+        string scanned;
+        try
+        {
+            scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1);
+        }
+        finally
+        {
+            Application.UseWaitCursor = false;
+        }
         if (scanned == null)
         {
             statusLabel.Text = "Scan abgebrochen oder fehlgeschlagen";
