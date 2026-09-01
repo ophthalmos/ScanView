@@ -92,6 +92,11 @@ internal sealed class CropForm : Form
         toolTip.SetToolTip(btnApply, "Ergebnis in die Seite übernehmen (Enter)");
         ToolStripControlHost applyHost = new(btnApply) { Alignment = ToolStripItemAlignment.Right, Margin = new Padding(0, 2, 8, 2) };
 
+        Button btnCancel = new() { Text = "Abbrechen", Font = toolStrip.Font, Size = new Size(100, 30) };
+        btnCancel.Click += (s, e) => DialogResult = DialogResult.Cancel;
+        toolTip.SetToolTip(btnCancel, "Alle Aktionen verwerfen und schließen (Esc)");
+        ToolStripControlHost cancelHost = new(btnCancel) { Alignment = ToolStripItemAlignment.Right, Margin = new Padding(0, 2, 6, 2) };
+
         if (ToolbarIcons.FontAvailable)
         {
             btnZoomOut.Image = ToolbarIcons.Get(ToolbarIcons.ZoomOut, toolStrip.ImageScalingSize);
@@ -108,7 +113,7 @@ internal sealed class CropForm : Form
             btnZoomIn.Text = "+";
         }
         toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, btnZoomOut, btnZoomIn,
-            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, applyHost });
+            new ToolStripSeparator(), btnIsolate, btnCropAction, btnRemove, applyHost, cancelHost }); // rechts: Übernehmen ganz außen, Abbrechen links davon
 
         StatusStrip statusStrip = new();
         statusLabel = new ToolStripStatusLabel("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
