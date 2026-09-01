@@ -62,6 +62,7 @@
             menuViewSeparator2 = new ToolStripSeparator();
             menuViewFullScreen = new ToolStripMenuItem();
             menuExtras = new ToolStripMenuItem();
+            menuExtrasScanner = new ToolStripMenuItem();
             menuExtrasOptions = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
             menuHelpShortcuts = new ToolStripMenuItem();
@@ -400,10 +401,17 @@
             // 
             // menuExtras
             // 
-            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasOptions });
+            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasScanner, menuExtrasOptions });
             menuExtras.Name = "menuExtras";
             menuExtras.Size = new Size(49, 20);
             menuExtras.Text = "E&xtras";
+            // 
+            // menuExtrasScanner
+            // 
+            menuExtrasScanner.Name = "menuExtrasScanner";
+            menuExtrasScanner.Text = "&Scanner …";
+            menuExtrasScanner.ToolTipText = "Scanner wählen und Gerätetasten konfigurieren";
+            menuExtrasScanner.Click += MenuExtrasScanner_Click;
             // 
             // menuExtrasOptions
             // 
@@ -954,6 +962,7 @@
         private System.Windows.Forms.ToolStripSeparator menuViewSeparator2;
         private System.Windows.Forms.ToolStripMenuItem menuViewFullScreen;
         private System.Windows.Forms.ToolStripMenuItem menuExtras;
+        private System.Windows.Forms.ToolStripMenuItem menuExtrasScanner;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasOptions;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
         private System.Windows.Forms.ToolStripMenuItem menuHelpShortcuts;
