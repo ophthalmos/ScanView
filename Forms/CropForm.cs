@@ -9,8 +9,11 @@ internal sealed class CropForm : Form
     private enum DragHandle { None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight, Inside }
 
     private readonly PictureBox pictureBox;
+    private readonly Panel scrollPanel;
+    private readonly ComboBox comboZoom;
     private readonly Button btnCrop;
     private readonly Label labelSize;
+    private readonly Image image;
     private readonly int handleSize;
     private Rectangle selectionRect = Rectangle.Empty; // in PictureBox-Koordinaten
     private Point mouseDownPoint;
@@ -24,6 +27,7 @@ internal sealed class CropForm : Form
 
     public CropForm(Image image)
     {
+        this.image = image;
         Text = "Zuschneiden";
         StartPosition = FormStartPosition.CenterParent;
         MinimumSize = new Size(500, 400);
@@ -38,14 +42,24 @@ internal sealed class CropForm : Form
             Anchor = AnchorStyles.Right | AnchorStyles.Top };
         Button btnCancel = new() { Text = "Abbrechen", DialogResult = DialogResult.Cancel, Size = new Size(90, 26),
             Anchor = AnchorStyles.Right | AnchorStyles.Top };
-        bottom.Controls.AddRange([labelSize, btnCrop, btnCancel]);
-        bottom.Resize += (s, e) => { btnCancel.Location = new Point(bottom.Width - 102, 9); btnCrop.Location = new Point(bottom.Width - 210, 9); };
+        Label labelZoom = new() { AutoSize = true, Text = "&Zoom:", Anchor = AnchorStyles.Right | AnchorStyles.Top };
+        comboZoom = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, Width = 96, Anchor = AnchorStyles.Right | AnchorStyles.Top };
+        comboZoom.Items.AddRange(["Einpassen", "50 %", "75 %", "100 %", "150 %", "200 %"]);
+        comboZoom.SelectedIndex = 0;
+        comboZoom.SelectedIndexChanged += (s, e) => ApplyZoom();
+        bottom.Controls.AddRange([labelSize, labelZoom, comboZoom, btnCrop, btnCancel]);
+        bottom.Resize += (s, e) =>
+        {
+            btnCancel.Location = new Point(bottom.Width - 102, 9);
+            btnCrop.Location = new Point(bottom.Width - 210, 9);
+            comboZoom.Location = new Point(bottom.Width - 322, 10);
+            labelZoom.Location = new Point(bottom.Width - 366, 14);
+        };
         AcceptButton = btnCrop;
         CancelButton = btnCancel;
 
         pictureBox = new PictureBox()
         {
-            Dock = DockStyle.Fill,
             SizeMode = PictureBoxSizeMode.Zoom,
             BackColor = Color.FromArgb(48, 48, 48),
             Image = image,
@@ -56,7 +70,11 @@ internal sealed class CropForm : Form
         pictureBox.Paint += PictureBox_Paint;
         pictureBox.Resize += (s, e) => { selectionRect = Rectangle.Empty; UpdateUiState(); }; // die Umrechnung stimmt sonst nicht mehr
 
-        Controls.Add(pictureBox);
+        scrollPanel = new Panel() { Dock = DockStyle.Fill, AutoScroll = true, BackColor = Color.FromArgb(48, 48, 48) };
+        scrollPanel.Controls.Add(pictureBox);
+        scrollPanel.Resize += (s, e) => { if (comboZoom.SelectedIndex == 0) { ApplyZoom(); } else { CenterPictureBox(); } };
+
+        Controls.Add(scrollPanel);
         Controls.Add(bottom);
 
         // Dialoggröße: Bild möglichst groß, aber in den Arbeitsbereich eingepasst
@@ -64,7 +82,36 @@ internal sealed class CropForm : Form
         var scale = Math.Min(0.85 * work.Width / image.Width, 0.85 * (work.Height - bottom.Height) / image.Height);
         scale = Math.Min(scale, 1.0);
         ClientSize = new Size(Math.Max(500, (int)(image.Width * scale)), Math.Max(360, (int)(image.Height * scale) + bottom.Height));
-        Shown += (s, e) => CreateDefaultSelection();
+        Shown += (s, e) => ApplyZoom();
+    }
+
+    /// <summary>Setzt die Bildgröße gemäß Zoomstufe (Index 0 = Einpassen) und erstellt die Startauswahl neu.</summary>
+    private void ApplyZoom()
+    {
+        Size target;
+        if (comboZoom.SelectedIndex <= 0)
+        {
+            var client = scrollPanel.ClientSize;
+            var scale = Math.Min((double)client.Width / image.Width, (double)client.Height / image.Height);
+            target = new Size(Math.Max(1, (int)(image.Width * scale)), Math.Max(1, (int)(image.Height * scale)));
+        }
+        else
+        {
+            var percent = int.Parse(comboZoom.Text.Split(' ')[0]);
+            target = new Size(image.Width * percent / 100, image.Height * percent / 100);
+        }
+        if (pictureBox.Size != target) { pictureBox.Size = target; } // der Resize-Handler leert die Auswahl
+        scrollPanel.AutoScrollPosition = Point.Empty;
+        CenterPictureBox();
+        CreateDefaultSelection();
+    }
+
+    /// <summary>Zentriert das Bild im Scrollbereich, solange es kleiner als der Bereich ist.</summary>
+    private void CenterPictureBox()
+    {
+        var x = Math.Max(0, (scrollPanel.ClientSize.Width - pictureBox.Width) / 2);
+        var y = Math.Max(0, (scrollPanel.ClientSize.Height - pictureBox.Height) / 2);
+        pictureBox.Location = new Point(scrollPanel.AutoScrollPosition.X + x, scrollPanel.AutoScrollPosition.Y + y);
     }
 
     /// <summary>Startauswahl: 90 % der Bildfläche, zentriert.</summary>

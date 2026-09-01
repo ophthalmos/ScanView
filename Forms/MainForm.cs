@@ -271,7 +271,7 @@ public partial class MainForm : Form
             DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-copymode.png"));
         }
-        using (SettingsForm settingsDialog = new(true, 0, "deu", 75)) // und der Optionen-Dialog
+        using (SettingsForm settingsDialog = new(true, 0, "", "deu", 75)) // und der Optionen-Dialog
         {
             settingsDialog.StartPosition = FormStartPosition.Manual;
             settingsDialog.Show(this);
@@ -670,10 +670,11 @@ public partial class MainForm : Form
 
     private void MenuExtrasOptions_Click(object sender, EventArgs e)
     {
-        using SettingsForm dialog = new(settings.CloseOnEscape, settings.ExitAction, settings.OcrLanguage, settings.OcrJpgQuality);
+        using SettingsForm dialog = new(settings.CloseOnEscape, settings.ExitAction, settings.SaveDirectory, settings.OcrLanguage, settings.OcrJpgQuality);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.CloseOnEscape = dialog.CloseOnEscape;
         settings.ExitAction = dialog.ExitAction;
+        settings.SaveDirectory = dialog.SaveDirectory;
         settings.OcrLanguage = dialog.OcrLanguage;
         settings.OcrJpgQuality = dialog.OcrJpgQuality;
         settings.Save();
@@ -913,8 +914,9 @@ public partial class MainForm : Form
         {
             Filter = "PDF-Dateien (*.pdf)|*.pdf",
             FileName = "Scan " + DateTime.Now.ToString("yyyy-MM-dd") + ".pdf",
-            Title = "Durchsuchbare PDF speichern",
+            Title = "PDF speichern",
         };
+        if (Directory.Exists(settings.SaveDirectory)) { dialog.InitialDirectory = settings.SaveDirectory; } // bevorzugter Speicherort
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         CreatePdf(dialog.FileName);
         statusLabel.Text = $"Gespeichert: {dialog.FileName}";

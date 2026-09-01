@@ -12,6 +12,7 @@ internal sealed class SettingsForm : Form
     private readonly RadioButton rbExitClear;
     private readonly ComboBox comboLanguage;
     private readonly NumericUpDown numJpgQuality;
+    private readonly TextBox textSaveDirectory;
 
     public bool CloseOnEscape => cbCloseOnEscape.Checked;
 
@@ -21,7 +22,9 @@ internal sealed class SettingsForm : Form
 
     public int OcrJpgQuality => (int)numJpgQuality.Value;
 
-    public SettingsForm(bool closeOnEscape, int exitAction, string ocrLanguage, int ocrJpgQuality)
+    public string SaveDirectory => textSaveDirectory.Text.Trim();
+
+    public SettingsForm(bool closeOnEscape, int exitAction, string saveDirectory, string ocrLanguage, int ocrJpgQuality)
     {
         Text = "Einstellungen";
         FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -45,12 +48,27 @@ internal sealed class SettingsForm : Form
             Text = "Programm mit 2× &Esc beenden (Umschalt+Esc: sofort)",
             Checked = closeOnEscape,
         };
-        GroupBox groupExit = new() { Bounds = new Rectangle(16, 56, 376, 120), Text = "Beim Beenden des Programms" };
-        rbExitKeep = new RadioButton() { AutoSize = true, Location = new Point(16, 26), Text = "Seiten in der Seitenübersicht &behalten", Checked = exitAction == 0 };
-        rbExitAsk = new RadioButton() { AutoSize = true, Location = new Point(16, 54), Text = "Seitenübersicht nach &Rückfrage leeren", Checked = exitAction == 1 };
-        rbExitClear = new RadioButton() { AutoSize = true, Location = new Point(16, 82), Text = "Seitenübersicht &ohne Rückfrage leeren", Checked = exitAction == 2 };
-        groupExit.Controls.AddRange([rbExitKeep, rbExitAsk, rbExitClear]);
-        tabGeneral.Controls.AddRange([cbCloseOnEscape, groupExit]);
+        Label labelExit = new() { AutoSize = true, Location = new Point(16, 54), Text = "Beim Beenden des Programms:" };
+        rbExitKeep = new RadioButton() { AutoSize = true, Location = new Point(28, 74), Text = "Seiten in der Seitenübersicht &behalten", Checked = exitAction == 0 };
+        rbExitAsk = new RadioButton() { AutoSize = true, Location = new Point(28, 98), Text = "Seitenübersicht nach &Rückfrage leeren", Checked = exitAction == 1 };
+        rbExitClear = new RadioButton() { AutoSize = true, Location = new Point(28, 122), Text = "Seitenübersicht &ohne Rückfrage leeren", Checked = exitAction == 2 };
+        Label labelDirectory = new() { AutoSize = true, Location = new Point(16, 156), Text = "Bevorzugter &Speicherort für PDF-Dateien:" };
+        textSaveDirectory = new TextBox() { Location = new Point(16, 176), Width = 330, Text = saveDirectory ?? string.Empty };
+        Button btnBrowse = new() { Location = new Point(352, 175), Size = new Size(32, 25), Text = "…" };
+        btnBrowse.Click += (s, e) =>
+        {
+            using FolderBrowserDialog browser = new() { Description = "Bevorzugter Speicherort für PDF-Dateien" };
+            if (Directory.Exists(textSaveDirectory.Text)) { browser.SelectedPath = textSaveDirectory.Text; }
+            if (browser.ShowDialog(this) == DialogResult.OK) { textSaveDirectory.Text = browser.SelectedPath; }
+        };
+        Label labelDirectoryHint = new()
+        {
+            AutoSize = true,
+            ForeColor = SystemColors.GrayText,
+            Location = new Point(16, 204),
+            Text = "Leer: Windows schlägt den zuletzt verwendeten Ordner vor.",
+        };
+        tabGeneral.Controls.AddRange([cbCloseOnEscape, labelExit, rbExitKeep, rbExitAsk, rbExitClear, labelDirectory, textSaveDirectory, btnBrowse, labelDirectoryHint]);
 
         Label labelLanguage = new() { AutoSize = true, Location = new Point(16, 20), Text = "Bevorzugte &Sprache der Texterkennung (Vorgabe für neue Sitzungen):" };
         comboLanguage = new ComboBox() { DropDownStyle = ComboBoxStyle.DropDownList, Location = new Point(16, 40), Width = 220 };
