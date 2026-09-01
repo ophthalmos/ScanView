@@ -53,10 +53,9 @@ internal static class TaskDlg
         var curVersion = Assembly.GetExecutingAssembly().GetName().Version;
         var threeVersion = curVersion?.ToString(3) ?? "unbekannt";
         var buildDate = GetBuildDate();
-        var msg = "ScanView scannt Seiten per WIA, ordnet sie als Miniaturen" + Environment.NewLine +
-            "und speichert sie mit Texterkennung (Tesseract) als durch-" + Environment.NewLine +
-            "suchbare PDF. Der Kopiermodus druckt Scans direkt — der" + Environment.NewLine +
-            "Scanner wird zum Kopierer.";
+        var msg = "ScanView scannt Seiten, ordnet sie als Miniaturen und" + Environment.NewLine +
+            "speichert sie mit Texterkennung als durchsuchbare PDF." + Environment.NewLine + Environment.NewLine +
+            "Im Kopiermodus wird jeder Scan direkt gedruckt.";
         TaskDialogButton paypalButton = new TaskDialogCommandLinkButton("Anerkennung spenden via PayPal");
         using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante des Fenster-Icons
         var indent = new string(' ', 14);
@@ -103,7 +102,7 @@ internal static class TaskDlg
         ("Strg+1 … 4", "Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole", null),
         ("Strg++ / Strg+−", "Miniaturen vergrößern / verkleinern", null),
         ("Alt+← / →", "markierte Seite verschieben (auch: Ziehen mit der Maus)", null),
-        ("Doppelklick", "Seite im Bildbetrachter öffnen", null),
+        ("Doppelklick", "Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)", null),
         ("F11", "Vollbild ein/aus", null),
         ("Strg+,", "Optionen öffnen", null),
         ("2× Esc / Umschalt+Esc", "Programm beenden (Option)", null),

@@ -401,7 +401,7 @@
             // 
             // menuExtras
             // 
-            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasScanner, menuExtrasOptions });
+            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasOptions, menuExtrasScanner });
             menuExtras.Name = "menuExtras";
             menuExtras.Size = new Size(49, 20);
             menuExtras.Text = "E&xtras";
@@ -409,6 +409,7 @@
             // menuExtrasScanner
             // 
             menuExtrasScanner.Name = "menuExtrasScanner";
+            menuExtrasScanner.Size = new Size(180, 22);
             menuExtrasScanner.Text = "&Scanner …";
             menuExtrasScanner.ToolTipText = "Scanner wählen und Gerätetasten konfigurieren";
             menuExtrasScanner.Click += MenuExtrasScanner_Click;
@@ -418,7 +419,7 @@
             menuExtrasOptions.Name = "menuExtrasOptions";
             menuExtrasOptions.ShortcutKeyDisplayString = "Strg+,";
             menuExtrasOptions.ShortcutKeys = Keys.Control | Keys.Oemcomma;
-            menuExtrasOptions.Size = new Size(175, 22);
+            menuExtrasOptions.Size = new Size(180, 22);
             menuExtrasOptions.Text = "&Optionen …";
             menuExtrasOptions.Click += MenuExtrasOptions_Click;
             // 
@@ -908,6 +909,7 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ScanView";
+            FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
             Shown += MainForm_Shown;
             menuStrip.ResumeLayout(false);
