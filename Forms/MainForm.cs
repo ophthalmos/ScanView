@@ -33,6 +33,7 @@ public partial class MainForm : Form
     private readonly ToolTip toolTip = new();
     private Button btnZoomOut; // übereinander gestapelt in einem ToolStripControlHost (s. CreateZoomButtons)
     private Button btnZoomIn;
+    private Font copyModeBoldFont; // „Kopiermodus beenden" fett, solange der Modus aktiv ist
     private ContextMenuStrip thumbContextMenu; // Rechtsklick auf eine Miniatur
     private ToolStripMenuItem contextPaste;    // einziger zustandsabhängiger Eintrag darin
 
@@ -434,8 +435,10 @@ public partial class MainForm : Form
         }
         panelCopyMode.Visible = active;
         flowPanel.Visible = !active;
-        // Aktiv: zweizeilig und ohne Symbol — inaktiv: einzeilig mit Symbol
+        // Aktiv: zweizeilig, fett und ohne Symbol — inaktiv: einzeilig mit Symbol
         btnCopyMode.Text = active ? "Kopiermodus\nbeenden" : "&Kopiermodus";
+        copyModeBoldFont ??= new Font(toolStrip.Font, FontStyle.Bold);
+        btnCopyMode.Font = active ? copyModeBoldFont : null; // null = ToolStrip-Schrift
         btnCopyMode.DisplayStyle = active || !ToolbarIcons.FontAvailable
             ? ToolStripItemDisplayStyle.Text
             : ToolStripItemDisplayStyle.ImageAndText;
