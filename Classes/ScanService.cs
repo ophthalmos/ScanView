@@ -198,6 +198,29 @@ internal static class ScanService
         return path;
     }
 
+    /// <summary>Verkleinerte, von der Datei gelöste Kopie für die Miniaturansicht — hält statt des
+    /// vollen Scans (~25 MB je Farbseite) nur wenige MB im Speicher. Alle Qualitätspfade (OCR,
+    /// PDF, Druck, Zuschneiden) laden weiterhin das Original über LoadUnlocked.</summary>
+    public static Image LoadThumbnail(string path, int maxWidth)
+    {
+        using var stream = new MemoryStream(File.ReadAllBytes(path));
+        using var original = Image.FromStream(stream);
+        if (original.Width <= maxWidth)
+        {
+            Bitmap copy = new(original);
+            copy.SetResolution(original.HorizontalResolution, original.VerticalResolution);
+            return copy;
+        }
+        var height = Math.Max(1, (int)Math.Round((double)original.Height * maxWidth / original.Width));
+        Bitmap thumb = new(maxWidth, height);
+        using var g = Graphics.FromImage(thumb);
+        g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+        using System.Drawing.Imaging.ImageAttributes attributes = new();
+        attributes.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY); // verhindert den Geistersaum an den Rändern
+        g.DrawImage(original, new Rectangle(0, 0, maxWidth, height), 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attributes);
+        return thumb;
+    }
+
     /// <summary>Lädt ein Bild ohne Dateisperre (Kopie im Speicher) — für Miniaturen, Druck und Drehen.</summary>
     public static Image LoadUnlocked(string path)
     {
