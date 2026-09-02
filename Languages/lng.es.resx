@@ -238,4 +238,5 @@ El diseÃ±o estÃ¡ inspirado en Â«Scanner Interface 7Â»
   <data name="Italienisch" xml:space="preserve"><value>Italiano</value></data>
   <data name="Spanisch" xml:space="preserve"><value>Español</value></data>
   <data name="Niederländisch" xml:space="preserve"><value>Neerlandés</value></data>
+  <data name="Strg+Mausrad" xml:space="preserve"><value>Ctrl+rueda</value></data>
 </root>
