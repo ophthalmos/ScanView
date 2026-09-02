@@ -119,7 +119,7 @@
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>Weitere Sprachen: .traineddata-Dateien (tessdata_best)
 in den Ordner "tessdata" neben der Programmdatei legen.</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter
-Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
+Kompromiss. Graustufen-Scans sparen zusÃ¤tzlich Platz.</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Bevorzugter Speicherort für PDF-Dateien</value></data>
   <data name="Sprache geändert." xml:space="preserve"><value>Sprache geändert.</value></data>
   <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve"><value>Die neue Sprache gilt nach dem nächsten Programmstart.</value></data>
@@ -127,8 +127,8 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Dieses &amp;Gerät verwenden:" xml:space="preserve"><value>Dieses &amp;Gerät verwenden:</value></data>
   <data name="Windows-Einstellungen" xml:space="preserve"><value>Windows-Einstellungen</value></data>
   <data name="Scanner und Kameras" xml:space="preserve"><value>Scanner und Kameras</value></data>
-  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Dort lassen sich die Tasten am Gerät mit ScanView
-verknüpfen: (gehe zu Eigenschaften → Ereignisse).</value></data>
+  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Dort lassen sich die Tasten am GerÃ¤t mit ScanView
+verknÃ¼pfen: (gehe zu Eigenschaften â†’ Ereignisse).</value></data>
   <data name="(kein Scanner gefunden)" xml:space="preserve"><value>(kein Scanner gefunden)</value></data>
   <data name="Die Windows-Einstellungen konnten nicht geöffnet werden." xml:space="preserve"><value>Die Windows-Einstellungen konnten nicht geöffnet werden.</value></data>
   <data name="Kein Scanner gefunden." xml:space="preserve"><value>Kein Scanner gefunden.</value></data>
@@ -170,9 +170,8 @@ speichert sie mit Texterkennung als durchsuchbare PDF.
 
 Im Kopiermodus wird jeder Scan direkt gedruckt.
 
-Das Design dieses Programms wurde in Grundzügen von
-dem Programm „Scanner Interface 7“ der Grewe Compu-
-tertechnik GmbH Berlin übernommen (erschienen 2012).</value></data>
+Das Design wurde dem Programm â€žScanner Interface 7â€œ
+(Grewe Computertechnik GmbH 2012) nachempfunden.</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Anerkennung spenden via PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>Über</value></data>
   <data name="Vorhandene öffnen" xml:space="preserve"><value>Vorhandene öffnen</value></data>
