@@ -113,7 +113,7 @@
   <data name="Seitenübersicht &amp;ohne Rückfrage leeren" xml:space="preserve"><value>Seitenübersicht &amp;ohne Rückfrage leeren</value></data>
   <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve"><value>Bevorzugter &amp;Speicherort für PDF-Dateien:</value></data>
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Leer: Windows schlägt den zuletzt verwendeten Ordner vor.</value></data>
-  <data name="&amp;Hintergrund der Seitenübersicht:" xml:space="preserve"><value>&amp;Hintergrund der Seitenübersicht:</value></data>
+  <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>&amp;Hintergrundfarbe:</value></data>
   <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):</value></data>
   <data name="&amp;JPEG-Qualität der Bilder in der PDF (30–100):" xml:space="preserve"><value>&amp;JPEG-Qualität der Bilder in der PDF (30–100):</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>Weitere Sprachen: .traineddata-Dateien (tessdata_best)
