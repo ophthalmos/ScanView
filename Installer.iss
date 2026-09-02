@@ -13,6 +13,7 @@
 
 #define appName "ScanView"
 #define appVersion "0.1.0"
+#define stiEventGuid "{{A7E4C9D2-3B61-48F5-8E27-D90B41C6A358}"
 #define releaseDir "bin\Release\net10.0-windows"
 
 [Setup]
@@ -62,10 +63,20 @@ en.VCRedistMissing=The Visual C++ Redistributable (x64) was not found.%n%n{#appN
 Name: desktopicon; Description: "{cm:DesktopIcon}"; Flags: unchecked
 
 [Registry]
-; STI-Registrierung: dadurch erscheint ScanView in der Windows-Systemsteuerung "Scanner und Kameras"
-; unter Eigenschaften -> Ereignisse -> "Programm starten" (Scanner-Taste startet dann ScanView;
-; eine bereits laufende Instanz wird dank Einmal-Instanz-Logik nur in den Vordergrund geholt)
-Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\StillImage\Registered Applications"; ValueType: string; ValueName: "{#appName}"; ValueData: """{app}\{#appName}.exe"" /StiDevice:%1 /StiEvent:%2"; Flags: uninsdeletevalue
+; WIA-Ereignis-Handler (gleiches Muster wie NAPS2): fuellt die Programmliste in der Windows-
+; Systemsteuerung "Scanner und Kameras" -> Eigenschaften -> Ereignisse -> "Programm starten".
+; Die Scanner-Taste startet dann ScanView mit /StiDevice-Argumenten; eine bereits laufende
+; Instanz wird dank Einmal-Instanz-Logik nur in den Vordergrund geholt. Kommandozeile bewusst
+; ohne Anfuehrungszeichen (WIA parst sie selbst so, s. NAPS2/Photoshop-Eintraege).
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{#stiEventGuid}"; ValueType: string; ValueName: "Name"; ValueData: "{#appName}"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{#stiEventGuid}"; ValueType: string; ValueName: "Desc"; ValueData: "Mit {#appName} scannen"
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{#stiEventGuid}"; ValueType: string; ValueName: "Icon"; ValueData: "{app}\{#appName}.exe,0"
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\StillImage\Events\STIProxyEvent\{#stiEventGuid}"; ValueType: string; ValueName: "Cmdline"; ValueData: "{app}\{#appName}.exe /StiDevice:%1 /StiEvent:%2"
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{#stiEventGuid}"; ValueType: string; ValueName: "Action"; ValueData: "Mit {#appName} scannen"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{#stiEventGuid}"; ValueType: string; ValueName: "CLSID"; ValueData: "WIACLSID"
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{#stiEventGuid}"; ValueType: string; ValueName: "DefaultIcon"; ValueData: "sti.dll,0"
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{#stiEventGuid}"; ValueType: string; ValueName: "InitCmdLine"; ValueData: "/WiaCmd;{app}\{#appName}.exe /StiDevice:%1 /StiEvent:%2;"
+Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\AutoplayHandlers\Handlers\WIA_{#stiEventGuid}"; ValueType: string; ValueName: "Provider"; ValueData: "{#appName}"
 
 [Files]
 Source: "{#releaseDir}\*"; Excludes: "*.pdb,selftest*.png"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
