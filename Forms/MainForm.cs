@@ -35,6 +35,7 @@ public partial class MainForm : Form
     private Button btnZoomIn;
     private Font copyModeBoldFont; // „Kopiermodus beenden" fett, solange der Modus aktiv ist
     private bool pendingStiScan;   // Start über die Scanner-Taste: nach dem Anzeigen sofort scannen
+    private bool ocrBusy;          // Texterkennung läuft im Hintergrund — Beenden solange abweisen
 
     public MainForm() : this(false) // parameterlos für den Windows-Forms-Designer
     {
@@ -110,6 +111,7 @@ public partial class MainForm : Form
     /// <summary>Beenden-Verhalten aus den Optionen: Seiten behalten, nach Rückfrage leeren oder still leeren.</summary>
     private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
     {
+        if (ocrBusy) { e.Cancel = true; return; } // erst die laufende Texterkennung fertigstellen
         if (selfTest) { return; }
         var pages = flowPanel.Controls.Cast<Panel>().Select(p => (string)p.Tag).ToList();
         var keep = pages.Count > 0 && (settings.ExitAction == 0
@@ -343,7 +345,8 @@ public partial class MainForm : Form
         AddPage(ScanService.RenderTestPage(NextScanPath(), "Selbsttest Seite eins", "Der Blutdruck lag bei 120 zu 80 mmHg."));
         AddPage(ScanService.RenderTestPage(NextScanPath(), "Selbsttest Seite zwei", "Prüfung der Umlaute: Ärzte, Öfen, Übungen."));
         var output = Path.Combine(sessionFolder, "Selbsttest.pdf");
-        CreatePdf(output);
+        // synchron direkt über den Service — ein GetResult auf CreatePdfAsync würde den UI-Thread deadlocken
+        OcrPdfService.CreateSearchablePdf(flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList(), output, "deu", 75, null);
         var pageCount = 0;
         try
         {
@@ -1153,7 +1156,7 @@ public partial class MainForm : Form
 
     // ------------------------------------------------------------------ Speichern und Drucken
 
-    private void BtnSave_Click(object sender, EventArgs e)
+    private async void BtnSave_Click(object sender, EventArgs e)
     {
         using SaveFileDialog dialog = new()
         {
@@ -1163,29 +1166,32 @@ public partial class MainForm : Form
         };
         if (Directory.Exists(settings.SaveDirectory)) { dialog.InitialDirectory = settings.SaveDirectory; } // bevorzugter Speicherort
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
-        CreatePdf(dialog.FileName);
+        await CreatePdfAsync(dialog.FileName);
         statusLabel.Text = string.Format(Lng.T("Gespeichert: {0}"), dialog.FileName);
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(dialog.FileName) { UseShellExecute = true });
     }
 
     /// <summary>PDF über alle Seiten in der aktuellen Reihenfolge — je nach Auswahl im
-    /// Einstellungsbereich mit Texterkennung (durchsuchbar) oder als reine Bild-PDF.</summary>
-    private void CreatePdf(string outputPdf)
+    /// Einstellungsbereich mit Texterkennung (durchsuchbar) oder als reine Bild-PDF.
+    /// Läuft im Hintergrund (die Seiten werden parallel erkannt); die Oberfläche bleibt
+    /// bedienbar-gesperrt und zeigt den Fortschritt aus den Worker-Threads.</summary>
+    private async Task CreatePdfAsync(string outputPdf)
     {
         var tiffFiles = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
         var language = CurrentOcrLanguage;
+        ocrBusy = true; // FormClosing-Guard: nicht mitten in der Texterkennung beenden
         toolStrip.Enabled = false;
         menuStrip.Enabled = false;
-        Cursor.Current = Cursors.WaitCursor;
+        Application.UseWaitCursor = true;
         try
         {
-            void Progress(int done, int total)
+            void Progress(int done, int total) => BeginInvoke(() => // kommt aus den Worker-Threads
+                statusLabel.Text = string.Format(Lng.T(language != null ? "Texterkennung {0}/{1} …" : "Seite {0}/{1} …"), done, total));
+            await Task.Run(() =>
             {
-                statusLabel.Text = string.Format(Lng.T(language != null ? "Texterkennung {0}/{1} …" : "Seite {0}/{1} …"), done, total);
-                statusStrip.Refresh();
-            }
-            if (language != null) { OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, language, settings.OcrJpgQuality, Progress); }
-            else { OcrPdfService.CreateImagePdf(tiffFiles, outputPdf, settings.OcrJpgQuality, Progress); }
+                if (language != null) { OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, language, settings.OcrJpgQuality, Progress); }
+                else { OcrPdfService.CreateImagePdf(tiffFiles, outputPdf, settings.OcrJpgQuality, Progress); }
+            });
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or Tesseract.TesseractException)
         {
@@ -1193,7 +1199,8 @@ public partial class MainForm : Form
         }
         finally
         {
-            Cursor.Current = Cursors.Default;
+            ocrBusy = false;
+            Application.UseWaitCursor = false;
             toolStrip.Enabled = true;
             menuStrip.Enabled = true;
             UpdateUiState();
