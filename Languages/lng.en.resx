@@ -127,8 +127,8 @@ Grayscale scans save additional space.</value></data>
   <data name="Dieses &amp;Gerät verwenden:" xml:space="preserve"><value>Use this &amp;device:</value></data>
   <data name="Windows-Einstellungen" xml:space="preserve"><value>Windows settings</value></data>
   <data name="Scanner und Kameras" xml:space="preserve"><value>Scanners and Cameras</value></data>
-  <data name="Hint.DeviceKeys" xml:space="preserve"><value>There you can link the buttons on the device to ScanView
-(go to Properties → Events).</value></data>
+  <data name="Hint.DeviceKeys" xml:space="preserve"><value>There you can link the buttons on the device
+to ScanView (Properties → Events).</value></data>
   <data name="(kein Scanner gefunden)" xml:space="preserve"><value>(no scanner found)</value></data>
   <data name="Die Windows-Einstellungen konnten nicht geöffnet werden." xml:space="preserve"><value>The Windows settings could not be opened.</value></data>
   <data name="Kein Scanner gefunden." xml:space="preserve"><value>No scanner found.</value></data>

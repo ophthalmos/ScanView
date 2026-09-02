@@ -60,22 +60,24 @@
             btnCancel = new Button();
             tabs.SuspendLayout();
             tabGeneral.SuspendLayout();
+            panelBackColors.SuspendLayout();
             tabOcr.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numJpgQuality).BeginInit();
             SuspendLayout();
-            //
+            // 
             // tabs
-            //
+            // 
             tabs.Controls.Add(tabGeneral);
             tabs.Controls.Add(tabOcr);
-            tabs.Location = new Point(12, 12);
+            tabs.Dock = DockStyle.Top;
+            tabs.Location = new Point(0, 0);
             tabs.Name = "tabs";
             tabs.SelectedIndex = 0;
-            tabs.Size = new Size(416, 338);
+            tabs.Size = new Size(374, 338);
             tabs.TabIndex = 0;
-            //
+            // 
             // tabGeneral
-            //
+            // 
             tabGeneral.Controls.Add(labelUiLanguage);
             tabGeneral.Controls.Add(comboUiLanguage);
             tabGeneral.Controls.Add(cbCloseOnEscape);
@@ -92,138 +94,138 @@
             tabGeneral.Location = new Point(4, 24);
             tabGeneral.Name = "tabGeneral";
             tabGeneral.Padding = new Padding(3);
-            tabGeneral.Size = new Size(408, 310);
+            tabGeneral.Size = new Size(366, 310);
             tabGeneral.TabIndex = 0;
             tabGeneral.Text = "Allgemein";
             tabGeneral.UseVisualStyleBackColor = true;
-            //
+            // 
             // labelUiLanguage
-            //
+            // 
             labelUiLanguage.AutoSize = true;
-            labelUiLanguage.Location = new Point(16, 20);
+            labelUiLanguage.Location = new Point(8, 19);
             labelUiLanguage.Name = "labelUiLanguage";
-            labelUiLanguage.Size = new Size(120, 15);
+            labelUiLanguage.Size = new Size(115, 15);
             labelUiLanguage.TabIndex = 16;
             labelUiLanguage.Text = "Sprache / &Language:";
-            //
+            // 
             // comboUiLanguage
-            //
+            // 
             comboUiLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
             comboUiLanguage.Items.AddRange(new object[] { "Deutsch", "English", "Français", "Español" });
-            comboUiLanguage.Location = new Point(150, 16);
+            comboUiLanguage.Location = new Point(136, 16);
             comboUiLanguage.Name = "comboUiLanguage";
-            comboUiLanguage.Size = new Size(180, 23);
+            comboUiLanguage.Size = new Size(222, 23);
             comboUiLanguage.TabIndex = 17;
-            //
+            // 
             // cbCloseOnEscape
-            //
+            // 
             cbCloseOnEscape.AutoSize = true;
-            cbCloseOnEscape.Location = new Point(16, 52);
+            cbCloseOnEscape.Location = new Point(12, 56);
             cbCloseOnEscape.Name = "cbCloseOnEscape";
-            cbCloseOnEscape.Size = new Size(320, 19);
+            cbCloseOnEscape.Size = new Size(313, 19);
             cbCloseOnEscape.TabIndex = 0;
             cbCloseOnEscape.Text = "Programm mit 2× &Esc beenden (Umschalt+Esc: sofort)";
             cbCloseOnEscape.UseVisualStyleBackColor = true;
-            //
+            // 
             // labelExit
-            //
+            // 
             labelExit.AutoSize = true;
-            labelExit.Location = new Point(16, 86);
+            labelExit.Location = new Point(8, 88);
             labelExit.Name = "labelExit";
-            labelExit.Size = new Size(180, 15);
+            labelExit.Size = new Size(172, 15);
             labelExit.TabIndex = 1;
             labelExit.Text = "Beim Beenden des Programms:";
-            //
+            // 
             // rbExitKeep
-            //
+            // 
             rbExitKeep.AutoSize = true;
             rbExitKeep.Location = new Point(28, 106);
             rbExitKeep.Name = "rbExitKeep";
-            rbExitKeep.Size = new Size(240, 19);
+            rbExitKeep.Size = new Size(223, 19);
             rbExitKeep.TabIndex = 2;
             rbExitKeep.Text = "Seiten in der Seitenübersicht &behalten";
             rbExitKeep.UseVisualStyleBackColor = true;
-            //
+            // 
             // rbExitAsk
-            //
+            // 
             rbExitAsk.AutoSize = true;
             rbExitAsk.Location = new Point(28, 130);
             rbExitAsk.Name = "rbExitAsk";
-            rbExitAsk.Size = new Size(240, 19);
+            rbExitAsk.Size = new Size(226, 19);
             rbExitAsk.TabIndex = 3;
             rbExitAsk.Text = "Seitenübersicht nach &Rückfrage leeren";
             rbExitAsk.UseVisualStyleBackColor = true;
-            //
+            // 
             // rbExitClear
-            //
+            // 
             rbExitClear.AutoSize = true;
             rbExitClear.Location = new Point(28, 154);
             rbExitClear.Name = "rbExitClear";
-            rbExitClear.Size = new Size(240, 19);
+            rbExitClear.Size = new Size(227, 19);
             rbExitClear.TabIndex = 4;
             rbExitClear.Text = "Seitenübersicht &ohne Rückfrage leeren";
             rbExitClear.UseVisualStyleBackColor = true;
-            //
+            // 
             // labelDirectory
-            //
+            // 
             labelDirectory.AutoSize = true;
-            labelDirectory.Location = new Point(16, 188);
+            labelDirectory.Location = new Point(8, 190);
             labelDirectory.Name = "labelDirectory";
-            labelDirectory.Size = new Size(240, 15);
+            labelDirectory.Size = new Size(223, 15);
             labelDirectory.TabIndex = 5;
             labelDirectory.Text = "Bevorzugter &Speicherort für PDF-Dateien:";
-            //
+            // 
             // textSaveDirectory
-            //
-            textSaveDirectory.Location = new Point(16, 208);
+            // 
+            textSaveDirectory.Location = new Point(28, 208);
             textSaveDirectory.Name = "textSaveDirectory";
-            textSaveDirectory.Size = new Size(330, 23);
+            textSaveDirectory.Size = new Size(292, 23);
             textSaveDirectory.TabIndex = 6;
-            //
+            // 
             // btnBrowse
-            //
-            btnBrowse.Location = new Point(352, 207);
+            // 
+            btnBrowse.Location = new Point(326, 208);
             btnBrowse.Name = "btnBrowse";
             btnBrowse.Size = new Size(32, 25);
             btnBrowse.TabIndex = 7;
             btnBrowse.Text = "…";
             btnBrowse.UseVisualStyleBackColor = true;
             btnBrowse.Click += BtnBrowse_Click;
-            //
+            // 
             // labelDirectoryHint
-            //
+            // 
             labelDirectoryHint.AutoSize = true;
             labelDirectoryHint.ForeColor = SystemColors.GrayText;
-            labelDirectoryHint.Location = new Point(16, 236);
+            labelDirectoryHint.Location = new Point(28, 236);
             labelDirectoryHint.Name = "labelDirectoryHint";
-            labelDirectoryHint.Size = new Size(320, 15);
+            labelDirectoryHint.Size = new Size(319, 15);
             labelDirectoryHint.TabIndex = 8;
             labelDirectoryHint.Text = "Leer: Windows schlägt den zuletzt verwendeten Ordner vor.";
-            //
+            // 
+            // labelBackColor
+            // 
+            labelBackColor.AutoSize = true;
+            labelBackColor.Location = new Point(16, 270);
+            labelBackColor.Name = "labelBackColor";
+            labelBackColor.Size = new Size(102, 15);
+            labelBackColor.TabIndex = 9;
+            labelBackColor.Text = "&Hintergrundfarbe:";
+            // 
             // panelBackColors
-            //
+            // 
             panelBackColors.Controls.Add(rbBackWhite);
             panelBackColors.Controls.Add(rbBackBlue);
             panelBackColors.Controls.Add(rbBackGreen);
             panelBackColors.Controls.Add(rbBackYellow);
             panelBackColors.Controls.Add(rbBackRose);
             panelBackColors.Controls.Add(rbBackGray);
-            panelBackColors.Location = new Point(150, 264);
+            panelBackColors.Location = new Point(136, 264);
             panelBackColors.Name = "panelBackColors";
             panelBackColors.Size = new Size(226, 28);
             panelBackColors.TabIndex = 10;
-            //
-            // labelBackColor
-            //
-            labelBackColor.AutoSize = true;
-            labelBackColor.Location = new Point(16, 270);
-            labelBackColor.Name = "labelBackColor";
-            labelBackColor.Size = new Size(200, 15);
-            labelBackColor.TabIndex = 9;
-            labelBackColor.Text = "&Hintergrundfarbe:";
-            //
+            // 
             // rbBackWhite
-            //
+            // 
             rbBackWhite.Appearance = Appearance.Button;
             rbBackWhite.BackColor = Color.White;
             rbBackWhite.FlatStyle = FlatStyle.Flat;
@@ -233,9 +235,9 @@
             rbBackWhite.TabIndex = 10;
             rbBackWhite.UseVisualStyleBackColor = false;
             rbBackWhite.CheckedChanged += BackColorRadio_CheckedChanged;
-            //
+            // 
             // rbBackBlue
-            //
+            // 
             rbBackBlue.Appearance = Appearance.Button;
             rbBackBlue.BackColor = Color.FromArgb(214, 230, 245);
             rbBackBlue.FlatStyle = FlatStyle.Flat;
@@ -245,9 +247,9 @@
             rbBackBlue.TabIndex = 11;
             rbBackBlue.UseVisualStyleBackColor = false;
             rbBackBlue.CheckedChanged += BackColorRadio_CheckedChanged;
-            //
+            // 
             // rbBackGreen
-            //
+            // 
             rbBackGreen.Appearance = Appearance.Button;
             rbBackGreen.BackColor = Color.FromArgb(220, 238, 220);
             rbBackGreen.FlatStyle = FlatStyle.Flat;
@@ -257,9 +259,9 @@
             rbBackGreen.TabIndex = 12;
             rbBackGreen.UseVisualStyleBackColor = false;
             rbBackGreen.CheckedChanged += BackColorRadio_CheckedChanged;
-            //
+            // 
             // rbBackYellow
-            //
+            // 
             rbBackYellow.Appearance = Appearance.Button;
             rbBackYellow.BackColor = Color.FromArgb(247, 243, 216);
             rbBackYellow.FlatStyle = FlatStyle.Flat;
@@ -269,9 +271,9 @@
             rbBackYellow.TabIndex = 13;
             rbBackYellow.UseVisualStyleBackColor = false;
             rbBackYellow.CheckedChanged += BackColorRadio_CheckedChanged;
-            //
+            // 
             // rbBackRose
-            //
+            // 
             rbBackRose.Appearance = Appearance.Button;
             rbBackRose.BackColor = Color.FromArgb(246, 224, 230);
             rbBackRose.FlatStyle = FlatStyle.Flat;
@@ -281,9 +283,9 @@
             rbBackRose.TabIndex = 14;
             rbBackRose.UseVisualStyleBackColor = false;
             rbBackRose.CheckedChanged += BackColorRadio_CheckedChanged;
-            //
+            // 
             // rbBackGray
-            //
+            // 
             rbBackGray.Appearance = Appearance.Button;
             rbBackGray.BackColor = Color.FromArgb(232, 232, 232);
             rbBackGray.FlatStyle = FlatStyle.Flat;
@@ -293,9 +295,9 @@
             rbBackGray.TabIndex = 15;
             rbBackGray.UseVisualStyleBackColor = false;
             rbBackGray.CheckedChanged += BackColorRadio_CheckedChanged;
-            //
+            // 
             // tabOcr
-            //
+            // 
             tabOcr.Controls.Add(labelLanguage);
             tabOcr.Controls.Add(comboLanguage);
             tabOcr.Controls.Add(labelLanguageHint);
@@ -305,94 +307,93 @@
             tabOcr.Location = new Point(4, 24);
             tabOcr.Name = "tabOcr";
             tabOcr.Padding = new Padding(3);
-            tabOcr.Size = new Size(408, 310);
+            tabOcr.Size = new Size(366, 310);
             tabOcr.TabIndex = 1;
             tabOcr.Text = "Texterkennung";
             tabOcr.UseVisualStyleBackColor = true;
-            //
+            // 
             // labelLanguage
-            //
+            // 
             labelLanguage.AutoSize = true;
-            labelLanguage.Location = new Point(16, 20);
+            labelLanguage.Location = new Point(8, 19);
             labelLanguage.Name = "labelLanguage";
-            labelLanguage.Size = new Size(380, 15);
+            labelLanguage.Size = new Size(270, 15);
             labelLanguage.TabIndex = 0;
-            labelLanguage.Text = "Bevorzugte &Sprache der Texterkennung (Vorgabe für neue Sitzungen):";
-            //
+            labelLanguage.Text = "Bevorzugte &Sprache (Vorgabe für neue Sitzungen):";
+            // 
             // comboLanguage
-            //
+            // 
             comboLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboLanguage.Location = new Point(16, 40);
+            comboLanguage.Location = new Point(28, 37);
             comboLanguage.Name = "comboLanguage";
             comboLanguage.Size = new Size(220, 23);
             comboLanguage.TabIndex = 1;
-            //
+            // 
             // labelLanguageHint
-            //
+            // 
             labelLanguageHint.AutoSize = true;
             labelLanguageHint.ForeColor = SystemColors.GrayText;
-            labelLanguageHint.Location = new Point(16, 72);
+            labelLanguageHint.Location = new Point(28, 63);
             labelLanguageHint.Name = "labelLanguageHint";
-            labelLanguageHint.Size = new Size(330, 30);
+            labelLanguageHint.Size = new Size(313, 30);
             labelLanguageHint.TabIndex = 2;
             labelLanguageHint.Text = "Weitere Sprachen: .traineddata-Dateien (tessdata_best)\nin den Ordner \"tessdata\" neben der Programmdatei legen.";
-            //
+            // 
             // labelQuality
-            //
+            // 
             labelQuality.AutoSize = true;
-            labelQuality.Location = new Point(16, 122);
+            labelQuality.Location = new Point(8, 124);
             labelQuality.Name = "labelQuality";
-            labelQuality.Size = new Size(260, 15);
+            labelQuality.Size = new Size(239, 15);
             labelQuality.TabIndex = 3;
             labelQuality.Text = "&JPEG-Qualität der Bilder in der PDF (30–100):";
-            //
+            // 
             // numJpgQuality
-            //
-            numJpgQuality.Location = new Point(16, 142);
-            numJpgQuality.Maximum = new decimal(new int[] { 100, 0, 0, 0 });
+            // 
+            numJpgQuality.Location = new Point(28, 142);
             numJpgQuality.Minimum = new decimal(new int[] { 30, 0, 0, 0 });
             numJpgQuality.Name = "numJpgQuality";
             numJpgQuality.Size = new Size(60, 23);
             numJpgQuality.TabIndex = 4;
             numJpgQuality.Value = new decimal(new int[] { 75, 0, 0, 0 });
-            //
+            // 
             // labelQualityHint
-            //
+            // 
             labelQualityHint.AutoSize = true;
             labelQualityHint.ForeColor = SystemColors.GrayText;
-            labelQualityHint.Location = new Point(16, 174);
+            labelQualityHint.Location = new Point(28, 168);
             labelQualityHint.Name = "labelQualityHint";
-            labelQualityHint.Size = new Size(330, 30);
+            labelQualityHint.Size = new Size(299, 30);
             labelQualityHint.TabIndex = 5;
             labelQualityHint.Text = "Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter\nKompromiss. Graustufen-Scans sparen zusätzlich Platz.";
-            //
+            // 
             // btnOk
-            //
+            // 
             btnOk.DialogResult = DialogResult.OK;
-            btnOk.Location = new Point(262, 364);
+            btnOk.Location = new Point(196, 340);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(80, 26);
             btnOk.TabIndex = 1;
             btnOk.Text = "OK";
             btnOk.UseVisualStyleBackColor = true;
-            //
+            // 
             // btnCancel
-            //
+            // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(348, 364);
+            btnCancel.Location = new Point(282, 340);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 2;
             btnCancel.Text = "Abbrechen";
             btnCancel.UseVisualStyleBackColor = true;
-            //
+            // 
             // SettingsForm
-            //
+            // 
             AcceptButton = btnOk;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(440, 402);
+            ClientSize = new Size(374, 378);
             Controls.Add(tabs);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
@@ -407,6 +408,7 @@
             tabs.ResumeLayout(false);
             tabGeneral.ResumeLayout(false);
             tabGeneral.PerformLayout();
+            panelBackColors.ResumeLayout(false);
             tabOcr.ResumeLayout(false);
             tabOcr.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numJpgQuality).EndInit();
