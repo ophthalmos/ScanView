@@ -244,6 +244,18 @@ public partial class MainForm : Form
 
     // ------------------------------------------------------------------ Beenden mit Escape (aus PDFlight übernommen)
 
+    /// <summary>Broadcast einer zweiten Instanz (z.B. Scanner-Taste): dieses Fenster in den
+    /// Vordergrund holen — dynamisch registrierte Nachrichten müssen per 'if' geprüft werden.</summary>
+    protected override void WndProc(ref Message m)
+    {
+        if (m.Msg == NativeMethods.WM_SHOWSCANVIEW)
+        {
+            if (WindowState == FormWindowState.Minimized) { WindowState = FormWindowState.Normal; }
+            Activate();
+        }
+        base.WndProc(ref m);
+    }
+
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
         switch (keyData)
