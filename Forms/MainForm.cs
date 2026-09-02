@@ -14,7 +14,8 @@ public partial class MainForm : Form, IMessageFilter
     public bool PreFilterMessage(ref Message m)
     {
         if (m.Msg != WM_MOUSEWHEEL || (ModifierKeys & Keys.Control) == 0) { return false; }
-        if (!Enabled || !flowPanel.Visible) { return false; } // modaler Dialog offen bzw. Kopiermodus aktiv
+        // ActiveForm statt Enabled: ShowDialog deaktiviert den Owner nur nativ, die Enabled-Property bleibt true
+        if (Form.ActiveForm != this || !flowPanel.Visible) { return false; } // Dialog offen bzw. Kopiermodus aktiv
         if (!flowPanel.RectangleToScreen(flowPanel.ClientRectangle).Contains(Cursor.Position)) { return false; }
         var delta = (short)((long)m.WParam >> 16);
         if (delta > 0) { BtnZoomIn_Click(this, EventArgs.Empty); }
