@@ -39,40 +39,52 @@ internal static class OcrPdfService
     }
 
     /// <summary>Erstellt aus den TIFF-Scans eine durchsuchbare PDF; progress meldet (fertige Seite,
-    /// Gesamtzahl). Engine und PDF-Renderer werden EINMAL für alle Seiten erzeugt — die Engine-
-    /// Initialisierung lädt sonst pro Seite das komplette Sprachmodell (tessdata_best, ~9 MB) neu.</summary>
+    /// Gesamtzahl) und kann aus BELIEBIGEN Threads kommen. Die Seiten werden PARALLEL erkannt —
+    /// die Texterkennung selbst ist der einzige nennenswerte Kostenpunkt (~2,6 s je volle Seite),
+    /// Engine-Initialisierung ist mit ~0,03 s vernachlässigbar, daher eine Engine je Seite.</summary>
     public static void CreateSearchablePdf(IReadOnlyList<string> tiffFiles, string outputPdf, string language, int jpgQuality, Action<int, int> progress)
     {
         TesseractEnviornment.CustomSearchPath = Path.Combine(AppContext.BaseDirectory, "x64"); // native DLLs des NuGet-Pakets
-        var pdfBase = Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"));
-        var tempPdf = pdfBase + ".pdf";
+        var pagePdfs = new string[tiffFiles.Count];
+        var done = 0;
         try
         {
-            using (var renderer = ResultRenderer.CreatePdfRenderer(pdfBase, TessData, false))
-            using (renderer.BeginDocument("ScanView"))
-            // user_defined_dpi ist eine Init-Variable und nur der FALLBACK für Bilder ohne
-            // dpi-Metadaten — Scans und LoadUnlocked-Kopien bringen ihre Auflösung selbst mit
-            using (TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
-                new Dictionary<string, object> { { "user_defined_dpi", 300 }, { "jpg_quality", jpgQuality } }, false))
+            Parallel.For(0, tiffFiles.Count,
+                new ParallelOptions { MaxDegreeOfParallelism = Environment.ProcessorCount }, i =>
             {
-                for (var i = 0; i < tiffFiles.Count; i++)
+                var pdfBase = Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"));
+                using (var renderer = ResultRenderer.CreatePdfRenderer(pdfBase, TessData, false))
+                using (renderer.BeginDocument("ScanView"))
                 {
+                    // user_defined_dpi ist eine Init-Variable und nur der FALLBACK für Bilder ohne
+                    // dpi-Metadaten — Scans und LoadUnlocked-Kopien bringen ihre Auflösung selbst mit
+                    using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
+                        new Dictionary<string, object> { { "user_defined_dpi", 300 }, { "jpg_quality", jpgQuality } }, false);
                     using var pix = Pix.LoadFromFile(tiffFiles[i]);
                     // zweiter Parameter = Bilddateiname: daraus lädt der PDF-Renderer das einzubettende Bild
                     using var page = engine.Process(pix, tiffFiles[i], PageSegMode.Auto);
                     renderer.AddPage(page);
-                    progress?.Invoke(i + 1, tiffFiles.Count);
                 }
-            }
-            // nur noch Metadaten setzen und ans Ziel schreiben — kein Seiten-Merge mehr nötig
-            using var result = PdfReader.Open(tempPdf, PdfDocumentOpenMode.Modify);
+                pagePdfs[i] = pdfBase + ".pdf";
+                progress?.Invoke(Interlocked.Increment(ref done), tiffFiles.Count);
+            });
+
+            using PdfDocument result = new();
             result.Info.Title = Path.GetFileNameWithoutExtension(outputPdf);
             result.Info.Author = Environment.UserName;
+            foreach (var pagePdf in pagePdfs) // in Seitenreihenfolge zusammensetzen
+            {
+                using var source = PdfReader.Open(pagePdf, PdfDocumentOpenMode.Import);
+                foreach (var page in source.Pages) { result.AddPage(page); }
+            }
             result.Save(outputPdf);
         }
         finally
         {
-            try { File.Delete(tempPdf); } catch (IOException) { }
+            foreach (var pagePdf in pagePdfs)
+            {
+                if (pagePdf != null) { try { File.Delete(pagePdf); } catch (IOException) { } }
+            }
         }
     }
 }
