@@ -34,12 +34,13 @@ public partial class MainForm : Form
     private Button btnZoomOut; // übereinander gestapelt in einem ToolStripControlHost (s. CreateZoomButtons)
     private Button btnZoomIn;
     private Font copyModeBoldFont; // „Kopiermodus beenden" fett, solange der Modus aktiv ist
+    private bool pendingStiScan;   // Start über die Scanner-Taste: nach dem Anzeigen sofort scannen
 
     public MainForm() : this(false) // parameterlos für den Windows-Forms-Designer
     {
     }
 
-    public MainForm(bool selfTest)
+    public MainForm(bool selfTest, string stiDeviceId = null)
     {
         InitializeComponent();
         toolStrip.Renderer = new BigArrowRenderer();
@@ -78,6 +79,16 @@ public partial class MainForm : Form
             selectedScannerName = settings.ScannerName;
             foreach (var file in settings.PageFiles.Where(File.Exists)) { AddPage(file); } // „Seiten behalten"
             Select(null);
+            if (stiDeviceId != null) // Start über die Scanner-Taste: das auslösende Gerät verwenden und sofort scannen
+            {
+                var device = ScanService.ListScanners().FirstOrDefault(s => string.Equals(s.Id, stiDeviceId, StringComparison.OrdinalIgnoreCase));
+                if (device != null)
+                {
+                    selectedScannerId = device.Id;
+                    selectedScannerName = device.Name;
+                }
+                pendingStiScan = true;
+            }
         }
     }
 
@@ -244,14 +255,19 @@ public partial class MainForm : Form
 
     // ------------------------------------------------------------------ Beenden mit Escape (aus PDFlight übernommen)
 
-    /// <summary>Broadcast einer zweiten Instanz (z.B. Scanner-Taste): dieses Fenster in den
-    /// Vordergrund holen — dynamisch registrierte Nachrichten müssen per 'if' geprüft werden.</summary>
+    /// <summary>Broadcast einer zweiten Instanz: dieses Fenster in den Vordergrund holen — bei der
+    /// Scanner-Taste (WM_SCANSCANVIEW) zusätzlich sofort scannen. Dynamisch registrierte
+    /// Nachrichten müssen per 'if' geprüft werden.</summary>
     protected override void WndProc(ref Message m)
     {
-        if (m.Msg == NativeMethods.WM_SHOWSCANVIEW)
+        if (m.Msg == NativeMethods.WM_SHOWSCANVIEW || m.Msg == NativeMethods.WM_SCANSCANVIEW)
         {
             if (WindowState == FormWindowState.Minimized) { WindowState = FormWindowState.Normal; }
             Activate();
+            if (m.Msg == NativeMethods.WM_SCANSCANVIEW && Enabled) // nicht, während ein modaler Dialog offen ist
+            {
+                BeginInvoke(() => SplitScan_ButtonClick(this, EventArgs.Empty)); // WndProc nicht mit dem Scan blockieren
+            }
         }
         base.WndProc(ref m);
     }
@@ -285,6 +301,12 @@ public partial class MainForm : Form
 
     private void MainForm_Shown(object sender, EventArgs e)
     {
+        if (pendingStiScan) // Scanner-Taste: erst das Fenster anzeigen, dann scannen
+        {
+            pendingStiScan = false;
+            BeginInvoke(() => SplitScan_ButtonClick(this, EventArgs.Empty));
+            return;
+        }
         if (!selfTest) { return; }
         // Selbsttest für die Werkzeugkette: zwei Testseiten, PDF erstellen, Ergebnis melden, beenden
         AddPage(ScanService.RenderTestPage(NextScanPath(), "Selbsttest Seite eins", "Der Blutdruck lag bei 120 zu 80 mmHg."));
