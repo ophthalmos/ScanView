@@ -20,6 +20,7 @@ internal sealed partial class CropForm : Form, IMessageFilter
     public bool PreFilterMessage(ref Message m)
     {
         if (m.Msg != WM_MOUSEWHEEL || (ModifierKeys & Keys.Control) == 0) { return false; }
+        if (Form.ActiveForm != this) { return false; } // nur reagieren, wenn dieser Dialog vorn ist
         if (!scrollPanel.RectangleToScreen(scrollPanel.ClientRectangle).Contains(Cursor.Position)) { return false; }
         var delta = (short)((long)m.WParam >> 16);
         comboZoom.SelectedIndex = delta > 0
