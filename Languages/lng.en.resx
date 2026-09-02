@@ -113,7 +113,7 @@
   <data name="Seitenübersicht &amp;ohne Rückfrage leeren" xml:space="preserve"><value>Clear the overview with&amp;out asking</value></data>
   <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve"><value>Preferred &amp;save location for PDF files:</value></data>
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Empty: Windows suggests the last used folder.</value></data>
-  <data name="&amp;Hintergrund der Seitenübersicht:" xml:space="preserve"><value>Overview bac&amp;kground:</value></data>
+  <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>Bac&amp;kground color:</value></data>
   <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Preferred OCR lang&amp;uage (default for new sessions):</value></data>
   <data name="&amp;JPEG-Qualität der Bilder in der PDF (30–100):" xml:space="preserve"><value>&amp;JPEG quality of images in the PDF (30–100):</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>More languages: put .traineddata files (tessdata_best)
