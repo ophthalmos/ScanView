@@ -17,6 +17,7 @@ internal sealed class AppSettings
     public bool CloseOnEscape { get; set; } = true;
     public int ExitAction { get; set; }      // 0 = Seiten behalten, 1 = nach Rückfrage leeren, 2 = ohne Rückfrage leeren
     public string SaveDirectory { get; set; } = ""; // bevorzugter Speicherort für PDFs (leer = zuletzt verwendeter)
+    public int OverviewBackColor { get; set; } = -1; // ARGB der Seitenübersicht (-1 = Weiß)
     public string OcrLanguage { get; set; } = "deu";
     public int OcrJpgQuality { get; set; } = 75; // JPEG-Qualität der Bilder in der erzeugten PDF
     public List<string> PageFiles { get; set; } = []; // Seiten der letzten Sitzung (bei "behalten")

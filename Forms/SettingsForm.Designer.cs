@@ -1,4 +1,4 @@
-namespace ScanView.Forms
+﻿namespace ScanView.Forms
 {
     partial class SettingsForm
     {
@@ -39,6 +39,13 @@ namespace ScanView.Forms
             textSaveDirectory = new TextBox();
             btnBrowse = new Button();
             labelDirectoryHint = new Label();
+            labelBackColor = new Label();
+            rbBackWhite = new RadioButton();
+            rbBackBlue = new RadioButton();
+            rbBackGreen = new RadioButton();
+            rbBackYellow = new RadioButton();
+            rbBackRose = new RadioButton();
+            rbBackGray = new RadioButton();
             tabOcr = new TabPage();
             labelLanguage = new Label();
             comboLanguage = new ComboBox();
@@ -61,7 +68,7 @@ namespace ScanView.Forms
             tabs.Location = new Point(12, 12);
             tabs.Name = "tabs";
             tabs.SelectedIndex = 0;
-            tabs.Size = new Size(416, 254);
+            tabs.Size = new Size(416, 326);
             tabs.TabIndex = 0;
             //
             // tabGeneral
@@ -75,10 +82,17 @@ namespace ScanView.Forms
             tabGeneral.Controls.Add(textSaveDirectory);
             tabGeneral.Controls.Add(btnBrowse);
             tabGeneral.Controls.Add(labelDirectoryHint);
+            tabGeneral.Controls.Add(labelBackColor);
+            tabGeneral.Controls.Add(rbBackWhite);
+            tabGeneral.Controls.Add(rbBackBlue);
+            tabGeneral.Controls.Add(rbBackGreen);
+            tabGeneral.Controls.Add(rbBackYellow);
+            tabGeneral.Controls.Add(rbBackRose);
+            tabGeneral.Controls.Add(rbBackGray);
             tabGeneral.Location = new Point(4, 24);
             tabGeneral.Name = "tabGeneral";
             tabGeneral.Padding = new Padding(3);
-            tabGeneral.Size = new Size(408, 226);
+            tabGeneral.Size = new Size(408, 298);
             tabGeneral.TabIndex = 0;
             tabGeneral.Text = "Allgemein";
             tabGeneral.UseVisualStyleBackColor = true;
@@ -168,6 +182,87 @@ namespace ScanView.Forms
             labelDirectoryHint.TabIndex = 8;
             labelDirectoryHint.Text = "Leer: Windows schlägt den zuletzt verwendeten Ordner vor.";
             //
+            // labelBackColor
+            //
+            labelBackColor.AutoSize = true;
+            labelBackColor.Location = new Point(16, 232);
+            labelBackColor.Name = "labelBackColor";
+            labelBackColor.Size = new Size(200, 15);
+            labelBackColor.TabIndex = 9;
+            labelBackColor.Text = "&Hintergrund der Seitenübersicht:";
+            //
+            // rbBackWhite
+            //
+            rbBackWhite.Appearance = Appearance.Button;
+            rbBackWhite.BackColor = Color.White;
+            rbBackWhite.FlatStyle = FlatStyle.Flat;
+            rbBackWhite.Location = new Point(16, 252);
+            rbBackWhite.Name = "rbBackWhite";
+            rbBackWhite.Size = new Size(32, 28);
+            rbBackWhite.TabIndex = 10;
+            rbBackWhite.UseVisualStyleBackColor = false;
+            rbBackWhite.CheckedChanged += BackColorRadio_CheckedChanged;
+            //
+            // rbBackBlue
+            //
+            rbBackBlue.Appearance = Appearance.Button;
+            rbBackBlue.BackColor = Color.FromArgb(214, 230, 245);
+            rbBackBlue.FlatStyle = FlatStyle.Flat;
+            rbBackBlue.Location = new Point(54, 252);
+            rbBackBlue.Name = "rbBackBlue";
+            rbBackBlue.Size = new Size(32, 28);
+            rbBackBlue.TabIndex = 11;
+            rbBackBlue.UseVisualStyleBackColor = false;
+            rbBackBlue.CheckedChanged += BackColorRadio_CheckedChanged;
+            //
+            // rbBackGreen
+            //
+            rbBackGreen.Appearance = Appearance.Button;
+            rbBackGreen.BackColor = Color.FromArgb(220, 238, 220);
+            rbBackGreen.FlatStyle = FlatStyle.Flat;
+            rbBackGreen.Location = new Point(92, 252);
+            rbBackGreen.Name = "rbBackGreen";
+            rbBackGreen.Size = new Size(32, 28);
+            rbBackGreen.TabIndex = 12;
+            rbBackGreen.UseVisualStyleBackColor = false;
+            rbBackGreen.CheckedChanged += BackColorRadio_CheckedChanged;
+            //
+            // rbBackYellow
+            //
+            rbBackYellow.Appearance = Appearance.Button;
+            rbBackYellow.BackColor = Color.FromArgb(247, 243, 216);
+            rbBackYellow.FlatStyle = FlatStyle.Flat;
+            rbBackYellow.Location = new Point(130, 252);
+            rbBackYellow.Name = "rbBackYellow";
+            rbBackYellow.Size = new Size(32, 28);
+            rbBackYellow.TabIndex = 13;
+            rbBackYellow.UseVisualStyleBackColor = false;
+            rbBackYellow.CheckedChanged += BackColorRadio_CheckedChanged;
+            //
+            // rbBackRose
+            //
+            rbBackRose.Appearance = Appearance.Button;
+            rbBackRose.BackColor = Color.FromArgb(246, 224, 230);
+            rbBackRose.FlatStyle = FlatStyle.Flat;
+            rbBackRose.Location = new Point(168, 252);
+            rbBackRose.Name = "rbBackRose";
+            rbBackRose.Size = new Size(32, 28);
+            rbBackRose.TabIndex = 14;
+            rbBackRose.UseVisualStyleBackColor = false;
+            rbBackRose.CheckedChanged += BackColorRadio_CheckedChanged;
+            //
+            // rbBackGray
+            //
+            rbBackGray.Appearance = Appearance.Button;
+            rbBackGray.BackColor = Color.FromArgb(232, 232, 232);
+            rbBackGray.FlatStyle = FlatStyle.Flat;
+            rbBackGray.Location = new Point(206, 252);
+            rbBackGray.Name = "rbBackGray";
+            rbBackGray.Size = new Size(32, 28);
+            rbBackGray.TabIndex = 15;
+            rbBackGray.UseVisualStyleBackColor = false;
+            rbBackGray.CheckedChanged += BackColorRadio_CheckedChanged;
+            //
             // tabOcr
             //
             tabOcr.Controls.Add(labelLanguage);
@@ -179,7 +274,7 @@ namespace ScanView.Forms
             tabOcr.Location = new Point(4, 24);
             tabOcr.Name = "tabOcr";
             tabOcr.Padding = new Padding(3);
-            tabOcr.Size = new Size(408, 226);
+            tabOcr.Size = new Size(408, 298);
             tabOcr.TabIndex = 1;
             tabOcr.Text = "Texterkennung";
             tabOcr.UseVisualStyleBackColor = true;
@@ -243,7 +338,7 @@ namespace ScanView.Forms
             // btnOk
             //
             btnOk.DialogResult = DialogResult.OK;
-            btnOk.Location = new Point(262, 280);
+            btnOk.Location = new Point(262, 352);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(80, 26);
             btnOk.TabIndex = 1;
@@ -253,7 +348,7 @@ namespace ScanView.Forms
             // btnCancel
             //
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(348, 280);
+            btnCancel.Location = new Point(348, 352);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 2;
@@ -266,7 +361,7 @@ namespace ScanView.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(440, 318);
+            ClientSize = new Size(440, 390);
             Controls.Add(tabs);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
@@ -300,6 +395,13 @@ namespace ScanView.Forms
         private System.Windows.Forms.TextBox textSaveDirectory;
         private System.Windows.Forms.Button btnBrowse;
         private System.Windows.Forms.Label labelDirectoryHint;
+        private System.Windows.Forms.Label labelBackColor;
+        private System.Windows.Forms.RadioButton rbBackWhite;
+        private System.Windows.Forms.RadioButton rbBackBlue;
+        private System.Windows.Forms.RadioButton rbBackGreen;
+        private System.Windows.Forms.RadioButton rbBackYellow;
+        private System.Windows.Forms.RadioButton rbBackRose;
+        private System.Windows.Forms.RadioButton rbBackGray;
         private System.Windows.Forms.TabPage tabOcr;
         private System.Windows.Forms.Label labelLanguage;
         private System.Windows.Forms.ComboBox comboLanguage;

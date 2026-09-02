@@ -74,6 +74,7 @@ public partial class MainForm : Form
         if (!selfTest) // der Selbsttest-Screenshot soll deterministisch bleiben
         {
             RestoreWindowBounds();
+            flowPanel.BackColor = Color.FromArgb(settings.OverviewBackColor); // Hintergrund der Seitenübersicht
             thumbWidth = Math.Max(ThumbWidths[0], settings.ThumbWidth);
             selectedScannerId = settings.ScannerId; // zuletzt benutzter Scanner; geprüft wird erst beim Scannen
             selectedScannerName = settings.ScannerName;
@@ -331,7 +332,7 @@ public partial class MainForm : Form
             DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-copymode.png"));
         }
-        using (SettingsForm settingsDialog = new(true, 0, "", "deu", 75)) // und der Optionen-Dialog
+        using (SettingsForm settingsDialog = new(true, 0, "", Color.White, "deu", 75)) // und der Optionen-Dialog
         {
             settingsDialog.StartPosition = FormStartPosition.Manual;
             settingsDialog.Show(this);
@@ -857,11 +858,14 @@ public partial class MainForm : Form
 
     private void MenuExtrasOptions_Click(object sender, EventArgs e)
     {
-        using SettingsForm dialog = new(settings.CloseOnEscape, settings.ExitAction, settings.SaveDirectory, settings.OcrLanguage, settings.OcrJpgQuality);
+        using SettingsForm dialog = new(settings.CloseOnEscape, settings.ExitAction, settings.SaveDirectory,
+            Color.FromArgb(settings.OverviewBackColor), settings.OcrLanguage, settings.OcrJpgQuality);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.CloseOnEscape = dialog.CloseOnEscape;
         settings.ExitAction = dialog.ExitAction;
         settings.SaveDirectory = dialog.SaveDirectory;
+        settings.OverviewBackColor = dialog.OverviewBackColor.ToArgb();
+        flowPanel.BackColor = dialog.OverviewBackColor; // sofort anwenden
         settings.OcrLanguage = dialog.OcrLanguage;
         settings.OcrJpgQuality = dialog.OcrJpgQuality;
         settings.Save();
