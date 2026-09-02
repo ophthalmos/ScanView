@@ -40,5 +40,6 @@ internal sealed partial class ScannerForm : Form
         {
             TaskDlg.ErrTaskDlg(Handle, "Die Windows-Einstellungen konnten nicht geöffnet werden.", ex);
         }
+        finally { Close(); }
     }
 }

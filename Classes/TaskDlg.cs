@@ -55,7 +55,10 @@ internal static class TaskDlg
         var buildDate = GetBuildDate();
         var msg = "ScanView scannt Seiten, ordnet sie als Miniaturen und" + Environment.NewLine +
             "speichert sie mit Texterkennung als durchsuchbare PDF." + Environment.NewLine + Environment.NewLine +
-            "Im Kopiermodus wird jeder Scan direkt gedruckt.";
+            "Im Kopiermodus wird jeder Scan direkt gedruckt." + Environment.NewLine + Environment.NewLine +
+            "Das Design dieses Programms wurde in Grundzügen von" + Environment.NewLine +
+            "dem Programm „Scanner Interface 7“ der Grewe Compu-" + Environment.NewLine +
+            "tertechnik GmbH Berlin übernommen (erschienen 2012).";
         TaskDialogButton paypalButton = new TaskDialogCommandLinkButton("Anerkennung spenden via PayPal");
         using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante des Fenster-Icons
         var indent = new string(' ', 14);
