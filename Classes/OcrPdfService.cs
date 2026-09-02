@@ -38,49 +38,41 @@ internal static class OcrPdfService
         result.Save(outputPdf);
     }
 
-    /// <summary>Erstellt aus den TIFF-Scans eine durchsuchbare PDF; progress meldet (fertige Seite, Gesamtzahl).</summary>
+    /// <summary>Erstellt aus den TIFF-Scans eine durchsuchbare PDF; progress meldet (fertige Seite,
+    /// Gesamtzahl). Engine und PDF-Renderer werden EINMAL für alle Seiten erzeugt — die Engine-
+    /// Initialisierung lädt sonst pro Seite das komplette Sprachmodell (tessdata_best, ~9 MB) neu.</summary>
     public static void CreateSearchablePdf(IReadOnlyList<string> tiffFiles, string outputPdf, string language, int jpgQuality, Action<int, int> progress)
     {
         TesseractEnviornment.CustomSearchPath = Path.Combine(AppContext.BaseDirectory, "x64"); // native DLLs des NuGet-Pakets
-        List<string> pagePdfs = [];
+        var pdfBase = Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"));
+        var tempPdf = pdfBase + ".pdf";
         try
         {
-            for (var i = 0; i < tiffFiles.Count; i++)
+            using (var renderer = ResultRenderer.CreatePdfRenderer(pdfBase, TessData, false))
+            using (renderer.BeginDocument("ScanView"))
+            // user_defined_dpi ist eine Init-Variable und nur der FALLBACK für Bilder ohne
+            // dpi-Metadaten — Scans und LoadUnlocked-Kopien bringen ihre Auflösung selbst mit
+            using (TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
+                new Dictionary<string, object> { { "user_defined_dpi", 300 }, { "jpg_quality", jpgQuality } }, false))
             {
-                var pdfBase = Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"));
-                using (var renderer = ResultRenderer.CreatePdfRenderer(pdfBase, TessData, false))
-                using (renderer.BeginDocument("ScanView"))
+                for (var i = 0; i < tiffFiles.Count; i++)
                 {
                     using var pix = Pix.LoadFromFile(tiffFiles[i]);
-                    // Echte Auflösung der Seite an Tesseract melden (wie in PDFMover) — sonst stimmen
-                    // Zeichenskalierung der Erkennung und PDF-Seitengröße nicht
-                    var dpi = pix.XRes >= 70 ? pix.XRes : 300;
-                    using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
-                        new Dictionary<string, object> { { "user_defined_dpi", dpi }, { "jpg_quality", jpgQuality } }, false);
                     // zweiter Parameter = Bilddateiname: daraus lädt der PDF-Renderer das einzubettende Bild
                     using var page = engine.Process(pix, tiffFiles[i], PageSegMode.Auto);
                     renderer.AddPage(page);
+                    progress?.Invoke(i + 1, tiffFiles.Count);
                 }
-                pagePdfs.Add(pdfBase + ".pdf");
-                progress?.Invoke(i + 1, tiffFiles.Count);
             }
-
-            using PdfDocument result = new();
+            // nur noch Metadaten setzen und ans Ziel schreiben — kein Seiten-Merge mehr nötig
+            using var result = PdfReader.Open(tempPdf, PdfDocumentOpenMode.Modify);
             result.Info.Title = Path.GetFileNameWithoutExtension(outputPdf);
             result.Info.Author = Environment.UserName;
-            foreach (var pagePdf in pagePdfs)
-            {
-                using var source = PdfReader.Open(pagePdf, PdfDocumentOpenMode.Import);
-                foreach (var page in source.Pages) { result.AddPage(page); }
-            }
             result.Save(outputPdf);
         }
         finally
         {
-            foreach (var pagePdf in pagePdfs)
-            {
-                try { File.Delete(pagePdf); } catch (IOException) { }
-            }
+            try { File.Delete(tempPdf); } catch (IOException) { }
         }
     }
 }
