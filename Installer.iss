@@ -26,6 +26,7 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 AppPublisher=Wilhelm Happe
 AppCopyright=© 2026 W. Happe
+LicenseFile=LICENSE
 UsePreviousAppDir=yes
 DefaultDirName={autopf}\{#appName}
 DefaultGroupName={#appName}
