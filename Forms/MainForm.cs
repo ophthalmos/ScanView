@@ -16,6 +16,7 @@ public partial class MainForm : Form
     private readonly bool selfTest;
     private int scanCounter;
     private const int NumberHeight = 18; // Streifen für die Seitenzahl unter dem Bild
+    private const int ThumbImageWidth = 1000; // Miniaturbilder verkleinert vorhalten (voller Scan wäre ~25 MB je Seite)
     private const int FramePadding = 8;  // Rahmen oben und seitlich um das Seitenbild
     private static readonly Color SelectionColor = Color.FromArgb(0xA6, 0xD0, 0xF1); // Rahmen und Seitenzahl-Streifen der markierten Seite
     private static readonly Color FrameColor = Color.LightGray; // derselbe Rahmen im Ruhezustand
@@ -770,7 +771,7 @@ public partial class MainForm : Form
     {
         var pic = PicOf(selected);
         var old = pic.Image;
-        pic.Image = ScanService.LoadUnlocked((string)selected.Tag);
+        pic.Image = ScanService.LoadThumbnail((string)selected.Tag, ThumbImageWidth);
         old?.Dispose();
     }
 
@@ -938,7 +939,7 @@ public partial class MainForm : Form
         {
             SizeMode = PictureBoxSizeMode.Zoom,
             BackColor = Color.White,
-            Image = ScanService.LoadUnlocked(tiffPath),
+            Image = ScanService.LoadThumbnail(tiffPath, ThumbImageWidth),
             Cursor = Cursors.Hand,
         };
         Label num = new()
