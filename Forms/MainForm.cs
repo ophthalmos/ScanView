@@ -281,7 +281,7 @@ public partial class MainForm : Form
             Activate();
             if (m.Msg == NativeMethods.WM_SCANSCANVIEW && Enabled) // nicht, während ein modaler Dialog offen ist
             {
-                BeginInvoke(() => SplitScan_ButtonClick(this, EventArgs.Empty)); // WndProc nicht mit dem Scan blockieren
+                StartStiScanDelayed(); // erst den Vordergrundwechsel vollziehen lassen, dann scannen
             }
         }
         base.WndProc(ref m);
@@ -314,12 +314,28 @@ public partial class MainForm : Form
         return true;
     }
 
+    /// <summary>Startet den Tasten-Scan erst, nachdem das Fenster gezeichnet und aktiviert ist —
+    /// der Scan blockiert den UI-Thread; ein sofortiger Start ließe das Fenster bis zum
+    /// Scan-Ende unsichtbar im Hintergrund hängen.</summary>
+    private void StartStiScanDelayed()
+    {
+        var timer = new System.Windows.Forms.Timer { Interval = 250 };
+        timer.Tick += (s, e) =>
+        {
+            timer.Stop();
+            timer.Dispose();
+            SplitScan_ButtonClick(this, EventArgs.Empty);
+        };
+        timer.Start();
+    }
+
     private void MainForm_Shown(object sender, EventArgs e)
     {
         if (pendingStiScan) // Scanner-Taste: erst das Fenster anzeigen, dann scannen
         {
             pendingStiScan = false;
-            BeginInvoke(() => SplitScan_ButtonClick(this, EventArgs.Empty));
+            Activate();
+            StartStiScanDelayed();
             return;
         }
         if (!selfTest) { return; }
