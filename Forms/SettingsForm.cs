@@ -15,15 +15,26 @@ internal sealed partial class SettingsForm : Form
 
     public string SaveDirectory => textSaveDirectory.Text.Trim();
 
+    private static readonly string[] LanguageCodes = ["de", "en", "fr", "es"]; // Reihenfolge der comboUiLanguage-Einträge
+
+    /// <summary>Gewählte GUI-Sprache ("de", "en", "fr", "es").</summary>
+    public string LanguageCode => comboUiLanguage.SelectedIndex >= 0 ? LanguageCodes[comboUiLanguage.SelectedIndex] : "de";
+
     /// <summary>Gewählte Hintergrundfarbe der Seitenübersicht (eines der Farbfelder).</summary>
     public Color OverviewBackColor =>
         BackColorRadios().FirstOrDefault(r => r.Checked)?.BackColor ?? Color.White;
 
     private RadioButton[] BackColorRadios() => [rbBackWhite, rbBackBlue, rbBackGreen, rbBackYellow, rbBackRose, rbBackGray];
 
-    public SettingsForm(bool closeOnEscape, int exitAction, string saveDirectory, Color overviewBackColor, string ocrLanguage, int ocrJpgQuality)
+    public SettingsForm(string languageCode, bool closeOnEscape, int exitAction, string saveDirectory, Color overviewBackColor, string ocrLanguage, int ocrJpgQuality)
     {
         InitializeComponent();
+        Lng.Apply(this);
+        // Mehrzeilige Texte brauchen explizite Schlüssel (Zeilenumbrüche taugen nicht als resx-Schlüssel)
+        labelLanguageHint.Text = Lng.T("Hint.OcrLanguages", labelLanguageHint.Text);
+        labelQualityHint.Text = Lng.T("Hint.JpgQuality", labelQualityHint.Text);
+        var languageIndex = Array.IndexOf(LanguageCodes, languageCode);
+        comboUiLanguage.SelectedIndex = languageIndex >= 0 ? languageIndex : 0;
         var match = BackColorRadios().FirstOrDefault(r => r.BackColor.ToArgb() == overviewBackColor.ToArgb()) ?? rbBackWhite;
         match.Checked = true;
         cbCloseOnEscape.Checked = closeOnEscape;
@@ -51,7 +62,7 @@ internal sealed partial class SettingsForm : Form
 
     private void BtnBrowse_Click(object sender, EventArgs e)
     {
-        using FolderBrowserDialog browser = new() { Description = "Bevorzugter Speicherort für PDF-Dateien" };
+        using FolderBrowserDialog browser = new() { Description = Lng.T("Bevorzugter Speicherort für PDF-Dateien") };
         if (Directory.Exists(textSaveDirectory.Text)) { browser.SelectedPath = textSaveDirectory.Text; }
         if (browser.ShowDialog(this) == DialogResult.OK) { textSaveDirectory.Text = browser.SelectedPath; }
     }

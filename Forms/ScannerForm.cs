@@ -16,11 +16,15 @@ internal sealed partial class ScannerForm : Form
     public ScannerForm(string currentScannerId)
     {
         InitializeComponent();
+        Lng.Apply(this);
+        // Mehrzeiliger Hinweis und Buttontext mit führendem Leerzeichen brauchen explizite Schlüssel
+        labelHint.Text = Lng.T("Hint.DeviceKeys", labelHint.Text);
+        btnDeviceKeys.Text = " " + Lng.T("Scanner und Kameras");
         scanners = ScanService.ListScanners();
         foreach (var scanner in scanners) { comboScanner.Items.Add(scanner.Name); }
         if (scanners.Count == 0)
         {
-            comboScanner.Items.Add("(kein Scanner gefunden)");
+            comboScanner.Items.Add(Lng.T("(kein Scanner gefunden)"));
             comboScanner.Enabled = false;
             btnOk.Enabled = false;
         }
@@ -38,7 +42,7 @@ internal sealed partial class ScannerForm : Form
         }
         catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
         {
-            TaskDlg.ErrTaskDlg(Handle, "Die Windows-Einstellungen konnten nicht geöffnet werden.", ex);
+            TaskDlg.ErrTaskDlg(Handle, Lng.T("Die Windows-Einstellungen konnten nicht geöffnet werden."), ex);
         }
         finally { Close(); }
     }

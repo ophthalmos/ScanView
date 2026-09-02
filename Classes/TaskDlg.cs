@@ -29,8 +29,8 @@ internal static class TaskDlg
             Expander = new TaskDialogExpander()
             {
                 Text = error.ToString(),
-                CollapsedButtonText = "Technische Details anzeigen",
-                ExpandedButtonText = "Details ausblenden",
+                CollapsedButtonText = Lng.T("Technische Details anzeigen"),
+                ExpandedButtonText = Lng.T("Details ausblenden"),
                 Position = TaskDialogExpanderPosition.AfterFootnote
             }
         };
@@ -51,15 +51,16 @@ internal static class TaskDlg
     public static void AboutTaskDlg(nint hwnd, Icon icon)
     {
         var curVersion = Assembly.GetExecutingAssembly().GetName().Version;
-        var threeVersion = curVersion?.ToString(3) ?? "unbekannt";
+        var threeVersion = curVersion?.ToString(3) ?? Lng.T("unbekannt");
         var buildDate = GetBuildDate();
-        var msg = "ScanView scannt Seiten, ordnet sie als Miniaturen und" + Environment.NewLine +
+        var msg = Lng.T("About.Text",
+            "ScanView scannt Seiten, ordnet sie als Miniaturen und" + Environment.NewLine +
             "speichert sie mit Texterkennung als durchsuchbare PDF." + Environment.NewLine + Environment.NewLine +
             "Im Kopiermodus wird jeder Scan direkt gedruckt." + Environment.NewLine + Environment.NewLine +
             "Das Design dieses Programms wurde in Grundzügen von" + Environment.NewLine +
             "dem Programm „Scanner Interface 7“ der Grewe Compu-" + Environment.NewLine +
-            "tertechnik GmbH Berlin übernommen (erschienen 2012).";
-        TaskDialogButton paypalButton = new TaskDialogCommandLinkButton("Anerkennung spenden via PayPal");
+            "tertechnik GmbH Berlin übernommen (erschienen 2012).");
+        TaskDialogButton paypalButton = new TaskDialogCommandLinkButton(Lng.T("Anerkennung spenden via PayPal"));
         using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante des Fenster-Icons
         var indent = new string(' ', 14);
         var foot = $"{indent}© {buildDate:yyyy} Wilhelm Happe · Version {threeVersion} ({buildDate:d})" +
@@ -68,7 +69,7 @@ internal static class TaskDlg
             $"\n{indent}<a href=\"https://www.netradio.info\">www.netradio.info</a>";
         var page = new TaskDialogPage()
         {
-            Caption = "Über " + Application.ProductName,
+            Caption = Lng.T("Über") + " " + Application.ProductName,
             Heading = Application.ProductName,
             Text = msg,
             Icon = icon32 == null ? null : new TaskDialogIcon(icon32),
@@ -120,13 +121,13 @@ internal static class TaskDlg
         var path = ShortcutsPdf.DefaultPath;
         if (File.Exists(path))
         {
-            TaskDialogButton openButton = new TaskDialogCommandLinkButton("Vorhandene öffnen", path);
-            TaskDialogButton recreateButton = new TaskDialogCommandLinkButton("Neu erstellen", "z.B. nach einem Update");
+            TaskDialogButton openButton = new TaskDialogCommandLinkButton(Lng.T("Vorhandene öffnen"), path);
+            TaskDialogButton recreateButton = new TaskDialogCommandLinkButton(Lng.T("Neu erstellen"), Lng.T("z.B. nach einem Update"));
             using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante
             var page = new TaskDialogPage()
             {
                 Caption = Application.ProductName,
-                Heading = "Kürzel-Übersicht bereits vorhanden",
+                Heading = Lng.T("Kürzel-Übersicht bereits vorhanden"),
                 Icon = icon32 == null ? null : new TaskDialogIcon(icon32),
                 AllowCancel = true,
                 SizeToContent = true,
@@ -143,7 +144,7 @@ internal static class TaskDlg
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or PdfSharp.PdfSharpException)
         {
-            ErrTaskDlg(hwnd, "Die PDF-Übersicht konnte nicht erstellt werden.", ex);
+            ErrTaskDlg(hwnd, Lng.T("Die PDF-Übersicht konnte nicht erstellt werden."), ex);
         }
     }
 
@@ -152,7 +153,7 @@ internal static class TaskDlg
         try { Process.Start(new ProcessStartInfo(path) { UseShellExecute = true }); }
         catch (Exception ex) when (ex is Win32Exception or InvalidOperationException)
         {
-            ErrTaskDlg(hwnd, "Die Datei konnte nicht geöffnet werden.", ex);
+            ErrTaskDlg(hwnd, Lng.T("Die Datei konnte nicht geöffnet werden."), ex);
         }
     }
 
@@ -164,9 +165,9 @@ internal static class TaskDlg
             {
                 Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
             }
-            else { MsgTaskDlg(hwnd, "Ungültiger Link!", $"'{url}' ist keine gültige URL.", TaskDialogIcon.ShieldWarningYellowBar); }
+            else { MsgTaskDlg(hwnd, Lng.T("Ungültiger Link!"), string.Format(Lng.T("'{0}' ist keine gültige URL."), url), TaskDialogIcon.ShieldWarningYellowBar); }
         }
-        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException) { ErrTaskDlg(hwnd, "Der Link konnte nicht geöffnet werden.", ex); }
+        catch (Exception ex) when (ex is Win32Exception or InvalidOperationException) { ErrTaskDlg(hwnd, Lng.T("Der Link konnte nicht geöffnet werden."), ex); }
     }
 
     private static DateTime GetBuildDate()

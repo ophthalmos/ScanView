@@ -14,6 +14,7 @@ internal sealed class AppSettings
     public int CropY { get; set; }
     public int CropWidth { get; set; }
     public int CropHeight { get; set; }
+    public string Language { get; set; } = ""; // GUI-Sprache "de"/"en"/"fr"/"es" (leer = language.default des Installers bzw. Deutsch)
     public bool CloseOnEscape { get; set; } = true;
     public int ExitAction { get; set; }      // 0 = Seiten behalten, 1 = nach Rückfrage leeren, 2 = ohne Rückfrage leeren
     public string SaveDirectory { get; set; } = ""; // bevorzugter Speicherort für PDFs (leer = zuletzt verwendeter)

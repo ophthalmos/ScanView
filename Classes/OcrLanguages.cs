@@ -3,7 +3,7 @@ namespace ScanView.Classes;
 /// <summary>Ein Eintrag der Sprachauswahl — zeigt den Klarnamen, trägt den Tesseract-Code.</summary>
 internal sealed record OcrLanguageItem(string Code)
 {
-    public override string ToString() => $"{OcrLanguages.DisplayName(Code)} ({Code})";
+    public override string ToString() => $"{Lng.T(OcrLanguages.DisplayName(Code))} ({Code})";
 }
 
 /// <summary>Sprachliste für die Texterkennung — geteilt zwischen Scan-Einstellungen und Optionen.</summary>

@@ -30,6 +30,8 @@
         {
             tabs = new TabControl();
             tabGeneral = new TabPage();
+            labelUiLanguage = new Label();
+            comboUiLanguage = new ComboBox();
             cbCloseOnEscape = new CheckBox();
             labelExit = new Label();
             rbExitKeep = new RadioButton();
@@ -68,11 +70,13 @@
             tabs.Location = new Point(12, 12);
             tabs.Name = "tabs";
             tabs.SelectedIndex = 0;
-            tabs.Size = new Size(416, 326);
+            tabs.Size = new Size(416, 378);
             tabs.TabIndex = 0;
             //
             // tabGeneral
             //
+            tabGeneral.Controls.Add(labelUiLanguage);
+            tabGeneral.Controls.Add(comboUiLanguage);
             tabGeneral.Controls.Add(cbCloseOnEscape);
             tabGeneral.Controls.Add(labelExit);
             tabGeneral.Controls.Add(rbExitKeep);
@@ -92,15 +96,33 @@
             tabGeneral.Location = new Point(4, 24);
             tabGeneral.Name = "tabGeneral";
             tabGeneral.Padding = new Padding(3);
-            tabGeneral.Size = new Size(408, 298);
+            tabGeneral.Size = new Size(408, 350);
             tabGeneral.TabIndex = 0;
             tabGeneral.Text = "Allgemein";
             tabGeneral.UseVisualStyleBackColor = true;
             //
+            // labelUiLanguage
+            //
+            labelUiLanguage.AutoSize = true;
+            labelUiLanguage.Location = new Point(16, 16);
+            labelUiLanguage.Name = "labelUiLanguage";
+            labelUiLanguage.Size = new Size(120, 15);
+            labelUiLanguage.TabIndex = 16;
+            labelUiLanguage.Text = "Sprache / &Language:";
+            //
+            // comboUiLanguage
+            //
+            comboUiLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboUiLanguage.Items.AddRange(new object[] { "Deutsch", "English", "Français", "Español" });
+            comboUiLanguage.Location = new Point(16, 36);
+            comboUiLanguage.Name = "comboUiLanguage";
+            comboUiLanguage.Size = new Size(180, 23);
+            comboUiLanguage.TabIndex = 17;
+            //
             // cbCloseOnEscape
             //
             cbCloseOnEscape.AutoSize = true;
-            cbCloseOnEscape.Location = new Point(16, 20);
+            cbCloseOnEscape.Location = new Point(16, 72);
             cbCloseOnEscape.Name = "cbCloseOnEscape";
             cbCloseOnEscape.Size = new Size(320, 19);
             cbCloseOnEscape.TabIndex = 0;
@@ -110,7 +132,7 @@
             // labelExit
             //
             labelExit.AutoSize = true;
-            labelExit.Location = new Point(16, 54);
+            labelExit.Location = new Point(16, 106);
             labelExit.Name = "labelExit";
             labelExit.Size = new Size(180, 15);
             labelExit.TabIndex = 1;
@@ -119,7 +141,7 @@
             // rbExitKeep
             //
             rbExitKeep.AutoSize = true;
-            rbExitKeep.Location = new Point(28, 74);
+            rbExitKeep.Location = new Point(28, 126);
             rbExitKeep.Name = "rbExitKeep";
             rbExitKeep.Size = new Size(240, 19);
             rbExitKeep.TabIndex = 2;
@@ -129,7 +151,7 @@
             // rbExitAsk
             //
             rbExitAsk.AutoSize = true;
-            rbExitAsk.Location = new Point(28, 98);
+            rbExitAsk.Location = new Point(28, 150);
             rbExitAsk.Name = "rbExitAsk";
             rbExitAsk.Size = new Size(240, 19);
             rbExitAsk.TabIndex = 3;
@@ -139,7 +161,7 @@
             // rbExitClear
             //
             rbExitClear.AutoSize = true;
-            rbExitClear.Location = new Point(28, 122);
+            rbExitClear.Location = new Point(28, 174);
             rbExitClear.Name = "rbExitClear";
             rbExitClear.Size = new Size(240, 19);
             rbExitClear.TabIndex = 4;
@@ -149,7 +171,7 @@
             // labelDirectory
             //
             labelDirectory.AutoSize = true;
-            labelDirectory.Location = new Point(16, 156);
+            labelDirectory.Location = new Point(16, 208);
             labelDirectory.Name = "labelDirectory";
             labelDirectory.Size = new Size(240, 15);
             labelDirectory.TabIndex = 5;
@@ -157,14 +179,14 @@
             //
             // textSaveDirectory
             //
-            textSaveDirectory.Location = new Point(16, 176);
+            textSaveDirectory.Location = new Point(16, 228);
             textSaveDirectory.Name = "textSaveDirectory";
             textSaveDirectory.Size = new Size(330, 23);
             textSaveDirectory.TabIndex = 6;
             //
             // btnBrowse
             //
-            btnBrowse.Location = new Point(352, 175);
+            btnBrowse.Location = new Point(352, 227);
             btnBrowse.Name = "btnBrowse";
             btnBrowse.Size = new Size(32, 25);
             btnBrowse.TabIndex = 7;
@@ -176,7 +198,7 @@
             //
             labelDirectoryHint.AutoSize = true;
             labelDirectoryHint.ForeColor = SystemColors.GrayText;
-            labelDirectoryHint.Location = new Point(16, 204);
+            labelDirectoryHint.Location = new Point(16, 256);
             labelDirectoryHint.Name = "labelDirectoryHint";
             labelDirectoryHint.Size = new Size(320, 15);
             labelDirectoryHint.TabIndex = 8;
@@ -185,7 +207,7 @@
             // labelBackColor
             //
             labelBackColor.AutoSize = true;
-            labelBackColor.Location = new Point(16, 232);
+            labelBackColor.Location = new Point(16, 284);
             labelBackColor.Name = "labelBackColor";
             labelBackColor.Size = new Size(200, 15);
             labelBackColor.TabIndex = 9;
@@ -196,7 +218,7 @@
             rbBackWhite.Appearance = Appearance.Button;
             rbBackWhite.BackColor = Color.White;
             rbBackWhite.FlatStyle = FlatStyle.Flat;
-            rbBackWhite.Location = new Point(16, 252);
+            rbBackWhite.Location = new Point(16, 304);
             rbBackWhite.Name = "rbBackWhite";
             rbBackWhite.Size = new Size(32, 28);
             rbBackWhite.TabIndex = 10;
@@ -208,7 +230,7 @@
             rbBackBlue.Appearance = Appearance.Button;
             rbBackBlue.BackColor = Color.FromArgb(214, 230, 245);
             rbBackBlue.FlatStyle = FlatStyle.Flat;
-            rbBackBlue.Location = new Point(54, 252);
+            rbBackBlue.Location = new Point(54, 304);
             rbBackBlue.Name = "rbBackBlue";
             rbBackBlue.Size = new Size(32, 28);
             rbBackBlue.TabIndex = 11;
@@ -220,7 +242,7 @@
             rbBackGreen.Appearance = Appearance.Button;
             rbBackGreen.BackColor = Color.FromArgb(220, 238, 220);
             rbBackGreen.FlatStyle = FlatStyle.Flat;
-            rbBackGreen.Location = new Point(92, 252);
+            rbBackGreen.Location = new Point(92, 304);
             rbBackGreen.Name = "rbBackGreen";
             rbBackGreen.Size = new Size(32, 28);
             rbBackGreen.TabIndex = 12;
@@ -232,7 +254,7 @@
             rbBackYellow.Appearance = Appearance.Button;
             rbBackYellow.BackColor = Color.FromArgb(247, 243, 216);
             rbBackYellow.FlatStyle = FlatStyle.Flat;
-            rbBackYellow.Location = new Point(130, 252);
+            rbBackYellow.Location = new Point(130, 304);
             rbBackYellow.Name = "rbBackYellow";
             rbBackYellow.Size = new Size(32, 28);
             rbBackYellow.TabIndex = 13;
@@ -244,7 +266,7 @@
             rbBackRose.Appearance = Appearance.Button;
             rbBackRose.BackColor = Color.FromArgb(246, 224, 230);
             rbBackRose.FlatStyle = FlatStyle.Flat;
-            rbBackRose.Location = new Point(168, 252);
+            rbBackRose.Location = new Point(168, 304);
             rbBackRose.Name = "rbBackRose";
             rbBackRose.Size = new Size(32, 28);
             rbBackRose.TabIndex = 14;
@@ -256,7 +278,7 @@
             rbBackGray.Appearance = Appearance.Button;
             rbBackGray.BackColor = Color.FromArgb(232, 232, 232);
             rbBackGray.FlatStyle = FlatStyle.Flat;
-            rbBackGray.Location = new Point(206, 252);
+            rbBackGray.Location = new Point(206, 304);
             rbBackGray.Name = "rbBackGray";
             rbBackGray.Size = new Size(32, 28);
             rbBackGray.TabIndex = 15;
@@ -274,7 +296,7 @@
             tabOcr.Location = new Point(4, 24);
             tabOcr.Name = "tabOcr";
             tabOcr.Padding = new Padding(3);
-            tabOcr.Size = new Size(408, 298);
+            tabOcr.Size = new Size(408, 350);
             tabOcr.TabIndex = 1;
             tabOcr.Text = "Texterkennung";
             tabOcr.UseVisualStyleBackColor = true;
@@ -338,7 +360,7 @@
             // btnOk
             //
             btnOk.DialogResult = DialogResult.OK;
-            btnOk.Location = new Point(262, 352);
+            btnOk.Location = new Point(262, 404);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(80, 26);
             btnOk.TabIndex = 1;
@@ -348,7 +370,7 @@
             // btnCancel
             //
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(348, 352);
+            btnCancel.Location = new Point(348, 404);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 2;
@@ -361,7 +383,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(440, 390);
+            ClientSize = new Size(440, 442);
             Controls.Add(tabs);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
@@ -386,6 +408,8 @@
 
         private System.Windows.Forms.TabControl tabs;
         private System.Windows.Forms.TabPage tabGeneral;
+        private System.Windows.Forms.Label labelUiLanguage;
+        private System.Windows.Forms.ComboBox comboUiLanguage;
         private System.Windows.Forms.CheckBox cbCloseOnEscape;
         private System.Windows.Forms.Label labelExit;
         private System.Windows.Forms.RadioButton rbExitKeep;

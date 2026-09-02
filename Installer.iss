@@ -43,13 +43,18 @@ SetupMutex={#appName}_SetupMutex
 WizardStyle=modern
 
 [Languages]
-; Das Setup wählt die Sprache automatisch nach der Windows-Sprache; erste = Rückfall
+; Das Setup wählt die Sprache automatisch nach der Windows-Sprache; erste = Rückfall.
+; Die gewählte Sprache landet in language.default und wird von {#appName} einmalig übernommen.
 Name: de; MessagesFile: "compiler:Languages\German.isl"
 Name: en; MessagesFile: "compiler:Default.isl"
+Name: fr; MessagesFile: "compiler:Languages\French.isl"
+Name: es; MessagesFile: "compiler:Languages\Spanish.isl"
 
 [Messages]
 de.ConfirmUninstall=Bist du sicher, dass du %1 und alle zugehörigen Komponenten entfernen möchtest? Vor einem Update ist keine Deinstallation erforderlich.
 en.ConfirmUninstall=Are you sure you want to remove %1 and all of its components? You do not need to uninstall before an update.
+fr.ConfirmUninstall=Voulez-vous vraiment supprimer %1 et tous ses composants ? Une désinstallation n'est pas nécessaire avant une mise à jour.
+es.ConfirmUninstall=¿Seguro que desea quitar %1 y todos sus componentes? No es necesario desinstalar antes de una actualización.
 
 [CustomMessages]
 de.Run={#appName} starten
@@ -58,6 +63,12 @@ de.VCRedistMissing=Das Visual C++ Redistributable (x64) wurde nicht gefunden.%n%
 en.Run=Launch {#appName}
 en.DesktopIcon=Create a desktop shortcut
 en.VCRedistMissing=The Visual C++ Redistributable (x64) was not found.%n%n{#appName} needs it for text recognition (Tesseract). Please download it from:%nhttps://aka.ms/vs/17/release/vc_redist.x64.exe%n%nSetup will continue anyway.
+fr.Run=Lancer {#appName}
+fr.DesktopIcon=Créer un raccourci sur le Bureau
+fr.VCRedistMissing=Le Visual C++ Redistributable (x64) est introuvable.%n%n{#appName} en a besoin pour la reconnaissance de texte (Tesseract). Veuillez le télécharger depuis :%nhttps://aka.ms/vs/17/release/vc_redist.x64.exe%n%nL'installation continue malgré tout.
+es.Run=Iniciar {#appName}
+es.DesktopIcon=Crear un acceso directo en el escritorio
+es.VCRedistMissing=No se encontró el Visual C++ Redistributable (x64).%n%n{#appName} lo necesita para el reconocimiento de texto (Tesseract). Descárguelo desde:%nhttps://aka.ms/vs/17/release/vc_redist.x64.exe%n%nLa instalación continuará de todos modos.
 
 [Tasks]
 Name: desktopicon; Description: "{cm:DesktopIcon}"; Flags: unchecked
@@ -91,7 +102,17 @@ Filename: "{app}\{#appName}.exe"; Description: "{cm:Run}"; Flags: nowait postins
 ; Hinweis: Die Benutzereinstellungen (%APPDATA%\ScanView\settings.json) und die
 ; behaltenen Seiten (%LOCALAPPDATA%\ScanView\Seiten) bleiben bei der Deinstallation erhalten.
 
+[UninstallDelete]
+Type: files; Name: "{app}\language.default"
+
 [Code]
+procedure CurStepChanged(CurStep: TSetupStep);
+begin
+  { Sprachwahl des Setups für ScanView hinterlegen; das Programm übernimmt sie einmalig beim Start }
+  if CurStep = ssPostInstall then
+    SaveStringToFile(ExpandConstant('{app}\language.default'), ActiveLanguage, False);
+end;
+
 function InitializeSetup(): Boolean;
 var
   Installed: Cardinal;
