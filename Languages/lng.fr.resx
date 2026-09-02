@@ -127,8 +127,8 @@ Le gris économise encore de la place.</value></data>
   <data name="Dieses &amp;Gerät verwenden:" xml:space="preserve"><value>Utiliser cet a&amp;ppareil :</value></data>
   <data name="Windows-Einstellungen" xml:space="preserve"><value>Paramètres Windows</value></data>
   <data name="Scanner und Kameras" xml:space="preserve"><value>Scanneurs et appareils photo</value></data>
-  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Vous pouvez y associer les touches de l'appareil à ScanView
-(Propriétés → Événements).</value></data>
+  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Vous pouvez y associer les touches de l'appareil
+à ScanView (Propriétés → Événements).</value></data>
   <data name="(kein Scanner gefunden)" xml:space="preserve"><value>(aucun scanner trouvé)</value></data>
   <data name="Die Windows-Einstellungen konnten nicht geöffnet werden." xml:space="preserve"><value>Impossible d'ouvrir les paramètres Windows.</value></data>
   <data name="Kein Scanner gefunden." xml:space="preserve"><value>Aucun scanner trouvé.</value></data>

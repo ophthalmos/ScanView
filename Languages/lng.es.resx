@@ -127,8 +127,8 @@ Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Dieses &amp;Gerät verwenden:" xml:space="preserve"><value>Usar este &amp;dispositivo:</value></data>
   <data name="Windows-Einstellungen" xml:space="preserve"><value>Configuración de Windows</value></data>
   <data name="Scanner und Kameras" xml:space="preserve"><value>Escáneres y cámaras</value></data>
-  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Allí puede vincular los botones del aparato con ScanView
-(Propiedades → Eventos).</value></data>
+  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Allí puede vincular los botones del aparato
+con ScanView (Propiedades → Eventos).</value></data>
   <data name="(kein Scanner gefunden)" xml:space="preserve"><value>(no se encontró ningún escáner)</value></data>
   <data name="Die Windows-Einstellungen konnten nicht geöffnet werden." xml:space="preserve"><value>No se pudo abrir la configuración de Windows.</value></data>
   <data name="Kein Scanner gefunden." xml:space="preserve"><value>No se encontró ningún escáner.</value></data>
