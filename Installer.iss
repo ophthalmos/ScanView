@@ -61,6 +61,12 @@ en.VCRedistMissing=The Visual C++ Redistributable (x64) was not found.%n%n{#appN
 [Tasks]
 Name: desktopicon; Description: "{cm:DesktopIcon}"; Flags: unchecked
 
+[Registry]
+; STI-Registrierung: dadurch erscheint ScanView in der Windows-Systemsteuerung "Scanner und Kameras"
+; unter Eigenschaften -> Ereignisse -> "Programm starten" (Scanner-Taste startet dann ScanView;
+; eine bereits laufende Instanz wird dank Einmal-Instanz-Logik nur in den Vordergrund geholt)
+Root: HKLM; Subkey: "SYSTEM\CurrentControlSet\Control\StillImage\Registered Applications"; ValueType: string; ValueName: "{#appName}"; ValueData: """{app}\{#appName}.exe"" /StiDevice:%1 /StiEvent:%2"; Flags: uninsdeletevalue
+
 [Files]
 Source: "{#releaseDir}\*"; Excludes: "*.pdb,selftest*.png"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
