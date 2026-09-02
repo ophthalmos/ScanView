@@ -7,11 +7,25 @@ namespace ScanView.Forms;
 /// Interaktionslogik nach dem Vorbild von Wilhelms ImageCropper (ohne Seitenverhältnis-Zwang).
 /// Die Aktionen (Freistellen/Zuschneiden/Ausschneiden) wirken sofort auf das Vorschaubild und
 /// lassen sich beliebig kombinieren; „Übernehmen" liefert das Gesamtergebnis, Esc verwirft.</summary>
-internal sealed partial class CropForm : Form
+internal sealed partial class CropForm : Form, IMessageFilter
 {
     private enum DragHandle
     {
         None, TopLeft, Top, TopRight, Left, Right, BottomLeft, Bottom, BottomRight, Inside
+    }
+
+    private const int WM_MOUSEWHEEL = 0x020A;
+
+    /// <summary>Strg+Mausrad über der Vorschau blättert durch die Zoomstufen (wie in der Übersicht).</summary>
+    public bool PreFilterMessage(ref Message m)
+    {
+        if (m.Msg != WM_MOUSEWHEEL || (ModifierKeys & Keys.Control) == 0) { return false; }
+        if (!scrollPanel.RectangleToScreen(scrollPanel.ClientRectangle).Contains(Cursor.Position)) { return false; }
+        var delta = (short)((long)m.WParam >> 16);
+        comboZoom.SelectedIndex = delta > 0
+            ? Math.Min(comboZoom.Items.Count - 1, comboZoom.SelectedIndex + 1)
+            : Math.Max(0, comboZoom.SelectedIndex - 1);
+        return true; // nicht zusätzlich scrollen
     }
 
     private readonly Font applyBoldFont; // Übernehmen wird fett, sobald es Änderungen gibt
@@ -71,6 +85,7 @@ internal sealed partial class CropForm : Form
             btnZoomIn.Text = "+";
         }
         comboZoom.SelectedIndex = 0; // Einpassen
+        Application.AddMessageFilter(this); // Strg+Mausrad-Zoom (s. PreFilterMessage)
 
         if (storedBounds.Width >= MinimumSize.Width && storedBounds.Height >= MinimumSize.Height
             && Screen.AllScreens.Any(screen => screen.WorkingArea.IntersectsWith(storedBounds))) // gemerkte Größe/Position
@@ -101,6 +116,7 @@ internal sealed partial class CropForm : Form
     protected override void OnFormClosed(FormClosedEventArgs e)
     {
         base.OnFormClosed(e);
+        Application.RemoveMessageFilter(this);
         if (DialogResult != DialogResult.OK && Edited) // verworfen — die Arbeitskopie aufräumen
         {
             pictureBox.Image = image;

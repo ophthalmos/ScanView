@@ -5,8 +5,23 @@ namespace ScanView.Forms;
 
 /// <summary>ScanView: Seiten scannen (WIA), als Miniaturen ordnen und per
 /// Tesseract + PDFsharp in eine durchsuchbare PDF schreiben.</summary>
-public partial class MainForm : Form
+public partial class MainForm : Form, IMessageFilter
 {
+    private const int WM_MOUSEWHEEL = 0x020A;
+
+    /// <summary>Strg+Mausrad über der Seitenübersicht blättert durch die Zoomstufen —
+    /// als Nachrichtenfilter, weil Radnachrichten sonst nur das fokussierte Control erreichen.</summary>
+    public bool PreFilterMessage(ref Message m)
+    {
+        if (m.Msg != WM_MOUSEWHEEL || (ModifierKeys & Keys.Control) == 0) { return false; }
+        if (!Enabled || !flowPanel.Visible) { return false; } // modaler Dialog offen bzw. Kopiermodus aktiv
+        if (!flowPanel.RectangleToScreen(flowPanel.ClientRectangle).Contains(Cursor.Position)) { return false; }
+        var delta = (short)((long)m.WParam >> 16);
+        if (delta > 0) { BtnZoomIn_Click(this, EventArgs.Empty); }
+        else { BtnZoomOut_Click(this, EventArgs.Empty); }
+        return true; // nicht zusätzlich scrollen
+    }
+
     // Zoomstufen für −/+ im A4-Verhältnis (Breite; Höhe = Breite × 1,4); die oberen Stufen für große Bildschirme
     private static readonly int[] ThumbWidths = [100, 130, 160, 200, 240, 280, 340, 410, 490, 590, 700];
     private const int IconThumbWidth = 160; // Ansicht „Symbole" und Startgröße
@@ -88,6 +103,7 @@ public partial class MainForm : Form
         CreateZoomButtons();
         ApplyToolbarIcons();
         ApplyMenuIcons();
+        Application.AddMessageFilter(this); // Strg+Mausrad-Zoom (s. PreFilterMessage)
         if (!selfTest) // der Selbsttest-Screenshot soll deterministisch bleiben
         {
             RestoreWindowBounds();
@@ -1247,6 +1263,7 @@ public partial class MainForm : Form
 
     private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
     {
+        Application.RemoveMessageFilter(this);
         settings.DpiIndex = comboDpi.SelectedIndex;
         settings.ColorIndex = comboColor.SelectedIndex;
         settings.AreaIndex = comboArea.SelectedIndex;

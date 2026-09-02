@@ -104,6 +104,7 @@ internal static class TaskDlg
         ("Strg+U", "Sortierung umkehren", null),
         ("Strg+1 … 4", "Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole", null),
         ("Strg++ / Strg+−", "Miniaturen vergrößern / verkleinern", null),
+        ("Strg+Mausrad", "Miniaturen vergrößern / verkleinern", null),
         ("Alt+← / →", "markierte Seite verschieben (auch: Ziehen mit der Maus)", null),
         ("Doppelklick", "Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)", null),
         ("F11", "Vollbild ein/aus", null),

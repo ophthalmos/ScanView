@@ -238,4 +238,5 @@ Das Design wurde dem Programm â€žScanner Interface 7â€œ
   <data name="Italienisch" xml:space="preserve"><value>Italienisch</value></data>
   <data name="Spanisch" xml:space="preserve"><value>Spanisch</value></data>
   <data name="Niederländisch" xml:space="preserve"><value>Niederländisch</value></data>
+  <data name="Strg+Mausrad" xml:space="preserve"><value>Strg+Mausrad</value></data>
 </root>
