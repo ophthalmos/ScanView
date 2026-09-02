@@ -16,7 +16,8 @@ public partial class MainForm : Form
     private readonly bool selfTest;
     private int scanCounter;
     private const int NumberHeight = 18; // Streifen für die Seitenzahl unter dem Bild
-    private const int ThumbImageWidth = 1000; // Miniaturbilder verkleinert vorhalten (voller Scan wäre ~25 MB je Seite)
+    private const int ThumbImageWidth = 800; // Miniaturbilder verkleinert vorhalten (voller Scan wäre ~25 MB je Seite);
+                                             // zugleich die Obergrenze der DARSTELLUNG — so wird nie hochskaliert
     private const int FramePadding = 8;  // Rahmen oben und seitlich um das Seitenbild
     private static readonly Color SelectionColor = Color.FromArgb(0xA6, 0xD0, 0xF1); // Rahmen und Seitenzahl-Streifen der markierten Seite
     private static readonly Color FrameColor = Color.LightGray; // derselbe Rahmen im Ruhezustand
@@ -1047,6 +1048,7 @@ public partial class MainForm : Form
     private void ApplyThumbWidth(int width)
     {
         if (width < ThumbWidths[0]) { return; } // 0 = keine passende Zoomstufe mehr
+        width = Math.Min(width, ThumbImageWidth); // nie größer darstellen, als das Miniaturbild Daten hat
         thumbWidth = width;
         flowPanel.SuspendLayout();
         foreach (var thumb in flowPanel.Controls.Cast<Panel>())
