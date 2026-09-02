@@ -42,13 +42,27 @@ public partial class MainForm : Form
 
     public MainForm(bool selfTest, string stiDeviceId = null)
     {
+        this.selfTest = selfTest;
+        settings = AppSettings.Load();
+        if (string.IsNullOrEmpty(settings.Language)) // einmalig die Sprachwahl des Installers übernehmen
+        {
+            try
+            {
+                var languageDefault = Path.Combine(AppContext.BaseDirectory, "language.default");
+                if (File.Exists(languageDefault)) { settings.Language = File.ReadAllText(languageDefault).Trim(); }
+            }
+            catch (IOException) { }
+            if (string.IsNullOrEmpty(settings.Language)) { settings.Language = "de"; }
+        }
+        Lng.Initialize(selfTest ? "de" : settings.Language); // der Selbsttest-Screenshot bleibt deutsch
         InitializeComponent();
+        Lng.Apply(this); // Designer-Texte übersetzen (direkt nach InitializeComponent)
+        Lng.Apply(thumbContextMenu);
+        Lng.TranslateItems(comboColor, comboArea, comboFeed, comboCopyDuplex); // alle werden über SelectedIndex ausgewertet
         toolStrip.Renderer = new BigArrowRenderer();
         // Eigenes Menü statt des auto-generierten: das erbt in WinForms live die fette
         // 11-pt-Schrift des Toolbar-Buttons (gleiche Lösung wie in PDFlight)
         splitScan.DropDown = new ToolStripDropDownMenu { Font = new Font(Font.FontFamily, 9f) };
-        this.selfTest = selfTest;
-        settings = AppSettings.Load();
         sessionFolder = selfTest // der Selbsttest bleibt in einem Wegwerf-Ordner
             ? Path.Combine(Path.GetTempPath(), "ScanView_" + Guid.NewGuid().ToString("N"))
             : Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ScanView", "Seiten");
@@ -63,7 +77,7 @@ public partial class MainForm : Form
         comboArea.SelectedIndex = Clamped(settings.AreaIndex, comboArea, 0);
         comboFeed.SelectedIndex = Clamped(settings.FeedIndex, comboFeed, 0);
         trackBrightness.Value = Math.Clamp(settings.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
-        comboOcr.Items.Add("Ohne Texterkennung");
+        comboOcr.Items.Add(Lng.T("Ohne Texterkennung"));
         foreach (var code in OcrLanguages.Installed()) { comboOcr.Items.Add(new OcrLanguageItem(code)); }
         SelectOcrLanguage(settings.OcrLanguage); // bevorzugte Sprache aus den Optionen als Vorgabe
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
@@ -99,8 +113,8 @@ public partial class MainForm : Form
         if (selfTest) { return; }
         var pages = flowPanel.Controls.Cast<Panel>().Select(p => (string)p.Tag).ToList();
         var keep = pages.Count > 0 && (settings.ExitAction == 0
-            || (settings.ExitAction == 1 && !TaskDlg.ConfirmTaskDlg(Handle, "Seitenübersicht leeren?",
-                "Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht.")));
+            || (settings.ExitAction == 1 && !TaskDlg.ConfirmTaskDlg(Handle, Lng.T("Seitenübersicht leeren?"),
+                Lng.T("Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht."))));
         settings.PageFiles = keep ? pages : [];
         try
         {
@@ -296,7 +310,7 @@ public partial class MainForm : Form
         var now = DateTime.UtcNow;
         if ((now - lastEscape).TotalMilliseconds <= 1500) { Close(); return true; }
         lastEscape = now;
-        statusLabel.Text = "Esc erneut drücken, um das Programm zu beenden";
+        statusLabel.Text = Lng.T("Esc erneut drücken, um das Programm zu beenden");
         return true;
     }
 
@@ -332,7 +346,7 @@ public partial class MainForm : Form
             DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-copymode.png"));
         }
-        using (SettingsForm settingsDialog = new(true, 0, "", Color.White, "deu", 75)) // und der Optionen-Dialog
+        using (SettingsForm settingsDialog = new("de", true, 0, "", Color.White, "deu", 75)) // und der Optionen-Dialog
         {
             settingsDialog.StartPosition = FormStartPosition.Manual;
             settingsDialog.Show(this);
@@ -393,7 +407,7 @@ public partial class MainForm : Form
 
     private void TrackBrightness_ValueChanged(object sender, EventArgs e)
     {
-        labelBrightness.Text = $"&Helligkeit: {trackBrightness.Value}";
+        labelBrightness.Text = string.Format(Lng.T("&Helligkeit: {0}"), trackBrightness.Value);
     }
 
     // ------------------------------------------------------------------ Scannen
@@ -412,12 +426,12 @@ public partial class MainForm : Form
             else if (scanners.Count > 1) { splitScan.ShowDropDown(); return; } // Auswahl im Gerätemenü statt Windows-Dialog
             else
             {
-                TaskDlg.MsgTaskDlg(Handle, "Kein Scanner gefunden.",
-                    "Bitte schließe einen Scanner an oder schalte ihn ein.", TaskDialogIcon.Warning);
+                TaskDlg.MsgTaskDlg(Handle, Lng.T("Kein Scanner gefunden."),
+                    Lng.T("Bitte schließe einen Scanner an oder schalte ihn ein."), TaskDialogIcon.Warning);
                 return;
             }
         }
-        statusLabel.Text = "Scanne …";
+        statusLabel.Text = Lng.T("Scanne …");
         statusStrip.Refresh();
         // UseWaitCursor statt Cursor.Current: die WIA-Fortschrittsanzeige pumpt Nachrichten und würde Cursor.Current sofort zurücksetzen
         Application.UseWaitCursor = true;
@@ -432,7 +446,7 @@ public partial class MainForm : Form
         }
         if (scanned == null)
         {
-            statusLabel.Text = "Scan abgebrochen oder fehlgeschlagen";
+            statusLabel.Text = Lng.T("Scan abgebrochen oder fehlgeschlagen");
             return;
         }
         if (panelCopyMode.Visible) { PrintCopy(scanned); return; } // Kopiermodus: direkt drucken statt sammeln
@@ -457,7 +471,7 @@ public partial class MainForm : Form
         panelCopyMode.Visible = active;
         flowPanel.Visible = !active;
         // Aktiv: zweizeilig, fett und ohne Symbol — inaktiv: einzeilig mit Symbol
-        btnCopyMode.Text = active ? "Kopiermodus\nbeenden" : "&Kopiermodus";
+        btnCopyMode.Text = active ? Lng.T("CopyMode.Stop", "Kopiermodus\nbeenden") : Lng.T("&Kopiermodus");
         copyModeBoldFont ??= new Font(toolStrip.Font, FontStyle.Bold);
         btnCopyMode.Font = active ? copyModeBoldFont : null; // null = ToolStrip-Schrift
         btnCopyMode.DisplayStyle = active || !ToolbarIcons.FontAvailable
@@ -466,7 +480,7 @@ public partial class MainForm : Form
         menuActionCopyMode.Checked = active;
         if (!active) { StoreCopyUiInSettings(); } // Änderungen sofort als gemeinsame Vorgabe übernehmen
         UpdateUiState(); // sperrt bzw. reaktiviert alles Seitenbezogene
-        if (active) { statusLabel.Text = "Kopiermodus: jeder Scan wird direkt gedruckt"; }
+        if (active) { statusLabel.Text = Lng.T("Kopiermodus: jeder Scan wird direkt gedruckt"); }
     }
 
     /// <summary>Überträgt die gespeicherten Druckvorgaben auf die Kopiermodus-Controls
@@ -617,11 +631,11 @@ public partial class MainForm : Form
         try
         {
             document.Print();
-            statusLabel.Text = $"Kopie ({numCopies.Value}×) an {document.PrinterSettings.PrinterName} übergeben";
+            statusLabel.Text = string.Format(Lng.T("Kopie ({0}×) an {1} übergeben"), numCopies.Value, document.PrinterSettings.PrinterName);
         }
         catch (InvalidPrinterException ex)
         {
-            TaskDlg.ErrTaskDlg(Handle, "Drucken fehlgeschlagen.", ex);
+            TaskDlg.ErrTaskDlg(Handle, Lng.T("Drucken fehlgeschlagen."), ex);
         }
     }
 
@@ -643,7 +657,7 @@ public partial class MainForm : Form
         }
         if (splitScan.DropDownItems.Count == 0)
         {
-            splitScan.DropDownItems.Add(new ToolStripMenuItem("(kein Scanner gefunden)") { Enabled = false });
+            splitScan.DropDownItems.Add(new ToolStripMenuItem(Lng.T("(kein Scanner gefunden)")) { Enabled = false });
         }
     }
 
@@ -655,9 +669,9 @@ public partial class MainForm : Form
     {
         using OpenFileDialog dialog = new()
         {
-            Filter = "Bilddateien (*.tif;*.tiff;*.png;*.jpg;*.jpeg;*.bmp)|*.tif;*.tiff;*.png;*.jpg;*.jpeg;*.bmp|Alle Dateien (*.*)|*.*",
+            Filter = Lng.T("Bilddateien") + " (*.tif;*.tiff;*.png;*.jpg;*.jpeg;*.bmp)|*.tif;*.tiff;*.png;*.jpg;*.jpeg;*.bmp|" + Lng.T("Alle Dateien") + " (*.*)|*.*",
             Multiselect = true,
-            Title = "Bilder importieren",
+            Title = Lng.T("Bilder importieren"),
         };
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         foreach (var file in dialog.FileNames)
@@ -669,7 +683,7 @@ public partial class MainForm : Form
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
             {
-                TaskDlg.ErrTaskDlg(Handle, "Importieren fehlgeschlagen.", ex);
+                TaskDlg.ErrTaskDlg(Handle, Lng.T("Importieren fehlgeschlagen."), ex);
                 continue;
             }
             AddPage(copy);
@@ -771,7 +785,7 @@ public partial class MainForm : Form
         if (result != DialogResult.OK || !dialog.Edited) { return; }
         dialog.ResultImage.Save(path, ImageFormatFor(path));
         ReloadSelectedThumbnail();
-        statusLabel.Text = $"Seite bearbeitet übernommen ({dialog.ResultImage.Width} × {dialog.ResultImage.Height} Pixel)";
+        statusLabel.Text = string.Format(Lng.T("Seite bearbeitet übernommen ({0} × {1} Pixel)"), dialog.ResultImage.Width, dialog.ResultImage.Height);
     }
 
     /// <summary>Duplex von Hand: erst alle Vorderseiten scannen, dann den Stapel gewendet — die
@@ -858,9 +872,11 @@ public partial class MainForm : Form
 
     private void MenuExtrasOptions_Click(object sender, EventArgs e)
     {
-        using SettingsForm dialog = new(settings.CloseOnEscape, settings.ExitAction, settings.SaveDirectory,
+        using SettingsForm dialog = new(settings.Language, settings.CloseOnEscape, settings.ExitAction, settings.SaveDirectory,
             Color.FromArgb(settings.OverviewBackColor), settings.OcrLanguage, settings.OcrJpgQuality);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        var languageChanged = dialog.LanguageCode != settings.Language;
+        settings.Language = dialog.LanguageCode;
         settings.CloseOnEscape = dialog.CloseOnEscape;
         settings.ExitAction = dialog.ExitAction;
         settings.SaveDirectory = dialog.SaveDirectory;
@@ -870,6 +886,11 @@ public partial class MainForm : Form
         settings.OcrJpgQuality = dialog.OcrJpgQuality;
         settings.Save();
         SelectOcrLanguage(settings.OcrLanguage); // neue bevorzugte Sprache auch für den aktuellen Scan übernehmen
+        if (languageChanged) // kein automatischer Neustart — der würde mit der Einmal-Instanz kollidieren
+        {
+            TaskDlg.MsgTaskDlg(Handle, Lng.T("Sprache geändert."),
+                Lng.T("Die neue Sprache gilt nach dem nächsten Programmstart."), TaskDialogIcon.Information);
+        }
     }
 
     private void MenuHelpShortcuts_Click(object sender, EventArgs e)
@@ -1062,8 +1083,8 @@ public partial class MainForm : Form
         menuEditReverse.Enabled = pagesVisible && count >= 2;
         if (pagesVisible) // im Kopiermodus gehört die Statuszeile dem Kopiermodus
         {
-            var scannerHint = selectedScannerName != null ? $"   ·   Scanner: {selectedScannerName}" : string.Empty;
-            statusLabel.Text = (count == 0 ? "Noch keine Seiten" : count == 1 ? "1 Seite" : $"{count} Seiten") + scannerHint;
+            var scannerHint = selectedScannerName != null ? string.Format(Lng.T("   ·   Scanner: {0}"), selectedScannerName) : string.Empty;
+            statusLabel.Text = (count == 0 ? Lng.T("Noch keine Seiten") : count == 1 ? Lng.T("1 Seite") : string.Format(Lng.T("{0} Seiten"), count)) + scannerHint;
         }
     }
 
@@ -1099,8 +1120,8 @@ public partial class MainForm : Form
 
     private void BtnNew_Click(object sender, EventArgs e)
     {
-        if (flowPanel.Controls.Count > 0 && !TaskDlg.ConfirmTaskDlg(Handle, "Alle Seiten aus der Übersicht entfernen?",
-            "Die gescannten Seiten dieser Sitzung gehen verloren.", defaultNo: true))
+        if (flowPanel.Controls.Count > 0 && !TaskDlg.ConfirmTaskDlg(Handle, Lng.T("Alle Seiten aus der Übersicht entfernen?"),
+            Lng.T("Die gescannten Seiten dieser Sitzung gehen verloren."), defaultNo: true))
         {
             return;
         }
@@ -1120,14 +1141,14 @@ public partial class MainForm : Form
     {
         using SaveFileDialog dialog = new()
         {
-            Filter = "PDF-Dateien (*.pdf)|*.pdf",
-            FileName = "Scan " + DateTime.Now.ToString("yyyy-MM-dd") + ".pdf",
-            Title = "PDF speichern",
+            Filter = Lng.T("PDF-Dateien") + " (*.pdf)|*.pdf",
+            FileName = Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd") + ".pdf",
+            Title = Lng.T("PDF speichern"),
         };
         if (Directory.Exists(settings.SaveDirectory)) { dialog.InitialDirectory = settings.SaveDirectory; } // bevorzugter Speicherort
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         CreatePdf(dialog.FileName);
-        statusLabel.Text = $"Gespeichert: {dialog.FileName}";
+        statusLabel.Text = string.Format(Lng.T("Gespeichert: {0}"), dialog.FileName);
         System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(dialog.FileName) { UseShellExecute = true });
     }
 
@@ -1144,7 +1165,7 @@ public partial class MainForm : Form
         {
             void Progress(int done, int total)
             {
-                statusLabel.Text = language != null ? $"Texterkennung {done}/{total} …" : $"Seite {done}/{total} …";
+                statusLabel.Text = string.Format(Lng.T(language != null ? "Texterkennung {0}/{1} …" : "Seite {0}/{1} …"), done, total);
                 statusStrip.Refresh();
             }
             if (language != null) { OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, language, settings.OcrJpgQuality, Progress); }
@@ -1152,7 +1173,7 @@ public partial class MainForm : Form
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or Tesseract.TesseractException)
         {
-            TaskDlg.ErrTaskDlg(Handle, "PDF erstellen fehlgeschlagen.", ex);
+            TaskDlg.ErrTaskDlg(Handle, Lng.T("PDF erstellen fehlgeschlagen."), ex);
         }
         finally
         {
@@ -1185,7 +1206,7 @@ public partial class MainForm : Form
         try
         {
             document.Print();
-            statusLabel.Text = $"{pages.Count} Seite(n) an den Drucker übergeben";
+            statusLabel.Text = string.Format(Lng.T("{0} Seite(n) an den Drucker übergeben"), pages.Count);
             // Grundeinstellungen aus dem Dialog als gemeinsame Vorgabe übernehmen (gilt auch für den Kopiermodus)
             settings.CopyPrinter = document.PrinterSettings.PrinterName;
             settings.CopyCopies = Math.Clamp((int)document.PrinterSettings.Copies, 1, 99);
@@ -1194,7 +1215,7 @@ public partial class MainForm : Form
         }
         catch (InvalidPrinterException ex)
         {
-            TaskDlg.ErrTaskDlg(Handle, "Drucken fehlgeschlagen.", ex);
+            TaskDlg.ErrTaskDlg(Handle, Lng.T("Drucken fehlgeschlagen."), ex);
         }
     }
 

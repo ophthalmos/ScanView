@@ -13,7 +13,7 @@ internal static partial class ShortcutsPdf
     private const double DetailIndent = 150; // Einzug der Kurztext-/Erklärungsspalte
 
     /// <summary>Der Standard-Ablageort der Übersicht: der Downloads-Ordner.</summary>
-    public static string DefaultPath => Path.Combine(GetDownloadsPath(), "ScanView-Tastenkürzel.pdf");
+    public static string DefaultPath => Path.Combine(GetDownloadsPath(), Lng.T("ScanView-Tastenkürzel") + ".pdf");
 
     /// <summary>Schreibt die Übersicht in den Downloads-Ordner und liefert den Dateipfad.</summary>
     public static string Create()
@@ -21,7 +21,7 @@ internal static partial class ShortcutsPdf
         var path = DefaultPath;
         using PdfDocument document = new();
         document.Options.ColorMode = PdfColorMode.Rgb;
-        document.Info.Title = Application.ProductName + " – Tastenkürzel";
+        document.Info.Title = Application.ProductName + " – " + Lng.T("Tastenkürzel");
         document.Info.Author = Application.ProductName;
         XFont titleFont = new("Segoe UI", 17, XFontStyleEx.Bold);
         XFont subFont = new("Segoe UI", 9);
@@ -36,15 +36,18 @@ internal static partial class ShortcutsPdf
         var width = page.Width.Point - 2 * Margin;
         var y = Margin;
         var iconHeight = DrawAppIcon(gfx, page.Width.Point - Margin); // Programm-Icon rechts oben, unskaliert
-        gfx.DrawString(Application.ProductName + " – Tastenkürzel", titleFont, XBrushes.Black, Margin, y + 17);
+        gfx.DrawString(Application.ProductName + " – " + Lng.T("Tastenkürzel"), titleFont, XBrushes.Black, Margin, y + 17);
         y += 26;
         var version = Assembly.GetExecutingAssembly().GetName().Version?.ToString(3);
-        gfx.DrawString("Version " + version + " – " + DateTime.Now.ToString("d"), subFont, detailBrush, Margin, y + 9);
+        gfx.DrawString("Version " + version + " – " + DateTime.Now.ToString("d", System.Globalization.CultureInfo.GetCultureInfo(Lng.CultureCode)), subFont, detailBrush, Margin, y + 9);
         y += 30;
         y = Math.Max(y, Margin - 4 + iconHeight + 14); // die Kürzelzeilen beginnen unterhalb des Icons
 
-        foreach (var (key, text, detail) in TaskDlg.ShortcutRows)
+        foreach (var (rawKey, rawText, rawDetail) in TaskDlg.ShortcutRows)
         {
+            var key = Lng.T(rawKey);
+            var text = Lng.T(rawText);
+            var detail = rawDetail == null ? null : Lng.T(rawDetail);
             var detailLines = detail == null ? null : Wrap(gfx, detail, detailFont, width - DetailIndent);
             var blockHeight = 17 + (detailLines?.Count ?? 0) * 12 + (detailLines == null ? 0 : 4);
             if (y + blockHeight > page.Height.Point - Margin) // Seitenumbruch (zur Sicherheit — planmäßig eine Seite)

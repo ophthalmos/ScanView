@@ -43,6 +43,8 @@ internal sealed partial class CropForm : Form
         this.image = image;
         workingImage = image;
         InitializeComponent();
+        Lng.Apply(this);
+        Lng.TranslateItems(comboZoom); // nur "Einpassen" ist Text; die Prozentstufen bleiben neutral
         handleSize = (int)(16 * DeviceDpi / 96.0);
         var edge = LogicalToDeviceUnits(24); // 24-px-Symbole wie in PDFlight; der Designer-Wert gilt für 96 dpi
         toolStrip.ImageScalingSize = new Size(edge, edge);
@@ -179,7 +181,7 @@ internal sealed partial class CropForm : Form
             g.Clear(Color.White);
             g.DrawImage(workingImage, rect, rect, GraphicsUnit.Pixel); // Auswahl bleibt an ihrer Position
         }
-        ReplaceWorkingImage(result, "Freigestellt: außerhalb der Auswahl weiß");
+        ReplaceWorkingImage(result, Lng.T("Freigestellt: außerhalb der Auswahl weiß"));
     }
 
     /// <summary>Zuschneiden: das Bild wird auf die Auswahl verkleinert.</summary>
@@ -192,7 +194,7 @@ internal sealed partial class CropForm : Form
         {
             g.DrawImage(workingImage, new Rectangle(0, 0, rect.Width, rect.Height), rect, GraphicsUnit.Pixel);
         }
-        ReplaceWorkingImage(result, $"Zugeschnitten auf {rect.Width} × {rect.Height} Pixel");
+        ReplaceWorkingImage(result, string.Format(Lng.T("Zugeschnitten auf {0} × {1} Pixel"), rect.Width, rect.Height));
     }
 
     /// <summary>Ausschneiden: die Auswahl wird weiß entfernt, Bildgröße bleibt.</summary>
@@ -206,7 +208,7 @@ internal sealed partial class CropForm : Form
             g.DrawImage(workingImage, new Rectangle(0, 0, result.Width, result.Height), new Rectangle(0, 0, result.Width, result.Height), GraphicsUnit.Pixel);
             g.FillRectangle(Brushes.White, rect);
         }
-        ReplaceWorkingImage(result, "Ausgeschnitten: die Auswahl wurde weiß entfernt");
+        ReplaceWorkingImage(result, Lng.T("Ausgeschnitten: die Auswahl wurde weiß entfernt"));
     }
 
     /// <summary>Tauscht die Arbeitskopie aus und zeigt das Ergebnis sofort in der Vorschau.</summary>
@@ -216,7 +218,7 @@ internal sealed partial class CropForm : Form
         workingImage = result;
         pictureBox.Image = workingImage;
         if (!ReferenceEquals(previous, image)) { previous.Dispose(); }
-        lastActionText = actionText + "   ·   Übernehmen speichert, Esc verwirft alles";
+        lastActionText = actionText + "   ·   " + Lng.T("Übernehmen speichert, Esc verwirft alles");
         ApplyZoom(createDefaultSelection: false); // Ergebnis unverdeckt zeigen — die nächste Auswahl zieht man neu auf
     }
 
@@ -382,11 +384,12 @@ internal sealed partial class CropForm : Form
         {
             var real = TranslateToImage(selectionRect);
             SelectionInImage = real;
-            statusLabel.Text = $"Auswahl: {real.Width} × {real.Height} Pixel" + (lastActionText == null ? string.Empty : "   ·   " + lastActionText);
+            statusLabel.Text = string.Format(Lng.T("Auswahl: {0} × {1} Pixel"), real.Width, real.Height)
+                + (lastActionText == null ? string.Empty : "   ·   " + lastActionText);
         }
         else
         {
-            statusLabel.Text = lastActionText ?? "Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung";
+            statusLabel.Text = lastActionText ?? Lng.T("Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung");
         }
         pictureBox.Invalidate();
     }
