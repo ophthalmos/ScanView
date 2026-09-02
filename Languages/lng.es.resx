@@ -165,13 +165,13 @@ modo copia</value></data>
   <data name="Technische Details anzeigen" xml:space="preserve"><value>Mostrar detalles técnicos</value></data>
   <data name="Details ausblenden" xml:space="preserve"><value>Ocultar detalles</value></data>
   <data name="unbekannt" xml:space="preserve"><value>desconocida</value></data>
-  <data name="About.Text" xml:space="preserve"><value>ScanView escanea páginas, las organiza como miniaturas y
+  <data name="About.Text" xml:space="preserve"><value>ScanView escanea pÃ¡ginas, las organiza como miniaturas y
 las guarda como PDF con reconocimiento de texto.
 
 En el modo copia cada escaneo se imprime directamente.
 
-El diseño de este programa se basa en «Scanner Interface 7»
-de Grewe Computertechnik GmbH Berlín (publicado en 2012).</value></data>
+El diseÃ±o estÃ¡ inspirado en Â«Scanner Interface 7Â»
+(Grewe Computertechnik GmbH 2012).</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Donar mediante PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>Acerca de</value></data>
   <data name="Vorhandene öffnen" xml:space="preserve"><value>Abrir existente</value></data>
