@@ -374,6 +374,16 @@ public partial class MainForm : Form, IMessageFilter
             pageCount = check.PageCount;
         }
         catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
+        var outputA = Path.Combine(sessionFolder, "SelbsttestA.pdf"); // PDF/A: reiner Bild-PDF-Weg
+        OcrPdfService.CreateImagePdf(flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList(), outputA, 75, null,
+            new PdfMeta("Selbsttest", "PDF/A-Prüfung", "Scan, Test", "ScanView", PdfA: true));
+        var pageCountA = 0;
+        try
+        {
+            using var check = PdfSharp.Pdf.IO.PdfReader.Open(outputA, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
+            pageCountA = check.PageCount;
+        }
+        catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
         using (var shot = new Bitmap(Width, Height))
         {
             DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
@@ -411,7 +421,7 @@ public partial class MainForm : Form, IMessageFilter
             cropDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, cropDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-crop.png"));
         }
-        Environment.Exit(pageCount == 2 ? 0 : 1);
+        Environment.Exit(pageCount == 2 && pageCountA == 2 ? 0 : 1);
     }
 
     /// <summary>Stellt die Texterkennungs-Combo auf die Sprache mit dem angegebenen Code.</summary>
@@ -1217,7 +1227,7 @@ public partial class MainForm : Form, IMessageFilter
         List<string> files = dialog.AllPages
             ? flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList()
             : [(string)selected.Tag];
-        if (dialog.FileType != SaveFileType.Pdf)
+        if (dialog.FileType is SaveFileType.Jpeg or SaveFileType.Png or SaveFileType.Tiff)
         {
             try
             {
@@ -1233,7 +1243,9 @@ public partial class MainForm : Form, IMessageFilter
         }
         else
         {
-            PdfMeta meta = new(dialog.MetaTitle, dialog.MetaSubject, dialog.MetaKeywords, dialog.MetaAuthor);
+            // PDF/A: OcrLanguage ist dann null — CreatePdfAsync nimmt den Bild-PDF-Weg (s. PdfAHelper)
+            PdfMeta meta = new(dialog.MetaTitle, dialog.MetaSubject, dialog.MetaKeywords, dialog.MetaAuthor,
+                dialog.FileType == SaveFileType.PdfA);
             await CreatePdfAsync(files, outputPath, dialog.OcrLanguage, dialog.JpgQuality, meta);
         }
         statusLabel.Text = string.Format(Lng.T("Gespeichert: {0}"), outputPath);
