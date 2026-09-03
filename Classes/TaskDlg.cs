@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
+using System.Net;
 using System.Reflection;
 
 namespace ScanView.Classes;
 
 /// <summary>TaskDialog-Helfer als moderner Ersatz für MessageBox — aus PDFlight übernommen
-/// und auf ScanView zugeschnitten (ohne Mehrsprachigkeit und Updatesuche).</summary>
+/// und auf ScanView zugeschnitten.</summary>
 internal static class TaskDlg
 {
     public static void MsgTaskDlg(nint hwnd, string heading, string message, TaskDialogIcon icon = null)
@@ -82,6 +83,80 @@ internal static class TaskDlg
         page.LinkClicked += (s, e) => StartLink(hwnd, e.LinkHref);
         var result = TaskDialog.ShowDialog(hwnd, page);
         if (result == paypalButton) { StartLink(hwnd, "https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S8DVXHKFC2CVS&source=url"); }
+    }
+
+    // Updatesuche über die XML-Datei auf der Webseite des Autors (wie bei den übrigen Programmen);
+    // erwartete Elemente unterhalb der Wurzel: <version>, <date>, <url64>
+    private const string UpdateXmlUrl = "https://www.netradio.info/download/scanview.xml";
+    private const string WebsiteUrl = "https://www.netradio.info";
+
+    private static readonly Lazy<HttpClient> httpClient = new(() =>
+        new HttpClient() { Timeout = TimeSpan.FromSeconds(15) });
+
+    /// <summary>Manuelle Updatesuche (?-Menü): lädt die XML-Datei von der Webseite des Autors
+    /// und zeigt das Ergebnis; bei einem Update mit Download-Schaltfläche.</summary>
+    public static async Task UpdateTaskDlg(nint hwnd)
+    {
+        var curVersion = Assembly.GetExecutingAssembly().GetName().Version;
+        var threeVersion = curVersion?.ToString(3) ?? Lng.T("unbekannt");
+        TaskDialogButton downloadButton = new TaskDialogCommandLinkButton(Lng.T("ScanViewSetup.exe herunterladen"),
+            Lng.T("Download.Detail", "ScanViewSetup.exe wird im Download-Ordner\ngespeichert. Führe das Setupprogramm aus,\num die neueste Version zu installieren."));
+        var updatePage = new TaskDialogPage()
+        {
+            Caption = Application.ProductName,
+            Heading = string.Format(Lng.T("{0} ist auf dem neuesten Stand."), Application.ProductName),
+            Text = $"Version {threeVersion} (64-Bit)",
+            Icon = TaskDialogIcon.Information,
+            AllowCancel = true,
+            SizeToContent = true,
+            Buttons = { TaskDialogButton.Close }
+        };
+        var urlString = WebsiteUrl; // Fallback: die Webseite, falls die XML keinen Download-Link nennt
+        Version updateVersion = null;
+        var dateString = string.Empty;
+        var failed = false;
+        Cursor.Current = Cursors.WaitCursor; // die Abfrage dauert im Normalfall unter einer Sekunde
+        try
+        {
+            await using var stream = await httpClient.Value.GetStreamAsync(UpdateXmlUrl);
+            var root = System.Xml.Linq.XDocument.Load(stream).Root; // Wurzelname egal — Load verkraftet auch die BOM
+            var versionString = root?.Element("version")?.Value;
+            if (Version.TryParse(versionString ?? string.Empty, out var parsed)) { updateVersion = parsed; }
+            dateString = root?.Element("date")?.Value ?? string.Empty;
+            var url64 = root?.Element("url64")?.Value;
+            if (!string.IsNullOrEmpty(url64)) { urlString = url64; }
+        }
+        catch (HttpRequestException ex)
+        {
+            failed = true;
+            updatePage.Heading = Lng.T("Die Update-Suche ist fehlgeschlagen.");
+            updatePage.Text = ex.StatusCode == HttpStatusCode.NotFound
+                ? Lng.T("Die Update-Informationen wurden nicht gefunden.")
+                : (ex.StatusCode != null ? $"Status-Code: {ex.StatusCode}\n" : string.Empty) + ex.Message;
+        }
+        catch (Exception ex) when (ex is TaskCanceledException or System.Xml.XmlException or InvalidOperationException)
+        {
+            failed = true;
+            updatePage.Heading = Lng.T("Die Update-Suche ist fehlgeschlagen.");
+            updatePage.Text = ex is TaskCanceledException
+                ? Lng.T("Zeitüberschreitung – bitte prüfe die Internetverbindung.")
+                : ex.Message;
+        }
+        finally { Cursor.Current = Cursors.Default; }
+        if (!failed && updateVersion == null)
+        {
+            failed = true;
+            updatePage.Heading = Lng.T("Die Update-Suche ist fehlgeschlagen.");
+            updatePage.Text = Lng.T("Die Versionsangabe in der Update-Datei konnte nicht gelesen werden.");
+        }
+        if (failed) { updatePage.Icon = TaskDialogIcon.Error; }
+        else if (curVersion != null && updateVersion.CompareTo(curVersion) > 0)
+        {
+            updatePage.Heading = Lng.T("Es steht ein Update zur Verfügung!");
+            updatePage.Text = "Version " + updateVersion + (dateString.Length > 0 ? " " + Lng.T("vom") + " " + dateString : string.Empty);
+            updatePage.Buttons.Add(downloadButton);
+        }
+        if (TaskDialog.ShowDialog(hwnd, updatePage) == downloadButton) { StartLink(hwnd, urlString); }
     }
 
     /// <summary>Alle Tastenkürzel: Kürzel, Kurztext und optionale Zusatzerklärung für die PDF-Übersicht.</summary>

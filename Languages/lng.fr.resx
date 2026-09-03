@@ -239,4 +239,16 @@ Le design s'inspire de Â« Scanner Interface 7 Â»
   <data name="Spanisch" xml:space="preserve"><value>Espagnol</value></data>
   <data name="Niederländisch" xml:space="preserve"><value>Néerlandais</value></data>
   <data name="Strg+Mausrad" xml:space="preserve"><value>Ctrl+molette</value></data>
+  <data name="Nach &amp;Updates suchen …" xml:space="preserve"><value>Rechercher des mises à jo&amp;ur…</value></data>
+  <data name="ScanViewSetup.exe herunterladen" xml:space="preserve"><value>Télécharger ScanViewSetup.exe</value></data>
+  <data name="Download.Detail" xml:space="preserve"><value>ScanViewSetup.exe sera enregistré dans le dossier
+Téléchargements. Exécutez le programme
+d'installation pour installer la dernière version.</value></data>
+  <data name="{0} ist auf dem neuesten Stand." xml:space="preserve"><value>{0} est à jour.</value></data>
+  <data name="Die Update-Suche ist fehlgeschlagen." xml:space="preserve"><value>La recherche de mise à jour a échoué.</value></data>
+  <data name="Die Update-Informationen wurden nicht gefunden." xml:space="preserve"><value>Les informations de mise à jour sont introuvables.</value></data>
+  <data name="Zeitüberschreitung – bitte prüfe die Internetverbindung." xml:space="preserve"><value>Délai dépassé – veuillez vérifier votre connexion Internet.</value></data>
+  <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve"><value>Le numéro de version du fichier de mise à jour n'a pas pu être lu.</value></data>
+  <data name="Es steht ein Update zur Verfügung!" xml:space="preserve"><value>Une mise à jour est disponible !</value></data>
+  <data name="vom" xml:space="preserve"><value>du</value></data>
 </root>

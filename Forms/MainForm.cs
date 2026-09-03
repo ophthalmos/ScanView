@@ -238,6 +238,7 @@ public partial class MainForm : Form, IMessageFilter
         menuExtrasScanner.Image = Icon16(ToolbarIcons.Scan);
         menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
         menuHelpShortcuts.Image = Icon16(ToolbarIcons.Help);
+        menuHelpUpdate.Image = Icon16(ToolbarIcons.UpdateSearch);
         menuHelpAbout.Image = Icon16(ToolbarIcons.Info);
         thumbContextMenu.ImageScalingSize = size; // Kontextmenü der Miniaturen
         contextCrop.Image = Icon16(ToolbarIcons.Crop);
@@ -934,6 +935,11 @@ public partial class MainForm : Form, IMessageFilter
     private void MenuHelpShortcuts_Click(object sender, EventArgs e)
     {
         TaskDlg.ShowShortcutsPdf(Handle, Icon);
+    }
+
+    private async void MenuHelpUpdate_Click(object sender, EventArgs e)
+    {
+        await TaskDlg.UpdateTaskDlg(Handle);
     }
 
     private void MenuHelpAbout_Click(object sender, EventArgs e)

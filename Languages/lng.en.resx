@@ -239,4 +239,16 @@ The design is modelled on "Scanner Interface 7"
   <data name="Spanisch" xml:space="preserve"><value>Spanish</value></data>
   <data name="Niederländisch" xml:space="preserve"><value>Dutch</value></data>
   <data name="Strg+Mausrad" xml:space="preserve"><value>Ctrl+mouse wheel</value></data>
+  <data name="Nach &amp;Updates suchen …" xml:space="preserve"><value>Check for &amp;updates…</value></data>
+  <data name="ScanViewSetup.exe herunterladen" xml:space="preserve"><value>Download ScanViewSetup.exe</value></data>
+  <data name="Download.Detail" xml:space="preserve"><value>ScanViewSetup.exe is saved to your Downloads
+folder. Run the setup program to install
+the latest version.</value></data>
+  <data name="{0} ist auf dem neuesten Stand." xml:space="preserve"><value>{0} is up to date.</value></data>
+  <data name="Die Update-Suche ist fehlgeschlagen." xml:space="preserve"><value>The update check failed.</value></data>
+  <data name="Die Update-Informationen wurden nicht gefunden." xml:space="preserve"><value>The update information was not found.</value></data>
+  <data name="Zeitüberschreitung – bitte prüfe die Internetverbindung." xml:space="preserve"><value>Timeout – please check your internet connection.</value></data>
+  <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve"><value>The version in the update file could not be read.</value></data>
+  <data name="Es steht ein Update zur Verfügung!" xml:space="preserve"><value>An update is available!</value></data>
+  <data name="vom" xml:space="preserve"><value>dated</value></data>
 </root>

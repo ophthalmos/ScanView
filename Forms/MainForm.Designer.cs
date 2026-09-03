@@ -79,6 +79,8 @@
             menuExtrasOptions = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
             menuHelpShortcuts = new ToolStripMenuItem();
+            menuHelpUpdate = new ToolStripMenuItem();
+            menuHelpSeparator = new ToolStripSeparator();
             menuHelpAbout = new ToolStripMenuItem();
             toolStrip = new ToolStrip();
             splitScan = new ToolStripSplitButton();
@@ -526,7 +528,7 @@
             // 
             // menuHelp
             // 
-            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuHelpShortcuts, menuHelpAbout });
+            menuHelp.DropDownItems.AddRange(new ToolStripItem[] { menuHelpShortcuts, menuHelpUpdate, menuHelpSeparator, menuHelpAbout });
             menuHelp.Name = "menuHelp";
             menuHelp.Size = new Size(24, 20);
             menuHelp.Text = "?";
@@ -539,9 +541,21 @@
             menuHelpShortcuts.Text = "&Hilfe (Tastenkürzel)";
             menuHelpShortcuts.ToolTipText = "Tastenkürzel-Übersicht als PDF erstellen und anzeigen";
             menuHelpShortcuts.Click += MenuHelpShortcuts_Click;
-            // 
+            //
+            // menuHelpUpdate
+            //
+            menuHelpUpdate.Name = "menuHelpUpdate";
+            menuHelpUpdate.Size = new Size(194, 22);
+            menuHelpUpdate.Text = "Nach &Updates suchen …";
+            menuHelpUpdate.Click += MenuHelpUpdate_Click;
+            //
+            // menuHelpSeparator
+            //
+            menuHelpSeparator.Name = "menuHelpSeparator";
+            menuHelpSeparator.Size = new Size(191, 6);
+            //
             // menuHelpAbout
-            // 
+            //
             menuHelpAbout.Name = "menuHelpAbout";
             menuHelpAbout.Size = new Size(194, 22);
             menuHelpAbout.Text = "&Info …";
@@ -1081,6 +1095,8 @@
         private System.Windows.Forms.ToolStripMenuItem menuExtrasOptions;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
         private System.Windows.Forms.ToolStripMenuItem menuHelpShortcuts;
+        private System.Windows.Forms.ToolStripMenuItem menuHelpUpdate;
+        private System.Windows.Forms.ToolStripSeparator menuHelpSeparator;
         private System.Windows.Forms.ToolStripMenuItem menuHelpAbout;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripSplitButton splitScan;
