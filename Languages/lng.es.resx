@@ -273,4 +273,5 @@ para instalar la última versión.</value></data>
   <data name="Datei" xml:space="preserve"><value>Archivo</value></data>
   <data name="Metadaten" xml:space="preserve"><value>Metadatos</value></data>
   <data name="&amp;Sprache:" xml:space="preserve"><value>&amp;Idioma:</value></data>
+  <data name="TIFF (verlustfrei)" xml:space="preserve"><value>TIFF (sin pérdida)</value></data>
 </root>

@@ -185,6 +185,33 @@ internal static class ScanService
         image.Save(outputPath, encoder, encoderParams);
     }
 
+    /// <summary>Speichert Scans als (bei mehreren Seiten mehrseitige) TIFF-Datei — verlustfrei
+    /// mit LZW-Kompression; die dpi-Angaben der Originale bleiben erhalten.</summary>
+    public static void SaveAsMultipageTiff(IReadOnlyList<string> sourcePaths, string outputPath)
+    {
+        var encoder = ImageCodecInfo.GetImageEncoders().First(c => c.FormatID == ImageFormat.Tiff.Guid);
+        using var first = (Bitmap)LoadUnlocked(sourcePaths[0]);
+        using (EncoderParameters firstParams = new(2))
+        {
+            firstParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.SaveFlag, (long)EncoderValue.MultiFrame);
+            firstParams.Param[1] = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionLZW);
+            first.Save(outputPath, encoder, firstParams);
+        }
+        using (EncoderParameters pageParams = new(2))
+        {
+            pageParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.SaveFlag, (long)EncoderValue.FrameDimensionPage);
+            pageParams.Param[1] = new EncoderParameter(System.Drawing.Imaging.Encoder.Compression, (long)EncoderValue.CompressionLZW);
+            for (var i = 1; i < sourcePaths.Count; i++)
+            {
+                using var page = LoadUnlocked(sourcePaths[i]);
+                first.SaveAdd(page, pageParams);
+            }
+        }
+        using EncoderParameters flushParams = new(1);
+        flushParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.SaveFlag, (long)EncoderValue.Flush);
+        first.SaveAdd(flushParams);
+    }
+
     /// <summary>Gerenderte 300-dpi-A4-Testseite — zum Ausprobieren ohne Scanner.</summary>
     public static string RenderTestPage(string path, string title, params string[] lines)
     {
