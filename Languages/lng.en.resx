@@ -257,7 +257,6 @@ the latest version.</value></data>
   <data name="Dateity&amp;p:" xml:space="preserve"><value>File ty&amp;pe:</value></data>
   <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (image file)</value></data>
   <data name="JPEG-&amp;Qualität (30–100):" xml:space="preserve"><value>JPEG &amp;quality (30–100):</value></data>
-  <data name="Metadaten:" xml:space="preserve"><value>Metadata:</value></data>
   <data name="T&amp;itel:" xml:space="preserve"><value>T&amp;itle:</value></data>
   <data name="Th&amp;ema:" xml:space="preserve"><value>Subj&amp;ect:</value></data>
   <data name="Stich&amp;worte:" xml:space="preserve"><value>Key&amp;words:</value></data>
@@ -271,4 +270,7 @@ the latest version.</value></data>
   <data name="Ungültiger Dateiname." xml:space="preserve"><value>Invalid file name.</value></data>
   <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve"><value>Please enter a file name without \ / : * ? &quot; &lt; &gt; |.</value></data>
   <data name="Bitte wähle einen Ordner." xml:space="preserve"><value>Please choose a folder.</value></data>
+  <data name="Datei" xml:space="preserve"><value>File</value></data>
+  <data name="Metadaten" xml:space="preserve"><value>Metadata</value></data>
+  <data name="&amp;Sprache:" xml:space="preserve"><value>&amp;Language:</value></data>
 </root>

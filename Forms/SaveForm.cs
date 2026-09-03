@@ -69,16 +69,14 @@ internal sealed partial class SaveForm : Form
         }
     }
 
-    /// <summary>Eine JPEG-Datei trägt weder Textschicht noch PDF-Metadaten.</summary>
+    /// <summary>Eine JPEG-Datei trägt weder Textschicht noch PDF-Metadaten —
+    /// die JPEG-Qualität gilt dagegen auch für die Bilddatei und bleibt aktiv.</summary>
     private void ComboFileType_SelectedIndexChanged(object sender, EventArgs e)
     {
         var isPdf = FileType != SaveFileType.Jpeg;
         labelOcr.Enabled = isPdf;
         comboOcr.Enabled = isPdf;
-        foreach (Control control in new Control[] { labelMeta, labelTitle, textTitle, labelSubject, textSubject, labelKeywords, textKeywords, labelAuthor, textAuthor })
-        {
-            control.Enabled = isPdf;
-        }
+        groupMeta.Enabled = isPdf;
     }
 
     protected override void OnFormClosing(FormClosingEventArgs e)
