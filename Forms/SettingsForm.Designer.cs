@@ -333,7 +333,7 @@
             // 
             labelLanguageHint.AutoSize = true;
             labelLanguageHint.ForeColor = SystemColors.GrayText;
-            labelLanguageHint.Location = new Point(28, 63);
+            labelLanguageHint.Location = new Point(8, 63);
             labelLanguageHint.Name = "labelLanguageHint";
             labelLanguageHint.Size = new Size(313, 30);
             labelLanguageHint.TabIndex = 2;
@@ -361,7 +361,7 @@
             // 
             labelQualityHint.AutoSize = true;
             labelQualityHint.ForeColor = SystemColors.GrayText;
-            labelQualityHint.Location = new Point(28, 168);
+            labelQualityHint.Location = new Point(8, 168);
             labelQualityHint.Name = "labelQualityHint";
             labelQualityHint.Size = new Size(299, 30);
             labelQualityHint.TabIndex = 5;

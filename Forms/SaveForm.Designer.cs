@@ -60,12 +60,12 @@ namespace ScanView.Forms
             groupScope.SuspendLayout();
             groupFile.SuspendLayout();
             groupOcr.SuspendLayout();
-            groupMeta.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numJpgQuality).BeginInit();
+            groupMeta.SuspendLayout();
             SuspendLayout();
-            //
+            // 
             // groupScope
-            //
+            // 
             groupScope.Controls.Add(radioAll);
             groupScope.Controls.Add(radioSelected);
             groupScope.Location = new Point(12, 8);
@@ -74,31 +74,31 @@ namespace ScanView.Forms
             groupScope.TabIndex = 0;
             groupScope.TabStop = false;
             groupScope.Text = "Umfang";
-            //
+            // 
             // radioAll
-            //
+            // 
             radioAll.AutoSize = true;
             radioAll.Checked = true;
             radioAll.Location = new Point(15, 21);
             radioAll.Name = "radioAll";
-            radioAll.Size = new Size(85, 19);
+            radioAll.Size = new Size(80, 19);
             radioAll.TabIndex = 0;
             radioAll.TabStop = true;
             radioAll.Text = "&Alle Seiten";
             radioAll.UseVisualStyleBackColor = true;
-            //
+            // 
             // radioSelected
-            //
+            // 
             radioSelected.AutoSize = true;
-            radioSelected.Location = new Point(124, 21);
+            radioSelected.Location = new Point(190, 21);
             radioSelected.Name = "radioSelected";
-            radioSelected.Size = new Size(140, 19);
+            radioSelected.Size = new Size(126, 19);
             radioSelected.TabIndex = 1;
             radioSelected.Text = "Nur &markierte Seite";
             radioSelected.UseVisualStyleBackColor = true;
-            //
+            // 
             // groupFile
-            //
+            // 
             groupFile.Controls.Add(labelFileName);
             groupFile.Controls.Add(textFileName);
             groupFile.Controls.Add(labelFolder);
@@ -112,41 +112,41 @@ namespace ScanView.Forms
             groupFile.TabIndex = 1;
             groupFile.TabStop = false;
             groupFile.Text = "Datei";
-            //
+            // 
             // labelFileName
-            //
+            // 
             labelFileName.AutoSize = true;
             labelFileName.Location = new Point(12, 25);
             labelFileName.Name = "labelFileName";
-            labelFileName.Size = new Size(66, 15);
+            labelFileName.Size = new Size(67, 15);
             labelFileName.TabIndex = 0;
             labelFileName.Text = "&Dateiname:";
-            //
+            // 
             // textFileName
-            //
+            // 
             textFileName.Location = new Point(124, 22);
             textFileName.Name = "textFileName";
             textFileName.Size = new Size(244, 23);
             textFileName.TabIndex = 1;
-            //
+            // 
             // labelFolder
-            //
+            // 
             labelFolder.AutoSize = true;
             labelFolder.Location = new Point(12, 54);
             labelFolder.Name = "labelFolder";
-            labelFolder.Size = new Size(48, 15);
+            labelFolder.Size = new Size(47, 15);
             labelFolder.TabIndex = 2;
             labelFolder.Text = "&Ordner:";
-            //
+            // 
             // textFolder
-            //
+            // 
             textFolder.Location = new Point(124, 51);
             textFolder.Name = "textFolder";
             textFolder.Size = new Size(206, 23);
             textFolder.TabIndex = 3;
-            //
+            // 
             // btnBrowse
-            //
+            // 
             btnBrowse.Location = new Point(336, 50);
             btnBrowse.Name = "btnBrowse";
             btnBrowse.Size = new Size(32, 25);
@@ -154,18 +154,18 @@ namespace ScanView.Forms
             btnBrowse.Text = "…";
             btnBrowse.UseVisualStyleBackColor = true;
             btnBrowse.Click += BtnBrowse_Click;
-            //
+            // 
             // labelFileType
-            //
+            // 
             labelFileType.AutoSize = true;
             labelFileType.Location = new Point(12, 83);
             labelFileType.Name = "labelFileType";
-            labelFileType.Size = new Size(55, 15);
+            labelFileType.Size = new Size(54, 15);
             labelFileType.TabIndex = 5;
             labelFileType.Text = "Dateity&p:";
-            //
+            // 
             // comboFileType
-            //
+            // 
             comboFileType.DropDownStyle = ComboBoxStyle.DropDownList;
             comboFileType.Items.AddRange(new object[] { "PDF", "JPEG (Bilddatei)", "PNG (verlustfrei)", "TIFF (verlustfrei)" });
             comboFileType.Location = new Point(124, 80);
@@ -173,9 +173,9 @@ namespace ScanView.Forms
             comboFileType.Size = new Size(244, 23);
             comboFileType.TabIndex = 6;
             comboFileType.SelectedIndexChanged += ComboFileType_SelectedIndexChanged;
-            //
+            // 
             // groupOcr
-            //
+            // 
             groupOcr.Controls.Add(labelOcr);
             groupOcr.Controls.Add(comboOcr);
             groupOcr.Controls.Add(labelQuality);
@@ -187,54 +187,54 @@ namespace ScanView.Forms
             groupOcr.TabIndex = 2;
             groupOcr.TabStop = false;
             groupOcr.Text = "Texterkennung";
-            //
+            // 
             // labelOcr
-            //
+            // 
             labelOcr.AutoSize = true;
             labelOcr.Location = new Point(12, 25);
             labelOcr.Name = "labelOcr";
-            labelOcr.Size = new Size(54, 15);
+            labelOcr.Size = new Size(52, 15);
             labelOcr.TabIndex = 0;
             labelOcr.Text = "&Sprache:";
-            //
+            // 
             // comboOcr
-            //
+            // 
             comboOcr.DropDownStyle = ComboBoxStyle.DropDownList;
             comboOcr.Location = new Point(124, 22);
             comboOcr.Name = "comboOcr";
             comboOcr.Size = new Size(244, 23);
             comboOcr.TabIndex = 1;
-            //
+            // 
             // labelQuality
-            //
+            // 
             labelQuality.AutoSize = true;
             labelQuality.Location = new Point(12, 56);
             labelQuality.Name = "labelQuality";
             labelQuality.Size = new Size(82, 15);
             labelQuality.TabIndex = 2;
             labelQuality.Text = "JPEG-&Qualität:";
-            //
+            // 
             // numJpgQuality
-            //
+            // 
             numJpgQuality.Location = new Point(124, 53);
             numJpgQuality.Minimum = new decimal(new int[] { 30, 0, 0, 0 });
             numJpgQuality.Name = "numJpgQuality";
             numJpgQuality.Size = new Size(60, 23);
             numJpgQuality.TabIndex = 3;
             numJpgQuality.Value = new decimal(new int[] { 75, 0, 0, 0 });
-            //
+            // 
             // labelQualityRange
-            //
+            // 
             labelQualityRange.AutoSize = true;
             labelQualityRange.ForeColor = SystemColors.GrayText;
             labelQualityRange.Location = new Point(190, 56);
             labelQualityRange.Name = "labelQualityRange";
-            labelQualityRange.Size = new Size(53, 15);
+            labelQualityRange.Size = new Size(51, 15);
             labelQualityRange.TabIndex = 4;
             labelQualityRange.Text = "(30–100)";
-            //
+            // 
             // groupMeta
-            //
+            // 
             groupMeta.Controls.Add(labelTitle);
             groupMeta.Controls.Add(textTitle);
             groupMeta.Controls.Add(labelSubject);
@@ -249,83 +249,83 @@ namespace ScanView.Forms
             groupMeta.TabIndex = 3;
             groupMeta.TabStop = false;
             groupMeta.Text = "Metadaten";
-            //
+            // 
             // labelTitle
-            //
+            // 
             labelTitle.AutoSize = true;
             labelTitle.Location = new Point(12, 25);
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(33, 15);
             labelTitle.TabIndex = 0;
             labelTitle.Text = "&Title:";
-            //
+            // 
             // textTitle
-            //
+            // 
             textTitle.Location = new Point(124, 22);
             textTitle.Name = "textTitle";
             textTitle.Size = new Size(244, 23);
             textTitle.TabIndex = 1;
-            //
+            // 
             // labelSubject
-            //
+            // 
             labelSubject.AutoSize = true;
             labelSubject.Location = new Point(12, 54);
             labelSubject.Name = "labelSubject";
-            labelSubject.Size = new Size(46, 15);
+            labelSubject.Size = new Size(49, 15);
             labelSubject.TabIndex = 2;
             labelSubject.Text = "Su&bject:";
-            //
+            // 
             // textSubject
-            //
+            // 
             textSubject.Location = new Point(124, 51);
             textSubject.Name = "textSubject";
             textSubject.Size = new Size(244, 23);
             textSubject.TabIndex = 3;
-            //
+            // 
             // labelKeywords
-            //
+            // 
             labelKeywords.AutoSize = true;
             labelKeywords.Location = new Point(12, 83);
             labelKeywords.Name = "labelKeywords";
-            labelKeywords.Size = new Size(66, 15);
+            labelKeywords.Size = new Size(61, 15);
             labelKeywords.TabIndex = 4;
             labelKeywords.Text = "&Keywords:";
-            //
+            // 
             // textKeywords
-            //
+            // 
             textKeywords.Location = new Point(124, 80);
             textKeywords.Name = "textKeywords";
             textKeywords.Size = new Size(244, 23);
             textKeywords.TabIndex = 5;
-            //
+            // 
             // labelAuthor
-            //
+            // 
             labelAuthor.AutoSize = true;
             labelAuthor.Location = new Point(12, 112);
             labelAuthor.Name = "labelAuthor";
-            labelAuthor.Size = new Size(60, 15);
+            labelAuthor.Size = new Size(47, 15);
             labelAuthor.TabIndex = 6;
             labelAuthor.Text = "Aut&hor:";
-            //
+            // 
             // textAuthor
-            //
+            // 
             textAuthor.Location = new Point(124, 109);
             textAuthor.Name = "textAuthor";
             textAuthor.Size = new Size(244, 23);
             textAuthor.TabIndex = 7;
-            //
+            // 
             // cbOpenAfter
-            //
+            // 
             cbOpenAfter.AutoSize = true;
-            cbOpenAfter.Location = new Point(16, 452);
+            cbOpenAfter.Location = new Point(28, 452);
             cbOpenAfter.Name = "cbOpenAfter";
-            cbOpenAfter.Size = new Size(185, 19);
+            cbOpenAfter.Size = new Size(174, 19);
             cbOpenAfter.TabIndex = 6;
             cbOpenAfter.Text = "Nach dem Speichern öff&nen";
             cbOpenAfter.UseVisualStyleBackColor = true;
-            //
+            // 
             // btnSave
-            //
+            // 
             btnSave.DialogResult = DialogResult.OK;
             btnSave.Location = new Point(226, 447);
             btnSave.Name = "btnSave";
@@ -333,9 +333,9 @@ namespace ScanView.Forms
             btnSave.TabIndex = 4;
             btnSave.Text = "S&peichern";
             btnSave.UseVisualStyleBackColor = true;
-            //
+            // 
             // btnCancel
-            //
+            // 
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Location = new Point(312, 447);
             btnCancel.Name = "btnCancel";
@@ -343,9 +343,9 @@ namespace ScanView.Forms
             btnCancel.TabIndex = 5;
             btnCancel.Text = "Abbrechen";
             btnCancel.UseVisualStyleBackColor = true;
-            //
+            // 
             // SaveForm
-            //
+            // 
             AcceptButton = btnSave;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -372,10 +372,11 @@ namespace ScanView.Forms
             groupFile.PerformLayout();
             groupOcr.ResumeLayout(false);
             groupOcr.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)numJpgQuality).EndInit();
             groupMeta.ResumeLayout(false);
             groupMeta.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numJpgQuality).EndInit();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
