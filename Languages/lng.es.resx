@@ -142,7 +142,6 @@ modo copia</value></data>
   <data name="Bilder importieren" xml:space="preserve"><value>Importar imágenes</value></data>
   <data name="Importieren fehlgeschlagen." xml:space="preserve"><value>Error al importar.</value></data>
   <data name="Seite bearbeitet übernommen ({0} × {1} Pixel)" xml:space="preserve"><value>Página editada aplicada ({0} × {1} píxeles)</value></data>
-  <data name="   ·   Scanner: {0}" xml:space="preserve"><value>   ·   Escáner: {0}</value></data>
   <data name="Noch keine Seiten" xml:space="preserve"><value>Aún no hay páginas</value></data>
   <data name="1 Seite" xml:space="preserve"><value>1 página</value></data>
   <data name="{0} Seiten" xml:space="preserve"><value>{0} páginas</value></data>
@@ -275,4 +274,7 @@ para instalar la última versión.</value></data>
   <data name="PDF/A (ohne Texterkennung)" xml:space="preserve"><value>PDF/A (sin reconocimiento de texto)</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Valores menores dan archivos más pequeños; 75 es un buen tér-
 mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
+  <data name="Seite {0} von {1}" xml:space="preserve"><value>Página {0} de {1}</value></data>
+  <data name="quer" xml:space="preserve"><value>horizontal</value></data>
+  <data name="Scanner: {0}" xml:space="preserve"><value>Escáner: {0}</value></data>
 </root>

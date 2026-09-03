@@ -811,6 +811,7 @@ public partial class MainForm : Form, IMessageFilter
         var old = pic.Image;
         pic.Image = ScanService.LoadThumbnail((string)selected.Tag, ThumbImageWidth);
         old?.Dispose();
+        UpdateUiState(); // nach Drehen/Zuschneiden die Format- und Maßanzeige nachziehen
     }
 
     /// <summary>Dreht die Seitendatei selbst (nicht nur die Miniatur), damit auch OCR und PDF die Drehung sehen.</summary>
@@ -1147,9 +1148,60 @@ public partial class MainForm : Form, IMessageFilter
         menuEditReverse.Enabled = pagesVisible && count >= 2;
         if (pagesVisible) // im Kopiermodus gehört die Statuszeile dem Kopiermodus
         {
-            var scannerHint = selectedScannerName != null ? string.Format(Lng.T("   ·   Scanner: {0}"), selectedScannerName) : string.Empty;
-            statusLabel.Text = (count == 0 ? Lng.T("Noch keine Seiten") : count == 1 ? Lng.T("1 Seite") : string.Format(Lng.T("{0} Seiten"), count)) + scannerHint;
+            statusPages.Text = selected != null
+                ? string.Format(Lng.T("Seite {0} von {1}"), flowPanel.Controls.IndexOf(selected) + 1, count)
+                : count == 0 ? Lng.T("Noch keine Seiten") : count == 1 ? Lng.T("1 Seite") : string.Format(Lng.T("{0} Seiten"), count);
+            UpdateSelectedPageStatus();
         }
+        else // Kopiermodus: die Seitenbereiche leeren, die Meldung setzt der Kopiermodus selbst
+        {
+            statusPages.Text = string.Empty;
+            statusSize.Text = string.Empty;
+            statusSize.ToolTipText = null;
+        }
+        statusScanner.Text = selectedScannerName != null ? string.Format(Lng.T("Scanner: {0}"), selectedScannerName) : string.Empty;
+    }
+
+    /// <summary>Zweiter Statusbereich: Papierformat (bzw. Maße in Millimetern), Pixelmaße und
+    /// Auflösung der markierten Seite — gelesen aus den Kopfdaten der Originaldatei.</summary>
+    private void UpdateSelectedPageStatus()
+    {
+        statusSize.Text = string.Empty;
+        statusSize.ToolTipText = null;
+        if (selected == null) { return; }
+        try
+        {
+            using var stream = File.OpenRead((string)selected.Tag);
+            using var image = Image.FromStream(stream, false, false); // validateImageData=false: nur die Kopfdaten lesen
+            if (image.HorizontalResolution < 1 || image.VerticalResolution < 1) // ohne dpi keine physischen Maße
+            {
+                statusSize.Text = $"{image.Width} × {image.Height} px";
+                return;
+            }
+            var mmWidth = image.Width / (double)image.HorizontalResolution * 25.4;
+            var mmHeight = image.Height / (double)image.VerticalResolution * 25.4;
+            var millimeters = $"{mmWidth:0} × {mmHeight:0} mm";
+            var format = DescribePaperFormat(mmWidth, mmHeight);
+            statusSize.Text = $"{format ?? millimeters}   ·   {image.Width} × {image.Height} px   ·   {image.HorizontalResolution:0} dpi";
+            if (format != null) { statusSize.ToolTipText = millimeters; }
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or OutOfMemoryException) { }
+    }
+
+    /// <summary>Erkennt gängige Papierformate mit Scan-Toleranz (±4 mm); null, wenn keines passt.</summary>
+    private static string DescribePaperFormat(double widthMm, double heightMm)
+    {
+        (string Name, double W, double H)[] formats =
+        [
+            ("A3", 297, 420), ("A4", 210, 297), ("A5", 148, 210), ("A6", 105, 148),
+            ("Letter", 215.9, 279.4), ("Legal", 215.9, 355.6),
+        ];
+        foreach (var (name, w, h) in formats)
+        {
+            if (Math.Abs(widthMm - w) <= 4 && Math.Abs(heightMm - h) <= 4) { return name; }
+            if (Math.Abs(widthMm - h) <= 4 && Math.Abs(heightMm - w) <= 4) { return name + " " + Lng.T("quer"); }
+        }
+        return null;
     }
 
     private void BtnMoveLeft_Click(object sender, EventArgs e)

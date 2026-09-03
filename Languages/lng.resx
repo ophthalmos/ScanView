@@ -142,7 +142,6 @@ beenden</value></data>
   <data name="Bilder importieren" xml:space="preserve"><value>Bilder importieren</value></data>
   <data name="Importieren fehlgeschlagen." xml:space="preserve"><value>Importieren fehlgeschlagen.</value></data>
   <data name="Seite bearbeitet übernommen ({0} × {1} Pixel)" xml:space="preserve"><value>Seite bearbeitet übernommen ({0} × {1} Pixel)</value></data>
-  <data name="   ·   Scanner: {0}" xml:space="preserve"><value>   ·   Scanner: {0}</value></data>
   <data name="Noch keine Seiten" xml:space="preserve"><value>Noch keine Seiten</value></data>
   <data name="1 Seite" xml:space="preserve"><value>1 Seite</value></data>
   <data name="{0} Seiten" xml:space="preserve"><value>{0} Seiten</value></data>
@@ -275,4 +274,7 @@ um die neueste Version zu installieren.</value></data>
   <data name="PDF/A (ohne Texterkennung)" xml:space="preserve"><value>PDF/A (ohne Texterkennung)</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter
 Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
+  <data name="Seite {0} von {1}" xml:space="preserve"><value>Seite {0} von {1}</value></data>
+  <data name="quer" xml:space="preserve"><value>quer</value></data>
+  <data name="Scanner: {0}" xml:space="preserve"><value>Scanner: {0}</value></data>
 </root>
