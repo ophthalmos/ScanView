@@ -89,7 +89,6 @@ namespace ScanView.Forms
             radioAll.TabStop = true;
             radioAll.Text = "&Alle Seiten";
             radioAll.UseVisualStyleBackColor = true;
-            radioAll.CheckedChanged += RadioPages_CheckedChanged;
             //
             // radioSelected
             //
@@ -100,7 +99,6 @@ namespace ScanView.Forms
             radioSelected.TabIndex = 1;
             radioSelected.Text = "Nur &markierte Seite";
             radioSelected.UseVisualStyleBackColor = true;
-            radioSelected.CheckedChanged += RadioPages_CheckedChanged;
             //
             // labelFileName
             //
@@ -156,7 +154,7 @@ namespace ScanView.Forms
             // comboFileType
             //
             comboFileType.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboFileType.Items.AddRange(new object[] { "PDF", "JPEG (Bilddatei)" });
+            comboFileType.Items.AddRange(new object[] { "PDF", "JPEG (Bilddatei)", "TIFF (verlustfrei)" });
             comboFileType.Location = new Point(124, 111);
             comboFileType.Name = "comboFileType";
             comboFileType.Size = new Size(244, 23);

@@ -1200,7 +1200,8 @@ public partial class MainForm : Form, IMessageFilter
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.SaveAuthor = dialog.MetaAuthor; // Verfasser fürs nächste Mal vorbelegen
         settings.Save();
-        var outputPath = Path.Combine(dialog.Folder, dialog.FileName + (dialog.FileType == SaveFileType.Jpeg ? ".jpg" : ".pdf"));
+        var extension = dialog.FileType switch { SaveFileType.Jpeg => ".jpg", SaveFileType.Tiff => ".tif", _ => ".pdf" };
+        var outputPath = Path.Combine(dialog.Folder, dialog.FileName + extension);
         try { Directory.CreateDirectory(dialog.Folder); }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
         {
@@ -1215,9 +1216,13 @@ public partial class MainForm : Form, IMessageFilter
         List<string> files = dialog.AllPages
             ? flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList()
             : [(string)selected.Tag];
-        if (dialog.FileType == SaveFileType.Jpeg)
+        if (dialog.FileType != SaveFileType.Pdf)
         {
-            try { ScanService.SaveAsJpeg(files[0], outputPath, dialog.JpgQuality); }
+            try
+            {
+                if (dialog.FileType == SaveFileType.Jpeg) { ScanService.SaveAsJpeg(files[0], outputPath, dialog.JpgQuality); }
+                else { ScanService.SaveAsMultipageTiff(files, outputPath); }
+            }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Runtime.InteropServices.ExternalException)
             {
                 TaskDlg.ErrTaskDlg(Handle, Lng.T("Speichern fehlgeschlagen."), ex);

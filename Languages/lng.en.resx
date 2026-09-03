@@ -273,4 +273,5 @@ the latest version.</value></data>
   <data name="Datei" xml:space="preserve"><value>File</value></data>
   <data name="Metadaten" xml:space="preserve"><value>Metadata</value></data>
   <data name="&amp;Sprache:" xml:space="preserve"><value>&amp;Language:</value></data>
+  <data name="TIFF (verlustfrei)" xml:space="preserve"><value>TIFF (lossless)</value></data>
 </root>
