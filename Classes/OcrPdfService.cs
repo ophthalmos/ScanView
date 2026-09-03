@@ -43,6 +43,7 @@ internal static class OcrPdfService
             image.Save(jpeg, encoder, encoderParams); // als JPEG einbetten — PDFsharp übernimmt den Stream unverändert
             jpeg.Position = 0;
             using var ximage = PdfSharp.Drawing.XImage.FromStream(jpeg);
+            ximage.Interpolate = false; // PDF/A verbietet /Interpolate true (veraPDF-Regel 6.2.4); PDFsharp-Standard wäre true
             var page = result.AddPage();
             page.Width = PdfSharp.Drawing.XUnit.FromPoint(ximage.PointWidth); // Seitengröße = physische Bildgröße (dpi)
             page.Height = PdfSharp.Drawing.XUnit.FromPoint(ximage.PointHeight);
