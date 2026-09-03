@@ -1,277 +1,906 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
-  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
-  <resheader name="version"><value>2.0</value></resheader>
-  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
-  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
-  <data name="&amp;Aktion" xml:space="preserve"><value>&amp;Action</value></data>
-  <data name="&amp;Neu" xml:space="preserve"><value>&amp;Nouveau</value></data>
-  <data name="&amp;Importieren …" xml:space="preserve"><value>&amp;Importer…</value></data>
-  <data name="&amp;Scannen" xml:space="preserve"><value>&amp;Numériser</value></data>
-  <data name="S&amp;peichern …" xml:space="preserve"><value>Enre&amp;gistrer…</value></data>
-  <data name="S&amp;peichern" xml:space="preserve"><value>Enre&amp;gistrer</value></data>
-  <data name="&amp;Drucken …" xml:space="preserve"><value>Im&amp;primer…</value></data>
-  <data name="&amp;Drucken" xml:space="preserve"><value>Im&amp;primer</value></data>
-  <data name="Kopier&amp;modus" xml:space="preserve"><value>&amp;Mode copie</value></data>
-  <data name="&amp;Kopiermodus" xml:space="preserve"><value>&amp;Mode copie</value></data>
-  <data name="Schließen" xml:space="preserve"><value>Fermer</value></data>
-  <data name="&amp;Bearbeiten" xml:space="preserve"><value>&amp;Édition</value></data>
-  <data name="&amp;Ausschneiden" xml:space="preserve"><value>Co&amp;uper</value></data>
-  <data name="&amp;Kopieren" xml:space="preserve"><value>&amp;Copier</value></data>
-  <data name="Ein&amp;fügen" xml:space="preserve"><value>C&amp;oller</value></data>
-  <data name="&amp;Löschen" xml:space="preserve"><value>Suppri&amp;mer</value></data>
-  <data name="&amp;Zuschneiden …" xml:space="preserve"><value>R&amp;ogner…</value></data>
-  <data name="&amp;Zuschneiden" xml:space="preserve"><value>R&amp;ogner</value></data>
-  <data name="Drehen nach &amp;links" xml:space="preserve"><value>Pivoter à &amp;gauche</value></data>
-  <data name="Drehen um 1&amp;80°" xml:space="preserve"><value>Pivoter de 1&amp;80°</value></data>
-  <data name="Drehen nach &amp;rechts" xml:space="preserve"><value>Pivoter à &amp;droite</value></data>
-  <data name="Rück&amp;seiten einfügen" xml:space="preserve"><value>Insérer les &amp;versos</value></data>
-  <data name="Sortierung &amp;umkehren" xml:space="preserve"><value>Inverser l'&amp;ordre</value></data>
-  <data name="A&amp;nsicht" xml:space="preserve"><value>Afficha&amp;ge</value></data>
-  <data name="&amp;Optimale Breite" xml:space="preserve"><value>Largeur &amp;optimale</value></data>
-  <data name="&amp;Ganze Seite" xml:space="preserve"><value>Page e&amp;ntière</value></data>
-  <data name="&amp;Zwei Seiten" xml:space="preserve"><value>Deu&amp;x pages</value></data>
-  <data name="&amp;Symbole" xml:space="preserve"><value>Icône&amp;s</value></data>
-  <data name="&amp;Vergrößern" xml:space="preserve"><value>Zoom a&amp;vant</value></data>
-  <data name="Ver&amp;kleinern" xml:space="preserve"><value>Zoom arriè&amp;re</value></data>
-  <data name="Ganzer &amp;Bildschirm" xml:space="preserve"><value>Plein écra&amp;n</value></data>
-  <data name="&amp;Scanner …" xml:space="preserve"><value>&amp;Scanner…</value></data>
-  <data name="&amp;Optionen …" xml:space="preserve"><value>&amp;Options…</value></data>
-  <data name="&amp;Hilfe (Tastenkürzel)" xml:space="preserve"><value>&amp;Aide (raccourcis)</value></data>
-  <data name="&amp;Info …" xml:space="preserve"><value>À &amp;propos…</value></data>
-  <data name="&amp;Entfernen" xml:space="preserve"><value>Retire&amp;r</value></data>
-  <data name="Seitenübersicht leeren" xml:space="preserve"><value>Vider l'aperçu des pages</value></data>
-  <data name="Bilddateien als Seiten in die Übersicht aufnehmen" xml:space="preserve"><value>Ajouter des fichiers image comme pages</value></data>
-  <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve"><value>Choisir le scanner et configurer les touches</value></data>
-  <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Créer et afficher l'aperçu des raccourcis en PDF</value></data>
-  <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Numériser une page (F4) — flèche : choisir le scanner</value></data>
-  <data name="Alle Seiten drucken (F6)" xml:space="preserve"><value>Imprimer toutes les pages (F6)</value></data>
-  <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Vider l'aperçu des pages (F9)</value></data>
-  <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Avancer la page sélectionnée (Alt+←)</value></data>
-  <data name="Markierte Seite nach hinten schieben (Alt+→)" xml:space="preserve"><value>Reculer la page sélectionnée (Alt+→)</value></data>
-  <data name="Markierte Seite aus der Übersicht entfernen (Entf)" xml:space="preserve"><value>Retirer la page sélectionnée (Suppr)</value></data>
-  <data name="Markierte Seite zuschneiden (F10)" xml:space="preserve"><value>Rogner la page sélectionnée (F10)</value></data>
-  <data name="Scans direkt drucken — der Scanner wird zum Kopierer (F7)" xml:space="preserve"><value>Imprimer directement — le scanner devient un copieur (F7)</value></data>
-  <data name="Scans direkt drucken — der Scanner wird zum Kopierer" xml:space="preserve"><value>Imprimer directement — le scanner devient un copieur</value></data>
-  <data name="Zweite Hälfte der Seiten (Rückseiten in umgekehrter Reihenfolge) hinter die Vorderseiten einsortieren" xml:space="preserve"><value>Intercaler la seconde moitié des pages (versos en ordre inverse) avec les rectos</value></data>
-  <data name="Miniaturen vergrößern (Strg++)" xml:space="preserve"><value>Agrandir les miniatures (Ctrl++)</value></data>
-  <data name="Miniaturen verkleinern (Strg+−)" xml:space="preserve"><value>Réduire les miniatures (Ctrl+−)</value></data>
-  <data name="Scan-Einstellungen" xml:space="preserve"><value>Paramètres de numérisation</value></data>
-  <data name="&amp;Auflösung:" xml:space="preserve"><value>&amp;Résolution :</value></data>
-  <data name="&amp;Farbmodus:" xml:space="preserve"><value>Mode de &amp;couleur :</value></data>
-  <data name="Farbe" xml:space="preserve"><value>Couleur</value></data>
-  <data name="Graustufen" xml:space="preserve"><value>Niveaux de gris</value></data>
-  <data name="Schwarz-weiß" xml:space="preserve"><value>Noir et blanc</value></data>
-  <data name="Scan&amp;bereich:" xml:space="preserve"><value>&amp;Zone de numérisation :</value></data>
-  <data name="maximal" xml:space="preserve"><value>maximale</value></data>
-  <data name="Visitenkarte" xml:space="preserve"><value>Carte de visite</value></data>
-  <data name="Papier&amp;zufuhr:" xml:space="preserve"><value>Alimentation &amp;papier :</value></data>
-  <data name="Flachbett" xml:space="preserve"><value>À plat</value></data>
-  <data name="Automatischer Einzug" xml:space="preserve"><value>Chargeur automatique</value></data>
-  <data name="&amp;Texterkennung:" xml:space="preserve"><value>&amp;Reconnaissance de texte :</value></data>
-  <data name="Ohne Texterkennung" xml:space="preserve"><value>Sans reconnaissance de texte</value></data>
-  <data name="&amp;Helligkeit: 0" xml:space="preserve"><value>&amp;Luminosité : 0</value></data>
-  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Luminosité : {0}</value></data>
-  <data name="Kopiermodus — jeder Scan wird direkt gedruckt" xml:space="preserve"><value>Mode copie — chaque numérisation est imprimée directement</value></data>
-  <data name="Drucker:" xml:space="preserve"><value>Imprimante :</value></data>
-  <data name="&amp;Papierformat:" xml:space="preserve"><value>&amp;Format de papier :</value></data>
-  <data name="&amp;Beidseitiger Druck:" xml:space="preserve"><value>Impression recto &amp;verso :</value></data>
-  <data name="Einseitig" xml:space="preserve"><value>Recto seulement</value></data>
-  <data name="Beidseitig (lange Kante)" xml:space="preserve"><value>Recto verso (bord long)</value></data>
-  <data name="Beidseitig (kurze Kante)" xml:space="preserve"><value>Recto verso (bord court)</value></data>
-  <data name="E&amp;xemplare:" xml:space="preserve"><value>E&amp;xemplaires :</value></data>
-  <data name="Far&amp;big drucken" xml:space="preserve"><value>Imprimer en c&amp;ouleur</value></data>
-  <data name="Seiten auf Druck&amp;fläche skalieren" xml:space="preserve"><value>Ajuster les pages à la zone im&amp;primable</value></data>
-  <data name="Zuschneiden" xml:space="preserve"><value>Rogner</value></data>
-  <data name="&amp;Zoom:" xml:space="preserve"><value>&amp;Zoom :</value></data>
-  <data name="Einpassen" xml:space="preserve"><value>Ajuster</value></data>
-  <data name="Vergrößern" xml:space="preserve"><value>Zoom avant</value></data>
-  <data name="Verkleinern" xml:space="preserve"><value>Zoom arrière</value></data>
-  <data name="&amp;Freistellen" xml:space="preserve"><value>&amp;Isoler</value></data>
-  <data name="&amp;Übernehmen" xml:space="preserve"><value>A&amp;ppliquer</value></data>
-  <data name="Abbrechen" xml:space="preserve"><value>Annuler</value></data>
-  <data name="Außerhalb der Auswahl wird weiß — die Bildgröße (z.B. A4) bleibt erhalten" xml:space="preserve"><value>L'extérieur de la sélection devient blanc — la taille de l'image (p. ex. A4) est conservée</value></data>
-  <data name="Das Bild wird auf die Auswahl verkleinert" xml:space="preserve"><value>L'image est réduite à la sélection</value></data>
-  <data name="Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten" xml:space="preserve"><value>La sélection est retirée de l'image (blanc) — la taille est conservée</value></data>
-  <data name="Ergebnis in die Seite übernehmen (Enter)" xml:space="preserve"><value>Appliquer le résultat à la page (Entrée)</value></data>
-  <data name="Alle Aktionen verwerfen und schließen (Esc)" xml:space="preserve"><value>Abandonner toutes les actions et fermer (Échap)</value></data>
-  <data name="Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung" xml:space="preserve"><value>Tracez un cadre ou déplacez les poignées — Échap ferme sans modification</value></data>
-  <data name="Freigestellt: außerhalb der Auswahl weiß" xml:space="preserve"><value>Isolé : blanc hors de la sélection</value></data>
-  <data name="Zugeschnitten auf {0} × {1} Pixel" xml:space="preserve"><value>Rogné à {0} × {1} pixels</value></data>
-  <data name="Ausgeschnitten: die Auswahl wurde weiß entfernt" xml:space="preserve"><value>Découpé : la sélection a été retirée (blanc)</value></data>
-  <data name="Übernehmen speichert, Esc verwirft alles" xml:space="preserve"><value>Appliquer enregistre, Échap abandonne tout</value></data>
-  <data name="Auswahl: {0} × {1} Pixel" xml:space="preserve"><value>Sélection : {0} × {1} pixels</value></data>
-  <data name="Einstellungen" xml:space="preserve"><value>Options</value></data>
-  <data name="Allgemein" xml:space="preserve"><value>Général</value></data>
-  <data name="Texterkennung" xml:space="preserve"><value>Reconnaissance de texte</value></data>
-  <data name="Sprache / &amp;Language:" xml:space="preserve"><value>&amp;Langue :</value></data>
-  <data name="Programm mit 2× &amp;Esc beenden (Umschalt+Esc: sofort)" xml:space="preserve"><value>Quitter avec 2× &amp;Échap (Maj+Échap : immédiat)</value></data>
-  <data name="Beim Beenden des Programms:" xml:space="preserve"><value>À la fermeture du programme :</value></data>
-  <data name="Seiten in der Seitenübersicht &amp;behalten" xml:space="preserve"><value>&amp;Conserver les pages de l'aperçu</value></data>
-  <data name="Seitenübersicht nach &amp;Rückfrage leeren" xml:space="preserve"><value>Vider l'aperçu après &amp;confirmation</value></data>
-  <data name="Seitenübersicht &amp;ohne Rückfrage leeren" xml:space="preserve"><value>Vider l'aperçu &amp;sans confirmation</value></data>
-  <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve"><value>Emplacement d'enregi&amp;strement préféré des PDF :</value></data>
-  <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Vide : Windows propose le dernier dossier utilisé.</value></data>
-  <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>&amp;Couleur de fond :</value></data>
-  <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Lang&amp;ue de reconnaissance préférée (défaut des nouvelles sessions) :</value></data>
-  <data name="&amp;JPEG-Qualität der Bilder in der PDF (30–100):" xml:space="preserve"><value>Qualité &amp;JPEG des images du PDF (30–100) :</value></data>
-  <data name="Hint.OcrLanguages" xml:space="preserve"><value>Autres langues : placez des fichiers .traineddata (tessdata_best)
-dans le dossier « tessdata » à côté du programme.</value></data>
-  <data name="Hint.JpgQuality" xml:space="preserve"><value>Des valeurs plus faibles donnent des fichiers plus petits ; 75 est un bon compromis.
-Le gris économise encore de la place.</value></data>
-  <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Emplacement d'enregistrement préféré des PDF</value></data>
-  <data name="Sprache geändert." xml:space="preserve"><value>Langue modifiée.</value></data>
-  <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve"><value>La nouvelle langue prendra effet au prochain démarrage.</value></data>
-  <data name="Scanner wählen" xml:space="preserve"><value>Choisir le scanner</value></data>
-  <data name="Dieses &amp;Gerät verwenden:" xml:space="preserve"><value>Utiliser cet a&amp;ppareil :</value></data>
-  <data name="Windows-Einstellungen" xml:space="preserve"><value>Paramètres Windows</value></data>
-  <data name="Scanner und Kameras" xml:space="preserve"><value>Scanneurs et appareils photo</value></data>
-  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Vous pouvez y associer les touches de l'appareil
-à ScanView (Propriétés → Événements).</value></data>
-  <data name="(kein Scanner gefunden)" xml:space="preserve"><value>(aucun scanner trouvé)</value></data>
-  <data name="Die Windows-Einstellungen konnten nicht geöffnet werden." xml:space="preserve"><value>Impossible d'ouvrir les paramètres Windows.</value></data>
-  <data name="Kein Scanner gefunden." xml:space="preserve"><value>Aucun scanner trouvé.</value></data>
-  <data name="Bitte schließe einen Scanner an oder schalte ihn ein." xml:space="preserve"><value>Veuillez brancher ou allumer un scanner.</value></data>
-  <data name="Scanne …" xml:space="preserve"><value>Numérisation…</value></data>
-  <data name="Scan abgebrochen oder fehlgeschlagen" xml:space="preserve"><value>Numérisation annulée ou échouée</value></data>
-  <data name="CopyMode.Stop" xml:space="preserve"><value>Quitter le
-mode copie</value></data>
-  <data name="Kopiermodus: jeder Scan wird direkt gedruckt" xml:space="preserve"><value>Mode copie : chaque numérisation est imprimée directement</value></data>
-  <data name="Kopie ({0}×) an {1} übergeben" xml:space="preserve"><value>Copie ({0}×) envoyée à {1}</value></data>
-  <data name="Drucken fehlgeschlagen." xml:space="preserve"><value>Échec de l'impression.</value></data>
-  <data name="Bilddateien" xml:space="preserve"><value>Fichiers image</value></data>
-  <data name="Alle Dateien" xml:space="preserve"><value>Tous les fichiers</value></data>
-  <data name="Bilder importieren" xml:space="preserve"><value>Importer des images</value></data>
-  <data name="Importieren fehlgeschlagen." xml:space="preserve"><value>Échec de l'importation.</value></data>
-  <data name="Seite bearbeitet übernommen ({0} × {1} Pixel)" xml:space="preserve"><value>Page modifiée appliquée ({0} × {1} pixels)</value></data>
-  <data name="   ·   Scanner: {0}" xml:space="preserve"><value>   ·   Scanner : {0}</value></data>
-  <data name="Noch keine Seiten" xml:space="preserve"><value>Pas encore de pages</value></data>
-  <data name="1 Seite" xml:space="preserve"><value>1 page</value></data>
-  <data name="{0} Seiten" xml:space="preserve"><value>{0} pages</value></data>
-  <data name="Esc erneut drücken, um das Programm zu beenden" xml:space="preserve"><value>Appuyez de nouveau sur Échap pour quitter</value></data>
-  <data name="Alle Seiten aus der Übersicht entfernen?" xml:space="preserve"><value>Retirer toutes les pages de l'aperçu ?</value></data>
-  <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>Les pages numérisées de cette session seront perdues.</value></data>
-  <data name="Scan" xml:space="preserve"><value>Numérisation</value></data>
-  <data name="Gespeichert: {0}" xml:space="preserve"><value>Enregistré : {0}</value></data>
-  <data name="Texterkennung {0}/{1} …" xml:space="preserve"><value>Reconnaissance {0}/{1}…</value></data>
-  <data name="Seite {0}/{1} …" xml:space="preserve"><value>Page {0}/{1}…</value></data>
-  <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>Échec de la création du PDF.</value></data>
-  <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve"><value>{0} page(s) envoyée(s) à l'imprimante</value></data>
-  <data name="Seitenübersicht leeren?" xml:space="preserve"><value>Vider l'aperçu des pages ?</value></data>
-  <data name="Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht." xml:space="preserve"><value>Si vous répondez Non, les pages réapparaîtront au prochain démarrage.</value></data>
-  <data name="Technische Details anzeigen" xml:space="preserve"><value>Afficher les détails techniques</value></data>
-  <data name="Details ausblenden" xml:space="preserve"><value>Masquer les détails</value></data>
-  <data name="unbekannt" xml:space="preserve"><value>inconnue</value></data>
-  <data name="About.Text" xml:space="preserve"><value>ScanView numÃ©rise des pages, les organise en miniatures et
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="&amp;Aktion" xml:space="preserve">
+    <value>&amp;Action</value>
+  </data>
+  <data name="&amp;Neu" xml:space="preserve">
+    <value>&amp;Nouveau</value>
+  </data>
+  <data name="&amp;Importieren …" xml:space="preserve">
+    <value>&amp;Importer…</value>
+  </data>
+  <data name="&amp;Scannen" xml:space="preserve">
+    <value>&amp;Numériser</value>
+  </data>
+  <data name="S&amp;peichern …" xml:space="preserve">
+    <value>Enre&amp;gistrer…</value>
+  </data>
+  <data name="S&amp;peichern" xml:space="preserve">
+    <value>Enre&amp;gistrer</value>
+  </data>
+  <data name="&amp;Drucken …" xml:space="preserve">
+    <value>Im&amp;primer…</value>
+  </data>
+  <data name="&amp;Drucken" xml:space="preserve">
+    <value>Im&amp;primer</value>
+  </data>
+  <data name="Kopier&amp;modus" xml:space="preserve">
+    <value>&amp;Mode copie</value>
+  </data>
+  <data name="&amp;Kopiermodus" xml:space="preserve">
+    <value>&amp;Mode copie</value>
+  </data>
+  <data name="Schließen" xml:space="preserve">
+    <value>Fermer</value>
+  </data>
+  <data name="&amp;Bearbeiten" xml:space="preserve">
+    <value>&amp;Édition</value>
+  </data>
+  <data name="&amp;Ausschneiden" xml:space="preserve">
+    <value>Co&amp;uper</value>
+  </data>
+  <data name="&amp;Kopieren" xml:space="preserve">
+    <value>&amp;Copier</value>
+  </data>
+  <data name="Ein&amp;fügen" xml:space="preserve">
+    <value>C&amp;oller</value>
+  </data>
+  <data name="&amp;Löschen" xml:space="preserve">
+    <value>Suppri&amp;mer</value>
+  </data>
+  <data name="&amp;Zuschneiden …" xml:space="preserve">
+    <value>R&amp;ogner…</value>
+  </data>
+  <data name="&amp;Zuschneiden" xml:space="preserve">
+    <value>R&amp;ogner</value>
+  </data>
+  <data name="Drehen nach &amp;links" xml:space="preserve">
+    <value>Pivoter à &amp;gauche</value>
+  </data>
+  <data name="Drehen um 1&amp;80°" xml:space="preserve">
+    <value>Pivoter de 1&amp;80°</value>
+  </data>
+  <data name="Drehen nach &amp;rechts" xml:space="preserve">
+    <value>Pivoter à &amp;droite</value>
+  </data>
+  <data name="Rück&amp;seiten einfügen" xml:space="preserve">
+    <value>Insérer les &amp;versos</value>
+  </data>
+  <data name="Sortierung &amp;umkehren" xml:space="preserve">
+    <value>Inverser l'&amp;ordre</value>
+  </data>
+  <data name="A&amp;nsicht" xml:space="preserve">
+    <value>Afficha&amp;ge</value>
+  </data>
+  <data name="&amp;Optimale Breite" xml:space="preserve">
+    <value>Largeur &amp;optimale</value>
+  </data>
+  <data name="&amp;Ganze Seite" xml:space="preserve">
+    <value>Page e&amp;ntière</value>
+  </data>
+  <data name="&amp;Zwei Seiten" xml:space="preserve">
+    <value>Deu&amp;x pages</value>
+  </data>
+  <data name="&amp;Symbole" xml:space="preserve">
+    <value>Icône&amp;s</value>
+  </data>
+  <data name="&amp;Vergrößern" xml:space="preserve">
+    <value>Zoom a&amp;vant</value>
+  </data>
+  <data name="Ver&amp;kleinern" xml:space="preserve">
+    <value>Zoom arriè&amp;re</value>
+  </data>
+  <data name="Ganzer &amp;Bildschirm" xml:space="preserve">
+    <value>Plein écra&amp;n</value>
+  </data>
+  <data name="&amp;Scanner …" xml:space="preserve">
+    <value>&amp;Scanner…</value>
+  </data>
+  <data name="&amp;Optionen …" xml:space="preserve">
+    <value>&amp;Options…</value>
+  </data>
+  <data name="&amp;Hilfe (Tastenkürzel)" xml:space="preserve">
+    <value>&amp;Aide (raccourcis)</value>
+  </data>
+  <data name="&amp;Info …" xml:space="preserve">
+    <value>À &amp;propos…</value>
+  </data>
+  <data name="&amp;Entfernen" xml:space="preserve">
+    <value>Retire&amp;r</value>
+  </data>
+  <data name="Seitenübersicht leeren" xml:space="preserve">
+    <value>Vider l'aperçu des pages</value>
+  </data>
+  <data name="Bilddateien als Seiten in die Übersicht aufnehmen" xml:space="preserve">
+    <value>Ajouter des fichiers image comme pages</value>
+  </data>
+  <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve">
+    <value>Choisir le scanner et configurer les touches</value>
+  </data>
+  <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve">
+    <value>Créer et afficher l'aperçu des raccourcis en PDF</value>
+  </data>
+  <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve">
+    <value>Numériser une page (F4) — flèche : choisir le scanner</value>
+  </data>
+  <data name="Alle Seiten drucken (F6)" xml:space="preserve">
+    <value>Imprimer toutes les pages (F6)</value>
+  </data>
+  <data name="Seitenübersicht leeren (F9)" xml:space="preserve">
+    <value>Vider l'aperçu des pages (F9)</value>
+  </data>
+  <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve">
+    <value>Avancer la page sélectionnée (Alt+←)</value>
+  </data>
+  <data name="Markierte Seite nach hinten schieben (Alt+→)" xml:space="preserve">
+    <value>Reculer la page sélectionnée (Alt+→)</value>
+  </data>
+  <data name="Markierte Seite aus der Übersicht entfernen (Entf)" xml:space="preserve">
+    <value>Retirer la page sélectionnée (Suppr)</value>
+  </data>
+  <data name="Markierte Seite zuschneiden (F10)" xml:space="preserve">
+    <value>Rogner la page sélectionnée (F10)</value>
+  </data>
+  <data name="Scans direkt drucken — der Scanner wird zum Kopierer (F7)" xml:space="preserve">
+    <value>Imprimer directement — le scanner devient un copieur (F7)</value>
+  </data>
+  <data name="Scans direkt drucken — der Scanner wird zum Kopierer" xml:space="preserve">
+    <value>Imprimer directement — le scanner devient un copieur</value>
+  </data>
+  <data name="Zweite Hälfte der Seiten (Rückseiten in umgekehrter Reihenfolge) hinter die Vorderseiten einsortieren" xml:space="preserve">
+    <value>Intercaler la seconde moitié des pages (versos en ordre inverse) avec les rectos</value>
+  </data>
+  <data name="Miniaturen vergrößern (Strg++)" xml:space="preserve">
+    <value>Agrandir les miniatures (Ctrl++)</value>
+  </data>
+  <data name="Miniaturen verkleinern (Strg+−)" xml:space="preserve">
+    <value>Réduire les miniatures (Ctrl+−)</value>
+  </data>
+  <data name="Scan-Einstellungen" xml:space="preserve">
+    <value>Paramètres de numérisation</value>
+  </data>
+  <data name="&amp;Auflösung:" xml:space="preserve">
+    <value>&amp;Résolution :</value>
+  </data>
+  <data name="&amp;Farbmodus:" xml:space="preserve">
+    <value>Mode de &amp;couleur :</value>
+  </data>
+  <data name="Farbe" xml:space="preserve">
+    <value>Couleur</value>
+  </data>
+  <data name="Graustufen" xml:space="preserve">
+    <value>Niveaux de gris</value>
+  </data>
+  <data name="Schwarz-weiß" xml:space="preserve">
+    <value>Noir et blanc</value>
+  </data>
+  <data name="Scan&amp;bereich:" xml:space="preserve">
+    <value>&amp;Zone de numérisation :</value>
+  </data>
+  <data name="maximal" xml:space="preserve">
+    <value>maximale</value>
+  </data>
+  <data name="Visitenkarte" xml:space="preserve">
+    <value>Carte de visite</value>
+  </data>
+  <data name="Papier&amp;zufuhr:" xml:space="preserve">
+    <value>Alimentation &amp;papier :</value>
+  </data>
+  <data name="Flachbett" xml:space="preserve">
+    <value>À plat</value>
+  </data>
+  <data name="Automatischer Einzug" xml:space="preserve">
+    <value>Chargeur automatique</value>
+  </data>
+  <data name="&amp;Texterkennung:" xml:space="preserve">
+    <value>&amp;Reconnaissance de texte :</value>
+  </data>
+  <data name="Ohne Texterkennung" xml:space="preserve">
+    <value>Sans reconnaissance de texte</value>
+  </data>
+  <data name="&amp;Helligkeit: 0" xml:space="preserve">
+    <value>&amp;Luminosité : 0</value>
+  </data>
+  <data name="&amp;Helligkeit: {0}" xml:space="preserve">
+    <value>&amp;Luminosité : {0}</value>
+  </data>
+  <data name="Kopiermodus — jeder Scan wird direkt gedruckt" xml:space="preserve">
+    <value>Mode copie — chaque numérisation est imprimée directement</value>
+  </data>
+  <data name="Drucker:" xml:space="preserve">
+    <value>Imprimante :</value>
+  </data>
+  <data name="&amp;Papierformat:" xml:space="preserve">
+    <value>&amp;Format de papier :</value>
+  </data>
+  <data name="&amp;Beidseitiger Druck:" xml:space="preserve">
+    <value>Impression recto &amp;verso :</value>
+  </data>
+  <data name="Einseitig" xml:space="preserve">
+    <value>Recto seulement</value>
+  </data>
+  <data name="Beidseitig (lange Kante)" xml:space="preserve">
+    <value>Recto verso (bord long)</value>
+  </data>
+  <data name="Beidseitig (kurze Kante)" xml:space="preserve">
+    <value>Recto verso (bord court)</value>
+  </data>
+  <data name="E&amp;xemplare:" xml:space="preserve">
+    <value>E&amp;xemplaires :</value>
+  </data>
+  <data name="Far&amp;big drucken" xml:space="preserve">
+    <value>Imprimer en c&amp;ouleur</value>
+  </data>
+  <data name="Seiten auf Druck&amp;fläche skalieren" xml:space="preserve">
+    <value>Ajuster les pages à la zone im&amp;primable</value>
+  </data>
+  <data name="Zuschneiden" xml:space="preserve">
+    <value>Rogner</value>
+  </data>
+  <data name="&amp;Zoom:" xml:space="preserve">
+    <value>&amp;Zoom :</value>
+  </data>
+  <data name="Einpassen" xml:space="preserve">
+    <value>Ajuster</value>
+  </data>
+  <data name="Vergrößern" xml:space="preserve">
+    <value>Zoom avant</value>
+  </data>
+  <data name="Verkleinern" xml:space="preserve">
+    <value>Zoom arrière</value>
+  </data>
+  <data name="&amp;Freistellen" xml:space="preserve">
+    <value>&amp;Isoler</value>
+  </data>
+  <data name="&amp;Übernehmen" xml:space="preserve">
+    <value>A&amp;ppliquer</value>
+  </data>
+  <data name="Abbrechen" xml:space="preserve">
+    <value>Annuler</value>
+  </data>
+  <data name="Außerhalb der Auswahl wird weiß — die Bildgröße (z.B. A4) bleibt erhalten" xml:space="preserve">
+    <value>L'extérieur de la sélection devient blanc — la taille de l'image (p. ex. A4) est conservée</value>
+  </data>
+  <data name="Das Bild wird auf die Auswahl verkleinert" xml:space="preserve">
+    <value>L'image est réduite à la sélection</value>
+  </data>
+  <data name="Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten" xml:space="preserve">
+    <value>La sélection est retirée de l'image (blanc) — la taille est conservée</value>
+  </data>
+  <data name="Ergebnis in die Seite übernehmen (Enter)" xml:space="preserve">
+    <value>Appliquer le résultat à la page (Entrée)</value>
+  </data>
+  <data name="Alle Aktionen verwerfen und schließen (Esc)" xml:space="preserve">
+    <value>Abandonner toutes les actions et fermer (Échap)</value>
+  </data>
+  <data name="Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung" xml:space="preserve">
+    <value>Tracez un cadre ou déplacez les poignées — Échap ferme sans modification</value>
+  </data>
+  <data name="Freigestellt: außerhalb der Auswahl weiß" xml:space="preserve">
+    <value>Isolé : blanc hors de la sélection</value>
+  </data>
+  <data name="Zugeschnitten auf {0} × {1} Pixel" xml:space="preserve">
+    <value>Rogné à {0} × {1} pixels</value>
+  </data>
+  <data name="Ausgeschnitten: die Auswahl wurde weiß entfernt" xml:space="preserve">
+    <value>Découpé : la sélection a été retirée (blanc)</value>
+  </data>
+  <data name="Übernehmen speichert, Esc verwirft alles" xml:space="preserve">
+    <value>Appliquer enregistre, Échap abandonne tout</value>
+  </data>
+  <data name="Auswahl: {0} × {1} Pixel" xml:space="preserve">
+    <value>Sélection : {0} × {1} pixels</value>
+  </data>
+  <data name="Einstellungen" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Allgemein" xml:space="preserve">
+    <value>Général</value>
+  </data>
+  <data name="Texterkennung" xml:space="preserve">
+    <value>Reconnaissance de texte</value>
+  </data>
+  <data name="Sprache / &amp;Language:" xml:space="preserve">
+    <value>&amp;Langue :</value>
+  </data>
+  <data name="Programm mit 2× &amp;Esc beenden (Umschalt+Esc: sofort)" xml:space="preserve">
+    <value>Quitter avec 2× &amp;Échap (Maj+Échap : immédiat)</value>
+  </data>
+  <data name="Beim Beenden des Programms:" xml:space="preserve">
+    <value>À la fermeture du programme :</value>
+  </data>
+  <data name="Seiten in der Seitenübersicht &amp;behalten" xml:space="preserve">
+    <value>&amp;Conserver les pages de l'aperçu</value>
+  </data>
+  <data name="Seitenübersicht nach &amp;Rückfrage leeren" xml:space="preserve">
+    <value>Vider l'aperçu après &amp;confirmation</value>
+  </data>
+  <data name="Seitenübersicht &amp;ohne Rückfrage leeren" xml:space="preserve">
+    <value>Vider l'aperçu &amp;sans confirmation</value>
+  </data>
+  <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve">
+    <value>Emplacement d'enregi&amp;strement préféré des PDF :</value>
+  </data>
+  <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve">
+    <value>Vide : Windows propose le dernier dossier utilisé.</value>
+  </data>
+  <data name="&amp;Hintergrundfarbe:" xml:space="preserve">
+    <value>&amp;Couleur de fond :</value>
+  </data>
+  <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve">
+    <value>Lang&amp;ue de reconnaissance préférée (défaut des nouvelles sessions) :</value>
+  </data>
+  <data name="&amp;JPEG-Qualität der Bilder in der PDF (30–100):" xml:space="preserve">
+    <value>Qualité &amp;JPEG des images du PDF (30–100) :</value>
+  </data>
+  <data name="Hint.OcrLanguages" xml:space="preserve">
+    <value>Autres langues : placez des fichiers .traineddata (tessdata_best)
+dans le dossier « tessdata » à côté du programme.</value>
+  </data>
+  <data name="Hint.JpgQuality" xml:space="preserve">
+    <value>Des valeurs plus faibles donnent des fichiers plus petits ; 75 est
+un bon compromis. Le gris économise encore de la place.</value>
+  </data>
+  <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve">
+    <value>Emplacement d'enregistrement préféré des PDF</value>
+  </data>
+  <data name="Sprache geändert." xml:space="preserve">
+    <value>Langue modifiée.</value>
+  </data>
+  <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve">
+    <value>La nouvelle langue prendra effet au prochain démarrage.</value>
+  </data>
+  <data name="Scanner wählen" xml:space="preserve">
+    <value>Choisir le scanner</value>
+  </data>
+  <data name="Dieses &amp;Gerät verwenden:" xml:space="preserve">
+    <value>Utiliser cet a&amp;ppareil :</value>
+  </data>
+  <data name="Windows-Einstellungen" xml:space="preserve">
+    <value>Paramètres Windows</value>
+  </data>
+  <data name="Scanner und Kameras" xml:space="preserve">
+    <value>Scanneurs et appareils photo</value>
+  </data>
+  <data name="Hint.DeviceKeys" xml:space="preserve">
+    <value>Vous pouvez y associer les touches de l'appareil
+à ScanView (Propriétés → Événements).</value>
+  </data>
+  <data name="(kein Scanner gefunden)" xml:space="preserve">
+    <value>(aucun scanner trouvé)</value>
+  </data>
+  <data name="Die Windows-Einstellungen konnten nicht geöffnet werden." xml:space="preserve">
+    <value>Impossible d'ouvrir les paramètres Windows.</value>
+  </data>
+  <data name="Kein Scanner gefunden." xml:space="preserve">
+    <value>Aucun scanner trouvé.</value>
+  </data>
+  <data name="Bitte schließe einen Scanner an oder schalte ihn ein." xml:space="preserve">
+    <value>Veuillez brancher ou allumer un scanner.</value>
+  </data>
+  <data name="Scanne …" xml:space="preserve">
+    <value>Numérisation…</value>
+  </data>
+  <data name="Scan abgebrochen oder fehlgeschlagen" xml:space="preserve">
+    <value>Numérisation annulée ou échouée</value>
+  </data>
+  <data name="CopyMode.Stop" xml:space="preserve">
+    <value>Quitter le
+mode copie</value>
+  </data>
+  <data name="Kopiermodus: jeder Scan wird direkt gedruckt" xml:space="preserve">
+    <value>Mode copie : chaque numérisation est imprimée directement</value>
+  </data>
+  <data name="Kopie ({0}×) an {1} übergeben" xml:space="preserve">
+    <value>Copie ({0}×) envoyée à {1}</value>
+  </data>
+  <data name="Drucken fehlgeschlagen." xml:space="preserve">
+    <value>Échec de l'impression.</value>
+  </data>
+  <data name="Bilddateien" xml:space="preserve">
+    <value>Fichiers image</value>
+  </data>
+  <data name="Alle Dateien" xml:space="preserve">
+    <value>Tous les fichiers</value>
+  </data>
+  <data name="Bilder importieren" xml:space="preserve">
+    <value>Importer des images</value>
+  </data>
+  <data name="Importieren fehlgeschlagen." xml:space="preserve">
+    <value>Échec de l'importation.</value>
+  </data>
+  <data name="Seite bearbeitet übernommen ({0} × {1} Pixel)" xml:space="preserve">
+    <value>Page modifiée appliquée ({0} × {1} pixels)</value>
+  </data>
+  <data name="   ·   Scanner: {0}" xml:space="preserve">
+    <value>   ·   Scanner : {0}</value>
+  </data>
+  <data name="Noch keine Seiten" xml:space="preserve">
+    <value>Pas encore de pages</value>
+  </data>
+  <data name="1 Seite" xml:space="preserve">
+    <value>1 page</value>
+  </data>
+  <data name="{0} Seiten" xml:space="preserve">
+    <value>{0} pages</value>
+  </data>
+  <data name="Esc erneut drücken, um das Programm zu beenden" xml:space="preserve">
+    <value>Appuyez de nouveau sur Échap pour quitter</value>
+  </data>
+  <data name="Alle Seiten aus der Übersicht entfernen?" xml:space="preserve">
+    <value>Retirer toutes les pages de l'aperçu ?</value>
+  </data>
+  <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve">
+    <value>Les pages numérisées de cette session seront perdues.</value>
+  </data>
+  <data name="Scan" xml:space="preserve">
+    <value>Numérisation</value>
+  </data>
+  <data name="Gespeichert: {0}" xml:space="preserve">
+    <value>Enregistré : {0}</value>
+  </data>
+  <data name="Texterkennung {0}/{1} …" xml:space="preserve">
+    <value>Reconnaissance {0}/{1}…</value>
+  </data>
+  <data name="Seite {0}/{1} …" xml:space="preserve">
+    <value>Page {0}/{1}…</value>
+  </data>
+  <data name="PDF erstellen fehlgeschlagen." xml:space="preserve">
+    <value>Échec de la création du PDF.</value>
+  </data>
+  <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve">
+    <value>{0} page(s) envoyée(s) à l'imprimante</value>
+  </data>
+  <data name="Seitenübersicht leeren?" xml:space="preserve">
+    <value>Vider l'aperçu des pages ?</value>
+  </data>
+  <data name="Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht." xml:space="preserve">
+    <value>Si vous répondez Non, les pages réapparaîtront au prochain démarrage.</value>
+  </data>
+  <data name="Technische Details anzeigen" xml:space="preserve">
+    <value>Afficher les détails techniques</value>
+  </data>
+  <data name="Details ausblenden" xml:space="preserve">
+    <value>Masquer les détails</value>
+  </data>
+  <data name="unbekannt" xml:space="preserve">
+    <value>inconnue</value>
+  </data>
+  <data name="About.Text" xml:space="preserve">
+    <value>ScanView numÃ©rise des pages, les organise en miniatures et
 les enregistre en PDF interrogeable (reconnaissance de texte).
 
 En mode copie, chaque numÃ©risation est imprimÃ©e directement.
 
 Le design s'inspire de Â« Scanner Interface 7 Â»
-(Grewe Computertechnik GmbH 2012).</value></data>
-  <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Faire un don via PayPal</value></data>
-  <data name="Über" xml:space="preserve"><value>À propos de</value></data>
-  <data name="Vorhandene öffnen" xml:space="preserve"><value>Ouvrir l'existant</value></data>
-  <data name="Neu erstellen" xml:space="preserve"><value>Recréer</value></data>
-  <data name="z.B. nach einem Update" xml:space="preserve"><value>p. ex. après une mise à jour</value></data>
-  <data name="Kürzel-Übersicht bereits vorhanden" xml:space="preserve"><value>L'aperçu des raccourcis existe déjà</value></data>
-  <data name="Die PDF-Übersicht konnte nicht erstellt werden." xml:space="preserve"><value>Impossible de créer l'aperçu PDF.</value></data>
-  <data name="Die Datei konnte nicht geöffnet werden." xml:space="preserve"><value>Impossible d'ouvrir le fichier.</value></data>
-  <data name="Ungültiger Link!" xml:space="preserve"><value>Lien invalide !</value></data>
-  <data name="'{0}' ist keine gültige URL." xml:space="preserve"><value>« {0} » n'est pas une URL valide.</value></data>
-  <data name="Der Link konnte nicht geöffnet werden." xml:space="preserve"><value>Impossible d'ouvrir le lien.</value></data>
-  <data name="ScanView-Tastenkürzel" xml:space="preserve"><value>Raccourcis ScanView</value></data>
-  <data name="Tastenkürzel" xml:space="preserve"><value>Raccourcis clavier</value></data>
-  <data name="Seite scannen" xml:space="preserve"><value>Numériser une page</value></data>
-  <data name="durchsuchbare PDF speichern (mit Texterkennung)" xml:space="preserve"><value>enregistrer un PDF interrogeable (OCR)</value></data>
-  <data name="alle Seiten drucken" xml:space="preserve"><value>imprimer toutes les pages</value></data>
-  <data name="Kopiermodus ein/aus" xml:space="preserve"><value>mode copie marche/arrêt</value></data>
-  <data name="Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein." xml:space="preserve"><value>Chaque numérisation part directement à l'imprimante — le scanner devient un copieur. Imprimante, exemplaires et mise à l'échelle se règlent dans le panneau du mode copie.</value></data>
-  <data name="Seitenübersicht leeren (Neu)" xml:space="preserve"><value>vider l'aperçu des pages (Nouveau)</value></data>
-  <data name="Bilddateien als Seiten importieren" xml:space="preserve"><value>importer des fichiers image comme pages</value></data>
-  <data name="Seite ausschneiden / kopieren / einfügen" xml:space="preserve"><value>couper / copier / coller la page</value></data>
-  <data name="markierte Seite entfernen" xml:space="preserve"><value>retirer la page sélectionnée</value></data>
-  <data name="markierte Seite zuschneiden" xml:space="preserve"><value>rogner la page sélectionnée</value></data>
-  <data name="Seite nach links / rechts drehen" xml:space="preserve"><value>pivoter la page à gauche / droite</value></data>
-  <data name="Seite um 180° drehen" xml:space="preserve"><value>pivoter la page de 180°</value></data>
-  <data name="Rückseiten einfügen" xml:space="preserve"><value>insérer les versos</value></data>
-  <data name="Duplex von Hand: erst alle Vorderseiten scannen, dann den gewendeten Stapel — die Rückseiten werden verzahnt einsortiert." xml:space="preserve"><value>Recto verso manuel : numérisez d'abord tous les rectos, puis la pile retournée — les versos sont intercalés automatiquement.</value></data>
-  <data name="Sortierung umkehren" xml:space="preserve"><value>inverser l'ordre</value></data>
-  <data name="Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole" xml:space="preserve"><value>affichage : largeur optimale, page entière, deux pages, icônes</value></data>
-  <data name="Miniaturen vergrößern / verkleinern" xml:space="preserve"><value>agrandir / réduire les miniatures</value></data>
-  <data name="markierte Seite verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>déplacer la page (aussi : glisser à la souris)</value></data>
-  <data name="Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)" xml:space="preserve"><value>ouvrir la page dans la boîte Rogner (visionneuse : menu contextuel)</value></data>
-  <data name="Vollbild ein/aus" xml:space="preserve"><value>plein écran marche/arrêt</value></data>
-  <data name="Optionen öffnen" xml:space="preserve"><value>ouvrir les options</value></data>
-  <data name="Programm beenden (Option)" xml:space="preserve"><value>quitter le programme (option)</value></data>
-  <data name="diese Kürzel-Übersicht" xml:space="preserve"><value>cet aperçu des raccourcis</value></data>
-  <data name="Doppelklick" xml:space="preserve"><value>Double-clic</value></data>
-  <data name="Strg+I" xml:space="preserve"><value>Ctrl+I</value></data>
-  <data name="Strg+X" xml:space="preserve"><value>Ctrl+X</value></data>
-  <data name="Strg+C" xml:space="preserve"><value>Ctrl+C</value></data>
-  <data name="Strg+V" xml:space="preserve"><value>Ctrl+V</value></data>
-  <data name="Entf" xml:space="preserve"><value>Suppr</value></data>
-  <data name="Strg+L" xml:space="preserve"><value>Ctrl+L</value></data>
-  <data name="Strg+R" xml:space="preserve"><value>Ctrl+R</value></data>
-  <data name="Strg+Umschalt+R" xml:space="preserve"><value>Ctrl+Maj+R</value></data>
-  <data name="Strg+D" xml:space="preserve"><value>Ctrl+D</value></data>
-  <data name="Strg+U" xml:space="preserve"><value>Ctrl+U</value></data>
-  <data name="Strg+1" xml:space="preserve"><value>Ctrl+1</value></data>
-  <data name="Strg+2" xml:space="preserve"><value>Ctrl+2</value></data>
-  <data name="Strg+3" xml:space="preserve"><value>Ctrl+3</value></data>
-  <data name="Strg+4" xml:space="preserve"><value>Ctrl+4</value></data>
-  <data name="Strg++" xml:space="preserve"><value>Ctrl++</value></data>
-  <data name="Strg+−" xml:space="preserve"><value>Ctrl+−</value></data>
-  <data name="Strg+," xml:space="preserve"><value>Ctrl+,</value></data>
-  <data name="Strg+X / C / V" xml:space="preserve"><value>Ctrl+X / C / V</value></data>
-  <data name="Strg+L / Strg+R" xml:space="preserve"><value>Ctrl+L / Ctrl+R</value></data>
-  <data name="Strg+1 … 4" xml:space="preserve"><value>Ctrl+1 … 4</value></data>
-  <data name="Strg++ / Strg+−" xml:space="preserve"><value>Ctrl++ / Ctrl+−</value></data>
-  <data name="2× Esc / Umschalt+Esc" xml:space="preserve"><value>2× Échap / Maj+Échap</value></data>
-  <data name="Deutsch" xml:space="preserve"><value>Allemand</value></data>
-  <data name="Englisch" xml:space="preserve"><value>Anglais</value></data>
-  <data name="Deutsch + Englisch" xml:space="preserve"><value>Allemand + anglais</value></data>
-  <data name="Französisch" xml:space="preserve"><value>Français</value></data>
-  <data name="Italienisch" xml:space="preserve"><value>Italien</value></data>
-  <data name="Spanisch" xml:space="preserve"><value>Espagnol</value></data>
-  <data name="Niederländisch" xml:space="preserve"><value>Néerlandais</value></data>
-  <data name="Strg+Mausrad" xml:space="preserve"><value>Ctrl+molette</value></data>
-  <data name="Nach &amp;Updates suchen …" xml:space="preserve"><value>Rechercher des mises à jo&amp;ur…</value></data>
-  <data name="ScanViewSetup.exe herunterladen" xml:space="preserve"><value>Télécharger ScanViewSetup.exe</value></data>
-  <data name="Download.Detail" xml:space="preserve"><value>ScanViewSetup.exe sera enregistré dans le dossier
+(Grewe Computertechnik GmbH 2012).</value>
+  </data>
+  <data name="Anerkennung spenden via PayPal" xml:space="preserve">
+    <value>Faire un don via PayPal</value>
+  </data>
+  <data name="Über" xml:space="preserve">
+    <value>À propos de</value>
+  </data>
+  <data name="Vorhandene öffnen" xml:space="preserve">
+    <value>Ouvrir l'existant</value>
+  </data>
+  <data name="Neu erstellen" xml:space="preserve">
+    <value>Recréer</value>
+  </data>
+  <data name="z.B. nach einem Update" xml:space="preserve">
+    <value>p. ex. après une mise à jour</value>
+  </data>
+  <data name="Kürzel-Übersicht bereits vorhanden" xml:space="preserve">
+    <value>L'aperçu des raccourcis existe déjà</value>
+  </data>
+  <data name="Die PDF-Übersicht konnte nicht erstellt werden." xml:space="preserve">
+    <value>Impossible de créer l'aperçu PDF.</value>
+  </data>
+  <data name="Die Datei konnte nicht geöffnet werden." xml:space="preserve">
+    <value>Impossible d'ouvrir le fichier.</value>
+  </data>
+  <data name="Ungültiger Link!" xml:space="preserve">
+    <value>Lien invalide !</value>
+  </data>
+  <data name="'{0}' ist keine gültige URL." xml:space="preserve">
+    <value>« {0} » n'est pas une URL valide.</value>
+  </data>
+  <data name="Der Link konnte nicht geöffnet werden." xml:space="preserve">
+    <value>Impossible d'ouvrir le lien.</value>
+  </data>
+  <data name="ScanView-Tastenkürzel" xml:space="preserve">
+    <value>Raccourcis ScanView</value>
+  </data>
+  <data name="Tastenkürzel" xml:space="preserve">
+    <value>Raccourcis clavier</value>
+  </data>
+  <data name="Seite scannen" xml:space="preserve">
+    <value>Numériser une page</value>
+  </data>
+  <data name="durchsuchbare PDF speichern (mit Texterkennung)" xml:space="preserve">
+    <value>enregistrer un PDF interrogeable (OCR)</value>
+  </data>
+  <data name="alle Seiten drucken" xml:space="preserve">
+    <value>imprimer toutes les pages</value>
+  </data>
+  <data name="Kopiermodus ein/aus" xml:space="preserve">
+    <value>mode copie marche/arrêt</value>
+  </data>
+  <data name="Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein." xml:space="preserve">
+    <value>Chaque numérisation part directement à l'imprimante — le scanner devient un copieur. Imprimante, exemplaires et mise à l'échelle se règlent dans le panneau du mode copie.</value>
+  </data>
+  <data name="Seitenübersicht leeren (Neu)" xml:space="preserve">
+    <value>vider l'aperçu des pages (Nouveau)</value>
+  </data>
+  <data name="Bilddateien als Seiten importieren" xml:space="preserve">
+    <value>importer des fichiers image comme pages</value>
+  </data>
+  <data name="Seite ausschneiden / kopieren / einfügen" xml:space="preserve">
+    <value>couper / copier / coller la page</value>
+  </data>
+  <data name="markierte Seite entfernen" xml:space="preserve">
+    <value>retirer la page sélectionnée</value>
+  </data>
+  <data name="markierte Seite zuschneiden" xml:space="preserve">
+    <value>rogner la page sélectionnée</value>
+  </data>
+  <data name="Seite nach links / rechts drehen" xml:space="preserve">
+    <value>pivoter la page à gauche / droite</value>
+  </data>
+  <data name="Seite um 180° drehen" xml:space="preserve">
+    <value>pivoter la page de 180°</value>
+  </data>
+  <data name="Rückseiten einfügen" xml:space="preserve">
+    <value>insérer les versos</value>
+  </data>
+  <data name="Duplex von Hand: erst alle Vorderseiten scannen, dann den gewendeten Stapel — die Rückseiten werden verzahnt einsortiert." xml:space="preserve">
+    <value>Recto verso manuel : numérisez d'abord tous les rectos, puis la pile retournée — les versos sont intercalés automatiquement.</value>
+  </data>
+  <data name="Sortierung umkehren" xml:space="preserve">
+    <value>inverser l'ordre</value>
+  </data>
+  <data name="Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole" xml:space="preserve">
+    <value>affichage : largeur optimale, page entière, deux pages, icônes</value>
+  </data>
+  <data name="Miniaturen vergrößern / verkleinern" xml:space="preserve">
+    <value>agrandir / réduire les miniatures</value>
+  </data>
+  <data name="markierte Seite verschieben (auch: Ziehen mit der Maus)" xml:space="preserve">
+    <value>déplacer la page (aussi : glisser à la souris)</value>
+  </data>
+  <data name="Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)" xml:space="preserve">
+    <value>ouvrir la page dans la boîte Rogner (visionneuse : menu contextuel)</value>
+  </data>
+  <data name="Vollbild ein/aus" xml:space="preserve">
+    <value>plein écran marche/arrêt</value>
+  </data>
+  <data name="Optionen öffnen" xml:space="preserve">
+    <value>ouvrir les options</value>
+  </data>
+  <data name="Programm beenden (Option)" xml:space="preserve">
+    <value>quitter le programme (option)</value>
+  </data>
+  <data name="diese Kürzel-Übersicht" xml:space="preserve">
+    <value>cet aperçu des raccourcis</value>
+  </data>
+  <data name="Doppelklick" xml:space="preserve">
+    <value>Double-clic</value>
+  </data>
+  <data name="Strg+I" xml:space="preserve">
+    <value>Ctrl+I</value>
+  </data>
+  <data name="Strg+X" xml:space="preserve">
+    <value>Ctrl+X</value>
+  </data>
+  <data name="Strg+C" xml:space="preserve">
+    <value>Ctrl+C</value>
+  </data>
+  <data name="Strg+V" xml:space="preserve">
+    <value>Ctrl+V</value>
+  </data>
+  <data name="Entf" xml:space="preserve">
+    <value>Suppr</value>
+  </data>
+  <data name="Strg+L" xml:space="preserve">
+    <value>Ctrl+L</value>
+  </data>
+  <data name="Strg+R" xml:space="preserve">
+    <value>Ctrl+R</value>
+  </data>
+  <data name="Strg+Umschalt+R" xml:space="preserve">
+    <value>Ctrl+Maj+R</value>
+  </data>
+  <data name="Strg+D" xml:space="preserve">
+    <value>Ctrl+D</value>
+  </data>
+  <data name="Strg+U" xml:space="preserve">
+    <value>Ctrl+U</value>
+  </data>
+  <data name="Strg+1" xml:space="preserve">
+    <value>Ctrl+1</value>
+  </data>
+  <data name="Strg+2" xml:space="preserve">
+    <value>Ctrl+2</value>
+  </data>
+  <data name="Strg+3" xml:space="preserve">
+    <value>Ctrl+3</value>
+  </data>
+  <data name="Strg+4" xml:space="preserve">
+    <value>Ctrl+4</value>
+  </data>
+  <data name="Strg++" xml:space="preserve">
+    <value>Ctrl++</value>
+  </data>
+  <data name="Strg+−" xml:space="preserve">
+    <value>Ctrl+−</value>
+  </data>
+  <data name="Strg+," xml:space="preserve">
+    <value>Ctrl+,</value>
+  </data>
+  <data name="Strg+X / C / V" xml:space="preserve">
+    <value>Ctrl+X / C / V</value>
+  </data>
+  <data name="Strg+L / Strg+R" xml:space="preserve">
+    <value>Ctrl+L / Ctrl+R</value>
+  </data>
+  <data name="Strg+1 … 4" xml:space="preserve">
+    <value>Ctrl+1 … 4</value>
+  </data>
+  <data name="Strg++ / Strg+−" xml:space="preserve">
+    <value>Ctrl++ / Ctrl+−</value>
+  </data>
+  <data name="2× Esc / Umschalt+Esc" xml:space="preserve">
+    <value>2× Échap / Maj+Échap</value>
+  </data>
+  <data name="Deutsch" xml:space="preserve">
+    <value>Allemand</value>
+  </data>
+  <data name="Englisch" xml:space="preserve">
+    <value>Anglais</value>
+  </data>
+  <data name="Deutsch + Englisch" xml:space="preserve">
+    <value>Allemand + anglais</value>
+  </data>
+  <data name="Französisch" xml:space="preserve">
+    <value>Français</value>
+  </data>
+  <data name="Italienisch" xml:space="preserve">
+    <value>Italien</value>
+  </data>
+  <data name="Spanisch" xml:space="preserve">
+    <value>Espagnol</value>
+  </data>
+  <data name="Niederländisch" xml:space="preserve">
+    <value>Néerlandais</value>
+  </data>
+  <data name="Strg+Mausrad" xml:space="preserve">
+    <value>Ctrl+molette</value>
+  </data>
+  <data name="Nach &amp;Updates suchen …" xml:space="preserve">
+    <value>Rechercher des mises à jo&amp;ur…</value>
+  </data>
+  <data name="ScanViewSetup.exe herunterladen" xml:space="preserve">
+    <value>Télécharger ScanViewSetup.exe</value>
+  </data>
+  <data name="Download.Detail" xml:space="preserve">
+    <value>ScanViewSetup.exe sera enregistré dans le dossier
 Téléchargements. Exécutez le programme
-d'installation pour installer la dernière version.</value></data>
-  <data name="{0} ist auf dem neuesten Stand." xml:space="preserve"><value>{0} est à jour.</value></data>
-  <data name="Die Update-Suche ist fehlgeschlagen." xml:space="preserve"><value>La recherche de mise à jour a échoué.</value></data>
-  <data name="Die Update-Informationen wurden nicht gefunden." xml:space="preserve"><value>Les informations de mise à jour sont introuvables.</value></data>
-  <data name="Zeitüberschreitung – bitte prüfe die Internetverbindung." xml:space="preserve"><value>Délai dépassé – veuillez vérifier votre connexion Internet.</value></data>
-  <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve"><value>Le numéro de version du fichier de mise à jour n'a pas pu être lu.</value></data>
-  <data name="Es steht ein Update zur Verfügung!" xml:space="preserve"><value>Une mise à jour est disponible !</value></data>
-  <data name="vom" xml:space="preserve"><value>du</value></data>
-  <data name="Speichern unter" xml:space="preserve"><value>Enregistrer sous</value></data>
-  <data name="&amp;Alle Seiten" xml:space="preserve"><value>Toutes les p&amp;ages</value></data>
-  <data name="Nur &amp;markierte Seite" xml:space="preserve"><value>Seule&amp;ment la page sélectionnée</value></data>
-  <data name="&amp;Dateiname:" xml:space="preserve"><value>&amp;Nom de fichier :</value></data>
-  <data name="&amp;Ordner:" xml:space="preserve"><value>D&amp;ossier :</value></data>
-  <data name="Dateity&amp;p:" xml:space="preserve"><value>Ty&amp;pe de fichier :</value></data>
-  <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (fichier image)</value></data>
-  <data name="wie Dateiname" xml:space="preserve"><value>comme le nom du fichier</value></data>
-  <data name="Die Datei existiert bereits." xml:space="preserve"><value>Le fichier existe déjà.</value></data>
-  <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve"><value>Remplacer le fichier existant ?</value></data>
-  <data name="Der Ordner konnte nicht erstellt werden." xml:space="preserve"><value>Le dossier n'a pas pu être créé.</value></data>
-  <data name="Speichern fehlgeschlagen." xml:space="preserve"><value>L'enregistrement a échoué.</value></data>
-  <data name="Ordner wählen" xml:space="preserve"><value>Choisir le dossier</value></data>
-  <data name="Ungültiger Dateiname." xml:space="preserve"><value>Nom de fichier non valide.</value></data>
-  <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve"><value>Veuillez saisir un nom de fichier sans \ / : * ? &quot; &lt; &gt; |.</value></data>
-  <data name="Bitte wähle einen Ordner." xml:space="preserve"><value>Veuillez choisir un dossier.</value></data>
-  <data name="Datei" xml:space="preserve"><value>Fichier</value></data>
-  <data name="Metadaten" xml:space="preserve"><value>Métadonnées</value></data>
-  <data name="&amp;Sprache:" xml:space="preserve"><value>&amp;Langue :</value></data>
-  <data name="TIFF (verlustfrei)" xml:space="preserve"><value>TIFF (sans perte)</value></data>
-  <data name="Umfang" xml:space="preserve"><value>Étendue</value></data>
-  <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>&amp;Qualité JPEG :</value></data>
-  <data name="PNG (verlustfrei)" xml:space="preserve"><value>PNG (sans perte)</value></data>
-  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve"><value>Enregistrer toutes les pages en PDF interrogeable (OCR) (Ctrl+S)</value></data>
-  <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
-  <data name="Nach dem Speichern öff&amp;nen" xml:space="preserve"><value>Ou&amp;vrir après l'enregistrement</value></data>
+d'installation pour installer la dernière version.</value>
+  </data>
+  <data name="{0} ist auf dem neuesten Stand." xml:space="preserve">
+    <value>{0} est à jour.</value>
+  </data>
+  <data name="Die Update-Suche ist fehlgeschlagen." xml:space="preserve">
+    <value>La recherche de mise à jour a échoué.</value>
+  </data>
+  <data name="Die Update-Informationen wurden nicht gefunden." xml:space="preserve">
+    <value>Les informations de mise à jour sont introuvables.</value>
+  </data>
+  <data name="Zeitüberschreitung – bitte prüfe die Internetverbindung." xml:space="preserve">
+    <value>Délai dépassé – veuillez vérifier votre connexion Internet.</value>
+  </data>
+  <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve">
+    <value>Le numéro de version du fichier de mise à jour n'a pas pu être lu.</value>
+  </data>
+  <data name="Es steht ein Update zur Verfügung!" xml:space="preserve">
+    <value>Une mise à jour est disponible !</value>
+  </data>
+  <data name="vom" xml:space="preserve">
+    <value>du</value>
+  </data>
+  <data name="Speichern unter" xml:space="preserve">
+    <value>Enregistrer sous</value>
+  </data>
+  <data name="&amp;Alle Seiten" xml:space="preserve">
+    <value>Toutes les p&amp;ages</value>
+  </data>
+  <data name="Nur &amp;markierte Seite" xml:space="preserve">
+    <value>Seule&amp;ment la page sélectionnée</value>
+  </data>
+  <data name="&amp;Dateiname:" xml:space="preserve">
+    <value>&amp;Nom de fichier :</value>
+  </data>
+  <data name="&amp;Ordner:" xml:space="preserve">
+    <value>D&amp;ossier :</value>
+  </data>
+  <data name="Dateity&amp;p:" xml:space="preserve">
+    <value>Ty&amp;pe de fichier :</value>
+  </data>
+  <data name="JPEG (Bilddatei)" xml:space="preserve">
+    <value>JPEG (fichier image)</value>
+  </data>
+  <data name="wie Dateiname" xml:space="preserve">
+    <value>comme le nom du fichier</value>
+  </data>
+  <data name="Die Datei existiert bereits." xml:space="preserve">
+    <value>Le fichier existe déjà.</value>
+  </data>
+  <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve">
+    <value>Remplacer le fichier existant ?</value>
+  </data>
+  <data name="Der Ordner konnte nicht erstellt werden." xml:space="preserve">
+    <value>Le dossier n'a pas pu être créé.</value>
+  </data>
+  <data name="Speichern fehlgeschlagen." xml:space="preserve">
+    <value>L'enregistrement a échoué.</value>
+  </data>
+  <data name="Ordner wählen" xml:space="preserve">
+    <value>Choisir le dossier</value>
+  </data>
+  <data name="Ungültiger Dateiname." xml:space="preserve">
+    <value>Nom de fichier non valide.</value>
+  </data>
+  <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve">
+    <value>Veuillez saisir un nom de fichier sans \ / : * ? " &lt; &gt; |.</value>
+  </data>
+  <data name="Bitte wähle einen Ordner." xml:space="preserve">
+    <value>Veuillez choisir un dossier.</value>
+  </data>
+  <data name="Datei" xml:space="preserve">
+    <value>Fichier</value>
+  </data>
+  <data name="Metadaten" xml:space="preserve">
+    <value>Métadonnées</value>
+  </data>
+  <data name="&amp;Sprache:" xml:space="preserve">
+    <value>&amp;Langue :</value>
+  </data>
+  <data name="TIFF (verlustfrei)" xml:space="preserve">
+    <value>TIFF (sans perte)</value>
+  </data>
+  <data name="Umfang" xml:space="preserve">
+    <value>Étendue</value>
+  </data>
+  <data name="JPEG-&amp;Qualität:" xml:space="preserve">
+    <value>&amp;Qualité JPEG :</value>
+  </data>
+  <data name="PNG (verlustfrei)" xml:space="preserve">
+    <value>PNG (sans perte)</value>
+  </data>
+  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve">
+    <value>Enregistrer toutes les pages en PDF interrogeable (OCR) (Ctrl+S)</value>
+  </data>
+  <data name="Strg+S" xml:space="preserve">
+    <value>Ctrl+S</value>
+  </data>
+  <data name="Nach dem Speichern öff&amp;nen" xml:space="preserve">
+    <value>Ou&amp;vrir après l'enregistrement</value>
+  </data>
 </root>
