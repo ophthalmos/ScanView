@@ -3,12 +3,12 @@ using ScanView.Classes;
 namespace ScanView.Forms;
 
 /// <summary>Gewählter Dateityp im Speichern-Dialog.</summary>
-internal enum SaveFileType { Pdf, Jpeg, Tiff }
+internal enum SaveFileType { Pdf, Jpeg, Png, Tiff }
 
-/// <summary>Speichern-Dialog: Seitenauswahl, Dateiname und Ordner, Dateityp (PDF, JPEG, TIFF),
+/// <summary>Speichern-Dialog: Seitenauswahl, Dateiname und Ordner, Dateityp (PDF, JPEG, PNG, TIFF),
 /// Texterkennung samt JPEG-Qualität und die PDF-Metadaten. Texterkennung und Metadaten gibt es
-/// nur in der PDF; JPEG kennt keine Seiten und gilt darum nur für die markierte Seite (die
-/// Auswahl springt beim Wählen um), TIFF speichert „Alle Seiten" als mehrseitige Datei.</summary>
+/// nur in der PDF; JPEG und PNG kennen keine Seiten und gelten darum nur für die markierte Seite
+/// (die Auswahl springt beim Wählen um), TIFF speichert „Alle Seiten" als mehrseitige Datei.</summary>
 internal sealed partial class SaveForm : Form
 {
     public bool AllPages => radioAll.Checked;
@@ -17,7 +17,7 @@ internal sealed partial class SaveForm : Form
 
     public string Folder => textFolder.Text.Trim();
 
-    public SaveFileType FileType => comboFileType.SelectedIndex switch { 1 => SaveFileType.Jpeg, 2 => SaveFileType.Tiff, _ => SaveFileType.Pdf };
+    public SaveFileType FileType => comboFileType.SelectedIndex switch { 1 => SaveFileType.Jpeg, 2 => SaveFileType.Png, 3 => SaveFileType.Tiff, _ => SaveFileType.Pdf };
 
     /// <summary>Gewählte OCR-Sprache — null bei „Ohne Texterkennung" oder Bild-Dateitypen.</summary>
     public string OcrLanguage => FileType == SaveFileType.Pdf && comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
@@ -55,22 +55,25 @@ internal sealed partial class SaveForm : Form
         comboFileType.SelectedIndex = 0;
     }
 
-    /// <summary>Nur die PDF trägt Textschicht und Metadaten; JPEG braucht die markierte Seite
-    /// (eine Bilddatei kennt keine Seiten), TIFF speichert verlustfrei ohne JPEG-Qualität.</summary>
+    /// <summary>Nur die PDF trägt Textschicht und Metadaten; JPEG und PNG brauchen die markierte
+    /// Seite (eine Bilddatei kennt keine Seiten), die JPEG-Qualität zählt nur für PDF und JPEG.</summary>
     private void ComboFileType_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (FileType == SaveFileType.Jpeg)
+        var singlePageOnly = FileType is SaveFileType.Jpeg or SaveFileType.Png;
+        if (singlePageOnly)
         {
-            if (!hasSelection) { comboFileType.SelectedIndex = 0; return; } // ohne markierte Seite kein JPEG
+            if (!hasSelection) { comboFileType.SelectedIndex = 0; return; } // ohne markierte Seite kein JPEG/PNG
             radioSelected.Checked = true;
         }
-        radioAll.Enabled = FileType != SaveFileType.Jpeg;
+        radioAll.Enabled = !singlePageOnly;
         var isPdf = FileType == SaveFileType.Pdf;
         labelOcr.Enabled = isPdf;
         comboOcr.Enabled = isPdf;
         groupMeta.Enabled = isPdf;
-        labelQuality.Enabled = FileType != SaveFileType.Tiff;
-        numJpgQuality.Enabled = FileType != SaveFileType.Tiff;
+        var usesJpgQuality = FileType is SaveFileType.Pdf or SaveFileType.Jpeg;
+        labelQuality.Enabled = usesJpgQuality;
+        numJpgQuality.Enabled = usesJpgQuality;
+        labelQualityRange.Enabled = usesJpgQuality;
     }
 
     protected override void OnFormClosing(FormClosingEventArgs e)
