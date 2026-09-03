@@ -54,6 +54,7 @@ namespace ScanView.Forms
             textKeywords = new TextBox();
             labelAuthor = new Label();
             textAuthor = new TextBox();
+            cbOpenAfter = new CheckBox();
             btnSave = new Button();
             btnCancel = new Button();
             groupScope.SuspendLayout();
@@ -313,6 +314,16 @@ namespace ScanView.Forms
             textAuthor.Size = new Size(244, 23);
             textAuthor.TabIndex = 7;
             //
+            // cbOpenAfter
+            //
+            cbOpenAfter.AutoSize = true;
+            cbOpenAfter.Location = new Point(16, 452);
+            cbOpenAfter.Name = "cbOpenAfter";
+            cbOpenAfter.Size = new Size(185, 19);
+            cbOpenAfter.TabIndex = 6;
+            cbOpenAfter.Text = "Nach dem Speichern öff&nen";
+            cbOpenAfter.UseVisualStyleBackColor = true;
+            //
             // btnSave
             //
             btnSave.DialogResult = DialogResult.OK;
@@ -344,6 +355,7 @@ namespace ScanView.Forms
             Controls.Add(groupFile);
             Controls.Add(groupOcr);
             Controls.Add(groupMeta);
+            Controls.Add(cbOpenAfter);
             Controls.Add(btnSave);
             Controls.Add(btnCancel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -394,6 +406,7 @@ namespace ScanView.Forms
         private System.Windows.Forms.TextBox textKeywords;
         private System.Windows.Forms.Label labelAuthor;
         private System.Windows.Forms.TextBox textAuthor;
+        private System.Windows.Forms.CheckBox cbOpenAfter;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
     }

@@ -273,4 +273,5 @@ d'installation pour installer la dernière version.</value></data>
   <data name="PNG (verlustfrei)" xml:space="preserve"><value>PNG (sans perte)</value></data>
   <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve"><value>Enregistrer toutes les pages en PDF interrogeable (OCR) (Ctrl+S)</value></data>
   <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
+  <data name="Nach dem Speichern öff&amp;nen" xml:space="preserve"><value>Ou&amp;vrir après l'enregistrement</value></data>
 </root>

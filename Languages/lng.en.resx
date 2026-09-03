@@ -273,4 +273,5 @@ the latest version.</value></data>
   <data name="PNG (verlustfrei)" xml:space="preserve"><value>PNG (lossless)</value></data>
   <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve"><value>Save all pages as searchable PDF with OCR (Ctrl+S)</value></data>
   <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
+  <data name="Nach dem Speichern öff&amp;nen" xml:space="preserve"><value>Open after &amp;saving</value></data>
 </root>

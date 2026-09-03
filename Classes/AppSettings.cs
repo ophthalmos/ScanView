@@ -21,6 +21,7 @@ internal sealed class AppSettings
     public int OverviewBackColor { get; set; } = -1; // ARGB der Seitenübersicht (-1 = Weiß)
     public string OcrLanguage { get; set; } = "deu";
     public string SaveAuthor { get; set; } = ""; // Verfasser-Vorbelegung im Speichern-Dialog (leer = Windows-Benutzername)
+    public bool OpenAfterSave { get; set; } = true; // Speichern-Dialog: Datei nach dem Speichern öffnen (letzte Wahl)
     public int OcrJpgQuality { get; set; } = 75; // JPEG-Qualität der Bilder in der erzeugten PDF
     public List<string> PageFiles { get; set; } = []; // Seiten der letzten Sitzung (bei "behalten")
     public string ScannerId { get; set; }
