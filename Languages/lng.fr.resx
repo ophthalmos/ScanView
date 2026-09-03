@@ -255,10 +255,6 @@ d'installation pour installer la dernière version.</value></data>
   <data name="&amp;Ordner:" xml:space="preserve"><value>D&amp;ossier :</value></data>
   <data name="Dateity&amp;p:" xml:space="preserve"><value>Ty&amp;pe de fichier :</value></data>
   <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (fichier image)</value></data>
-  <data name="T&amp;itel:" xml:space="preserve"><value>T&amp;itre :</value></data>
-  <data name="Th&amp;ema:" xml:space="preserve"><value>Suj&amp;et :</value></data>
-  <data name="Stich&amp;worte:" xml:space="preserve"><value>Mots-&amp;clés :</value></data>
-  <data name="&amp;Verfasser:" xml:space="preserve"><value>A&amp;uteur :</value></data>
   <data name="wie Dateiname" xml:space="preserve"><value>comme le nom du fichier</value></data>
   <data name="Die Datei existiert bereits." xml:space="preserve"><value>Le fichier existe déjà.</value></data>
   <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve"><value>Remplacer le fichier existant ?</value></data>

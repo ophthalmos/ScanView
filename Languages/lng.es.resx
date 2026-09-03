@@ -255,10 +255,6 @@ para instalar la última versión.</value></data>
   <data name="&amp;Ordner:" xml:space="preserve"><value>&amp;Carpeta:</value></data>
   <data name="Dateity&amp;p:" xml:space="preserve"><value>Ti&amp;po de archivo:</value></data>
   <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (archivo de imagen)</value></data>
-  <data name="T&amp;itel:" xml:space="preserve"><value>Tít&amp;ulo:</value></data>
-  <data name="Th&amp;ema:" xml:space="preserve"><value>T&amp;ema:</value></data>
-  <data name="Stich&amp;worte:" xml:space="preserve"><value>Palabras cla&amp;ve:</value></data>
-  <data name="&amp;Verfasser:" xml:space="preserve"><value>&amp;Autor:</value></data>
   <data name="wie Dateiname" xml:space="preserve"><value>como el nombre del archivo</value></data>
   <data name="Die Datei existiert bereits." xml:space="preserve"><value>El archivo ya existe.</value></data>
   <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve"><value>¿Reemplazar el archivo existente?</value></data>

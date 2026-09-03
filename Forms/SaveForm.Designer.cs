@@ -256,7 +256,7 @@ namespace ScanView.Forms
             labelTitle.Name = "labelTitle";
             labelTitle.Size = new Size(33, 15);
             labelTitle.TabIndex = 0;
-            labelTitle.Text = "T&itel:";
+            labelTitle.Text = "&Title:";
             //
             // textTitle
             //
@@ -272,7 +272,7 @@ namespace ScanView.Forms
             labelSubject.Name = "labelSubject";
             labelSubject.Size = new Size(46, 15);
             labelSubject.TabIndex = 2;
-            labelSubject.Text = "Th&ema:";
+            labelSubject.Text = "Su&bject:";
             //
             // textSubject
             //
@@ -288,7 +288,7 @@ namespace ScanView.Forms
             labelKeywords.Name = "labelKeywords";
             labelKeywords.Size = new Size(66, 15);
             labelKeywords.TabIndex = 4;
-            labelKeywords.Text = "Stich&worte:";
+            labelKeywords.Text = "&Keywords:";
             //
             // textKeywords
             //
@@ -304,7 +304,7 @@ namespace ScanView.Forms
             labelAuthor.Name = "labelAuthor";
             labelAuthor.Size = new Size(60, 15);
             labelAuthor.TabIndex = 6;
-            labelAuthor.Text = "&Verfasser:";
+            labelAuthor.Text = "Aut&hor:";
             //
             // textAuthor
             //
