@@ -271,7 +271,7 @@
             // 
             menuActionSave.Enabled = false;
             menuActionSave.Name = "menuActionSave";
-            menuActionSave.ShortcutKeys = Keys.F5;
+            menuActionSave.ShortcutKeys = Keys.Control | Keys.S;
             menuActionSave.Size = new Size(187, 22);
             menuActionSave.Text = "S&peichern …";
             menuActionSave.Click += BtnSave_Click;
@@ -594,7 +594,7 @@
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(90, 57);
             btnSave.Text = "S&peichern";
-            btnSave.ToolTipText = "Alle Seiten per Texterkennung als durchsuchbare PDF speichern (F5)";
+            btnSave.ToolTipText = "Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)";
             btnSave.Click += BtnSave_Click;
             // 
             // btnPrint

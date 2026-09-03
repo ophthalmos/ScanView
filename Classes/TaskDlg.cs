@@ -163,7 +163,7 @@ internal static class TaskDlg
     public static readonly (string Key, string Text, string Detail)[] ShortcutRows =
     [
         ("F4", "Seite scannen", null),
-        ("F5", "durchsuchbare PDF speichern (mit Texterkennung)", null),
+        ("Strg+S", "durchsuchbare PDF speichern (mit Texterkennung)", null),
         ("F6", "alle Seiten drucken", null),
         ("F7", "Kopiermodus ein/aus",
             "Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein."),

@@ -45,7 +45,6 @@
   <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve"><value>Elegir escáner y configurar los botones</value></data>
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Crear y mostrar el resumen de atajos en PDF</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Escanear una página (F4) — flecha: elegir escáner</value></data>
-  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (F5)" xml:space="preserve"><value>Guardar todas las páginas como PDF con OCR (F5)</value></data>
   <data name="Alle Seiten drucken (F6)" xml:space="preserve"><value>Imprimir todas las páginas (F6)</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Vaciar la vista de páginas (F9)</value></data>
   <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Adelantar la página seleccionada (Alt+←)</value></data>
@@ -276,4 +275,6 @@ para instalar la última versión.</value></data>
   <data name="Umfang" xml:space="preserve"><value>Alcance</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>Calidad JPE&amp;G:</value></data>
   <data name="PNG (verlustfrei)" xml:space="preserve"><value>PNG (sin pérdida)</value></data>
+  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve"><value>Guardar todas las páginas como PDF con OCR (Ctrl+S)</value></data>
+  <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
 </root>
