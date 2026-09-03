@@ -17,6 +17,9 @@ internal static class OcrPdfService
     /// Windows-Benutzer als Verfasser).</summary>
     private static void ApplyMeta(PdfDocument result, string outputPdf, PdfMeta meta)
     {
+        // Ersteller = Anwendung, Produzent = PDF-Bibliothek (PDF-Konvention) — den /Producer
+        // trägt PDFsharp ohnehin selbst ein, die Eigenschaft ist dort schreibgeschützt
+        result.Info.Creator = "ScanView " + (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "");
         result.Info.Title = string.IsNullOrWhiteSpace(meta?.Title) ? Path.GetFileNameWithoutExtension(outputPdf) : meta.Title;
         result.Info.Author = string.IsNullOrWhiteSpace(meta?.Author) ? Environment.UserName : meta.Author;
         if (!string.IsNullOrWhiteSpace(meta?.Subject)) { result.Info.Subject = meta.Subject; }
