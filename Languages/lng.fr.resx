@@ -117,8 +117,6 @@
   <data name="&amp;JPEG-Qualität der Bilder in der PDF (30–100):" xml:space="preserve"><value>Qualité &amp;JPEG des images du PDF (30–100) :</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>Autres langues : placez des fichiers .traineddata (tessdata_best)
 dans le dossier « tessdata » à côté du programme.</value></data>
-  <data name="Hint.JpgQuality" xml:space="preserve"><value>Des valeurs plus faibles donnent des fichiers plus petits ; 75 est un bon compromis.
-Le gris économise encore de la place.</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Emplacement d'enregistrement préféré des PDF</value></data>
   <data name="Sprache geändert." xml:space="preserve"><value>Langue modifiée.</value></data>
   <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve"><value>La nouvelle langue prendra effet au prochain démarrage.</value></data>
@@ -275,4 +273,6 @@ d'installation pour installer la dernière version.</value></data>
   <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
   <data name="Nach dem Speichern öff&amp;nen" xml:space="preserve"><value>Ou&amp;vrir après l'enregistrement</value></data>
   <data name="PDF/A (ohne Texterkennung)" xml:space="preserve"><value>PDF/A (sans reconnaissance de texte)</value></data>
+  <data name="Hint.JpgQuality" xml:space="preserve"><value>Des valeurs plus faibles donnent des fichiers plus petits ; 75 est
+un bon compromis. Le gris économise encore de la place.</value></data>
 </root>
