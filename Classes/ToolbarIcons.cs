@@ -51,6 +51,8 @@ internal static class ToolbarIcons
 
     public const char Cancel = '';     // X (Abbrechen)
 
+    public const char UpdateSearch = ''; // UpdateRestore: nach Updates suchen
+
     private const string FontName = "Segoe MDL2 Assets";
     private static readonly Dictionary<(char Glyph, int Size), Image> cache = [];
 

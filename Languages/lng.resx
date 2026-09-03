@@ -239,4 +239,16 @@ Das Design wurde dem Programm â€žScanner Interface 7â€œ
   <data name="Spanisch" xml:space="preserve"><value>Spanisch</value></data>
   <data name="Niederländisch" xml:space="preserve"><value>Niederländisch</value></data>
   <data name="Strg+Mausrad" xml:space="preserve"><value>Strg+Mausrad</value></data>
+  <data name="Nach &amp;Updates suchen …" xml:space="preserve"><value>Nach &amp;Updates suchen …</value></data>
+  <data name="ScanViewSetup.exe herunterladen" xml:space="preserve"><value>ScanViewSetup.exe herunterladen</value></data>
+  <data name="Download.Detail" xml:space="preserve"><value>ScanViewSetup.exe wird im Download-Ordner
+gespeichert. FÃ¼hre das Setupprogramm aus,
+um die neueste Version zu installieren.</value></data>
+  <data name="{0} ist auf dem neuesten Stand." xml:space="preserve"><value>{0} ist auf dem neuesten Stand.</value></data>
+  <data name="Die Update-Suche ist fehlgeschlagen." xml:space="preserve"><value>Die Update-Suche ist fehlgeschlagen.</value></data>
+  <data name="Die Update-Informationen wurden nicht gefunden." xml:space="preserve"><value>Die Update-Informationen wurden nicht gefunden.</value></data>
+  <data name="Zeitüberschreitung – bitte prüfe die Internetverbindung." xml:space="preserve"><value>Zeitüberschreitung – bitte prüfe die Internetverbindung.</value></data>
+  <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve"><value>Die Versionsangabe in der Update-Datei konnte nicht gelesen werden.</value></data>
+  <data name="Es steht ein Update zur Verfügung!" xml:space="preserve"><value>Es steht ein Update zur Verfügung!</value></data>
+  <data name="vom" xml:space="preserve"><value>vom</value></data>
 </root>
