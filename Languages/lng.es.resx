@@ -257,7 +257,6 @@ para instalar la última versión.</value></data>
   <data name="Dateity&amp;p:" xml:space="preserve"><value>Ti&amp;po de archivo:</value></data>
   <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (archivo de imagen)</value></data>
   <data name="JPEG-&amp;Qualität (30–100):" xml:space="preserve"><value>Calidad JPE&amp;G (30–100):</value></data>
-  <data name="Metadaten:" xml:space="preserve"><value>Metadatos:</value></data>
   <data name="T&amp;itel:" xml:space="preserve"><value>Tít&amp;ulo:</value></data>
   <data name="Th&amp;ema:" xml:space="preserve"><value>T&amp;ema:</value></data>
   <data name="Stich&amp;worte:" xml:space="preserve"><value>Palabras cla&amp;ve:</value></data>
@@ -271,4 +270,7 @@ para instalar la última versión.</value></data>
   <data name="Ungültiger Dateiname." xml:space="preserve"><value>Nombre de archivo no válido.</value></data>
   <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve"><value>Introduzca un nombre de archivo sin \ / : * ? &quot; &lt; &gt; |.</value></data>
   <data name="Bitte wähle einen Ordner." xml:space="preserve"><value>Elija una carpeta.</value></data>
+  <data name="Datei" xml:space="preserve"><value>Archivo</value></data>
+  <data name="Metadaten" xml:space="preserve"><value>Metadatos</value></data>
+  <data name="&amp;Sprache:" xml:space="preserve"><value>&amp;Idioma:</value></data>
 </root>
