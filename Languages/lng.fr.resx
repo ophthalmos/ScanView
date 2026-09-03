@@ -160,12 +160,12 @@ mode copie</value></data>
   <data name="Technische Details anzeigen" xml:space="preserve"><value>Afficher les détails techniques</value></data>
   <data name="Details ausblenden" xml:space="preserve"><value>Masquer les détails</value></data>
   <data name="unbekannt" xml:space="preserve"><value>inconnue</value></data>
-  <data name="About.Text" xml:space="preserve"><value>ScanView numÃ©rise des pages, les organise en miniatures et
+  <data name="About.Text" xml:space="preserve"><value>ScanView numérise des pages, les organise en miniatures et
 les enregistre en PDF interrogeable (reconnaissance de texte).
 
-En mode copie, chaque numÃ©risation est imprimÃ©e directement.
+En mode copie, chaque numérisation est imprimée directement.
 
-Le design s'inspire de Â« Scanner Interface 7 Â»
+Le design s'inspire de « Scanner Interface 7 »
 (Grewe Computertechnik GmbH 2012).</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Faire un don via PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>À propos de</value></data>
