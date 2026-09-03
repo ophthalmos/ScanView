@@ -46,15 +46,47 @@ internal static class PdfAHelper
         document.Internals.AddObject(intent);
         document.Internals.Catalog.Elements["/OutputIntents"] = new PdfArray(document, intent.Reference);
         document.Save(pdfPath);
+        RemoveTransparencyGroups(pdfPath);
+    }
+
+    /// <summary>PDFsharp schreibt bei JEDEM Speichern eine Transparenz-Gruppe in jedes
+    /// Seiten-Dictionary (nicht abschaltbar; ein Elements.Remove wird beim Save wieder überschrieben).
+    /// veraPDF beanstandet die Gruppe (Regel 6.4), unsere Bild-Seiten nutzen keine Transparenz —
+    /// darum wird die Sequenz nachträglich durch gleich lange Leerzeichen ersetzt; alle
+    /// Byte-Offsets und die xref-Tabelle bleiben dadurch gültig.</summary>
+    private static void RemoveTransparencyGroups(string pdfPath)
+    {
+        var bytes = File.ReadAllBytes(pdfPath);
+        var pattern = Encoding.ASCII.GetBytes("/Group<</CS/DeviceRGB/S/Transparency>>");
+        var changed = false;
+        for (var i = 0; i <= bytes.Length - pattern.Length; i++)
+        {
+            var match = true;
+            for (var j = 0; j < pattern.Length; j++)
+            {
+                if (bytes[i + j] != pattern[j]) { match = false; break; }
+            }
+            if (match)
+            {
+                for (var j = 0; j < pattern.Length; j++) { bytes[i + j] = 0x20; }
+                changed = true;
+                i += pattern.Length - 1;
+            }
+        }
+        if (changed) { File.WriteAllBytes(pdfPath, bytes); }
     }
 
     private static string BuildXmp(PdfDocument document, DateTime stamp)
     {
         var date = stamp.ToString("yyyy-MM-dd'T'HH:mm:sszzz");
         StringBuilder sb = new();
+        // alle Properties in Elementform — die Attributform wird von veraPDF nicht als
+        // PDF/A-Identifikation erkannt (dann prüft es fälschlich gegen das 1b-Profil)
         sb.Append("<?xpacket begin=\"﻿\" id=\"W5M0MpCehiHzreSzNTczkc9d\"?>\n"); // im begin-Attribut steckt das unsichtbare U+FEFF (vorgeschriebene UTF-8-Kennung)
         sb.Append("<x:xmpmeta xmlns:x=\"adobe:ns:meta/\">\n <rdf:RDF xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\">\n");
-        sb.Append("  <rdf:Description rdf:about=\"\" xmlns:pdfaid=\"http://www.aiim.org/pdfa/ns/id/\" pdfaid:part=\"2\" pdfaid:conformance=\"B\"/>\n");
+        sb.Append("  <rdf:Description rdf:about=\"\" xmlns:pdfaid=\"http://www.aiim.org/pdfa/ns/id/\">\n");
+        sb.Append("   <pdfaid:part>2</pdfaid:part>\n   <pdfaid:conformance>B</pdfaid:conformance>\n");
+        sb.Append("  </rdf:Description>\n");
         sb.Append("  <rdf:Description rdf:about=\"\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\">\n");
         sb.Append("   <dc:title><rdf:Alt><rdf:li xml:lang=\"x-default\">").Append(Esc(document.Info.Title)).Append("</rdf:li></rdf:Alt></dc:title>\n");
         sb.Append("   <dc:creator><rdf:Seq><rdf:li>").Append(Esc(document.Info.Author)).Append("</rdf:li></rdf:Seq></dc:creator>\n");
@@ -63,11 +95,14 @@ internal static class PdfAHelper
             sb.Append("   <dc:description><rdf:Alt><rdf:li xml:lang=\"x-default\">").Append(Esc(document.Info.Subject)).Append("</rdf:li></rdf:Alt></dc:description>\n");
         }
         sb.Append("  </rdf:Description>\n");
-        sb.Append("  <rdf:Description rdf:about=\"\" xmlns:pdf=\"http://ns.adobe.com/pdf/1.3/\" pdf:Producer=\"").Append(Esc(document.Info.Producer)).Append('"');
-        if (document.Info.Keywords.Length > 0) { sb.Append(" pdf:Keywords=\"").Append(Esc(document.Info.Keywords)).Append('"'); }
-        sb.Append("/>\n");
-        sb.Append("  <rdf:Description rdf:about=\"\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\" xmp:CreateDate=\"").Append(date)
-            .Append("\" xmp:ModifyDate=\"").Append(date).Append("\"/>\n");
+        sb.Append("  <rdf:Description rdf:about=\"\" xmlns:pdf=\"http://ns.adobe.com/pdf/1.3/\">\n");
+        sb.Append("   <pdf:Producer>").Append(Esc(document.Info.Producer)).Append("</pdf:Producer>\n");
+        if (document.Info.Keywords.Length > 0) { sb.Append("   <pdf:Keywords>").Append(Esc(document.Info.Keywords)).Append("</pdf:Keywords>\n"); }
+        sb.Append("  </rdf:Description>\n");
+        sb.Append("  <rdf:Description rdf:about=\"\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\">\n");
+        sb.Append("   <xmp:CreateDate>").Append(date).Append("</xmp:CreateDate>\n");
+        sb.Append("   <xmp:ModifyDate>").Append(date).Append("</xmp:ModifyDate>\n");
+        sb.Append("  </rdf:Description>\n");
         sb.Append(" </rdf:RDF>\n</x:xmpmeta>\n<?xpacket end=\"w\"?>");
         return sb.ToString();
     }
