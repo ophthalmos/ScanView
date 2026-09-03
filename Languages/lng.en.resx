@@ -142,7 +142,6 @@ mode</value></data>
   <data name="Bilder importieren" xml:space="preserve"><value>Import images</value></data>
   <data name="Importieren fehlgeschlagen." xml:space="preserve"><value>Import failed.</value></data>
   <data name="Seite bearbeitet übernommen ({0} × {1} Pixel)" xml:space="preserve"><value>Edited page applied ({0} × {1} pixels)</value></data>
-  <data name="   ·   Scanner: {0}" xml:space="preserve"><value>   ·   Scanner: {0}</value></data>
   <data name="Noch keine Seiten" xml:space="preserve"><value>No pages yet</value></data>
   <data name="1 Seite" xml:space="preserve"><value>1 page</value></data>
   <data name="{0} Seiten" xml:space="preserve"><value>{0} pages</value></data>
@@ -275,4 +274,7 @@ the latest version.</value></data>
   <data name="PDF/A (ohne Texterkennung)" xml:space="preserve"><value>PDF/A (no text recognition)</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Smaller values give smaller files; 75 is a good compromise.
 Grayscale scans save additional space.</value></data>
+  <data name="Seite {0} von {1}" xml:space="preserve"><value>Page {0} of {1}</value></data>
+  <data name="quer" xml:space="preserve"><value>landscape</value></data>
+  <data name="Scanner: {0}" xml:space="preserve"><value>Scanner: {0}</value></data>
 </root>

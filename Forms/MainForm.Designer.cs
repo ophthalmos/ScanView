@@ -125,7 +125,10 @@
             chkCopyFit = new CheckBox();
             flowPanel = new FlowLayoutPanel();
             statusStrip = new StatusStrip();
+            statusPages = new ToolStripStatusLabel();
+            statusSize = new ToolStripStatusLabel();
             statusLabel = new ToolStripStatusLabel();
+            statusScanner = new ToolStripStatusLabel();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
             panelSettings.SuspendLayout();
@@ -996,17 +999,44 @@
             // 
             // statusStrip
             // 
-            statusStrip.Items.AddRange(new ToolStripItem[] { statusLabel });
+            statusStrip.Items.AddRange(new ToolStripItem[] { statusPages, statusSize, statusLabel, statusScanner });
             statusStrip.Location = new Point(0, 439);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(984, 22);
             statusStrip.TabIndex = 3;
+            //
+            // statusPages
+            //
+            statusPages.BorderSides = ToolStripStatusLabelBorderSides.Right;
+            statusPages.BorderStyle = Border3DStyle.Etched;
+            statusPages.Name = "statusPages";
+            statusPages.Padding = new Padding(0, 0, 4, 0);
+            statusPages.Size = new Size(107, 17);
+            statusPages.Text = "Noch keine Seiten";
+            //
+            // statusSize
+            //
+            statusSize.BorderSides = ToolStripStatusLabelBorderSides.Right;
+            statusSize.BorderStyle = Border3DStyle.Etched;
+            statusSize.Name = "statusSize";
+            statusSize.Padding = new Padding(4, 0, 4, 0);
+            statusSize.Size = new Size(4, 17);
             // 
             // statusLabel
             // 
             statusLabel.Name = "statusLabel";
-            statusLabel.Size = new Size(102, 17);
-            statusLabel.Text = "Noch keine Seiten";
+            statusLabel.Padding = new Padding(4, 0, 4, 0);
+            statusLabel.Size = new Size(717, 17);
+            statusLabel.Spring = true;
+            statusLabel.TextAlign = ContentAlignment.MiddleLeft;
+            //
+            // statusScanner
+            //
+            statusScanner.BorderSides = ToolStripStatusLabelBorderSides.Left;
+            statusScanner.BorderStyle = Border3DStyle.Etched;
+            statusScanner.Name = "statusScanner";
+            statusScanner.Padding = new Padding(4, 0, 0, 0);
+            statusScanner.Size = new Size(4, 17);
             // 
             // MainForm
             // 
@@ -1141,6 +1171,9 @@
         private System.Windows.Forms.TrackBar trackBrightness;
         private System.Windows.Forms.FlowLayoutPanel flowPanel;
         private System.Windows.Forms.StatusStrip statusStrip;
+        private System.Windows.Forms.ToolStripStatusLabel statusPages;
+        private System.Windows.Forms.ToolStripStatusLabel statusSize;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel statusScanner;
     }
 }
