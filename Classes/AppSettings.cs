@@ -20,6 +20,7 @@ internal sealed class AppSettings
     public string SaveDirectory { get; set; } = ""; // bevorzugter Speicherort für PDFs (leer = zuletzt verwendeter)
     public int OverviewBackColor { get; set; } = -1; // ARGB der Seitenübersicht (-1 = Weiß)
     public string OcrLanguage { get; set; } = "deu";
+    public string SaveAuthor { get; set; } = ""; // Verfasser-Vorbelegung im Speichern-Dialog (leer = Windows-Benutzername)
     public int OcrJpgQuality { get; set; } = 75; // JPEG-Qualität der Bilder in der erzeugten PDF
     public List<string> PageFiles { get; set; } = []; // Seiten der letzten Sitzung (bei "behalten")
     public string ScannerId { get; set; }

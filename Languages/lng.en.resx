@@ -117,7 +117,7 @@
   <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Preferred OCR lang&amp;uage (default for new sessions):</value></data>
   <data name="&amp;JPEG-Qualität der Bilder in der PDF (30–100):" xml:space="preserve"><value>&amp;JPEG quality of images in the PDF (30–100):</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>More languages: put .traineddata files (tessdata_best)
-into the "tessdata" folder next to the program file.</value></data>
+into the &quot;tessdata&quot; folder next to the program file.</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Smaller values give smaller files; 75 is a good compromise.
 Grayscale scans save additional space.</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Preferred save location for PDF files</value></data>
@@ -152,9 +152,7 @@ mode</value></data>
   <data name="Esc erneut drücken, um das Programm zu beenden" xml:space="preserve"><value>Press Esc again to quit</value></data>
   <data name="Alle Seiten aus der Übersicht entfernen?" xml:space="preserve"><value>Remove all pages from the overview?</value></data>
   <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>The scanned pages of this session will be lost.</value></data>
-  <data name="PDF-Dateien" xml:space="preserve"><value>PDF files</value></data>
   <data name="Scan" xml:space="preserve"><value>Scan</value></data>
-  <data name="PDF speichern" xml:space="preserve"><value>Save PDF</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Saved: {0}</value></data>
   <data name="Texterkennung {0}/{1} …" xml:space="preserve"><value>Text recognition {0}/{1}…</value></data>
   <data name="Seite {0}/{1} …" xml:space="preserve"><value>Page {0}/{1}…</value></data>
@@ -170,7 +168,7 @@ saves them as a searchable PDF with text recognition.
 
 In copy mode every scan is printed immediately.
 
-The design is modelled on "Scanner Interface 7"
+The design is modelled on &quot;Scanner Interface 7&quot;
 (Grewe Computertechnik GmbH 2012).</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Donate appreciation via PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>About</value></data>
@@ -251,4 +249,27 @@ the latest version.</value></data>
   <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve"><value>The version in the update file could not be read.</value></data>
   <data name="Es steht ein Update zur Verfügung!" xml:space="preserve"><value>An update is available!</value></data>
   <data name="vom" xml:space="preserve"><value>dated</value></data>
+  <data name="Speichern unter" xml:space="preserve"><value>Save as</value></data>
+  <data name="&amp;Alle Seiten" xml:space="preserve"><value>&amp;All pages</value></data>
+  <data name="Nur &amp;markierte Seite" xml:space="preserve"><value>Only the selected &amp;page</value></data>
+  <data name="&amp;Dateiname:" xml:space="preserve"><value>File &amp;name:</value></data>
+  <data name="&amp;Ordner:" xml:space="preserve"><value>F&amp;older:</value></data>
+  <data name="Dateity&amp;p:" xml:space="preserve"><value>File ty&amp;pe:</value></data>
+  <data name="PDF/A (Archivformat)" xml:space="preserve"><value>PDF/A (archival format)</value></data>
+  <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (image file)</value></data>
+  <data name="JPEG-&amp;Qualität (30–100):" xml:space="preserve"><value>JPEG &amp;quality (30–100):</value></data>
+  <data name="Metadaten:" xml:space="preserve"><value>Metadata:</value></data>
+  <data name="T&amp;itel:" xml:space="preserve"><value>T&amp;itle:</value></data>
+  <data name="Th&amp;ema:" xml:space="preserve"><value>Subj&amp;ect:</value></data>
+  <data name="Stich&amp;worte:" xml:space="preserve"><value>Key&amp;words:</value></data>
+  <data name="&amp;Verfasser:" xml:space="preserve"><value>&amp;Author:</value></data>
+  <data name="wie Dateiname" xml:space="preserve"><value>like the file name</value></data>
+  <data name="Die Datei existiert bereits." xml:space="preserve"><value>The file already exists.</value></data>
+  <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve"><value>Replace the existing file?</value></data>
+  <data name="Der Ordner konnte nicht erstellt werden." xml:space="preserve"><value>The folder could not be created.</value></data>
+  <data name="Speichern fehlgeschlagen." xml:space="preserve"><value>Saving failed.</value></data>
+  <data name="Ordner wählen" xml:space="preserve"><value>Choose folder</value></data>
+  <data name="Ungültiger Dateiname." xml:space="preserve"><value>Invalid file name.</value></data>
+  <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve"><value>Please enter a file name without \ / : * ? &quot; &lt; &gt; |.</value></data>
+  <data name="Bitte wähle einen Ordner." xml:space="preserve"><value>Please choose a folder.</value></data>
 </root>

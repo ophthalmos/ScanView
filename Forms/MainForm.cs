@@ -374,6 +374,16 @@ public partial class MainForm : Form, IMessageFilter
             pageCount = check.PageCount;
         }
         catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
+        var outputA = Path.Combine(sessionFolder, "SelbsttestA.pdf"); // derselbe Weg als PDF/A-2b
+        OcrPdfService.CreateSearchablePdf(flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList(), outputA, "deu", 75, null,
+            new PdfMeta("Selbsttest", "PDF/A-Prüfung", "Scan, Test", "ScanView", true));
+        var pageCountA = 0;
+        try
+        {
+            using var check = PdfSharp.Pdf.IO.PdfReader.Open(outputA, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
+            pageCountA = check.PageCount;
+        }
+        catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
         using (var shot = new Bitmap(Width, Height))
         {
             DrawToBitmap(shot, new Rectangle(Point.Empty, Size));
@@ -393,6 +403,14 @@ public partial class MainForm : Form, IMessageFilter
             settingsDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, settingsDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-settings.png"));
         }
+        using (SaveForm saveDialog = new(true, sessionFolder, "Selbsttest", "deu", 75, "ScanView")) // und der Speichern-Dialog
+        {
+            saveDialog.StartPosition = FormStartPosition.Manual;
+            saveDialog.Show(this);
+            using var shot = new Bitmap(saveDialog.Width, saveDialog.Height);
+            saveDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, saveDialog.Size));
+            shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-save.png"));
+        }
         using (var image = ScanService.LoadUnlocked((string)((Panel)flowPanel.Controls[0]).Tag)) // und der Zuschneide-Dialog
         using (CropForm cropDialog = new(image, Rectangle.Empty))
         {
@@ -403,7 +421,7 @@ public partial class MainForm : Form, IMessageFilter
             cropDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, cropDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-crop.png"));
         }
-        Environment.Exit(pageCount == 2 ? 0 : 1);
+        Environment.Exit(pageCount == 2 && pageCountA == 2 ? 0 : 1);
     }
 
     /// <summary>Stellt die Texterkennungs-Combo auf die Sprache mit dem angegebenen Code.</summary>
@@ -1184,27 +1202,54 @@ public partial class MainForm : Form, IMessageFilter
 
     private async void BtnSave_Click(object sender, EventArgs e)
     {
-        using SaveFileDialog dialog = new()
-        {
-            Filter = Lng.T("PDF-Dateien") + " (*.pdf)|*.pdf",
-            FileName = Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd") + ".pdf",
-            Title = Lng.T("PDF speichern"),
-        };
-        if (Directory.Exists(settings.SaveDirectory)) { dialog.InitialDirectory = settings.SaveDirectory; } // bevorzugter Speicherort
+        var folder = Directory.Exists(settings.SaveDirectory) // bevorzugter Speicherort, sonst Dokumente
+            ? settings.SaveDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+        var author = string.IsNullOrWhiteSpace(settings.SaveAuthor) ? Environment.UserName : settings.SaveAuthor;
+        using SaveForm dialog = new(selected != null, folder, Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd"),
+            CurrentOcrLanguage, settings.OcrJpgQuality, author);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
-        await CreatePdfAsync(dialog.FileName);
-        statusLabel.Text = string.Format(Lng.T("Gespeichert: {0}"), dialog.FileName);
-        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(dialog.FileName) { UseShellExecute = true });
+        settings.SaveAuthor = dialog.MetaAuthor; // Verfasser fürs nächste Mal vorbelegen
+        settings.Save();
+        var outputPath = Path.Combine(dialog.Folder, dialog.FileName + (dialog.FileType == SaveFileType.Jpeg ? ".jpg" : ".pdf"));
+        try { Directory.CreateDirectory(dialog.Folder); }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
+        {
+            TaskDlg.ErrTaskDlg(Handle, Lng.T("Der Ordner konnte nicht erstellt werden."), ex);
+            return;
+        }
+        if (File.Exists(outputPath) && !TaskDlg.ConfirmTaskDlg(Handle, Lng.T("Die Datei existiert bereits."),
+            Lng.T("Soll die vorhandene Datei ersetzt werden?"), TaskDialogIcon.Warning, defaultNo: true))
+        {
+            return;
+        }
+        List<string> files = dialog.AllPages
+            ? flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList()
+            : [(string)selected.Tag];
+        if (dialog.FileType == SaveFileType.Jpeg)
+        {
+            try { ScanService.SaveAsJpeg(files[0], outputPath, dialog.JpgQuality); }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Runtime.InteropServices.ExternalException)
+            {
+                TaskDlg.ErrTaskDlg(Handle, Lng.T("Speichern fehlgeschlagen."), ex);
+                return;
+            }
+        }
+        else
+        {
+            PdfMeta meta = new(dialog.MetaTitle, dialog.MetaSubject, dialog.MetaKeywords, dialog.MetaAuthor,
+                dialog.FileType == SaveFileType.PdfA);
+            await CreatePdfAsync(files, outputPath, dialog.OcrLanguage, dialog.JpgQuality, meta);
+        }
+        statusLabel.Text = string.Format(Lng.T("Gespeichert: {0}"), outputPath);
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(outputPath) { UseShellExecute = true });
     }
 
-    /// <summary>PDF über alle Seiten in der aktuellen Reihenfolge — je nach Auswahl im
-    /// Einstellungsbereich mit Texterkennung (durchsuchbar) oder als reine Bild-PDF.
+    /// <summary>PDF über die übergebenen Seiten in der aktuellen Reihenfolge — je nach Auswahl im
+    /// Speichern-Dialog mit Texterkennung (durchsuchbar) oder als reine Bild-PDF.
     /// Läuft im Hintergrund (die Seiten werden parallel erkannt); die Oberfläche bleibt
     /// bedienbar-gesperrt und zeigt den Fortschritt aus den Worker-Threads.</summary>
-    private async Task CreatePdfAsync(string outputPdf)
+    private async Task CreatePdfAsync(List<string> tiffFiles, string outputPdf, string language, int jpgQuality, PdfMeta meta)
     {
-        var tiffFiles = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
-        var language = CurrentOcrLanguage;
         ocrBusy = true; // FormClosing-Guard: nicht mitten in der Texterkennung beenden
         toolStrip.Enabled = false;
         menuStrip.Enabled = false;
@@ -1215,8 +1260,8 @@ public partial class MainForm : Form, IMessageFilter
                 statusLabel.Text = string.Format(Lng.T(language != null ? "Texterkennung {0}/{1} …" : "Seite {0}/{1} …"), done, total));
             await Task.Run(() =>
             {
-                if (language != null) { OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, language, settings.OcrJpgQuality, Progress); }
-                else { OcrPdfService.CreateImagePdf(tiffFiles, outputPdf, settings.OcrJpgQuality, Progress); }
+                if (language != null) { OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, language, jpgQuality, Progress, meta); }
+                else { OcrPdfService.CreateImagePdf(tiffFiles, outputPdf, jpgQuality, Progress, meta); }
             });
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or InvalidOperationException or Tesseract.TesseractException)

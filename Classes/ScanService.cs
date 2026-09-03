@@ -174,6 +174,17 @@ internal static class ScanService
         return path;
     }
 
+    /// <summary>Speichert einen Scan als JPEG-Datei (Speichern-Dialog, Dateityp JPEG) —
+    /// mit der eingestellten Qualität; die dpi-Angabe des Originals bleibt erhalten.</summary>
+    public static void SaveAsJpeg(string sourcePath, string outputPath, int jpgQuality)
+    {
+        var encoder = ImageCodecInfo.GetImageEncoders().First(c => c.FormatID == ImageFormat.Jpeg.Guid);
+        using EncoderParameters encoderParams = new(1);
+        encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, (long)jpgQuality);
+        using var image = LoadUnlocked(sourcePath);
+        image.Save(outputPath, encoder, encoderParams);
+    }
+
     /// <summary>Gerenderte 300-dpi-A4-Testseite — zum Ausprobieren ohne Scanner.</summary>
     public static string RenderTestPage(string path, string title, params string[] lines)
     {

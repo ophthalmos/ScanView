@@ -152,9 +152,7 @@ mode copie</value></data>
   <data name="Esc erneut drücken, um das Programm zu beenden" xml:space="preserve"><value>Appuyez de nouveau sur Échap pour quitter</value></data>
   <data name="Alle Seiten aus der Übersicht entfernen?" xml:space="preserve"><value>Retirer toutes les pages de l'aperçu ?</value></data>
   <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>Les pages numérisées de cette session seront perdues.</value></data>
-  <data name="PDF-Dateien" xml:space="preserve"><value>Fichiers PDF</value></data>
   <data name="Scan" xml:space="preserve"><value>Numérisation</value></data>
-  <data name="PDF speichern" xml:space="preserve"><value>Enregistrer le PDF</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Enregistré : {0}</value></data>
   <data name="Texterkennung {0}/{1} …" xml:space="preserve"><value>Reconnaissance {0}/{1}…</value></data>
   <data name="Seite {0}/{1} …" xml:space="preserve"><value>Page {0}/{1}…</value></data>
@@ -251,4 +249,27 @@ d'installation pour installer la dernière version.</value></data>
   <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve"><value>Le numéro de version du fichier de mise à jour n'a pas pu être lu.</value></data>
   <data name="Es steht ein Update zur Verfügung!" xml:space="preserve"><value>Une mise à jour est disponible !</value></data>
   <data name="vom" xml:space="preserve"><value>du</value></data>
+  <data name="Speichern unter" xml:space="preserve"><value>Enregistrer sous</value></data>
+  <data name="&amp;Alle Seiten" xml:space="preserve"><value>Toutes les p&amp;ages</value></data>
+  <data name="Nur &amp;markierte Seite" xml:space="preserve"><value>Seule&amp;ment la page sélectionnée</value></data>
+  <data name="&amp;Dateiname:" xml:space="preserve"><value>&amp;Nom de fichier :</value></data>
+  <data name="&amp;Ordner:" xml:space="preserve"><value>D&amp;ossier :</value></data>
+  <data name="Dateity&amp;p:" xml:space="preserve"><value>Ty&amp;pe de fichier :</value></data>
+  <data name="PDF/A (Archivformat)" xml:space="preserve"><value>PDF/A (format d'archivage)</value></data>
+  <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (fichier image)</value></data>
+  <data name="JPEG-&amp;Qualität (30–100):" xml:space="preserve"><value>&amp;Qualité JPEG (30–100) :</value></data>
+  <data name="Metadaten:" xml:space="preserve"><value>Métadonnées :</value></data>
+  <data name="T&amp;itel:" xml:space="preserve"><value>T&amp;itre :</value></data>
+  <data name="Th&amp;ema:" xml:space="preserve"><value>Suj&amp;et :</value></data>
+  <data name="Stich&amp;worte:" xml:space="preserve"><value>Mots-&amp;clés :</value></data>
+  <data name="&amp;Verfasser:" xml:space="preserve"><value>A&amp;uteur :</value></data>
+  <data name="wie Dateiname" xml:space="preserve"><value>comme le nom du fichier</value></data>
+  <data name="Die Datei existiert bereits." xml:space="preserve"><value>Le fichier existe déjà.</value></data>
+  <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve"><value>Remplacer le fichier existant ?</value></data>
+  <data name="Der Ordner konnte nicht erstellt werden." xml:space="preserve"><value>Le dossier n'a pas pu être créé.</value></data>
+  <data name="Speichern fehlgeschlagen." xml:space="preserve"><value>L'enregistrement a échoué.</value></data>
+  <data name="Ordner wählen" xml:space="preserve"><value>Choisir le dossier</value></data>
+  <data name="Ungültiger Dateiname." xml:space="preserve"><value>Nom de fichier non valide.</value></data>
+  <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve"><value>Veuillez saisir un nom de fichier sans \ / : * ? &quot; &lt; &gt; |.</value></data>
+  <data name="Bitte wähle einen Ordner." xml:space="preserve"><value>Veuillez choisir un dossier.</value></data>
 </root>
