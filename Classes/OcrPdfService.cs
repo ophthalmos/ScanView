@@ -4,8 +4,9 @@ using Tesseract;
 
 namespace ScanView.Classes;
 
-/// <summary>Metadaten der erzeugten PDF (Speichern-Dialog).</summary>
-internal sealed record PdfMeta(string Title, string Subject, string Keywords, string Author);
+/// <summary>Metadaten der erzeugten PDF (Speichern-Dialog); PdfA ergänzt die PDF/A-2b-Bausteine —
+/// nur für Bild-PDFs ohne Texterkennung vorgesehen (s. PdfAHelper).</summary>
+internal sealed record PdfMeta(string Title, string Subject, string Keywords, string Author, bool PdfA = false);
 
 /// <summary>OCR und PDF-Zusammenbau: Tesseract macht aus jedem Scan eine durchsuchbare
 /// Einzelseiten-PDF (Bild + unsichtbare Textschicht), PDFsharp fügt sie zum Enddokument zusammen.</summary>
@@ -51,6 +52,7 @@ internal static class OcrPdfService
         }
         ApplyMeta(result, outputPdf, meta);
         result.Save(outputPdf);
+        if (meta?.PdfA == true) { PdfAHelper.Finish(outputPdf); } // Nachbearbeitung — s. PdfAHelper
     }
 
     /// <summary>Erstellt aus den TIFF-Scans eine durchsuchbare PDF; progress meldet (fertige Seite,
