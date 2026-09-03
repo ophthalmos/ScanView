@@ -32,9 +32,12 @@ internal sealed partial class SaveForm : Form
 
     public string MetaAuthor => textAuthor.Text.Trim();
 
+    /// <summary>Die gespeicherte Datei anschließend im Standardprogramm öffnen (letzte Wahl wird gemerkt).</summary>
+    public bool OpenAfter => cbOpenAfter.Checked;
+
     private readonly bool hasSelection;
 
-    public SaveForm(bool hasSelection, string folder, string fileName, string ocrLanguage, int jpgQuality, string author)
+    public SaveForm(bool hasSelection, string folder, string fileName, string ocrLanguage, int jpgQuality, string author, bool openAfter)
     {
         InitializeComponent();
         Lng.Apply(this);
@@ -52,6 +55,7 @@ internal sealed partial class SaveForm : Form
         else { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
         numJpgQuality.Value = Math.Clamp(jpgQuality, 30, 100);
         textAuthor.Text = author ?? string.Empty;
+        cbOpenAfter.Checked = openAfter;
         comboFileType.SelectedIndex = 0;
     }
 

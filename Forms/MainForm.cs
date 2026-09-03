@@ -393,7 +393,7 @@ public partial class MainForm : Form, IMessageFilter
             settingsDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, settingsDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-settings.png"));
         }
-        using (SaveForm saveDialog = new(true, sessionFolder, "Selbsttest", "deu", 75, "ScanView")) // und der Speichern-Dialog
+        using (SaveForm saveDialog = new(true, sessionFolder, "Selbsttest", "deu", 75, "ScanView", true)) // und der Speichern-Dialog
         {
             saveDialog.StartPosition = FormStartPosition.Manual;
             saveDialog.Show(this);
@@ -1196,9 +1196,10 @@ public partial class MainForm : Form, IMessageFilter
             ? settings.SaveDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         var author = string.IsNullOrWhiteSpace(settings.SaveAuthor) ? Environment.UserName : settings.SaveAuthor;
         using SaveForm dialog = new(selected != null, folder, Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd"),
-            CurrentOcrLanguage, settings.OcrJpgQuality, author);
+            CurrentOcrLanguage, settings.OcrJpgQuality, author, settings.OpenAfterSave);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
-        settings.SaveAuthor = dialog.MetaAuthor; // Verfasser fürs nächste Mal vorbelegen
+        settings.SaveAuthor = dialog.MetaAuthor; // Verfasser und Öffnen-Wahl fürs nächste Mal vorbelegen
+        settings.OpenAfterSave = dialog.OpenAfter;
         settings.Save();
         var extension = dialog.FileType switch { SaveFileType.Jpeg => ".jpg", SaveFileType.Png => ".png", SaveFileType.Tiff => ".tif", _ => ".pdf" };
         var outputPath = Path.Combine(dialog.Folder, dialog.FileName + extension);
@@ -1236,7 +1237,10 @@ public partial class MainForm : Form, IMessageFilter
             await CreatePdfAsync(files, outputPath, dialog.OcrLanguage, dialog.JpgQuality, meta);
         }
         statusLabel.Text = string.Format(Lng.T("Gespeichert: {0}"), outputPath);
-        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(outputPath) { UseShellExecute = true });
+        if (dialog.OpenAfter)
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(outputPath) { UseShellExecute = true });
+        }
     }
 
     /// <summary>PDF über die übergebenen Seiten in der aktuellen Reihenfolge — je nach Auswahl im
