@@ -3,9 +3,9 @@ using ScanView.Classes;
 namespace ScanView.Forms;
 
 /// <summary>Gewählter Dateityp im Speichern-Dialog.</summary>
-internal enum SaveFileType { Pdf, PdfA, Jpeg }
+internal enum SaveFileType { Pdf, Jpeg }
 
-/// <summary>Speichern-Dialog: Seitenauswahl, Dateiname und Ordner, Dateityp (PDF, PDF/A, JPEG),
+/// <summary>Speichern-Dialog: Seitenauswahl, Dateiname und Ordner, Dateityp (PDF, JPEG),
 /// Texterkennung samt JPEG-Qualität und die PDF-Metadaten. JPEG steht nur für die markierte
 /// Seite zur Wahl (eine Bilddatei kennt keine Seiten) — ohne Textschicht und Metadaten.</summary>
 internal sealed partial class SaveForm : Form
@@ -16,7 +16,7 @@ internal sealed partial class SaveForm : Form
 
     public string Folder => textFolder.Text.Trim();
 
-    public SaveFileType FileType => comboFileType.SelectedIndex switch { 1 => SaveFileType.PdfA, 2 => SaveFileType.Jpeg, _ => SaveFileType.Pdf };
+    public SaveFileType FileType => comboFileType.SelectedIndex == 1 ? SaveFileType.Jpeg : SaveFileType.Pdf;
 
     /// <summary>Gewählte OCR-Sprache — null bei „Ohne Texterkennung" oder Dateityp JPEG.</summary>
     public string OcrLanguage => FileType != SaveFileType.Jpeg && comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
@@ -38,7 +38,7 @@ internal sealed partial class SaveForm : Form
         InitializeComponent();
         Lng.Apply(this);
         Lng.TranslateItems(comboFileType);
-        jpegItem = (string)comboFileType.Items[2];
+        jpegItem = (string)comboFileType.Items[1];
         textTitle.PlaceholderText = Lng.T("wie Dateiname");
         radioSelected.Enabled = hasSelection;
         textFileName.Text = fileName;
@@ -58,12 +58,12 @@ internal sealed partial class SaveForm : Form
     /// <summary>JPEG gibt es nur für die markierte Seite — bei „Alle Seiten" verschwindet der Eintrag.</summary>
     private void RadioPages_CheckedChanged(object sender, EventArgs e)
     {
-        if (radioAll.Checked && comboFileType.Items.Count == 3)
+        if (radioAll.Checked && comboFileType.Items.Count == 2)
         {
-            if (comboFileType.SelectedIndex == 2) { comboFileType.SelectedIndex = 0; }
-            comboFileType.Items.RemoveAt(2);
+            if (comboFileType.SelectedIndex == 1) { comboFileType.SelectedIndex = 0; }
+            comboFileType.Items.RemoveAt(1);
         }
-        else if (!radioAll.Checked && comboFileType.Items.Count == 2)
+        else if (!radioAll.Checked && comboFileType.Items.Count == 1)
         {
             comboFileType.Items.Add(jpegItem);
         }

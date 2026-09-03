@@ -143,7 +143,7 @@ namespace ScanView.Forms
             // comboFileType
             //
             comboFileType.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboFileType.Items.AddRange(new object[] { "PDF", "PDF/A (Archivformat)", "JPEG (Bilddatei)" });
+            comboFileType.Items.AddRange(new object[] { "PDF", "JPEG (Bilddatei)" });
             comboFileType.Location = new Point(140, 124);
             comboFileType.Name = "comboFileType";
             comboFileType.Size = new Size(252, 23);
