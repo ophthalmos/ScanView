@@ -49,6 +49,23 @@ internal static class PdfAHelper
         PatchSavedFile(pdfPath);
     }
 
+    /// <summary>Schneller Struktur-Check für den Selbsttest: Catalog verweist auf das XMP mit der
+    /// PDF/A-Kennung, keine Transparenz-Gruppen, kein /Interpolate true. Fällt ein PDFsharp-Update
+    /// den Byte-Patches in den Rücken, schlägt der Selbsttest damit sofort an.</summary>
+    public static bool Verify(string pdfPath)
+    {
+        var text = Encoding.GetEncoding(28591).GetString(File.ReadAllBytes(pdfPath));
+        var pdfaIndex = text.IndexOf("pdfaid:part", StringComparison.Ordinal);
+        if (pdfaIndex < 0) { return false; }
+        var objMatch = System.Text.RegularExpressions.Regex.Match(text[..pdfaIndex], @"(\d+) 0 obj(?!.*\d+ 0 obj)",
+            System.Text.RegularExpressions.RegexOptions.Singleline);
+        var catalogMatch = System.Text.RegularExpressions.Regex.Match(text, @"/Metadata (\d+) 0 R");
+        return objMatch.Success && catalogMatch.Success
+            && objMatch.Groups[1].Value == catalogMatch.Groups[1].Value.Trim()
+            && !text.Contains("/Transparency")
+            && !System.Text.RegularExpressions.Regex.IsMatch(text, @"/Interpolate\s+true");
+    }
+
     /// <summary>PDFsharp erzwingt beim Speichern zwei Dinge, die sich nicht per API abstellen
     /// lassen und PDF/A brechen — darum werden sie nachträglich byte-genau in der Datei korrigiert,
     /// ohne Längen zu ändern (alle Offsets und die xref-Tabelle bleiben gültig):

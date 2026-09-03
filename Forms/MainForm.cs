@@ -382,6 +382,7 @@ public partial class MainForm : Form, IMessageFilter
         {
             using var check = PdfSharp.Pdf.IO.PdfReader.Open(outputA, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
             pageCountA = check.PageCount;
+            if (!PdfAHelper.Verify(outputA)) { pageCountA = 0; } // PDF/A-Bausteine müssen die Byte-Patches überstanden haben
         }
         catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
         using (var shot = new Bitmap(Width, Height))
