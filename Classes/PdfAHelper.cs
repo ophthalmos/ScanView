@@ -46,34 +46,38 @@ internal static class PdfAHelper
         document.Internals.AddObject(intent);
         document.Internals.Catalog.Elements["/OutputIntents"] = new PdfArray(document, intent.Reference);
         document.Save(pdfPath);
-        RemoveTransparencyGroups(pdfPath);
+        PatchSavedFile(pdfPath);
     }
 
-    /// <summary>PDFsharp schreibt bei JEDEM Speichern eine Transparenz-Gruppe in jedes
-    /// Seiten-Dictionary (nicht abschaltbar; ein Elements.Remove wird beim Save wieder überschrieben).
-    /// veraPDF beanstandet die Gruppe (Regel 6.4), unsere Bild-Seiten nutzen keine Transparenz —
-    /// darum wird die Sequenz nachträglich durch gleich lange Leerzeichen ersetzt; alle
-    /// Byte-Offsets und die xref-Tabelle bleiben dadurch gültig.</summary>
-    private static void RemoveTransparencyGroups(string pdfPath)
+    /// <summary>PDFsharp erzwingt beim Speichern zwei Dinge, die sich nicht per API abstellen
+    /// lassen und PDF/A brechen — darum werden sie nachträglich byte-genau in der Datei korrigiert,
+    /// ohne Längen zu ändern (alle Offsets und die xref-Tabelle bleiben gültig):
+    /// (1) Die Transparenz-Gruppe in jedem Seiten-Dictionary (veraPDF-Regel 6.4; unsere Bild-Seiten
+    /// nutzen keine Transparenz) wird durch gleich lange Leerzeichen ersetzt.
+    /// (2) PDFsharp generiert ein EIGENES XMP-Metadata ohne PDF/A-Kennung und hängt es statt unserem
+    /// in den Catalog — der /Metadata-Verweis wird auf unser XMP (das mit pdfaid) zurückgebogen;
+    /// PDFsharps XMP bleibt als unreferenziertes Objekt zurück, was PDF-konform ist.</summary>
+    private static void PatchSavedFile(string pdfPath)
     {
-        var bytes = File.ReadAllBytes(pdfPath);
-        var pattern = Encoding.ASCII.GetBytes("/Group<</CS/DeviceRGB/S/Transparency>>");
-        var changed = false;
-        for (var i = 0; i <= bytes.Length - pattern.Length; i++)
+        var latin1 = Encoding.GetEncoding(28591); // verlustfreier Byte-für-Byte-Roundtrip
+        var text = latin1.GetString(File.ReadAllBytes(pdfPath));
+
+        text = text.Replace("/Group<</CS/DeviceRGB/S/Transparency>>", new string(' ', 38));
+
+        // unser Metadata-Objekt (das mit pdfaid) finden: rückwärts vom pdfaid-Vorkommen zum "n 0 obj"
+        var pdfaIndex = text.IndexOf("pdfaid:part", StringComparison.Ordinal);
+        var objMatch = pdfaIndex < 0 ? null
+            : System.Text.RegularExpressions.Regex.Match(text[..pdfaIndex], @"(\d+) 0 obj(?!.*\d+ 0 obj)",
+                System.Text.RegularExpressions.RegexOptions.Singleline);
+        var catalogMatch = System.Text.RegularExpressions.Regex.Match(text, @"/Metadata (\d+) 0 R");
+        if (objMatch != null && objMatch.Success && catalogMatch.Success && objMatch.Groups[1].Value != catalogMatch.Groups[1].Value)
         {
-            var match = true;
-            for (var j = 0; j < pattern.Length; j++)
-            {
-                if (bytes[i + j] != pattern[j]) { match = false; break; }
-            }
-            if (match)
-            {
-                for (var j = 0; j < pattern.Length; j++) { bytes[i + j] = 0x20; }
-                changed = true;
-                i += pattern.Length - 1;
-            }
+            // Ersatz mit Leerzeichen auf gleiche Länge auffüllen — unser Objekt wurde vor PDFsharps
+            // XMP angelegt, seine Nummer ist also nie länger als die referenzierte
+            var replacement = ("/Metadata " + objMatch.Groups[1].Value + " 0 R").PadRight(catalogMatch.Value.Length);
+            text = text.Remove(catalogMatch.Index, catalogMatch.Value.Length).Insert(catalogMatch.Index, replacement);
         }
-        if (changed) { File.WriteAllBytes(pdfPath, bytes); }
+        File.WriteAllBytes(pdfPath, latin1.GetBytes(text));
     }
 
     private static string BuildXmp(PdfDocument document, DateTime stamp)
@@ -100,6 +104,7 @@ internal static class PdfAHelper
         if (document.Info.Keywords.Length > 0) { sb.Append("   <pdf:Keywords>").Append(Esc(document.Info.Keywords)).Append("</pdf:Keywords>\n"); }
         sb.Append("  </rdf:Description>\n");
         sb.Append("  <rdf:Description rdf:about=\"\" xmlns:xmp=\"http://ns.adobe.com/xap/1.0/\">\n");
+        sb.Append("   <xmp:CreatorTool>").Append(Esc(document.Info.Creator)).Append("</xmp:CreatorTool>\n"); // muss /Creator im Info-Dictionary entsprechen
         sb.Append("   <xmp:CreateDate>").Append(date).Append("</xmp:CreateDate>\n");
         sb.Append("   <xmp:ModifyDate>").Append(date).Append("</xmp:ModifyDate>\n");
         sb.Append("  </rdf:Description>\n");
