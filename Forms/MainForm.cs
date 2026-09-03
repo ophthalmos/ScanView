@@ -1200,7 +1200,7 @@ public partial class MainForm : Form, IMessageFilter
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.SaveAuthor = dialog.MetaAuthor; // Verfasser fürs nächste Mal vorbelegen
         settings.Save();
-        var extension = dialog.FileType switch { SaveFileType.Jpeg => ".jpg", SaveFileType.Tiff => ".tif", _ => ".pdf" };
+        var extension = dialog.FileType switch { SaveFileType.Jpeg => ".jpg", SaveFileType.Png => ".png", SaveFileType.Tiff => ".tif", _ => ".pdf" };
         var outputPath = Path.Combine(dialog.Folder, dialog.FileName + extension);
         try { Directory.CreateDirectory(dialog.Folder); }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
@@ -1221,6 +1221,7 @@ public partial class MainForm : Form, IMessageFilter
             try
             {
                 if (dialog.FileType == SaveFileType.Jpeg) { ScanService.SaveAsJpeg(files[0], outputPath, dialog.JpgQuality); }
+                else if (dialog.FileType == SaveFileType.Png) { ScanService.SaveAsPng(files[0], outputPath); }
                 else { ScanService.SaveAsMultipageTiff(files, outputPath); }
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Runtime.InteropServices.ExternalException)

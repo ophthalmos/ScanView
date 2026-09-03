@@ -185,6 +185,13 @@ internal static class ScanService
         image.Save(outputPath, encoder, encoderParams);
     }
 
+    /// <summary>Speichert einen Scan als PNG-Datei (verlustfrei); die dpi-Angabe bleibt erhalten.</summary>
+    public static void SaveAsPng(string sourcePath, string outputPath)
+    {
+        using var image = LoadUnlocked(sourcePath);
+        image.Save(outputPath, ImageFormat.Png);
+    }
+
     /// <summary>Speichert Scans als (bei mehreren Seiten mehrseitige) TIFF-Datei — verlustfrei
     /// mit LZW-Kompression; die dpi-Angaben der Originale bleiben erhalten.</summary>
     public static void SaveAsMultipageTiff(IReadOnlyList<string> sourcePaths, string outputPath)
