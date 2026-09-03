@@ -255,10 +255,6 @@ um die neueste Version zu installieren.</value></data>
   <data name="&amp;Ordner:" xml:space="preserve"><value>&amp;Ordner:</value></data>
   <data name="Dateity&amp;p:" xml:space="preserve"><value>Dateity&amp;p:</value></data>
   <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (Bilddatei)</value></data>
-  <data name="T&amp;itel:" xml:space="preserve"><value>T&amp;itel:</value></data>
-  <data name="Th&amp;ema:" xml:space="preserve"><value>Th&amp;ema:</value></data>
-  <data name="Stich&amp;worte:" xml:space="preserve"><value>Stich&amp;worte:</value></data>
-  <data name="&amp;Verfasser:" xml:space="preserve"><value>&amp;Verfasser:</value></data>
   <data name="wie Dateiname" xml:space="preserve"><value>wie Dateiname</value></data>
   <data name="Die Datei existiert bereits." xml:space="preserve"><value>Die Datei existiert bereits.</value></data>
   <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve"><value>Soll die vorhandene Datei ersetzt werden?</value></data>

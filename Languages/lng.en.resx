@@ -255,10 +255,6 @@ the latest version.</value></data>
   <data name="&amp;Ordner:" xml:space="preserve"><value>F&amp;older:</value></data>
   <data name="Dateity&amp;p:" xml:space="preserve"><value>File ty&amp;pe:</value></data>
   <data name="JPEG (Bilddatei)" xml:space="preserve"><value>JPEG (image file)</value></data>
-  <data name="T&amp;itel:" xml:space="preserve"><value>T&amp;itle:</value></data>
-  <data name="Th&amp;ema:" xml:space="preserve"><value>Subj&amp;ect:</value></data>
-  <data name="Stich&amp;worte:" xml:space="preserve"><value>Key&amp;words:</value></data>
-  <data name="&amp;Verfasser:" xml:space="preserve"><value>&amp;Author:</value></data>
   <data name="wie Dateiname" xml:space="preserve"><value>like the file name</value></data>
   <data name="Die Datei existiert bereits." xml:space="preserve"><value>The file already exists.</value></data>
   <data name="Soll die vorhandene Datei ersetzt werden?" xml:space="preserve"><value>Replace the existing file?</value></data>
