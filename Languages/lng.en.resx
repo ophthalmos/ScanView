@@ -45,7 +45,6 @@
   <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve"><value>Choose scanner and configure device buttons</value></data>
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Create and show the shortcut overview as PDF</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Scan a page from the selected device (F4) — arrow: choose scanner</value></data>
-  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (F5)" xml:space="preserve"><value>Save all pages as searchable PDF with OCR (F5)</value></data>
   <data name="Alle Seiten drucken (F6)" xml:space="preserve"><value>Print all pages (F6)</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Clear the page overview (F9)</value></data>
   <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Move selected page forward (Alt+←)</value></data>
@@ -276,4 +275,6 @@ the latest version.</value></data>
   <data name="Umfang" xml:space="preserve"><value>Scope</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>JPEG &amp;quality:</value></data>
   <data name="PNG (verlustfrei)" xml:space="preserve"><value>PNG (lossless)</value></data>
+  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve"><value>Save all pages as searchable PDF with OCR (Ctrl+S)</value></data>
+  <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
 </root>

@@ -45,7 +45,6 @@
   <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve"><value>Scanner wählen und Gerätetasten konfigurieren</value></data>
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Tastenkürzel-Übersicht als PDF erstellen und anzeigen</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen</value></data>
-  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (F5)" xml:space="preserve"><value>Alle Seiten per Texterkennung als durchsuchbare PDF speichern (F5)</value></data>
   <data name="Alle Seiten drucken (F6)" xml:space="preserve"><value>Alle Seiten drucken (F6)</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Seitenübersicht leeren (F9)</value></data>
   <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Markierte Seite nach vorn schieben (Alt+←)</value></data>
@@ -276,4 +275,6 @@ um die neueste Version zu installieren.</value></data>
   <data name="Umfang" xml:space="preserve"><value>Umfang</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>JPEG-&amp;Qualität:</value></data>
   <data name="PNG (verlustfrei)" xml:space="preserve"><value>PNG (verlustfrei)</value></data>
+  <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve"><value>Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)</value></data>
+  <data name="Strg+S" xml:space="preserve"><value>Strg+S</value></data>
 </root>
