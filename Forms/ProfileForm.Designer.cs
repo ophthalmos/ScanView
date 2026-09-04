@@ -58,6 +58,8 @@ namespace ScanView.Forms
             textName.Name = "textName";
             textName.Size = new Size(242, 23);
             textName.TabIndex = 1;
+            textName.Enter += TextName_Enter;
+            textName.Leave += TextName_Leave;
             // 
             // btnAdd
             // 
