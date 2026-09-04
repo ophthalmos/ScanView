@@ -213,7 +213,7 @@ namespace ScanView.Forms
             btnOk.Location = new Point(112, 358);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(142, 26);
-            btnOk.TabIndex = 2;
+            btnOk.TabIndex = 1;
             btnOk.Text = "Änderungen &speichern";
             btnOk.UseVisualStyleBackColor = true;
             // 
@@ -223,7 +223,7 @@ namespace ScanView.Forms
             btnCancel.Location = new Point(260, 358);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(92, 26);
-            btnCancel.TabIndex = 3;
+            btnCancel.TabIndex = 2;
             btnCancel.Text = "Abbrechen";
             btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -236,7 +236,7 @@ namespace ScanView.Forms
             panelCanvas.Location = new Point(0, 0);
             panelCanvas.Name = "panelCanvas";
             panelCanvas.Size = new Size(364, 352);
-            panelCanvas.TabIndex = 4;
+            panelCanvas.TabIndex = 0;
             // 
             // ProfileForm
             // 
