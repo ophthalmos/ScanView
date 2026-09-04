@@ -7,12 +7,12 @@ internal static class TextBoxMargins
     private const uint EM_SETMARGINS = 0xD3;
     private const int EC_LEFTMARGIN = 1, EC_RIGHTMARGIN = 2;
 
-    /// <summary>Setzt den Innenabstand (3 logische Pixel) für alle TextBoxen unterhalb von root.</summary>
+    /// <summary>Setzt den Innenabstand (2 logische Pixel) für alle TextBoxen unterhalb von root.</summary>
     public static void Apply(Control root)
     {
         if (root is TextBox box)
         {
-            var margin = box.LogicalToDeviceUnits(3);
+            var margin = box.LogicalToDeviceUnits(2);
             NativeMethods.SendMessage(box.Handle, EM_SETMARGINS, EC_LEFTMARGIN | EC_RIGHTMARGIN, margin | (margin << 16));
             return;
         }
