@@ -296,10 +296,10 @@ Grayscale scans save additional space.</value></data>
   <data name="Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):" xml:space="preserve"><value>Virtual fax &amp;printer (e.g. FRITZ!fax printer):</value></data>
   <data name="(kein Faxdrucker)" xml:space="preserve"><value>(no fax printer)</value></data>
   <data name="Profil&amp;name:" xml:space="preserve"><value>Profile &amp;name:</value></data>
-  <data name="ändern" xml:space="preserve"><value>edit</value></data>
   <data name="Nach &amp;oben" xml:space="preserve"><value>Move &amp;up</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>Move &amp;down</value></data>
   <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Rename</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>A profile with this name already exists.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>add</value></data>
+  <data name="umbenennen" xml:space="preserve"><value>rename</value></data>
 </root>

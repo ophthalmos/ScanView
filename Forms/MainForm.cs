@@ -1358,7 +1358,7 @@ public partial class MainForm : Form, IMessageFilter
     /// Auswahl, sonst „ändern" — rechtsbündig, weil die Texte unterschiedlich breit sind.</summary>
     private void UpdateProfileLink()
     {
-        linkProfiles.Text = Lng.T(comboProfile.SelectedIndex >= 0 ? "ändern" : "hinzufügen");
+        linkProfiles.Text = Lng.T(comboProfile.SelectedIndex >= 0 ? "umbenennen" : "hinzufügen");
         linkProfiles.Left = comboProfile.Right - linkProfiles.Width;
     }
 
