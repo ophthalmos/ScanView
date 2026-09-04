@@ -294,9 +294,9 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Profil „{0}“ ersetzen?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Die gespeicherten Einstellungen werden überschrieben.</value></data>
   <data name="Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):" xml:space="preserve"><value>Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):</value></data>
-  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Wähle hier den Faxdrucker deines Faxprogramms.
-Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="(kein Faxdrucker)" xml:space="preserve"><value>(kein Faxdrucker)</value></data>
   <data name="Profil&amp;name:" xml:space="preserve"><value>Profil&amp;name:</value></data>
   <data name="ändern" xml:space="preserve"><value>ändern</value></data>
+  <data name="Nach &amp;oben" xml:space="preserve"><value>Nach &amp;oben</value></data>
+  <data name="Nach &amp;unten" xml:space="preserve"><value>Nach &amp;unten</value></data>
 </root>

@@ -70,9 +70,26 @@ internal sealed partial class ProfileForm : Form
         textName.Text = string.Empty;
     }
 
+    /// <summary>Verschiebt das markierte Profil in der Reihenfolge (auch der Profil-Combo).</summary>
+    private void MoveSelected(int offset)
+    {
+        var index = listProfiles.SelectedIndex;
+        var target = index + offset;
+        if (index < 0 || target < 0 || target >= Profiles.Count) { return; }
+        (Profiles[index], Profiles[target]) = (Profiles[target], Profiles[index]);
+        RefreshList(Profiles[target].Name);
+    }
+
+    private void BtnUp_Click(object sender, EventArgs e) => MoveSelected(-1);
+
+    private void BtnDown_Click(object sender, EventArgs e) => MoveSelected(1);
+
     private void ListProfiles_SelectedIndexChanged(object sender, EventArgs e)
     {
-        btnDelete.Enabled = listProfiles.SelectedIndex >= 0;
-        if (listProfiles.SelectedIndex >= 0) { textName.Text = (string)listProfiles.SelectedItem; }
+        var index = listProfiles.SelectedIndex;
+        btnDelete.Enabled = index >= 0;
+        btnUp.Enabled = index > 0;
+        btnDown.Enabled = index >= 0 && index < listProfiles.Items.Count - 1;
+        if (index >= 0) { textName.Text = (string)listProfiles.SelectedItem; }
     }
 }

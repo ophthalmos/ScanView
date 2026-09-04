@@ -294,9 +294,9 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Remplacer le profil « {0} » ?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Les paramètres enregistrés seront écrasés.</value></data>
   <data name="Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):" xml:space="preserve"><value>Imprimante de fax &amp;virtuelle (p. ex. FRITZ!fax) :</value></data>
-  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Choisissez ici l'imprimante de fax de votre programme.
-Sans entrée, aucun bouton Faxer n'est affiché.</value></data>
   <data name="(kein Faxdrucker)" xml:space="preserve"><value>(aucune imprimante de fax)</value></data>
   <data name="Profil&amp;name:" xml:space="preserve"><value>&amp;Nom du profil :</value></data>
   <data name="ändern" xml:space="preserve"><value>modifier</value></data>
+  <data name="Nach &amp;oben" xml:space="preserve"><value>&amp;Monter</value></data>
+  <data name="Nach &amp;unten" xml:space="preserve"><value>&amp;Descendre</value></data>
 </root>

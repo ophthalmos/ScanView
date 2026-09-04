@@ -294,9 +294,9 @@ Grayscale scans save additional space.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Replace profile &quot;{0}&quot;?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>The saved settings will be overwritten.</value></data>
   <data name="Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):" xml:space="preserve"><value>Virtual fax &amp;printer (e.g. FRITZ!fax printer):</value></data>
-  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Choose the fax printer of your fax program here.
-Without an entry no Fax button is shown.</value></data>
   <data name="(kein Faxdrucker)" xml:space="preserve"><value>(no fax printer)</value></data>
   <data name="Profil&amp;name:" xml:space="preserve"><value>Profile &amp;name:</value></data>
   <data name="ändern" xml:space="preserve"><value>edit</value></data>
+  <data name="Nach &amp;oben" xml:space="preserve"><value>Move &amp;up</value></data>
+  <data name="Nach &amp;unten" xml:space="preserve"><value>Move &amp;down</value></data>
 </root>
