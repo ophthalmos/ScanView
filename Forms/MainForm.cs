@@ -423,9 +423,13 @@ public partial class MainForm : Form, IMessageFilter
         e.Graphics.DrawLine(pen, panelSettings.Width - 1, 0, panelSettings.Width - 1, toolStrip.Height);
     }
 
+    /// <summary>Helligkeit ist die Abweichung von der Mitte: mit Vorzeichen und Prozentzeichen,
+    /// in Neutralstellung ganz ohne Zahl.</summary>
     private void TrackBrightness_ValueChanged(object sender, EventArgs e)
     {
-        labelBrightness.Text = string.Format(Lng.T("&Helligkeit: {0}"), trackBrightness.Value);
+        labelBrightness.Text = trackBrightness.Value == 0
+            ? Lng.T("&Helligkeit:")
+            : string.Format(Lng.T("&Helligkeit: {0} %"), trackBrightness.Value.ToString("+0;-0"));
     }
 
     // ------------------------------------------------------------------ Scannen

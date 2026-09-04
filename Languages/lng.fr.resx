@@ -69,8 +69,6 @@
   <data name="Flachbett" xml:space="preserve"><value>À plat</value></data>
   <data name="Automatischer Einzug" xml:space="preserve"><value>Chargeur automatique</value></data>
   <data name="Ohne Texterkennung" xml:space="preserve"><value>Sans reconnaissance de texte</value></data>
-  <data name="&amp;Helligkeit: 0" xml:space="preserve"><value>&amp;Luminosité : 0</value></data>
-  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Luminosité : {0}</value></data>
   <data name="Kopiermodus — jeder Scan wird direkt gedruckt" xml:space="preserve"><value>Mode copie — chaque numérisation est imprimée directement</value></data>
   <data name="Drucker:" xml:space="preserve"><value>Imprimante :</value></data>
   <data name="&amp;Papierformat:" xml:space="preserve"><value>&amp;Format de papier :</value></data>
@@ -310,4 +308,6 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Hoch" xml:space="preserve"><value>Élevée</value></data>
   <data name="Kleine Datei" xml:space="preserve"><value>Petit fichier</value></data>
   <data name="Große Datei" xml:space="preserve"><value>Gros fichier</value></data>
+  <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Luminosité :</value></data>
+  <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Luminosité : {0} %</value></data>
 </root>

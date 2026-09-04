@@ -69,8 +69,6 @@
   <data name="Flachbett" xml:space="preserve"><value>Cama plana</value></data>
   <data name="Automatischer Einzug" xml:space="preserve"><value>Alimentador automático</value></data>
   <data name="Ohne Texterkennung" xml:space="preserve"><value>Sin reconocimiento de texto</value></data>
-  <data name="&amp;Helligkeit: 0" xml:space="preserve"><value>&amp;Brillo: 0</value></data>
-  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Brillo: {0}</value></data>
   <data name="Kopiermodus — jeder Scan wird direkt gedruckt" xml:space="preserve"><value>Modo copia — cada escaneo se imprime directamente</value></data>
   <data name="Drucker:" xml:space="preserve"><value>Impresora:</value></data>
   <data name="&amp;Papierformat:" xml:space="preserve"><value>Tama&amp;ño de papel:</value></data>
@@ -310,4 +308,6 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Hoch" xml:space="preserve"><value>Alta</value></data>
   <data name="Kleine Datei" xml:space="preserve"><value>Archivo pequeño</value></data>
   <data name="Große Datei" xml:space="preserve"><value>Archivo grande</value></data>
+  <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Brillo:</value></data>
+  <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Brillo: {0} %</value></data>
 </root>

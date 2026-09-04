@@ -755,7 +755,7 @@
             panelSettings.Location = new Point(0, 84);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(8);
-            panelSettings.Size = new Size(150, 408);
+            panelSettings.Size = new Size(150, 353);
             panelSettings.TabIndex = 1;
             // 
             // labelSettings
@@ -787,11 +787,11 @@
             comboProfile.SelectedIndexChanged += ComboProfile_SelectedIndexChanged;
             // 
             // linkProfiles
-            //
+            // 
             linkProfiles.AutoSize = true;
             linkProfiles.Location = new Point(100, 44);
             linkProfiles.Name = "linkProfiles";
-            linkProfiles.Size = new Size(40, 15);
+            linkProfiles.Size = new Size(78, 15);
             linkProfiles.TabIndex = 22;
             linkProfiles.TabStop = true;
             linkProfiles.Text = "umbenennen";
@@ -878,9 +878,9 @@
             labelBrightness.AutoSize = true;
             labelBrightness.Location = new Point(8, 304);
             labelBrightness.Name = "labelBrightness";
-            labelBrightness.Size = new Size(69, 15);
+            labelBrightness.Size = new Size(60, 15);
             labelBrightness.TabIndex = 7;
-            labelBrightness.Text = "&Helligkeit: 0";
+            labelBrightness.Text = "&Helligkeit:";
             // 
             // trackBrightness
             // 
@@ -894,7 +894,6 @@
             trackBrightness.SmallChange = 5;
             trackBrightness.TabIndex = 13;
             trackBrightness.TickFrequency = 25;
-            trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
             trackBrightness.ValueChanged += ScanSetting_Changed;
             // 
             // panelCopyMode
@@ -918,7 +917,7 @@
             panelCopyMode.Location = new Point(150, 84);
             panelCopyMode.Name = "panelCopyMode";
             panelCopyMode.Padding = new Padding(16);
-            panelCopyMode.Size = new Size(834, 408);
+            panelCopyMode.Size = new Size(834, 353);
             panelCopyMode.TabIndex = 3;
             panelCopyMode.Visible = false;
             // 
@@ -1051,7 +1050,7 @@
             flowPanel.Location = new Point(150, 84);
             flowPanel.Name = "flowPanel";
             flowPanel.Padding = new Padding(8);
-            flowPanel.Size = new Size(834, 408);
+            flowPanel.Size = new Size(834, 353);
             flowPanel.TabIndex = 2;
             flowPanel.DragEnter += FlowPanel_DragEnter;
             flowPanel.DragOver += FlowPanel_DragOver;
@@ -1059,7 +1058,7 @@
             // statusStrip
             // 
             statusStrip.Items.AddRange(new ToolStripItem[] { statusPages, statusSize, statusLabel, statusScanner });
-            statusStrip.Location = new Point(0, 492);
+            statusStrip.Location = new Point(0, 437);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(984, 24);
             statusStrip.TabIndex = 3;
