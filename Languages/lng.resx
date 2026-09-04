@@ -69,8 +69,6 @@
   <data name="Flachbett" xml:space="preserve"><value>Flachbett</value></data>
   <data name="Automatischer Einzug" xml:space="preserve"><value>Automatischer Einzug</value></data>
   <data name="Ohne Texterkennung" xml:space="preserve"><value>Ohne Texterkennung</value></data>
-  <data name="&amp;Helligkeit: 0" xml:space="preserve"><value>&amp;Helligkeit: 0</value></data>
-  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Helligkeit: {0}</value></data>
   <data name="Kopiermodus — jeder Scan wird direkt gedruckt" xml:space="preserve"><value>Kopiermodus — jeder Scan wird direkt gedruckt</value></data>
   <data name="Drucker:" xml:space="preserve"><value>Drucker:</value></data>
   <data name="&amp;Papierformat:" xml:space="preserve"><value>&amp;Papierformat:</value></data>
@@ -310,4 +308,6 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Hoch" xml:space="preserve"><value>Hoch</value></data>
   <data name="Kleine Datei" xml:space="preserve"><value>Kleine Datei</value></data>
   <data name="Große Datei" xml:space="preserve"><value>Große Datei</value></data>
+  <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Helligkeit:</value></data>
+  <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Helligkeit: {0} %</value></data>
 </root>

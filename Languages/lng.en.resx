@@ -69,8 +69,6 @@
   <data name="Flachbett" xml:space="preserve"><value>Flatbed</value></data>
   <data name="Automatischer Einzug" xml:space="preserve"><value>Automatic feeder</value></data>
   <data name="Ohne Texterkennung" xml:space="preserve"><value>No text recognition</value></data>
-  <data name="&amp;Helligkeit: 0" xml:space="preserve"><value>&amp;Brightness: 0</value></data>
-  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Brightness: {0}</value></data>
   <data name="Kopiermodus — jeder Scan wird direkt gedruckt" xml:space="preserve"><value>Copy mode — every scan is printed immediately</value></data>
   <data name="Drucker:" xml:space="preserve"><value>Printer:</value></data>
   <data name="&amp;Papierformat:" xml:space="preserve"><value>Paper si&amp;ze:</value></data>
@@ -310,4 +308,6 @@ Grayscale scans save additional space.</value></data>
   <data name="Hoch" xml:space="preserve"><value>High</value></data>
   <data name="Kleine Datei" xml:space="preserve"><value>Small file</value></data>
   <data name="Große Datei" xml:space="preserve"><value>Large file</value></data>
+  <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Brightness:</value></data>
+  <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Brightness: {0}%</value></data>
 </root>
