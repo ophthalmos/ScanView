@@ -182,7 +182,7 @@
             groupOcr.Controls.Add(labelQuality);
             groupOcr.Location = new Point(12, 191);
             groupOcr.Name = "groupOcr";
-            groupOcr.Size = new Size(380, 144);
+            groupOcr.Size = new Size(380, 110);
             groupOcr.TabIndex = 2;
             groupOcr.TabStop = false;
             groupOcr.Text = "Texterkennung";
@@ -221,14 +221,14 @@
             //
             qualityJpeg.Location = new Point(124, 53);
             qualityJpeg.Name = "qualityJpeg";
-            qualityJpeg.Size = new Size(244, 63);
+            qualityJpeg.Size = new Size(244, 23);
             qualityJpeg.TabIndex = 3;
             //
             // labelDefaultsHint
             //
             labelDefaultsHint.AutoSize = true;
             labelDefaultsHint.ForeColor = SystemColors.GrayText;
-            labelDefaultsHint.Location = new Point(12, 121);
+            labelDefaultsHint.Location = new Point(12, 86);
             labelDefaultsHint.Name = "labelDefaultsHint";
             labelDefaultsHint.Size = new Size(240, 15);
             labelDefaultsHint.TabIndex = 5;
@@ -244,7 +244,7 @@
             groupMeta.Controls.Add(textKeywords);
             groupMeta.Controls.Add(labelAuthor);
             groupMeta.Controls.Add(textAuthor);
-            groupMeta.Location = new Point(12, 341);
+            groupMeta.Location = new Point(12, 307);
             groupMeta.Name = "groupMeta";
             groupMeta.Size = new Size(380, 146);
             groupMeta.TabIndex = 3;
@@ -318,7 +318,7 @@
             // cbOpenAfter
             // 
             cbOpenAfter.AutoSize = true;
-            cbOpenAfter.Location = new Point(28, 504);
+            cbOpenAfter.Location = new Point(28, 470);
             cbOpenAfter.Name = "cbOpenAfter";
             cbOpenAfter.Size = new Size(174, 19);
             cbOpenAfter.TabIndex = 6;
@@ -328,7 +328,7 @@
             // btnSave
             // 
             btnSave.DialogResult = DialogResult.OK;
-            btnSave.Location = new Point(226, 499);
+            btnSave.Location = new Point(226, 465);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(80, 26);
             btnSave.TabIndex = 4;
@@ -338,7 +338,7 @@
             // btnCancel
             // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(312, 499);
+            btnCancel.Location = new Point(312, 465);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 5;
@@ -351,7 +351,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(404, 537);
+            ClientSize = new Size(404, 503);
             Controls.Add(groupScope);
             Controls.Add(groupFile);
             Controls.Add(groupOcr);

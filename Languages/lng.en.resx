@@ -300,15 +300,10 @@ the latest version.</value></data>
   <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>The selected scanner was not found. Is it connected and switched on?</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>Windows Image Acquisition (WIA) is not available.</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>JPEG &amp;quality:</value></data>
-  <data name="Niedrig" xml:space="preserve"><value>Low</value></data>
-  <data name="Mittel" xml:space="preserve"><value>Medium</value></data>
-  <data name="Hoch" xml:space="preserve"><value>High</value></data>
-  <data name="Kleine Datei" xml:space="preserve"><value>Small file</value></data>
-  <data name="Große Datei" xml:space="preserve"><value>Large file</value></data>
   <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Brightness:</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Brightness: {0}%</value></data>
   <data name="Vorgaben lassen sich in den Optionen ändern." xml:space="preserve"><value>Defaults can be changed in the options.</value></data>
   <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>JPEG &amp;quality of the images in the PDF:</value></data>
-  <data name="Hint.JpgQuality" xml:space="preserve"><value>Lower levels give smaller files; level 8 is a good
-compromise. Grayscale scans save additional space.</value></data>
+  <data name="Hint.JpgQuality" xml:space="preserve"><value>Smaller values give smaller files; 75 is a good compromise.
+Grayscale scans save additional space.</value></data>
 </root>

@@ -300,15 +300,10 @@ d'installation pour installer la dernière version.</value></data>
   <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>Le scanner sélectionné est introuvable. Est-il branché et allumé ?</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>L'acquisition d'images Windows (WIA) n'est pas disponible.</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>&amp;Qualité JPEG :</value></data>
-  <data name="Niedrig" xml:space="preserve"><value>Faible</value></data>
-  <data name="Mittel" xml:space="preserve"><value>Moyenne</value></data>
-  <data name="Hoch" xml:space="preserve"><value>Élevée</value></data>
-  <data name="Kleine Datei" xml:space="preserve"><value>Petit fichier</value></data>
-  <data name="Große Datei" xml:space="preserve"><value>Gros fichier</value></data>
   <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Luminosité :</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Luminosité : {0} %</value></data>
   <data name="Vorgaben lassen sich in den Optionen ändern." xml:space="preserve"><value>Les valeurs par défaut se règlent dans les options.</value></data>
   <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>&amp;Qualité JPEG des images du PDF :</value></data>
-  <data name="Hint.JpgQuality" xml:space="preserve"><value>Des niveaux plus faibles donnent des fichiers plus petits ;
-le niveau 8 est un bon compromis. Le gris économise encore.</value></data>
+  <data name="Hint.JpgQuality" xml:space="preserve"><value>Des valeurs plus faibles donnent des fichiers plus petits ; 75 est
+un bon compromis. Le gris économise encore de la place.</value></data>
 </root>

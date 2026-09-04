@@ -300,15 +300,10 @@ um die neueste Version zu installieren.</value></data>
   <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>Die Windows-Bilderfassung (WIA) ist nicht verfügbar.</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>JPEG-&amp;Qualität:</value></data>
-  <data name="Niedrig" xml:space="preserve"><value>Niedrig</value></data>
-  <data name="Mittel" xml:space="preserve"><value>Mittel</value></data>
-  <data name="Hoch" xml:space="preserve"><value>Hoch</value></data>
-  <data name="Kleine Datei" xml:space="preserve"><value>Kleine Datei</value></data>
-  <data name="Große Datei" xml:space="preserve"><value>Große Datei</value></data>
   <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Helligkeit:</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Helligkeit: {0} %</value></data>
   <data name="Vorgaben lassen sich in den Optionen ändern." xml:space="preserve"><value>Vorgaben lassen sich in den Optionen ändern.</value></data>
   <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>JPEG-&amp;Qualität der Bilder in der PDF:</value></data>
-  <data name="Hint.JpgQuality" xml:space="preserve"><value>Kleinere Stufen ergeben kleinere Dateien; Stufe 8 ist ein
-guter Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
+  <data name="Hint.JpgQuality" xml:space="preserve"><value>Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter
+Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
 </root>
