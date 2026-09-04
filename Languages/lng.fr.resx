@@ -315,4 +315,10 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Gespeicherte Profile" xml:space="preserve"><value>Profils enregistrés</value></data>
   <data name="Profilverwaltung" xml:space="preserve"><value>Gestion des profils</value></data>
   <data name="verwalten" xml:space="preserve"><value>gérer</value></data>
+  <data name="Grau" xml:space="preserve"><value>Gris</value></data>
+  <data name="SW" xml:space="preserve"><value>N/B</value></data>
+  <data name="max." xml:space="preserve"><value>max.</value></data>
+  <data name="Visitenk." xml:space="preserve"><value>Carte vis.</value></data>
+  <data name="Einzug" xml:space="preserve"><value>Chargeur</value></data>
+  <data name="Hell. {0} %" xml:space="preserve"><value>Lum. {0} %</value></data>
 </root>

@@ -22,11 +22,12 @@ internal sealed partial class ProfileForm : Form
 
     private readonly ScanProfile current; // die aktuellen Panel-Einstellungen als Vorlage fürs Hinzufügen
 
-    public ProfileForm(List<ScanProfile> profiles, ScanProfile current, string currentSummary, string selectedName)
+    public ProfileForm(List<ScanProfile> profiles, ScanProfile current, string currentSummary, string compactSummary, string selectedName)
     {
         InitializeComponent();
         Lng.Apply(this);
         labelSettings.Text = currentSummary; // die Panel-Werte im Klartext — das speichert der Button
+        if (labelSettings.Right > groupSave.Width - 12) { labelSettings.Text = compactSummary; } // zu breit → Kurzform
         btnOk.Left = btnCancel.Left - 6 - btnOk.Width; // rechtsbündig neben Abbrechen (AutoSize, Textbreite je Sprache)
         this.current = current;
         Profiles = [.. profiles.Select(p => new ScanProfile // Kopie — Abbrechen lässt die Originale unberührt

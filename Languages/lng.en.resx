@@ -315,4 +315,10 @@ Grayscale scans save additional space.</value></data>
   <data name="Gespeicherte Profile" xml:space="preserve"><value>Saved profiles</value></data>
   <data name="Profilverwaltung" xml:space="preserve"><value>Profile management</value></data>
   <data name="verwalten" xml:space="preserve"><value>manage</value></data>
+  <data name="Grau" xml:space="preserve"><value>Gray</value></data>
+  <data name="SW" xml:space="preserve"><value>B/W</value></data>
+  <data name="max." xml:space="preserve"><value>max.</value></data>
+  <data name="Visitenk." xml:space="preserve"><value>Bus. card</value></data>
+  <data name="Einzug" xml:space="preserve"><value>Feeder</value></data>
+  <data name="Hell. {0} %" xml:space="preserve"><value>Bright. {0} %</value></data>
 </root>
