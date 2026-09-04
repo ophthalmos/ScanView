@@ -304,6 +304,10 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Error al escanear.</value></data>
   <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>No se encontró el escáner seleccionado. ¿Está conectado y encendido?</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>La adquisición de imágenes de Windows (WIA) no está disponible.</value></data>
-  <data name="JPEG-&amp;Qualität: 75" xml:space="preserve"><value>Calidad JPE&amp;G: 75</value></data>
-  <data name="JPEG-&amp;Qualität: {0}" xml:space="preserve"><value>Calidad JPE&amp;G: {0}</value></data>
+  <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>Calidad JPE&amp;G:</value></data>
+  <data name="Niedrig" xml:space="preserve"><value>Baja</value></data>
+  <data name="Mittel" xml:space="preserve"><value>Media</value></data>
+  <data name="Hoch" xml:space="preserve"><value>Alta</value></data>
+  <data name="Kleine Datei" xml:space="preserve"><value>Archivo pequeño</value></data>
+  <data name="Große Datei" xml:space="preserve"><value>Archivo grande</value></data>
 </root>
