@@ -301,4 +301,5 @@ Grayscale scans save additional space.</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>Move &amp;down</value></data>
   <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Rename</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>A profile with this name already exists.</value></data>
+  <data name="hinzufügen" xml:space="preserve"><value>add</value></data>
 </root>

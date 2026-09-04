@@ -95,7 +95,6 @@ public partial class MainForm : Form, IMessageFilter
         trackBrightness.Value = Math.Clamp(settings.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
         RefreshProfileCombo(settings.ScanProfile); // Profilnamen listen; die Werte kommen aus den Einzel-Settings
         ScanSetting_Changed(this, EventArgs.Empty); // die gemerkte Profilwahl nur behalten, wenn die Werte noch dazu passen
-        linkProfiles.Left = comboProfile.Right - linkProfiles.Width; // rechtsbündig — die Übersetzungen sind unterschiedlich breit
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
         ApplyToolbarIcons();
@@ -1352,6 +1351,15 @@ public partial class MainForm : Form, IMessageFilter
         comboProfile.SelectedIndex = settings.ScanProfiles.FindIndex(p => p.Name == selectName);
         comboProfile.EndUpdate();
         updatingProfiles = false;
+        UpdateProfileLink();
+    }
+
+    /// <summary>Der Link über der Combo benennt die nächstliegende Aktion: „hinzufügen" bei leerer
+    /// Auswahl, sonst „ändern" — rechtsbündig, weil die Texte unterschiedlich breit sind.</summary>
+    private void UpdateProfileLink()
+    {
+        linkProfiles.Text = Lng.T(comboProfile.SelectedIndex >= 0 ? "ändern" : "hinzufügen");
+        linkProfiles.Left = comboProfile.Right - linkProfiles.Width;
     }
 
     /// <summary>Die aktuellen Werte des Scan-Panels als (namenloses) Profil — Vorlage fürs Speichern.</summary>
@@ -1377,6 +1385,7 @@ public partial class MainForm : Form, IMessageFilter
         comboFeed.SelectedIndex = Clamped(profile.FeedIndex, comboFeed, 0);
         trackBrightness.Value = Math.Clamp(profile.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
         updatingProfiles = false;
+        UpdateProfileLink();
     }
 
     /// <summary>Sobald eine Scan-Einstellung vom gewählten Profil abweicht, wird die Profil-Combo
@@ -1394,6 +1403,7 @@ public partial class MainForm : Form, IMessageFilter
         updatingProfiles = true;
         comboProfile.SelectedIndex = -1;
         updatingProfiles = false;
+        UpdateProfileLink();
     }
 
     /// <summary>Link über der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
