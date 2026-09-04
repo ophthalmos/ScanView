@@ -110,8 +110,11 @@
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Vide : Windows propose le dernier dossier utilisé.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>&amp;Couleur de fond :</value></data>
   <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Lang&amp;ue de reconnaissance préférée (défaut des nouvelles sessions) :</value></data>
-  <data name="Hint.OcrLanguages" xml:space="preserve"><value>Autres langues : placez des fichiers .traineddata (tessdata_best)
-dans le dossier « tessdata » à côté du programme.</value></data>
+  <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView est fourni avec l'allemand et l'anglais. S'il vous
+manque une langue pour l'OCR, ajoutez-la ainsi :</value></data>
+  <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Téléchargez-y le fichier de langue souhaité
+   (p. ex. « ita.traineddata » pour l'italien).
+• Placez ensuite le fichier dans ce dossier :</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Emplacement d'enregistrement préféré des PDF</value></data>
   <data name="Sprache geändert." xml:space="preserve"><value>Langue modifiée.</value></data>
   <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve"><value>La nouvelle langue prendra effet au prochain démarrage.</value></data>
@@ -308,4 +311,5 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Imprimer toutes les pages ou seulement la page sélectionnée (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>imprimer les pages (toutes ou la sélectionnée)</value></data>
   <data name="Eigenschaften" xml:space="preserve"><value>Propriétés</value></data>
+  <data name="Der Ordner konnte nicht geöffnet werden." xml:space="preserve"><value>Impossible d'ouvrir le dossier.</value></data>
 </root>

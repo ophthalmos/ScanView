@@ -110,8 +110,11 @@
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Vacío: Windows sugiere la última carpeta usada.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>C&amp;olor de fondo:</value></data>
   <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Idioma de OCR pre&amp;ferido (predeterminado para nuevas sesiones):</value></data>
-  <data name="Hint.OcrLanguages" xml:space="preserve"><value>Más idiomas: coloque archivos .traineddata (tessdata_best)
-en la carpeta &quot;tessdata&quot; junto al programa.</value></data>
+  <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView incluye alemán e inglés. Si falta el idioma
+que desea reconocer, añádalo así:</value></data>
+  <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Descargue allí el archivo de idioma deseado
+   (p. ej. «ita.traineddata» para italiano).
+• Después coloque el archivo en esta carpeta:</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Ubicación preferida para guardar PDFs</value></data>
   <data name="Sprache geändert." xml:space="preserve"><value>Idioma cambiado.</value></data>
   <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve"><value>El nuevo idioma se aplicará tras el próximo inicio.</value></data>
@@ -308,4 +311,5 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Imprimir todas las páginas o solo la marcada (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>imprimir páginas (todas o la marcada)</value></data>
   <data name="Eigenschaften" xml:space="preserve"><value>Propiedades</value></data>
+  <data name="Der Ordner konnte nicht geöffnet werden." xml:space="preserve"><value>No se pudo abrir la carpeta.</value></data>
 </root>

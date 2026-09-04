@@ -110,8 +110,11 @@
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Empty: Windows suggests the last used folder.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>Bac&amp;kground color:</value></data>
   <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Preferred OCR lang&amp;uage (default for new sessions):</value></data>
-  <data name="Hint.OcrLanguages" xml:space="preserve"><value>More languages: put .traineddata files (tessdata_best)
-into the &quot;tessdata&quot; folder next to the program file.</value></data>
+  <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView ships with German and English. If the language
+you want to recognize is missing, add it like this:</value></data>
+  <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Download the language file you need there
+   (e.g. »ita.traineddata« for Italian).
+• Then put the file into this folder:</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Preferred save location for PDF files</value></data>
   <data name="Sprache geändert." xml:space="preserve"><value>Language changed.</value></data>
   <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve"><value>The new language takes effect after the next start.</value></data>
@@ -308,4 +311,5 @@ Grayscale scans save additional space.</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Print all pages or only the selected one (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>print pages (all or selected)</value></data>
   <data name="Eigenschaften" xml:space="preserve"><value>Properties</value></data>
+  <data name="Der Ordner konnte nicht geöffnet werden." xml:space="preserve"><value>The folder could not be opened.</value></data>
 </root>

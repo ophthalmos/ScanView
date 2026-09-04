@@ -32,7 +32,9 @@ internal sealed partial class SettingsForm : Form
         Lng.Apply(this);
         // Mehrzeilige Texte brauchen explizite Schlüssel (Zeilenumbrüche taugen nicht als resx-Schlüssel)
         labelLanguageHint.Text = Lng.T("Hint.OcrLanguages", labelLanguageHint.Text);
+        labelTessInstruction.Text = Lng.T("Hint.TessdataSteps", labelTessInstruction.Text);
         labelQualityHint.Text = Lng.T("Hint.JpgQuality", labelQualityHint.Text);
+        linkTessdataFolder.Text = Path.Combine(AppContext.BaseDirectory, "tessdata"); // derselbe Ordner, den OcrLanguages.Installed liest
         var languageIndex = Array.IndexOf(LanguageCodes, languageCode);
         comboUiLanguage.SelectedIndex = languageIndex >= 0 ? languageIndex : 0;
         var match = BackColorRadios().FirstOrDefault(r => r.BackColor.ToArgb() == overviewBackColor.ToArgb()) ?? rbBackWhite;
@@ -64,6 +66,24 @@ internal sealed partial class SettingsForm : Form
     private void TrackQuality_ValueChanged(object sender, EventArgs e)
     {
         labelQualityValue.Text = OcrJpgQuality.ToString();
+    }
+
+    private void LinkTessdataRepo_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        TaskDlg.StartLink(Handle, linkTessdataRepo.Text);
+    }
+
+    /// <summary>Öffnet den tessdata-Ordner im Explorer — dorthin gehören die Sprachdateien.</summary>
+    private void LinkTessdataFolder_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        try
+        {
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(linkTessdataFolder.Text) { UseShellExecute = true });
+        }
+        catch (Exception ex) when (ex is System.ComponentModel.Win32Exception or InvalidOperationException)
+        {
+            TaskDlg.ErrTaskDlg(Handle, Lng.T("Der Ordner konnte nicht geöffnet werden."), ex);
+        }
     }
 
     private void BtnBrowse_Click(object sender, EventArgs e)
