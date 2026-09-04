@@ -88,6 +88,7 @@ public partial class MainForm : Form, IMessageFilter
             if (int.TryParse(Path.GetFileNameWithoutExtension(file).AsSpan(5), out var number)) { scanCounter = Math.Max(scanCounter, number); }
         }
         static int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
+        updatingProfiles = true; // Restore ist programmatisch — ScanSetting_Changed liefe sonst vor dem Befüllen der Profil-Combo
         comboDpi.SelectedIndex = Clamped(settings.DpiIndex, comboDpi, 2);      // Standard: 300 dpi — der OCR-Sweet-Spot
         comboColor.SelectedIndex = Clamped(settings.ColorIndex, comboColor, 0);
         comboArea.SelectedIndex = Clamped(settings.AreaIndex, comboArea, 0);
