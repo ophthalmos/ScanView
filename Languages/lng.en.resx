@@ -277,4 +277,17 @@ Grayscale scans save additional space.</value></data>
   <data name="Seite {0} von {1}" xml:space="preserve"><value>Page {0} of {1}</value></data>
   <data name="quer" xml:space="preserve"><value>landscape</value></data>
   <data name="Scanner: {0}" xml:space="preserve"><value>Scanner: {0}</value></data>
+  <data name="Fa&amp;xen" xml:space="preserve"><value>Fa&amp;x</value></data>
+  <data name="&amp;Faxen" xml:space="preserve"><value>&amp;Fax</value></data>
+  <data name="Faxen" xml:space="preserve"><value>Fax</value></data>
+  <data name="Fax&amp;programm …" xml:space="preserve"><value>Fax &amp;program…</value></data>
+  <data name="Faxprogramm" xml:space="preserve"><value>Fax program</value></data>
+  <data name="Virtueller Fax&amp;drucker:" xml:space="preserve"><value>Virtual fax &amp;printer:</value></data>
+  <data name="Faxdrucker: {0}" xml:space="preserve"><value>Fax printer: {0}</value></data>
+  <data name="Virtuellen Faxdrucker festlegen" xml:space="preserve"><value>Choose the virtual fax printer</value></data>
+  <data name="Alle oder nur die markierte Seite an das Faxprogramm senden" xml:space="preserve"><value>Send all pages or only the selected one to the fax program</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Printing to this printer opens the fax program
+(e.g. FRITZ!fax) with the printed pages.</value></data>
+  <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} page(s) sent to {1}</value></data>
+  <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Fax failed.</value></data>
 </root>

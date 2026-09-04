@@ -76,6 +76,7 @@
             menuViewFullScreen = new ToolStripMenuItem();
             menuExtras = new ToolStripMenuItem();
             menuExtrasScanner = new ToolStripMenuItem();
+            menuExtrasFax = new ToolStripMenuItem();
             menuExtrasOptions = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
             menuHelpShortcuts = new ToolStripMenuItem();
@@ -86,6 +87,7 @@
             splitScan = new ToolStripSplitButton();
             btnSave = new ToolStripButton();
             btnPrint = new ToolStripButton();
+            btnFax = new ToolStripButton();
             btnNew = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
             btnMoveLeft = new ToolStripButton();
@@ -509,7 +511,7 @@
             // 
             // menuExtras
             // 
-            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasOptions, menuExtrasScanner });
+            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasOptions, menuExtrasScanner, menuExtrasFax });
             menuExtras.Name = "menuExtras";
             menuExtras.Size = new Size(49, 20);
             menuExtras.Text = "E&xtras";
@@ -521,6 +523,14 @@
             menuExtrasScanner.Text = "&Scanner …";
             menuExtrasScanner.ToolTipText = "Scanner wählen und Gerätetasten konfigurieren";
             menuExtrasScanner.Click += MenuExtrasScanner_Click;
+            //
+            // menuExtrasFax
+            //
+            menuExtrasFax.Name = "menuExtrasFax";
+            menuExtrasFax.Size = new Size(180, 22);
+            menuExtrasFax.Text = "Fax&programm …";
+            menuExtrasFax.ToolTipText = "Virtuellen Faxdrucker festlegen";
+            menuExtrasFax.Click += MenuExtrasFax_Click;
             // 
             // menuExtrasOptions
             // 
@@ -570,7 +580,7 @@
             // 
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnFax, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
@@ -612,6 +622,17 @@
             btnPrint.Text = "&Drucken";
             btnPrint.ToolTipText = "Alle Seiten drucken (F6)";
             btnPrint.Click += BtnPrint_Click;
+            //
+            // btnFax
+            //
+            btnFax.AutoSize = false;
+            btnFax.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnFax.Enabled = false;
+            btnFax.Name = "btnFax";
+            btnFax.Size = new Size(90, 57);
+            btnFax.Text = "Fa&xen";
+            btnFax.ToolTipText = "Alle oder nur die markierte Seite an das Faxprogramm senden";
+            btnFax.Click += BtnFax_Click;
             // 
             // btnNew
             // 
@@ -1141,6 +1162,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuExtras;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasScanner;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasOptions;
+        private System.Windows.Forms.ToolStripMenuItem menuExtrasFax;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
         private System.Windows.Forms.ToolStripMenuItem menuHelpShortcuts;
         private System.Windows.Forms.ToolStripMenuItem menuHelpUpdate;
@@ -1157,6 +1179,7 @@
         private System.Windows.Forms.ToolStripButton btnRemove;
         private System.Windows.Forms.ToolStripButton btnCrop;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton btnFax;
         private System.Windows.Forms.ToolStripButton btnZoomIn;
         private System.Windows.Forms.ToolStripButton btnZoomOut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparatorRight;

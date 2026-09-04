@@ -164,6 +164,7 @@ public partial class MainForm : Form, IMessageFilter
         Set(splitScan, ToolbarIcons.Scan);
         Set(btnSave, ToolbarIcons.Save);
         Set(btnPrint, ToolbarIcons.Print);
+        Set(btnFax, ToolbarIcons.Fax);
         Set(btnMoveLeft, ToolbarIcons.Previous, imageOnly: true);
         Set(btnMoveRight, ToolbarIcons.Next, imageOnly: true);
         Set(btnRemove, ToolbarIcons.Delete);
@@ -207,6 +208,7 @@ public partial class MainForm : Form, IMessageFilter
         menuViewZoomOut.Image = Icon16(ToolbarIcons.ZoomOut);
         menuViewFullScreen.Image = Icon16(ToolbarIcons.FullScreen);
         menuExtrasScanner.Image = Icon16(ToolbarIcons.Scan);
+        menuExtrasFax.Image = Icon16(ToolbarIcons.Fax);
         menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
         menuHelpShortcuts.Image = Icon16(ToolbarIcons.Help);
         menuHelpUpdate.Image = Icon16(ToolbarIcons.UpdateSearch);
@@ -393,6 +395,8 @@ public partial class MainForm : Form, IMessageFilter
             cropDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, cropDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-crop.png"));
         }
+        Application.RemoveMessageFilter(this);
+        Hide(); // keine Paint-Zyklen mehr, während der Prozess mitten im Nachrichtenbetrieb endet
         Environment.Exit(pageCount == 2 && pageCountA == 2 ? 0 : 1);
     }
 
@@ -1089,6 +1093,7 @@ public partial class MainForm : Form, IMessageFilter
         var pagesVisible = !panelCopyMode.Visible; // im Kopiermodus ist die Übersicht ausgeblendet — alles Seitenbezogene sperren
         btnSave.Enabled = pagesVisible && count > 0;
         btnPrint.Enabled = pagesVisible && count > 0;
+        btnFax.Enabled = pagesVisible && count > 0;
         btnNew.Enabled = pagesVisible && count > 0;
         menuActionSave.Enabled = pagesVisible && count > 0;
         menuActionPrint.Enabled = pagesVisible && count > 0;
@@ -1345,6 +1350,53 @@ public partial class MainForm : Form, IMessageFilter
         catch (InvalidPrinterException ex)
         {
             TaskDlg.ErrTaskDlg(Handle, Lng.T("Drucken fehlgeschlagen."), ex);
+        }
+    }
+
+    /// <summary>Extras → Faxprogramm: virtuellen Faxdrucker festlegen (z.B. FRITZ!fax-Drucker).</summary>
+    private void MenuExtrasFax_Click(object sender, EventArgs e)
+    {
+        using FaxPrinterForm dialog = new(settings.FaxPrinter);
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        settings.FaxPrinter = dialog.FaxPrinter;
+        settings.Save();
+    }
+
+    /// <summary>Faxen: alle oder nur die markierte Seite an den virtuellen Faxdrucker drucken —
+    /// das Faxprogramm (z.B. FRITZ!fax) öffnet sich dann für Empfänger und Versand.</summary>
+    private void BtnFax_Click(object sender, EventArgs e)
+    {
+        if (flowPanel.Controls.Count == 0) { return; }
+        if (string.IsNullOrEmpty(settings.FaxPrinter)
+            || !PrinterSettings.InstalledPrinters.Cast<string>().Contains(settings.FaxPrinter))
+        {
+            MenuExtrasFax_Click(sender, e); // erst den Faxdrucker festlegen
+            if (string.IsNullOrEmpty(settings.FaxPrinter)) { return; }
+        }
+        using FaxForm dialog = new(selected != null, settings.FaxPrinter);
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        List<string> pages = dialog.AllPages
+            ? flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList()
+            : [(string)selected.Tag];
+        using PrintDocument document = new();
+        document.DocumentName = "ScanView";
+        document.PrinterSettings.PrinterName = settings.FaxPrinter;
+        var pageIndex = 0;
+        document.PrintPage += (s, args) =>
+        {
+            using var image = ScanService.LoadUnlocked(pages[pageIndex]);
+            args.Graphics.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
+            pageIndex++;
+            args.HasMorePages = pageIndex < pages.Count;
+        };
+        try
+        {
+            document.Print();
+            statusLabel.Text = string.Format(Lng.T("{0} Seite(n) an {1} übergeben"), pages.Count, settings.FaxPrinter);
+        }
+        catch (InvalidPrinterException ex)
+        {
+            TaskDlg.ErrTaskDlg(Handle, Lng.T("Faxen fehlgeschlagen."), ex);
         }
     }
 
