@@ -1388,20 +1388,24 @@ public partial class MainForm : Form, IMessageFilter
         UpdateProfileLink();
     }
 
-    /// <summary>Sobald eine Scan-Einstellung vom gewählten Profil abweicht, wird die Profil-Combo
-    /// geleert — sonst zeigte sie einen Namen, dessen Werte nicht mehr stimmen.</summary>
+    /// <summary>Hält die Profil-Combo synchron zu den Scan-Einstellungen: Sie zeigt das Profil,
+    /// dem die aktuellen Werte entsprechen — beim Abweichen leert sie sich, beim Zurückstellen
+    /// (oder zufälligen Treffen) eines Profils erscheint dessen Name wieder.</summary>
     private void ScanSetting_Changed(object sender, EventArgs e)
     {
-        if (updatingProfiles || comboProfile.SelectedIndex < 0) { return; }
-        var profile = settings.ScanProfiles[comboProfile.SelectedIndex];
-        var matches = comboDpi.SelectedIndex == profile.DpiIndex
-            && comboColor.SelectedIndex == profile.ColorIndex
-            && comboArea.SelectedIndex == profile.AreaIndex
-            && comboFeed.SelectedIndex == profile.FeedIndex
-            && trackBrightness.Value == profile.Brightness;
-        if (matches) { return; }
+        if (updatingProfiles) { return; }
+        bool Matches(ScanProfile p) => comboDpi.SelectedIndex == p.DpiIndex
+            && comboColor.SelectedIndex == p.ColorIndex
+            && comboArea.SelectedIndex == p.AreaIndex
+            && comboFeed.SelectedIndex == p.FeedIndex
+            && trackBrightness.Value == p.Brightness;
+        // die aktuelle Wahl behalten, solange sie passt; sonst das erste passende Profil (oder keins)
+        var index = comboProfile.SelectedIndex >= 0 && Matches(settings.ScanProfiles[comboProfile.SelectedIndex])
+            ? comboProfile.SelectedIndex
+            : settings.ScanProfiles.FindIndex(Matches);
+        if (index == comboProfile.SelectedIndex) { return; }
         updatingProfiles = true;
-        comboProfile.SelectedIndex = -1;
+        comboProfile.SelectedIndex = index;
         updatingProfiles = false;
         UpdateProfileLink();
     }
