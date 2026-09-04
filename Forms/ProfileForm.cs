@@ -2,11 +2,12 @@ using ScanView.Classes;
 
 namespace ScanView.Forms;
 
-/// <summary>Scan-Profile verwalten (Link über der Profil-Combo): die aktuellen Einstellungen
-/// des Scan-Panels (als Klartext im Dialog aufgelistet) unter einem Namen speichern, Profile
-/// umbenennen (bei markiertem Listeneintrag wird aus „Aktuelle Einstellungen speichern" ein
-/// „Umbenennen"; Klick auf die leere Listenfläche hebt die Markierung auf), löschen oder
-/// umsortieren. Der Dialog arbeitet auf einer Kopie der Liste — erst OK übernimmt die Änderungen.</summary>
+/// <summary>Scan-Profile verwalten (Link über der Profil-Combo), in zwei Zonen: OBEN speichert
+/// „Aktuelle Einstellungen speichern" die Panel-Werte (als Klartext aufgelistet) unter dem Namen
+/// aus textName. UNTEN (durch einen Strich getrennt) wirkt alles auf das markierte Listenprofil:
+/// Löschen, Umsortieren und das Umbenennen-Feld, das die Markierung vorbefüllt — es ändert nur
+/// den Namen, nie die gespeicherten Werte. Der Dialog arbeitet auf einer Kopie der Liste —
+/// erst OK übernimmt die Änderungen.</summary>
 internal sealed partial class ProfileForm : Form
 {
     /// <summary>Die (bei OK zu übernehmende) Profilliste.</summary>
@@ -50,27 +51,14 @@ internal sealed partial class ProfileForm : Form
         if (selectName != null) { listProfiles.SelectedIndex = Profiles.FindIndex(p => p.Name == selectName); }
     }
 
-    /// <summary>Ohne Listenmarkierung: speichert die aktuellen Scan-Einstellungen unter dem
-    /// eingegebenen Namen (ein vorhandenes Profil gleichen Namens wird nach Rückfrage ersetzt).
-    /// Mit Markierung („Umbenennen"): ändert nur den Namen des markierten Profils.</summary>
+    /// <summary>Speichert die aktuellen Scan-Einstellungen unter dem in textName eingegebenen
+    /// Namen (ein vorhandenes Profil gleichen Namens wird nach Rückfrage ersetzt).</summary>
     private void BtnAdd_Click(object sender, EventArgs e)
     {
         var name = textName.Text.Trim();
         if (name.Length == 0)
         {
             TaskDlg.MsgTaskDlg(Handle, Lng.T("Bitte gib einen Profilnamen an."), string.Empty, TaskDialogIcon.Warning);
-            return;
-        }
-        var selectedIndex = listProfiles.SelectedIndex;
-        if (selectedIndex >= 0) // Umbenennen
-        {
-            if (Profiles.Where((p, i) => i != selectedIndex).Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
-            {
-                TaskDlg.MsgTaskDlg(Handle, Lng.T("Es gibt bereits ein Profil mit diesem Namen."), string.Empty, TaskDialogIcon.Warning);
-                return;
-            }
-            Profiles[selectedIndex].Name = name;
-            RefreshList(name);
             return;
         }
         var existing = Profiles.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
@@ -91,12 +79,32 @@ internal sealed partial class ProfileForm : Form
         RefreshList(name);
     }
 
+    /// <summary>Gibt dem markierten Profil den Namen aus dem Umbenennen-Feld —
+    /// die gespeicherten Einstellungen bleiben unangetastet.</summary>
+    private void BtnRename_Click(object sender, EventArgs e)
+    {
+        var selectedIndex = listProfiles.SelectedIndex;
+        if (selectedIndex < 0) { return; }
+        var name = textRename.Text.Trim();
+        if (name.Length == 0)
+        {
+            TaskDlg.MsgTaskDlg(Handle, Lng.T("Bitte gib einen Profilnamen an."), string.Empty, TaskDialogIcon.Warning);
+            return;
+        }
+        if (Profiles.Where((p, i) => i != selectedIndex).Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
+        {
+            TaskDlg.MsgTaskDlg(Handle, Lng.T("Es gibt bereits ein Profil mit diesem Namen."), string.Empty, TaskDialogIcon.Warning);
+            return;
+        }
+        Profiles[selectedIndex].Name = name;
+        RefreshList(name);
+    }
+
     private void BtnDelete_Click(object sender, EventArgs e)
     {
         if (listProfiles.SelectedIndex < 0) { return; }
         Profiles.RemoveAt(listProfiles.SelectedIndex);
         RefreshList(null);
-        textName.Text = string.Empty;
     }
 
     /// <summary>Verschiebt das markierte Profil in der Reihenfolge (auch der Profil-Combo).</summary>
@@ -113,30 +121,31 @@ internal sealed partial class ProfileForm : Form
 
     private void BtnDown_Click(object sender, EventArgs e) => MoveSelected(1);
 
+    /// <summary>Die Markierung steuert die untere Zone: Löschen/Verschieben/Umbenennen sind nur
+    /// mit Markierung aktiv, das Umbenennen-Feld wird mit dem markierten Namen vorbefüllt.</summary>
     private void ListProfiles_SelectedIndexChanged(object sender, EventArgs e)
     {
         var index = listProfiles.SelectedIndex;
         btnDelete.Enabled = index >= 0;
         btnUp.Enabled = index > 0;
         btnDown.Enabled = index >= 0 && index < listProfiles.Items.Count - 1;
-        btnAdd.Text = Lng.T(index >= 0 ? "&Umbenennen" : "&Aktuelle Einstellungen speichern");
-        if (index >= 0) { textName.Text = (string)listProfiles.SelectedItem; }
+        btnRename.Enabled = index >= 0;
+        textRename.Text = index >= 0 ? (string)listProfiles.SelectedItem : string.Empty;
     }
 
-    /// <summary>Solange der Fokus im Namensfeld steht, löst Enter das Hinzufügen bzw.
-    /// Umbenennen aus statt den Dialog zu schließen.</summary>
+    /// <summary>Solange der Fokus im jeweiligen Namensfeld steht, löst Enter das Speichern
+    /// bzw. Umbenennen aus statt den Dialog zu schließen.</summary>
     private void TextName_Enter(object sender, EventArgs e) => AcceptButton = btnAdd;
 
     private void TextName_Leave(object sender, EventArgs e) => AcceptButton = btnOk;
 
-    /// <summary>Klick auf die leere Listenfläche hebt die Markierung auf —
-    /// aus „Umbenennen" wird wieder „Hinzufügen".</summary>
+    private void TextRename_Enter(object sender, EventArgs e) => AcceptButton = btnRename;
+
+    private void TextRename_Leave(object sender, EventArgs e) => AcceptButton = btnOk;
+
+    /// <summary>Klick auf die leere Listenfläche hebt die Markierung auf.</summary>
     private void ListProfiles_MouseDown(object sender, MouseEventArgs e)
     {
-        if (listProfiles.IndexFromPoint(e.Location) < 0)
-        {
-            listProfiles.ClearSelected();
-            textName.Text = string.Empty;
-        }
+        if (listProfiles.IndexFromPoint(e.Location) < 0) { listProfiles.ClearSelected(); }
     }
 }
