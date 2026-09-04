@@ -263,7 +263,6 @@ d'installation pour installer la dernière version.</value></data>
   <data name="&amp;Sprache:" xml:space="preserve"><value>&amp;Langue :</value></data>
   <data name="TIFF (verlustfrei)" xml:space="preserve"><value>TIFF (sans perte)</value></data>
   <data name="Umfang" xml:space="preserve"><value>Étendue</value></data>
-  <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>&amp;Qualité JPEG :</value></data>
   <data name="PNG (verlustfrei)" xml:space="preserve"><value>PNG (sans perte)</value></data>
   <data name="Alle Seiten per Texterkennung als durchsuchbare PDF speichern (Strg+S)" xml:space="preserve"><value>Enregistrer toutes les pages en PDF interrogeable (OCR) (Ctrl+S)</value></data>
   <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
@@ -305,4 +304,6 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>La numérisation a échoué.</value></data>
   <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>Le scanner sélectionné est introuvable. Est-il branché et allumé ?</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>L'acquisition d'images Windows (WIA) n'est pas disponible.</value></data>
+  <data name="JPEG-&amp;Qualität: 75" xml:space="preserve"><value>&amp;Qualité JPEG : 75</value></data>
+  <data name="JPEG-&amp;Qualität: {0}" xml:space="preserve"><value>&amp;Qualité JPEG : {0}</value></data>
 </root>

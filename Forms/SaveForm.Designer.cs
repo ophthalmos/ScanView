@@ -1,4 +1,4 @@
-namespace ScanView.Forms
+﻿namespace ScanView.Forms
 {
     partial class SaveForm
     {
@@ -43,8 +43,7 @@ namespace ScanView.Forms
             labelOcr = new Label();
             comboOcr = new ComboBox();
             labelQuality = new Label();
-            numJpgQuality = new NumericUpDown();
-            labelQualityRange = new Label();
+            trackQuality = new TrackBar();
             groupMeta = new GroupBox();
             labelTitle = new Label();
             textTitle = new TextBox();
@@ -60,7 +59,7 @@ namespace ScanView.Forms
             groupScope.SuspendLayout();
             groupFile.SuspendLayout();
             groupOcr.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numJpgQuality).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackQuality).BeginInit();
             groupMeta.SuspendLayout();
             SuspendLayout();
             // 
@@ -179,8 +178,7 @@ namespace ScanView.Forms
             groupOcr.Controls.Add(labelOcr);
             groupOcr.Controls.Add(comboOcr);
             groupOcr.Controls.Add(labelQuality);
-            groupOcr.Controls.Add(numJpgQuality);
-            groupOcr.Controls.Add(labelQualityRange);
+            groupOcr.Controls.Add(trackQuality);
             groupOcr.Location = new Point(12, 191);
             groupOcr.Name = "groupOcr";
             groupOcr.Size = new Size(380, 90);
@@ -212,27 +210,20 @@ namespace ScanView.Forms
             labelQuality.Name = "labelQuality";
             labelQuality.Size = new Size(82, 15);
             labelQuality.TabIndex = 2;
-            labelQuality.Text = "JPEG-&Qualität:";
+            labelQuality.Text = "JPEG-&Qualität: 75";
             // 
-            // numJpgQuality
+            // trackQuality
             // 
-            numJpgQuality.Location = new Point(124, 53);
-            numJpgQuality.Minimum = new decimal(new int[] { 30, 0, 0, 0 });
-            numJpgQuality.Name = "numJpgQuality";
-            numJpgQuality.Size = new Size(60, 23);
-            numJpgQuality.TabIndex = 3;
-            numJpgQuality.Value = new decimal(new int[] { 75, 0, 0, 0 });
-            // 
-            // labelQualityRange
-            // 
-            labelQualityRange.AutoSize = true;
-            labelQualityRange.ForeColor = SystemColors.GrayText;
-            labelQualityRange.Location = new Point(190, 56);
-            labelQualityRange.Name = "labelQualityRange";
-            labelQualityRange.Size = new Size(51, 15);
-            labelQualityRange.TabIndex = 4;
-            labelQualityRange.Text = "(30–100)";
-            // 
+            trackQuality.LargeChange = 2;
+            trackQuality.Location = new Point(120, 48);
+            trackQuality.Maximum = 20;
+            trackQuality.Minimum = 6;
+            trackQuality.Name = "trackQuality";
+            trackQuality.Size = new Size(248, 30);
+            trackQuality.TabIndex = 3;
+            trackQuality.Value = 15;
+            trackQuality.ValueChanged += TrackQuality_ValueChanged;
+            //
             // groupMeta
             // 
             groupMeta.Controls.Add(labelTitle);
@@ -372,7 +363,7 @@ namespace ScanView.Forms
             groupFile.PerformLayout();
             groupOcr.ResumeLayout(false);
             groupOcr.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numJpgQuality).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackQuality).EndInit();
             groupMeta.ResumeLayout(false);
             groupMeta.PerformLayout();
             ResumeLayout(false);
@@ -396,8 +387,7 @@ namespace ScanView.Forms
         private System.Windows.Forms.Label labelOcr;
         private System.Windows.Forms.ComboBox comboOcr;
         private System.Windows.Forms.Label labelQuality;
-        private System.Windows.Forms.NumericUpDown numJpgQuality;
-        private System.Windows.Forms.Label labelQualityRange;
+        private System.Windows.Forms.TrackBar trackQuality;
         private System.Windows.Forms.GroupBox groupMeta;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.TextBox textTitle;

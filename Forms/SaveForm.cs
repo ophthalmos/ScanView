@@ -24,7 +24,7 @@ internal sealed partial class SaveForm : Form
     /// <summary>Gewählte OCR-Sprache — null bei „Ohne Texterkennung" oder Bild-Dateitypen.</summary>
     public string OcrLanguage => FileType == SaveFileType.Pdf && comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
 
-    public int JpgQuality => (int)numJpgQuality.Value;
+    public int JpgQuality => trackQuality.Value * 5; // der Slider läuft in 5er-Schritten (6–20 → 30–100)
 
     public string MetaTitle => textTitle.Text.Trim();
 
@@ -55,7 +55,8 @@ internal sealed partial class SaveForm : Form
             .FirstOrDefault(item => string.Equals(item.Code, ocrLanguage, StringComparison.OrdinalIgnoreCase));
         if (match != null) { comboOcr.SelectedItem = match; }
         else { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
-        numJpgQuality.Value = Math.Clamp(jpgQuality, 30, 100);
+        trackQuality.Value = Math.Clamp((int)Math.Round(jpgQuality / 5.0), trackQuality.Minimum, trackQuality.Maximum);
+        TrackQuality_ValueChanged(this, EventArgs.Empty); // Wertanzeige auch dann, wenn der Startwert dem Designer-Wert entspricht
         textAuthor.Text = author ?? string.Empty;
         cbOpenAfter.Checked = openAfter;
         comboFileType.SelectedIndex = 0;
@@ -79,8 +80,12 @@ internal sealed partial class SaveForm : Form
         groupMeta.Enabled = FileType is SaveFileType.Pdf or SaveFileType.PdfA;
         var usesJpgQuality = FileType is SaveFileType.Pdf or SaveFileType.PdfA or SaveFileType.Jpeg;
         labelQuality.Enabled = usesJpgQuality;
-        numJpgQuality.Enabled = usesJpgQuality;
-        labelQualityRange.Enabled = usesJpgQuality;
+        trackQuality.Enabled = usesJpgQuality;
+    }
+
+    private void TrackQuality_ValueChanged(object sender, EventArgs e)
+    {
+        labelQuality.Text = string.Format(Lng.T("JPEG-&Qualität: {0}"), JpgQuality);
     }
 
     protected override void OnFormClosing(FormClosingEventArgs e)
