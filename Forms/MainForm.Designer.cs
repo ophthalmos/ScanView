@@ -93,6 +93,8 @@
             btnRemove = new ToolStripButton();
             btnCrop = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
+            btnZoomIn = new ToolStripButton();
+            btnZoomOut = new ToolStripButton();
             btnCopyMode = new ToolStripButton();
             toolStripSeparatorRight = new ToolStripSeparator();
             panelSettings = new Panel();
@@ -568,7 +570,7 @@
             // 
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnCopyMode, toolStripSeparatorRight });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
@@ -675,9 +677,25 @@
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 60);
-            // 
+            //
+            // btnZoomIn
+            //
+            btnZoomIn.Name = "btnZoomIn";
+            btnZoomIn.Size = new Size(23, 60);
+            btnZoomIn.Text = "+";
+            btnZoomIn.ToolTipText = "Miniaturen vergrößern (Strg++)";
+            btnZoomIn.Click += BtnZoomIn_Click;
+            //
+            // btnZoomOut
+            //
+            btnZoomOut.Name = "btnZoomOut";
+            btnZoomOut.Size = new Size(23, 60);
+            btnZoomOut.Text = "−";
+            btnZoomOut.ToolTipText = "Miniaturen verkleinern (Strg+−)";
+            btnZoomOut.Click += BtnZoomOut_Click;
+            //
             // btnCopyMode
-            // 
+            //
             btnCopyMode.Alignment = ToolStripItemAlignment.Right;
             btnCopyMode.AutoSize = false;
             btnCopyMode.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -1139,6 +1157,8 @@
         private System.Windows.Forms.ToolStripButton btnRemove;
         private System.Windows.Forms.ToolStripButton btnCrop;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripButton btnZoomIn;
+        private System.Windows.Forms.ToolStripButton btnZoomOut;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparatorRight;
         private System.Windows.Forms.ToolStripButton btnCopyMode;
         private System.Windows.Forms.Panel panelSettings;
