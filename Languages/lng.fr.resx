@@ -305,5 +305,5 @@ d'installation pour installer la dernière version.</value></data>
   <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>&amp;Qualité JPEG des images du PDF :</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Des valeurs plus faibles donnent des fichiers plus petits ; 75 est
 un bon compromis. Le gris économise encore de la place.</value></data>
-  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Luminosité : {0}</value></data>
+  <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Luminosité : {0} %</value></data>
 </root>

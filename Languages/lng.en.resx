@@ -305,5 +305,5 @@ the latest version.</value></data>
   <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>JPEG &amp;quality of the images in the PDF:</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Smaller values give smaller files; 75 is a good compromise.
 Grayscale scans save additional space.</value></data>
-  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Brightness: {0}</value></data>
+  <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Brightness: {0}%</value></data>
 </root>
