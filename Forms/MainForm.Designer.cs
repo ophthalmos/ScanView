@@ -959,7 +959,7 @@
             linkCopyProperties.Size = new Size(100, 15);
             linkCopyProperties.TabIndex = 14;
             linkCopyProperties.TabStop = true;
-            linkCopyProperties.Text = "Eigenschaften …";
+            linkCopyProperties.Text = "Eigenschaften";
             linkCopyProperties.LinkClicked += LinkCopyProperties_LinkClicked;
             // 
             // labelCopyPaper

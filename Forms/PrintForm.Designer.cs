@@ -133,7 +133,7 @@
             linkProperties.Size = new Size(100, 15);
             linkProperties.TabIndex = 12;
             linkProperties.TabStop = true;
-            linkProperties.Text = "Eigenschaften …";
+            linkProperties.Text = "Eigenschaften";
             linkProperties.LinkClicked += LinkProperties_LinkClicked;
             //
             // labelPaper
