@@ -1,4 +1,4 @@
-namespace ScanView.Forms
+﻿namespace ScanView.Forms
 {
     partial class FaxForm
     {
@@ -30,13 +30,12 @@ namespace ScanView.Forms
         {
             radioAll = new RadioButton();
             radioSelected = new RadioButton();
-            labelPrinter = new Label();
             btnFax = new Button();
             btnCancel = new Button();
             SuspendLayout();
-            //
+            // 
             // radioAll
-            //
+            // 
             radioAll.AutoSize = true;
             radioAll.Checked = true;
             radioAll.Location = new Point(14, 12);
@@ -46,9 +45,9 @@ namespace ScanView.Forms
             radioAll.TabStop = true;
             radioAll.Text = "&Alle Seiten";
             radioAll.UseVisualStyleBackColor = true;
-            //
+            // 
             // radioSelected
-            //
+            // 
             radioSelected.AutoSize = true;
             radioSelected.Location = new Point(14, 34);
             radioSelected.Name = "radioSelected";
@@ -56,46 +55,36 @@ namespace ScanView.Forms
             radioSelected.TabIndex = 1;
             radioSelected.Text = "Nur &markierte Seite";
             radioSelected.UseVisualStyleBackColor = true;
-            //
-            // labelPrinter
-            //
-            labelPrinter.AutoSize = true;
-            labelPrinter.ForeColor = SystemColors.GrayText;
-            labelPrinter.Location = new Point(14, 64);
-            labelPrinter.Name = "labelPrinter";
-            labelPrinter.Size = new Size(80, 15);
-            labelPrinter.TabIndex = 2;
-            //
+            // 
             // btnFax
-            //
+            // 
             btnFax.DialogResult = DialogResult.OK;
-            btnFax.Location = new Point(112, 94);
+            btnFax.Location = new Point(12, 73);
             btnFax.Name = "btnFax";
             btnFax.Size = new Size(80, 26);
             btnFax.TabIndex = 3;
             btnFax.Text = "&Faxen";
             btnFax.UseVisualStyleBackColor = true;
-            //
+            // 
             // btnCancel
-            //
+            // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(198, 94);
+            btnCancel.Location = new Point(98, 73);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 4;
             btnCancel.Text = "Abbrechen";
             btnCancel.UseVisualStyleBackColor = true;
-            //
+            // 
             // FaxForm
-            //
+            // 
             AcceptButton = btnFax;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(290, 132);
+            ClientSize = new Size(190, 111);
             Controls.Add(radioAll);
             Controls.Add(radioSelected);
-            Controls.Add(labelPrinter);
             Controls.Add(btnFax);
             Controls.Add(btnCancel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -114,7 +103,6 @@ namespace ScanView.Forms
 
         private System.Windows.Forms.RadioButton radioAll;
         private System.Windows.Forms.RadioButton radioSelected;
-        private System.Windows.Forms.Label labelPrinter;
         private System.Windows.Forms.Button btnFax;
         private System.Windows.Forms.Button btnCancel;
     }

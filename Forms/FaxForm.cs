@@ -9,11 +9,10 @@ internal sealed partial class FaxForm : Form
 {
     public bool AllPages => radioAll.Checked;
 
-    public FaxForm(bool hasSelection, string faxPrinter)
+    public FaxForm(bool hasSelection)
     {
         InitializeComponent();
         Lng.Apply(this);
         radioSelected.Enabled = hasSelection;
-        labelPrinter.Text = string.Format(Lng.T("Faxdrucker: {0}"), faxPrinter);
     }
 }

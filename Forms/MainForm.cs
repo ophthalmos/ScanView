@@ -93,10 +93,8 @@ public partial class MainForm : Form, IMessageFilter
         comboArea.SelectedIndex = Clamped(settings.AreaIndex, comboArea, 0);
         comboFeed.SelectedIndex = Clamped(settings.FeedIndex, comboFeed, 0);
         trackBrightness.Value = Math.Clamp(settings.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
-        comboOcr.Items.Add(Lng.T("Ohne Texterkennung"));
-        foreach (var code in OcrLanguages.Installed()) { comboOcr.Items.Add(new OcrLanguageItem(code)); }
-        SelectOcrLanguage(settings.OcrLanguage); // bevorzugte Sprache aus den Optionen als Vorgabe
         RefreshProfileCombo(settings.ScanProfile); // Profilnamen listen; die Werte kommen aus den Einzel-Settings
+        linkProfiles.Left = comboProfile.Right - linkProfiles.Width; // rechtsbündig — die Übersetzungen sind unterschiedlich breit
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
         ApplyToolbarIcons();
@@ -400,19 +398,6 @@ public partial class MainForm : Form, IMessageFilter
         Hide(); // keine Paint-Zyklen mehr, während der Prozess mitten im Nachrichtenbetrieb endet
         Environment.Exit(pageCount == 2 && pageCountA == 2 ? 0 : 1);
     }
-
-    /// <summary>Stellt die Texterkennungs-Combo auf die Sprache mit dem angegebenen Code.</summary>
-    private void SelectOcrLanguage(string code)
-    {
-        var match = comboOcr.Items.OfType<OcrLanguageItem>()
-            .FirstOrDefault(item => string.Equals(item.Code, code, StringComparison.OrdinalIgnoreCase));
-        if (match != null) { comboOcr.SelectedItem = match; }
-        else if (comboOcr.Items.Count > 1) { comboOcr.SelectedIndex = 1; } // erste Sprache
-        else { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
-    }
-
-    /// <summary>Gewählte OCR-Sprache des aktuellen Scans — null bei „Ohne Texterkennung".</summary>
-    private string CurrentOcrLanguage => comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
 
     private string NextScanPath() => Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}.tif");
 
@@ -920,7 +905,6 @@ public partial class MainForm : Form, IMessageFilter
         settings.OcrLanguage = dialog.OcrLanguage;
         settings.OcrJpgQuality = dialog.OcrJpgQuality;
         settings.Save();
-        SelectOcrLanguage(settings.OcrLanguage); // neue bevorzugte Sprache auch für den aktuellen Scan übernehmen
         if (languageChanged) // kein automatischer Neustart — der würde mit der Einmal-Instanz kollidieren
         {
             TaskDlg.MsgTaskDlg(Handle, Lng.T("Sprache geändert."),
@@ -1094,6 +1078,7 @@ public partial class MainForm : Form, IMessageFilter
         var pagesVisible = !panelCopyMode.Visible; // im Kopiermodus ist die Übersicht ausgeblendet — alles Seitenbezogene sperren
         btnSave.Enabled = pagesVisible && count > 0;
         btnPrint.Enabled = pagesVisible && count > 0;
+        btnFax.Visible = !string.IsNullOrEmpty(settings.FaxPrinter); // ohne Faxdrucker (Extras → Faxprogramm) keine Schaltfläche
         btnFax.Enabled = pagesVisible && count > 0;
         btnNew.Enabled = pagesVisible && count > 0;
         menuActionSave.Enabled = pagesVisible && count > 0;
@@ -1236,7 +1221,7 @@ public partial class MainForm : Form, IMessageFilter
             ? settings.SaveDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         var author = string.IsNullOrWhiteSpace(settings.SaveAuthor) ? Environment.UserName : settings.SaveAuthor;
         using SaveForm dialog = new(selected != null, folder, Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd"),
-            CurrentOcrLanguage, settings.OcrJpgQuality, author, settings.OpenAfterSave);
+            settings.OcrLanguage, settings.OcrJpgQuality, author, settings.OpenAfterSave); // Vorauswahl: bevorzugte Sprache aus den Optionen
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.SaveAuthor = dialog.MetaAuthor; // Verfasser und Öffnen-Wahl fürs nächste Mal vorbelegen
         settings.OpenAfterSave = dialog.OpenAfter;
@@ -1377,7 +1362,6 @@ public partial class MainForm : Form, IMessageFilter
         ColorIndex = comboColor.SelectedIndex,
         AreaIndex = comboArea.SelectedIndex,
         FeedIndex = comboFeed.SelectedIndex,
-        OcrLanguage = CurrentOcrLanguage, // null = Ohne Texterkennung
         Brightness = trackBrightness.Value,
     };
 
@@ -1391,13 +1375,11 @@ public partial class MainForm : Form, IMessageFilter
         comboColor.SelectedIndex = Clamped(profile.ColorIndex, comboColor, 0);
         comboArea.SelectedIndex = Clamped(profile.AreaIndex, comboArea, 0);
         comboFeed.SelectedIndex = Clamped(profile.FeedIndex, comboFeed, 0);
-        if (profile.OcrLanguage == null) { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
-        else { SelectOcrLanguage(profile.OcrLanguage); }
         trackBrightness.Value = Math.Clamp(profile.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
     }
 
-    /// <summary>Button neben der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
-    private void BtnProfiles_Click(object sender, EventArgs e)
+    /// <summary>Link über der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
+    private void LinkProfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
         using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile());
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
@@ -1413,6 +1395,7 @@ public partial class MainForm : Form, IMessageFilter
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.FaxPrinter = dialog.FaxPrinter;
         settings.Save();
+        UpdateUiState(); // blendet den Faxen-Button ein bzw. aus
     }
 
     /// <summary>Faxen: alle oder nur die markierte Seite an den virtuellen Faxdrucker drucken —
@@ -1426,7 +1409,7 @@ public partial class MainForm : Form, IMessageFilter
             MenuExtrasFax_Click(sender, e); // erst den Faxdrucker festlegen
             if (string.IsNullOrEmpty(settings.FaxPrinter)) { return; }
         }
-        using FaxForm dialog = new(selected != null, settings.FaxPrinter);
+        using FaxForm dialog = new(selected != null);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         List<string> pages = dialog.AllPages
             ? flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList()

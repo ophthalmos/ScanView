@@ -20,7 +20,7 @@ internal sealed partial class ProfileForm : Form
         Profiles = profiles.Select(p => new ScanProfile // Kopie — Abbrechen lässt die Originale unberührt
         {
             Name = p.Name, DpiIndex = p.DpiIndex, ColorIndex = p.ColorIndex, AreaIndex = p.AreaIndex,
-            FeedIndex = p.FeedIndex, OcrLanguage = p.OcrLanguage, Brightness = p.Brightness,
+            FeedIndex = p.FeedIndex, Brightness = p.Brightness,
         }).ToList();
         RefreshList(null);
     }
@@ -57,7 +57,7 @@ internal sealed partial class ProfileForm : Form
         Profiles.Add(new ScanProfile
         {
             Name = name, DpiIndex = current.DpiIndex, ColorIndex = current.ColorIndex, AreaIndex = current.AreaIndex,
-            FeedIndex = current.FeedIndex, OcrLanguage = current.OcrLanguage, Brightness = current.Brightness,
+            FeedIndex = current.FeedIndex, Brightness = current.Brightness,
         });
         RefreshList(name);
     }

@@ -68,7 +68,6 @@
   <data name="Papier&amp;zufuhr:" xml:space="preserve"><value>Papier&amp;zufuhr:</value></data>
   <data name="Flachbett" xml:space="preserve"><value>Flachbett</value></data>
   <data name="Automatischer Einzug" xml:space="preserve"><value>Automatischer Einzug</value></data>
-  <data name="&amp;Texterkennung:" xml:space="preserve"><value>&amp;Texterkennung:</value></data>
   <data name="Ohne Texterkennung" xml:space="preserve"><value>Ohne Texterkennung</value></data>
   <data name="&amp;Helligkeit: 0" xml:space="preserve"><value>&amp;Helligkeit: 0</value></data>
   <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Helligkeit: {0}</value></data>
@@ -282,12 +281,8 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Faxen" xml:space="preserve"><value>Faxen</value></data>
   <data name="Fax&amp;programm …" xml:space="preserve"><value>Fax&amp;programm …</value></data>
   <data name="Faxprogramm" xml:space="preserve"><value>Faxprogramm</value></data>
-  <data name="Virtueller Fax&amp;drucker:" xml:space="preserve"><value>Virtueller Fax&amp;drucker:</value></data>
-  <data name="Faxdrucker: {0}" xml:space="preserve"><value>Faxdrucker: {0}</value></data>
   <data name="Virtuellen Faxdrucker festlegen" xml:space="preserve"><value>Virtuellen Faxdrucker festlegen</value></data>
   <data name="Alle oder nur die markierte Seite an das Faxprogramm senden" xml:space="preserve"><value>Alle oder nur die markierte Seite an das Faxprogramm senden</value></data>
-  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Der Druck an diesen Drucker öffnet das Faxprogramm
-(z. B. FRITZ!fax) mit den gedruckten Seiten.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} Seite(n) an {1} übergeben</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Faxen fehlgeschlagen.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profil:</value></data>
@@ -298,5 +293,10 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Bitte gib einen Profilnamen an.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Profil „{0}“ ersetzen?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Die gespeicherten Einstellungen werden überschrieben.</value></data>
-  <data name="&amp;Name:" xml:space="preserve"><value>&amp;Name:</value></data>
+  <data name="Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):" xml:space="preserve"><value>Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Wähle hier den Faxdrucker deines Faxprogramms.
+Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
+  <data name="(kein Faxdrucker)" xml:space="preserve"><value>(kein Faxdrucker)</value></data>
+  <data name="Profil&amp;name:" xml:space="preserve"><value>Profil&amp;name:</value></data>
+  <data name="ändern" xml:space="preserve"><value>ändern</value></data>
 </root>

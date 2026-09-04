@@ -68,7 +68,6 @@
   <data name="Papier&amp;zufuhr:" xml:space="preserve"><value>&amp;Origen del papel:</value></data>
   <data name="Flachbett" xml:space="preserve"><value>Cama plana</value></data>
   <data name="Automatischer Einzug" xml:space="preserve"><value>Alimentador automático</value></data>
-  <data name="&amp;Texterkennung:" xml:space="preserve"><value>Reconocimiento de te&amp;xto:</value></data>
   <data name="Ohne Texterkennung" xml:space="preserve"><value>Sin reconocimiento de texto</value></data>
   <data name="&amp;Helligkeit: 0" xml:space="preserve"><value>&amp;Brillo: 0</value></data>
   <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Brillo: {0}</value></data>
@@ -282,12 +281,8 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Faxen" xml:space="preserve"><value>Enviar fax</value></data>
   <data name="Fax&amp;programm …" xml:space="preserve"><value>&amp;Programa de fax…</value></data>
   <data name="Faxprogramm" xml:space="preserve"><value>Programa de fax</value></data>
-  <data name="Virtueller Fax&amp;drucker:" xml:space="preserve"><value>Impresora de fax vir&amp;tual:</value></data>
-  <data name="Faxdrucker: {0}" xml:space="preserve"><value>Impresora de fax: {0}</value></data>
   <data name="Virtuellen Faxdrucker festlegen" xml:space="preserve"><value>Elegir la impresora de fax virtual</value></data>
   <data name="Alle oder nur die markierte Seite an das Faxprogramm senden" xml:space="preserve"><value>Enviar todas las páginas o solo la marcada al programa de fax</value></data>
-  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Imprimir en esta impresora abre el programa de fax
-(p. ej. FRITZ!fax) con las páginas impresas.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} página(s) enviadas a {1}</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Error al enviar el fax.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Perfil:</value></data>
@@ -298,5 +293,10 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Introduzca un nombre de perfil.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>¿Reemplazar el perfil «{0}»?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Se sobrescribirán los ajustes guardados.</value></data>
-  <data name="&amp;Name:" xml:space="preserve"><value>&amp;Nombre:</value></data>
+  <data name="Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):" xml:space="preserve"><value>Impresora de fax vir&amp;tual (p. ej. FRITZ!fax):</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Elija aquí la impresora de fax de su programa.
+Sin entrada no se muestra el botón de fax.</value></data>
+  <data name="(kein Faxdrucker)" xml:space="preserve"><value>(sin impresora de fax)</value></data>
+  <data name="Profil&amp;name:" xml:space="preserve"><value>&amp;Nombre del perfil:</value></data>
+  <data name="ändern" xml:space="preserve"><value>editar</value></data>
 </root>
