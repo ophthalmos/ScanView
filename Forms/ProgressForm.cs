@@ -1,8 +1,9 @@
 namespace ScanView.Forms;
 
-/// <summary>Kleine Fortschrittsanzeige (Balken + Text, ohne Titelleiste — ControlBox=false und
-/// leerer Text blenden sie aus) für die Texterkennung bzw. das PDF-Erstellen beim Speichern;
-/// im Stil der WIA-Scananzeige. Kein Abbrechen — die parallele Erkennung läuft durch.</summary>
+/// <summary>Kleine Fortschrittsanzeige (Balken + Text) für die Texterkennung bzw. das
+/// PDF-Erstellen beim Speichern — bildschirmzentriert wie die WIA-Scananzeige, mit Titelleiste
+/// (den Titel setzt der Aufrufer), aber ohne Schließen-Knopf: kein Abbrechen, die parallele
+/// Erkennung läuft durch.</summary>
 internal sealed partial class ProgressForm : Form
 {
     public ProgressForm()

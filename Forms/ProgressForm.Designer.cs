@@ -61,7 +61,7 @@ namespace ScanView.Forms
             Name = "ProgressForm";
             ShowIcon = false;
             ShowInTaskbar = false;
-            StartPosition = FormStartPosition.CenterParent;
+            StartPosition = FormStartPosition.CenterScreen;
             ResumeLayout(false);
         }
 
