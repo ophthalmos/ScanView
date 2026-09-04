@@ -44,6 +44,7 @@ internal sealed partial class SaveForm : Form
     {
         InitializeComponent();
         Lng.Apply(this);
+        TextBoxMargins.Apply(this);
         Lng.TranslateItems(comboFileType); // wird über SelectedIndex ausgewertet
         this.hasSelection = hasSelection;
         textTitle.PlaceholderText = Lng.T("wie Dateiname");

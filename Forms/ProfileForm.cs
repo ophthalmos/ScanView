@@ -26,6 +26,7 @@ internal sealed partial class ProfileForm : Form
     {
         InitializeComponent();
         Lng.Apply(this);
+        TextBoxMargins.Apply(this);
         labelSettings.Text = currentSummary; // die Panel-Werte im Klartext — das speichert der Button
         if (labelSettings.Right > groupSave.Width - 12) { labelSettings.Text = compactSummary; } // zu breit → Kurzform
         btnOk.Left = btnCancel.Left - 6 - btnOk.Width; // rechtsbündig neben Abbrechen (AutoSize, Textbreite je Sprache)
