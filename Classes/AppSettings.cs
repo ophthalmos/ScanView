@@ -22,6 +22,7 @@ internal sealed class AppSettings
     public string OcrLanguage { get; set; } = "deu";
     public string SaveAuthor { get; set; } = ""; // Verfasser-Vorbelegung im Speichern-Dialog (leer = Windows-Benutzername)
     public bool OpenAfterSave { get; set; } = true; // Speichern-Dialog: Datei nach dem Speichern öffnen (letzte Wahl)
+    public string FaxPrinter { get; set; } = ""; // virtueller Faxdrucker (Extras → Faxprogramm), z.B. "FRITZfax Drucker"
     public int OcrJpgQuality { get; set; } = 75; // JPEG-Qualität der Bilder in der erzeugten PDF
     public List<string> PageFiles { get; set; } = []; // Seiten der letzten Sitzung (bei "behalten")
     public string ScannerId { get; set; }

@@ -53,6 +53,8 @@ internal static class ToolbarIcons
 
     public const char UpdateSearch = ''; // UpdateRestore: nach Updates suchen
 
+    public const char Fax = ''; // Phone: Faxen (MDL2 hat kein eigenes Fax-Symbol)
+
     private const string FontName = "Segoe MDL2 Assets";
     private static readonly Dictionary<(char Glyph, int Size), Image> cache = [];
 

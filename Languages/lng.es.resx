@@ -277,4 +277,17 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Seite {0} von {1}" xml:space="preserve"><value>Página {0} de {1}</value></data>
   <data name="quer" xml:space="preserve"><value>horizontal</value></data>
   <data name="Scanner: {0}" xml:space="preserve"><value>Escáner: {0}</value></data>
+  <data name="Fa&amp;xen" xml:space="preserve"><value>Enviar fa&amp;x</value></data>
+  <data name="&amp;Faxen" xml:space="preserve"><value>En&amp;viar fax</value></data>
+  <data name="Faxen" xml:space="preserve"><value>Enviar fax</value></data>
+  <data name="Fax&amp;programm …" xml:space="preserve"><value>&amp;Programa de fax…</value></data>
+  <data name="Faxprogramm" xml:space="preserve"><value>Programa de fax</value></data>
+  <data name="Virtueller Fax&amp;drucker:" xml:space="preserve"><value>Impresora de fax vir&amp;tual:</value></data>
+  <data name="Faxdrucker: {0}" xml:space="preserve"><value>Impresora de fax: {0}</value></data>
+  <data name="Virtuellen Faxdrucker festlegen" xml:space="preserve"><value>Elegir la impresora de fax virtual</value></data>
+  <data name="Alle oder nur die markierte Seite an das Faxprogramm senden" xml:space="preserve"><value>Enviar todas las páginas o solo la marcada al programa de fax</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Imprimir en esta impresora abre el programa de fax
+(p. ej. FRITZ!fax) con las páginas impresas.</value></data>
+  <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} página(s) enviadas a {1}</value></data>
+  <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Error al enviar el fax.</value></data>
 </root>

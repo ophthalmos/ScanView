@@ -277,4 +277,17 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Seite {0} von {1}" xml:space="preserve"><value>Page {0} sur {1}</value></data>
   <data name="quer" xml:space="preserve"><value>paysage</value></data>
   <data name="Scanner: {0}" xml:space="preserve"><value>Scanner : {0}</value></data>
+  <data name="Fa&amp;xen" xml:space="preserve"><value>Fa&amp;xer</value></data>
+  <data name="&amp;Faxen" xml:space="preserve"><value>&amp;Faxer</value></data>
+  <data name="Faxen" xml:space="preserve"><value>Faxer</value></data>
+  <data name="Fax&amp;programm …" xml:space="preserve"><value>&amp;Programme de fax…</value></data>
+  <data name="Faxprogramm" xml:space="preserve"><value>Programme de fax</value></data>
+  <data name="Virtueller Fax&amp;drucker:" xml:space="preserve"><value>Imprimante de fax &amp;virtuelle :</value></data>
+  <data name="Faxdrucker: {0}" xml:space="preserve"><value>Imprimante de fax : {0}</value></data>
+  <data name="Virtuellen Faxdrucker festlegen" xml:space="preserve"><value>Choisir l'imprimante de fax virtuelle</value></data>
+  <data name="Alle oder nur die markierte Seite an das Faxprogramm senden" xml:space="preserve"><value>Envoyer toutes les pages ou seulement la page sélectionnée au programme de fax</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>L'impression vers cette imprimante ouvre le programme
+de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
+  <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} page(s) transmise(s) à {1}</value></data>
+  <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>L'envoi du fax a échoué.</value></data>
 </root>

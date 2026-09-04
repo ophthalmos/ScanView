@@ -277,4 +277,17 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Seite {0} von {1}" xml:space="preserve"><value>Seite {0} von {1}</value></data>
   <data name="quer" xml:space="preserve"><value>quer</value></data>
   <data name="Scanner: {0}" xml:space="preserve"><value>Scanner: {0}</value></data>
+  <data name="Fa&amp;xen" xml:space="preserve"><value>Fa&amp;xen</value></data>
+  <data name="&amp;Faxen" xml:space="preserve"><value>&amp;Faxen</value></data>
+  <data name="Faxen" xml:space="preserve"><value>Faxen</value></data>
+  <data name="Fax&amp;programm …" xml:space="preserve"><value>Fax&amp;programm …</value></data>
+  <data name="Faxprogramm" xml:space="preserve"><value>Faxprogramm</value></data>
+  <data name="Virtueller Fax&amp;drucker:" xml:space="preserve"><value>Virtueller Fax&amp;drucker:</value></data>
+  <data name="Faxdrucker: {0}" xml:space="preserve"><value>Faxdrucker: {0}</value></data>
+  <data name="Virtuellen Faxdrucker festlegen" xml:space="preserve"><value>Virtuellen Faxdrucker festlegen</value></data>
+  <data name="Alle oder nur die markierte Seite an das Faxprogramm senden" xml:space="preserve"><value>Alle oder nur die markierte Seite an das Faxprogramm senden</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Der Druck an diesen Drucker öffnet das Faxprogramm
+(z. B. FRITZ!fax) mit den gedruckten Seiten.</value></data>
+  <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} Seite(n) an {1} übergeben</value></data>
+  <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Faxen fehlgeschlagen.</value></data>
 </root>
