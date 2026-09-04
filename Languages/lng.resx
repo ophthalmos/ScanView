@@ -45,7 +45,6 @@
   <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve"><value>Scanner wählen und Gerätetasten konfigurieren</value></data>
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Tastenkürzel-Übersicht als PDF erstellen und anzeigen</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen</value></data>
-  <data name="Alle Seiten drucken (F6)" xml:space="preserve"><value>Alle Seiten drucken (F6)</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Seitenübersicht leeren (F9)</value></data>
   <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Markierte Seite nach vorn schieben (Alt+←)</value></data>
   <data name="Markierte Seite nach hinten schieben (Alt+→)" xml:space="preserve"><value>Markierte Seite nach hinten schieben (Alt+→)</value></data>
@@ -147,7 +146,6 @@ beenden</value></data>
   <data name="Scan" xml:space="preserve"><value>Scan</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Gespeichert: {0}</value></data>
   <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>PDF erstellen fehlgeschlagen.</value></data>
-  <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve"><value>{0} Seite(n) an den Drucker übergeben</value></data>
   <data name="Seitenübersicht leeren?" xml:space="preserve"><value>Seitenübersicht leeren?</value></data>
   <data name="Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht." xml:space="preserve"><value>Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht.</value></data>
   <data name="Technische Details anzeigen" xml:space="preserve"><value>Technische Details anzeigen</value></data>
@@ -175,7 +173,6 @@ Das Design wurde dem Programm „Scanner Interface 7“
   <data name="Tastenkürzel" xml:space="preserve"><value>Tastenkürzel</value></data>
   <data name="Seite scannen" xml:space="preserve"><value>Seite scannen</value></data>
   <data name="durchsuchbare PDF speichern (mit Texterkennung)" xml:space="preserve"><value>durchsuchbare PDF speichern (mit Texterkennung)</value></data>
-  <data name="alle Seiten drucken" xml:space="preserve"><value>alle Seiten drucken</value></data>
   <data name="Kopiermodus ein/aus" xml:space="preserve"><value>Kopiermodus ein/aus</value></data>
   <data name="Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein." xml:space="preserve"><value>Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein.</value></data>
   <data name="Seitenübersicht leeren (Neu)" xml:space="preserve"><value>Seitenübersicht leeren (Neu)</value></data>
@@ -306,4 +303,8 @@ um die neueste Version zu installieren.</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter
 Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Helligkeit: {0} %</value></data>
+  <data name="Drucken" xml:space="preserve"><value>Drucken</value></data>
+  <data name="Drucker" xml:space="preserve"><value>Drucker</value></data>
+  <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Alle oder nur die markierte Seite drucken (F6)</value></data>
+  <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>Seiten drucken (alle oder markierte)</value></data>
 </root>

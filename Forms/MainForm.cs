@@ -1331,28 +1331,40 @@ public partial class MainForm : Form, IMessageFilter
         if (pages.Count == 0) { return; }
         using PrintDocument document = new();
         document.DocumentName = "ScanView";
-        ApplySharedPrinterSettings(document); // dieselben Vorgaben wie im Kopiermodus
+        using PrintForm dialog = new(selected != null, settings);
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        // die Dialog-Einstellungen als gemeinsame Vorgabe übernehmen (gilt auch für den Kopiermodus)
+        settings.CopyPrinter = dialog.PrinterName;
+        settings.CopyPaperRawKind = dialog.SelectedPaper?.RawKind ?? -1;
+        settings.CopyPaperSourceRawKind = dialog.SelectedSource?.RawKind ?? -1;
+        settings.CopyDuplexIndex = dialog.DuplexIndex;
+        settings.CopyCopies = dialog.Copies;
+        settings.CopyColor = dialog.PrintColor;
+        settings.CopyFit = dialog.FitToPage;
+        settings.Save();
+        SyncCopyModeUi();
+        if (!dialog.AllPages) { pages = [(string)selected.Tag]; }
+        ApplySharedPrinterSettings(document); // wendet die eben übernommenen Vorgaben an
         var pageIndex = 0;
         document.PrintPage += (s, args) =>
         {
             using var image = ScanService.LoadUnlocked(pages[pageIndex]);
-            args.Graphics.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
+            if (dialog.FitToPage)
+            {
+                args.Graphics.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
+            }
+            else
+            {
+                // Originalgröße: die Druck-Graphics rechnet in 1/100 Zoll
+                args.Graphics.DrawImage(image, 0, 0, image.Width * 100f / image.HorizontalResolution, image.Height * 100f / image.VerticalResolution);
+            }
             pageIndex++;
             args.HasMorePages = pageIndex < pages.Count;
         };
-        // UseEXDialog=false: der klassische Windows-Druckdialog — der moderne zeigt eine Vorschau an,
-        // die für WinForms-PrintDocuments nicht funktioniert
-        using PrintDialog dialog = new() { Document = document, UseEXDialog = false };
-        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         try
         {
             document.Print();
-            statusLabel.Text = string.Format(Lng.T("{0} Seite(n) an den Drucker übergeben"), pages.Count);
-            // Grundeinstellungen aus dem Dialog als gemeinsame Vorgabe übernehmen (gilt auch für den Kopiermodus)
-            settings.CopyPrinter = document.PrinterSettings.PrinterName;
-            settings.CopyCopies = Math.Clamp((int)document.PrinterSettings.Copies, 1, 99);
-            settings.CopyDuplexIndex = document.PrinterSettings.Duplex switch { Duplex.Vertical => 1, Duplex.Horizontal => 2, _ => 0 };
-            SyncCopyModeUi();
+            statusLabel.Text = string.Format(Lng.T("{0} Seite(n) an {1} übergeben"), pages.Count, document.PrinterSettings.PrinterName);
         }
         catch (InvalidPrinterException ex)
         {
