@@ -307,5 +307,5 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Drucker" xml:space="preserve"><value>Impresora</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Imprimir todas las páginas o solo la marcada (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>imprimir páginas (todas o la marcada)</value></data>
-  <data name="Eigenschaften …" xml:space="preserve"><value>Propiedades…</value></data>
+  <data name="Eigenschaften" xml:space="preserve"><value>Propiedades</value></data>
 </root>

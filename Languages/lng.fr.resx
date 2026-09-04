@@ -307,5 +307,5 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Drucker" xml:space="preserve"><value>Imprimante</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Imprimer toutes les pages ou seulement la page sélectionnée (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>imprimer les pages (toutes ou la sélectionnée)</value></data>
-  <data name="Eigenschaften …" xml:space="preserve"><value>Propriétés…</value></data>
+  <data name="Eigenschaften" xml:space="preserve"><value>Propriétés</value></data>
 </root>

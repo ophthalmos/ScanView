@@ -307,5 +307,5 @@ Grayscale scans save additional space.</value></data>
   <data name="Drucker" xml:space="preserve"><value>Printer</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Print all pages or only the selected one (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>print pages (all or selected)</value></data>
-  <data name="Eigenschaften …" xml:space="preserve"><value>Properties…</value></data>
+  <data name="Eigenschaften" xml:space="preserve"><value>Properties</value></data>
 </root>
