@@ -1279,10 +1279,18 @@ public partial class MainForm : Form, IMessageFilter
         toolStrip.Enabled = false;
         menuStrip.Enabled = false;
         Application.UseWaitCursor = true;
+        using ProgressForm progressForm = new();
         try
         {
+            string ProgressText(int done, int total) =>
+                string.Format(Lng.T(language != null ? "Texterkennung {0}/{1} …" : "Seite {0}/{1} …"), done, total);
+            progressForm.Show(this);
+            progressForm.SetProgress(ProgressText(0, tiffFiles.Count), 0, tiffFiles.Count);
             void Progress(int done, int total) => BeginInvoke(() => // kommt aus den Worker-Threads
-                statusLabel.Text = string.Format(Lng.T(language != null ? "Texterkennung {0}/{1} …" : "Seite {0}/{1} …"), done, total));
+            {
+                statusLabel.Text = ProgressText(done, total);
+                progressForm.SetProgress(statusLabel.Text, done, total);
+            });
             await Task.Run(() =>
             {
                 if (language != null) { OcrPdfService.CreateSearchablePdf(tiffFiles, outputPdf, language, jpgQuality, Progress, meta); }
@@ -1295,6 +1303,7 @@ public partial class MainForm : Form, IMessageFilter
         }
         finally
         {
+            progressForm.Close();
             ocrBusy = false;
             Application.UseWaitCursor = false;
             toolStrip.Enabled = true;
