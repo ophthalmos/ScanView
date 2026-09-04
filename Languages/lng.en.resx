@@ -278,8 +278,6 @@ the latest version.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} page(s) sent to {1}</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Fax failed.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profile:</value></data>
-  <data name="Scan-Profile" xml:space="preserve"><value>Scan profiles</value></data>
-  <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>Sa&amp;ved profiles:</value></data>
   <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Please enter a profile name.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Replace profile &quot;{0}&quot;?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>The saved settings will be overwritten.</value></data>
@@ -290,8 +288,6 @@ the latest version.</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>Move &amp;down</value></data>
   <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Rename</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>A profile with this name already exists.</value></data>
-  <data name="hinzufügen" xml:space="preserve"><value>add</value></data>
-  <data name="umbenennen" xml:space="preserve"><value>rename</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} of {1} pages processed</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Creating PDF</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Scanning failed.</value></data>
@@ -314,4 +310,9 @@ Grayscale scans save additional space.</value></data>
   <data name="Gespeichert werden die aktuellen Scan-Einstellungen:" xml:space="preserve"><value>The current scan settings will be saved:</value></data>
   <data name="Helligkeit {0} %" xml:space="preserve"><value>Brightness {0} %</value></data>
   <data name="Neuer Na&amp;me:" xml:space="preserve"><value>New na&amp;me:</value></data>
+  <data name="Änderungen &amp;speichern" xml:space="preserve"><value>&amp;Save changes</value></data>
+  <data name="Neues Profil" xml:space="preserve"><value>New profile</value></data>
+  <data name="Gespeicherte Profile" xml:space="preserve"><value>Saved profiles</value></data>
+  <data name="Profile verwalten" xml:space="preserve"><value>Manage profiles</value></data>
+  <data name="Profilverwaltung" xml:space="preserve"><value>Profile management</value></data>
 </root>

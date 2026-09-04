@@ -2,12 +2,12 @@ using ScanView.Classes;
 
 namespace ScanView.Forms;
 
-/// <summary>Scan-Profile verwalten (Link über der Profil-Combo), in zwei Zonen: OBEN speichert
-/// „Aktuelle Einstellungen speichern" die Panel-Werte (als Klartext aufgelistet) unter dem Namen
-/// aus textName. UNTEN (durch einen Strich getrennt) wirkt alles auf das markierte Listenprofil:
-/// Löschen, Umsortieren und das Umbenennen-Feld, das die Markierung vorbefüllt — es ändert nur
-/// den Namen, nie die gespeicherten Werte. Der Dialog arbeitet auf einer Kopie der Liste —
-/// erst OK übernimmt die Änderungen.</summary>
+/// <summary>Profilverwaltung (Link „Profile verwalten" über der Profil-Combo), zwei GroupBoxen:
+/// „Neues Profil" speichert die Panel-Werte (als Klartext aufgelistet) unter dem Namen aus
+/// textName. „Gespeicherte Profile" wirkt auf das markierte Listenprofil: Löschen, Umsortieren
+/// und das Umbenennen-Feld, das die Markierung vorbefüllt — es ändert nur den Namen, nie die
+/// gespeicherten Werte. Der Dialog arbeitet auf einer Kopie der Liste; „Änderungen speichern"
+/// (aktiv erst nach der ersten Änderung) übernimmt sie in die MainForm.</summary>
 internal sealed partial class ProfileForm : Form
 {
     /// <summary>Die (bei OK zu übernehmende) Profilliste.</summary>
@@ -27,6 +27,7 @@ internal sealed partial class ProfileForm : Form
         InitializeComponent();
         Lng.Apply(this);
         labelSettings.Text = currentSummary; // die Panel-Werte im Klartext — das speichert der Button
+        btnOk.Left = btnCancel.Left - 6 - btnOk.Width; // rechtsbündig neben Abbrechen (AutoSize, Textbreite je Sprache)
         // Nota bene vor dem Hinweis: das Windows-Infosymbol in DPI-passender Größe
         using (var info = SystemIcons.GetStockIcon(StockIconId.Info, LogicalToDeviceUnits(16)))
         {
@@ -77,6 +78,7 @@ internal sealed partial class ProfileForm : Form
             FeedIndex = current.FeedIndex, Brightness = current.Brightness,
         });
         RefreshList(name);
+        btnOk.Enabled = true; // es gibt jetzt etwas zu speichern
     }
 
     /// <summary>Gibt dem markierten Profil den Namen aus dem Umbenennen-Feld —
@@ -98,6 +100,7 @@ internal sealed partial class ProfileForm : Form
         }
         Profiles[selectedIndex].Name = name;
         RefreshList(name);
+        btnOk.Enabled = true;
     }
 
     private void BtnDelete_Click(object sender, EventArgs e)
@@ -105,6 +108,7 @@ internal sealed partial class ProfileForm : Form
         if (listProfiles.SelectedIndex < 0) { return; }
         Profiles.RemoveAt(listProfiles.SelectedIndex);
         RefreshList(null);
+        btnOk.Enabled = true;
     }
 
     /// <summary>Verschiebt das markierte Profil in der Reihenfolge (auch der Profil-Combo).</summary>
@@ -115,6 +119,7 @@ internal sealed partial class ProfileForm : Form
         if (index < 0 || target < 0 || target >= Profiles.Count) { return; }
         (Profiles[index], Profiles[target]) = (Profiles[target], Profiles[index]);
         RefreshList(Profiles[target].Name);
+        btnOk.Enabled = true;
     }
 
     private void BtnUp_Click(object sender, EventArgs e) => MoveSelected(-1);

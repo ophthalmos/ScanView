@@ -278,8 +278,6 @@ d'installation pour installer la dernière version.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} page(s) transmise(s) à {1}</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>L'envoi du fax a échoué.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profil :</value></data>
-  <data name="Scan-Profile" xml:space="preserve"><value>Profils de numérisation</value></data>
-  <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>Profils enre&amp;gistrés :</value></data>
   <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Veuillez saisir un nom de profil.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Remplacer le profil « {0} » ?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Les paramètres enregistrés seront écrasés.</value></data>
@@ -290,8 +288,6 @@ d'installation pour installer la dernière version.</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>&amp;Descendre</value></data>
   <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Renommer</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Un profil de ce nom existe déjà.</value></data>
-  <data name="hinzufügen" xml:space="preserve"><value>ajouter</value></data>
-  <data name="umbenennen" xml:space="preserve"><value>renommer</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} page(s) sur {1} traitée(s)</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Création du PDF</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>La numérisation a échoué.</value></data>
@@ -314,4 +310,9 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Gespeichert werden die aktuellen Scan-Einstellungen:" xml:space="preserve"><value>Les réglages de numérisation actuels seront enregistrés :</value></data>
   <data name="Helligkeit {0} %" xml:space="preserve"><value>Luminosité {0} %</value></data>
   <data name="Neuer Na&amp;me:" xml:space="preserve"><value>Nouveau no&amp;m :</value></data>
+  <data name="Änderungen &amp;speichern" xml:space="preserve"><value>Enregi&amp;strer les modifications</value></data>
+  <data name="Neues Profil" xml:space="preserve"><value>Nouveau profil</value></data>
+  <data name="Gespeicherte Profile" xml:space="preserve"><value>Profils enregistrés</value></data>
+  <data name="Profile verwalten" xml:space="preserve"><value>Gérer les profils</value></data>
+  <data name="Profilverwaltung" xml:space="preserve"><value>Gestion des profils</value></data>
 </root>

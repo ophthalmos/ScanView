@@ -278,8 +278,6 @@ um die neueste Version zu installieren.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} Seite(n) an {1} übergeben</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Faxen fehlgeschlagen.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profil:</value></data>
-  <data name="Scan-Profile" xml:space="preserve"><value>Scan-Profile</value></data>
-  <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>&amp;Gespeicherte Profile:</value></data>
   <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Bitte gib einen Profilnamen an.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Profil „{0}“ ersetzen?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Die gespeicherten Einstellungen werden überschrieben.</value></data>
@@ -290,8 +288,6 @@ um die neueste Version zu installieren.</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>Nach &amp;unten</value></data>
   <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Umbenennen</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Es gibt bereits ein Profil mit diesem Namen.</value></data>
-  <data name="hinzufügen" xml:space="preserve"><value>hinzufügen</value></data>
-  <data name="umbenennen" xml:space="preserve"><value>umbenennen</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} von {1} Seiten verarbeitet</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>PDF erstellen</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Scannen fehlgeschlagen.</value></data>
@@ -314,4 +310,9 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Gespeichert werden die aktuellen Scan-Einstellungen:" xml:space="preserve"><value>Gespeichert werden die aktuellen Scan-Einstellungen:</value></data>
   <data name="Helligkeit {0} %" xml:space="preserve"><value>Helligkeit {0} %</value></data>
   <data name="Neuer Na&amp;me:" xml:space="preserve"><value>Neuer Na&amp;me:</value></data>
+  <data name="Änderungen &amp;speichern" xml:space="preserve"><value>Änderungen &amp;speichern</value></data>
+  <data name="Neues Profil" xml:space="preserve"><value>Neues Profil</value></data>
+  <data name="Gespeicherte Profile" xml:space="preserve"><value>Gespeicherte Profile</value></data>
+  <data name="Profile verwalten" xml:space="preserve"><value>Profile verwalten</value></data>
+  <data name="Profilverwaltung" xml:space="preserve"><value>Profilverwaltung</value></data>
 </root>
