@@ -37,6 +37,7 @@ namespace ScanView.Forms
             btnIsolate = new ToolStripButton();
             btnCropAction = new ToolStripButton();
             btnRemove = new ToolStripButton();
+            btnSaveAsNew = new ToolStripButton();
             btnApply = new ToolStripButton();
             btnCancel = new ToolStripButton();
             statusStrip = new StatusStrip();
@@ -54,7 +55,7 @@ namespace ScanView.Forms
             toolStrip.Font = new Font("Segoe UI", 10F);
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
             toolStrip.ImageScalingSize = new Size(24, 24);
-            toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, btnZoomOut, btnZoomIn, toolStripSeparator1, btnIsolate, btnCropAction, btnRemove, btnApply, btnCancel });
+            toolStrip.Items.AddRange(new ToolStripItem[] { labelZoom, comboZoom, btnZoomOut, btnZoomIn, toolStripSeparator1, btnIsolate, btnCropAction, btnRemove, btnApply, btnSaveAsNew, btnCancel });
             toolStrip.Location = new Point(0, 0);
             toolStrip.Name = "toolStrip";
             toolStrip.Size = new Size(784, 33);
@@ -125,6 +126,17 @@ namespace ScanView.Forms
             btnRemove.Text = "&Ausschneiden";
             btnRemove.ToolTipText = "Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten";
             btnRemove.Click += BtnRemove_Click;
+            //
+            // btnSaveAsNew
+            //
+            btnSaveAsNew.Alignment = ToolStripItemAlignment.Right;
+            btnSaveAsNew.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+            btnSaveAsNew.Enabled = false;
+            btnSaveAsNew.Name = "btnSaveAsNew";
+            btnSaveAsNew.Size = new Size(180, 30);
+            btnSaveAsNew.Text = "Als &neue Seite speichern";
+            btnSaveAsNew.ToolTipText = "Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — das Original bleibt unverändert";
+            btnSaveAsNew.Click += BtnSaveAsNew_Click;
             //
             // btnApply
             //
@@ -224,6 +236,7 @@ namespace ScanView.Forms
         private System.Windows.Forms.ToolStripButton btnIsolate;
         private System.Windows.Forms.ToolStripButton btnCropAction;
         private System.Windows.Forms.ToolStripButton btnRemove;
+        private System.Windows.Forms.ToolStripButton btnSaveAsNew;
         private System.Windows.Forms.ToolStripButton btnApply;
         private System.Windows.Forms.ToolStripButton btnCancel;
         private System.Windows.Forms.StatusStrip statusStrip;

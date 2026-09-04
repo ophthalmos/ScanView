@@ -841,6 +841,17 @@ public partial class MainForm : Form, IMessageFilter
         settings.CropWidth = bounds.Width;
         settings.CropHeight = bounds.Height;
         if (result != DialogResult.OK || !dialog.Edited) { return; }
+        if (dialog.SaveAsNewPage) // Ergebnis als zusätzliche Seite hinter der bearbeiteten einfügen (Original bleibt)
+        {
+            var insertAt = flowPanel.Controls.GetChildIndex(selected) + 1;
+            var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(path)}");
+            dialog.ResultImage.Save(copy, ImageFormatFor(copy));
+            AddPage(copy); // markiert die neue Seite
+            flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt);
+            UpdateUiState();
+            statusLabel.Text = string.Format(Lng.T("Als neue Seite gespeichert ({0} × {1} Pixel)"), dialog.ResultImage.Width, dialog.ResultImage.Height);
+            return;
+        }
         dialog.ResultImage.Save(path, ImageFormatFor(path));
         ReloadSelectedThumbnail();
         statusLabel.Text = string.Format(Lng.T("Seite bearbeitet übernommen ({0} × {1} Pixel)"), dialog.ResultImage.Width, dialog.ResultImage.Height);
