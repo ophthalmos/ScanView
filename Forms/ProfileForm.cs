@@ -122,6 +122,12 @@ internal sealed partial class ProfileForm : Form
         if (index >= 0) { textName.Text = (string)listProfiles.SelectedItem; }
     }
 
+    /// <summary>Solange der Fokus im Namensfeld steht, löst Enter das Hinzufügen bzw.
+    /// Umbenennen aus statt den Dialog zu schließen.</summary>
+    private void TextName_Enter(object sender, EventArgs e) => AcceptButton = btnAdd;
+
+    private void TextName_Leave(object sender, EventArgs e) => AcceptButton = btnOk;
+
     /// <summary>Klick auf die leere Listenfläche hebt die Markierung auf —
     /// aus „Umbenennen" wird wieder „Hinzufügen".</summary>
     private void ListProfiles_MouseDown(object sender, MouseEventArgs e)
