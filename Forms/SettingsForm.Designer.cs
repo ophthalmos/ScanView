@@ -388,7 +388,7 @@
             linkTessdataFolder.Size = new Size(60, 15);
             linkTessdataFolder.TabIndex = 12;
             linkTessdataFolder.TabStop = true;
-            linkTessdataFolder.Text = "tessdata";
+            linkTessdataFolder.Text = "C:\\Program Files\\ScanView\\tessdata";
             linkTessdataFolder.LinkClicked += LinkTessdataFolder_LinkClicked;
             //
             // labelQuality
