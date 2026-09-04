@@ -2,24 +2,29 @@ using ScanView.Classes;
 
 namespace ScanView.Forms;
 
-/// <summary>Scan-Profile verwalten (Button neben der Profil-Combo): die aktuellen Einstellungen
-/// des Scan-Panels unter einem Namen speichern oder gespeicherte Profile löschen. Der Dialog
-/// arbeitet auf einer Kopie der Liste — erst OK übernimmt die Änderungen.</summary>
+/// <summary>Scan-Profile verwalten (Link über der Profil-Combo): die aktuellen Einstellungen
+/// des Scan-Panels unter einem Namen speichern, Profile umbenennen (bei markiertem Listeneintrag
+/// wird aus „Hinzufügen" ein „Umbenennen"; Klick auf die leere Listenfläche hebt die Markierung
+/// auf), löschen oder umsortieren. Der Dialog arbeitet auf einer Kopie der Liste — erst OK
+/// übernimmt die Änderungen.</summary>
 internal sealed partial class ProfileForm : Form
 {
     /// <summary>Die (bei OK zu übernehmende) Profilliste.</summary>
     public List<ScanProfile> Profiles { get; }
 
+    /// <summary>Name des markierten Profils — damit die Profil-Combo nach einem Umbenennen folgt.</summary>
+    public string SelectedName => listProfiles.SelectedIndex >= 0 ? Profiles[listProfiles.SelectedIndex].Name : null;
+
     private readonly ScanProfile current; // die aktuellen Panel-Einstellungen als Vorlage fürs Hinzufügen
 
-    public ProfileForm(List<ScanProfile> profiles, ScanProfile current)
+    public ProfileForm(List<ScanProfile> profiles, ScanProfile current, string selectedName)
     {
         InitializeComponent();
         Lng.Apply(this);
-        // Nota bene vor dem Hinweis: das Windows-Ausrufezeichen in DPI-passender Größe
-        using (var warning = SystemIcons.GetStockIcon(StockIconId.Warning, LogicalToDeviceUnits(16)))
+        // Nota bene vor dem Hinweis: das Windows-Infosymbol in DPI-passender Größe
+        using (var info = SystemIcons.GetStockIcon(StockIconId.Info, LogicalToDeviceUnits(16)))
         {
-            picHint.Image = warning.ToBitmap();
+            picHint.Image = info.ToBitmap();
         }
         this.current = current;
         Profiles = profiles.Select(p => new ScanProfile // Kopie — Abbrechen lässt die Originale unberührt
@@ -27,7 +32,7 @@ internal sealed partial class ProfileForm : Form
             Name = p.Name, DpiIndex = p.DpiIndex, ColorIndex = p.ColorIndex, AreaIndex = p.AreaIndex,
             FeedIndex = p.FeedIndex, Brightness = p.Brightness,
         }).ToList();
-        RefreshList(null);
+        RefreshList(selectedName); // das in der MainForm gewählte Profil startet markiert → „Umbenennen"
     }
 
     private void RefreshList(string selectName)
@@ -39,14 +44,27 @@ internal sealed partial class ProfileForm : Form
         if (selectName != null) { listProfiles.SelectedIndex = Profiles.FindIndex(p => p.Name == selectName); }
     }
 
-    /// <summary>Speichert die aktuellen Scan-Einstellungen unter dem eingegebenen Namen;
-    /// ein vorhandenes Profil gleichen Namens wird nach Rückfrage ersetzt.</summary>
+    /// <summary>Ohne Listenmarkierung: speichert die aktuellen Scan-Einstellungen unter dem
+    /// eingegebenen Namen (ein vorhandenes Profil gleichen Namens wird nach Rückfrage ersetzt).
+    /// Mit Markierung („Umbenennen"): ändert nur den Namen des markierten Profils.</summary>
     private void BtnAdd_Click(object sender, EventArgs e)
     {
         var name = textName.Text.Trim();
         if (name.Length == 0)
         {
             TaskDlg.MsgTaskDlg(Handle, Lng.T("Bitte gib einen Profilnamen an."), string.Empty, TaskDialogIcon.Warning);
+            return;
+        }
+        var selectedIndex = listProfiles.SelectedIndex;
+        if (selectedIndex >= 0) // Umbenennen
+        {
+            if (Profiles.Where((p, i) => i != selectedIndex).Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)))
+            {
+                TaskDlg.MsgTaskDlg(Handle, Lng.T("Es gibt bereits ein Profil mit diesem Namen."), string.Empty, TaskDialogIcon.Warning);
+                return;
+            }
+            Profiles[selectedIndex].Name = name;
+            RefreshList(name);
             return;
         }
         var existing = Profiles.FirstOrDefault(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase));
@@ -95,6 +113,18 @@ internal sealed partial class ProfileForm : Form
         btnDelete.Enabled = index >= 0;
         btnUp.Enabled = index > 0;
         btnDown.Enabled = index >= 0 && index < listProfiles.Items.Count - 1;
+        btnAdd.Text = Lng.T(index >= 0 ? "&Umbenennen" : "&Hinzufügen");
         if (index >= 0) { textName.Text = (string)listProfiles.SelectedItem; }
+    }
+
+    /// <summary>Klick auf die leere Listenfläche hebt die Markierung auf —
+    /// aus „Umbenennen" wird wieder „Hinzufügen".</summary>
+    private void ListProfiles_MouseDown(object sender, MouseEventArgs e)
+    {
+        if (listProfiles.IndexFromPoint(e.Location) < 0)
+        {
+            listProfiles.ClearSelected();
+            textName.Text = string.Empty;
+        }
     }
 }

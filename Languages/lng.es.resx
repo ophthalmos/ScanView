@@ -299,4 +299,6 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="ändern" xml:space="preserve"><value>editar</value></data>
   <data name="Nach &amp;oben" xml:space="preserve"><value>S&amp;ubir</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>&amp;Bajar</value></data>
+  <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Renombrar</value></data>
+  <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Ya existe un perfil con ese nombre.</value></data>
 </root>

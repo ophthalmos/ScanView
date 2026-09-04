@@ -299,4 +299,6 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="ändern" xml:space="preserve"><value>modifier</value></data>
   <data name="Nach &amp;oben" xml:space="preserve"><value>&amp;Monter</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>&amp;Descendre</value></data>
+  <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Renommer</value></data>
+  <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Un profil de ce nom existe déjà.</value></data>
 </root>

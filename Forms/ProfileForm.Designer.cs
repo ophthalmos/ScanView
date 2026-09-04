@@ -85,6 +85,7 @@ namespace ScanView.Forms
             listProfiles.Size = new Size(242, 124);
             listProfiles.TabIndex = 5;
             listProfiles.SelectedIndexChanged += ListProfiles_SelectedIndexChanged;
+            listProfiles.MouseDown += ListProfiles_MouseDown;
             // 
             // btnDelete
             // 
