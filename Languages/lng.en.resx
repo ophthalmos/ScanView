@@ -313,6 +313,6 @@ Grayscale scans save additional space.</value></data>
   <data name="Änderungen &amp;speichern" xml:space="preserve"><value>&amp;Save changes</value></data>
   <data name="Neues Profil" xml:space="preserve"><value>New profile</value></data>
   <data name="Gespeicherte Profile" xml:space="preserve"><value>Saved profiles</value></data>
-  <data name="Profile verwalten" xml:space="preserve"><value>Manage profiles</value></data>
   <data name="Profilverwaltung" xml:space="preserve"><value>Profile management</value></data>
+  <data name="verwalten" xml:space="preserve"><value>manage</value></data>
 </root>

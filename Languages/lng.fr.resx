@@ -313,6 +313,6 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Änderungen &amp;speichern" xml:space="preserve"><value>Enregi&amp;strer les modifications</value></data>
   <data name="Neues Profil" xml:space="preserve"><value>Nouveau profil</value></data>
   <data name="Gespeicherte Profile" xml:space="preserve"><value>Profils enregistrés</value></data>
-  <data name="Profile verwalten" xml:space="preserve"><value>Gérer les profils</value></data>
   <data name="Profilverwaltung" xml:space="preserve"><value>Gestion des profils</value></data>
+  <data name="verwalten" xml:space="preserve"><value>gérer</value></data>
 </root>

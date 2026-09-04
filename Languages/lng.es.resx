@@ -313,6 +313,6 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Änderungen &amp;speichern" xml:space="preserve"><value>&amp;Guardar los cambios</value></data>
   <data name="Neues Profil" xml:space="preserve"><value>Perfil nuevo</value></data>
   <data name="Gespeicherte Profile" xml:space="preserve"><value>Perfiles guardados</value></data>
-  <data name="Profile verwalten" xml:space="preserve"><value>Administrar perfiles</value></data>
   <data name="Profilverwaltung" xml:space="preserve"><value>Administración de perfiles</value></data>
+  <data name="verwalten" xml:space="preserve"><value>administrar</value></data>
 </root>

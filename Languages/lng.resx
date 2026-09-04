@@ -313,6 +313,6 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Änderungen &amp;speichern" xml:space="preserve"><value>Änderungen &amp;speichern</value></data>
   <data name="Neues Profil" xml:space="preserve"><value>Neues Profil</value></data>
   <data name="Gespeicherte Profile" xml:space="preserve"><value>Gespeicherte Profile</value></data>
-  <data name="Profile verwalten" xml:space="preserve"><value>Profile verwalten</value></data>
   <data name="Profilverwaltung" xml:space="preserve"><value>Profilverwaltung</value></data>
+  <data name="verwalten" xml:space="preserve"><value>verwalten</value></data>
 </root>
