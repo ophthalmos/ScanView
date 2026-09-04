@@ -300,7 +300,6 @@ Grayscale scans save additional space.</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>A profile with this name already exists.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>add</value></data>
   <data name="umbenennen" xml:space="preserve"><value>rename</value></data>
-  <data name="{0} von {1} Seiten erkannt" xml:space="preserve"><value>{0} of {1} pages recognized</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} of {1} pages processed</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Creating PDF</value></data>
 </root>

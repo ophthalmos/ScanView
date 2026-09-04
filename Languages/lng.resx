@@ -300,7 +300,6 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Es gibt bereits ein Profil mit diesem Namen.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>hinzufügen</value></data>
   <data name="umbenennen" xml:space="preserve"><value>umbenennen</value></data>
-  <data name="{0} von {1} Seiten erkannt" xml:space="preserve"><value>{0} von {1} Seiten erkannt</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} von {1} Seiten verarbeitet</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>PDF erstellen</value></data>
 </root>

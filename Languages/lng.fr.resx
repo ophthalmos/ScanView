@@ -300,7 +300,6 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Un profil de ce nom existe déjà.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>ajouter</value></data>
   <data name="umbenennen" xml:space="preserve"><value>renommer</value></data>
-  <data name="{0} von {1} Seiten erkannt" xml:space="preserve"><value>{0} page(s) sur {1} reconnue(s)</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} page(s) sur {1} traitée(s)</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Création du PDF</value></data>
 </root>
