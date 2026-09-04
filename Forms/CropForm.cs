@@ -53,9 +53,10 @@ internal sealed partial class CropForm : Form, IMessageFilter
     /// <summary>True, sobald mindestens eine Aktion ausgeführt wurde.</summary>
     public bool Edited => !ReferenceEquals(workingImage, image);
 
-    /// <summary>True, wenn das Ergebnis als zusätzliche Seite eingefügt werden soll —
-    /// das Original bleibt dann unverändert (Button „Als neue Seite speichern").</summary>
-    public bool SaveAsNewPage { get; private set; }
+    /// <summary>„Als neue Seite speichern": liefert das bearbeitete Bild an den Aufrufer, der es als
+    /// zusätzliche Seite einfügt — der Dialog bleibt offen und stellt das Original wieder her,
+    /// damit sich z.B. mehrere gemeinsam gescannte Fotos nacheinander vereinzeln lassen.</summary>
+    public event Action<Image> SaveAsNewPageRequested;
 
     public CropForm(Image image, Rectangle storedBounds)
     {
@@ -176,10 +177,17 @@ internal sealed partial class CropForm : Form, IMessageFilter
         DialogResult = DialogResult.OK;
     }
 
+    /// <summary>Speichert das Ergebnis als neue Seite (über den Aufrufer) und stellt das Original
+    /// wieder her — der Dialog bleibt fürs nächste Foto offen.</summary>
     private void BtnSaveAsNew_Click(object sender, EventArgs e)
     {
-        SaveAsNewPage = true;
-        DialogResult = DialogResult.OK;
+        SaveAsNewPageRequested?.Invoke(workingImage); // der Handler speichert synchron
+        var previous = workingImage;
+        workingImage = image;
+        pictureBox.Image = image;
+        if (!ReferenceEquals(previous, image)) { previous.Dispose(); }
+        lastActionText = Lng.T("Als neue Seite gespeichert — das Original ist wieder da");
+        ApplyZoom(); // Original mit Startauswahl zeigen
     }
 
     private void BtnCancel_Click(object sender, EventArgs e)
