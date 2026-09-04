@@ -996,7 +996,7 @@ public partial class MainForm : Form, IMessageFilter
         PictureBox pic = new()
         {
             SizeMode = PictureBoxSizeMode.Zoom,
-            BackColor = Color.White,
+            BackColor = Color.AliceBlue, // hebt sich vom weißen Seiteninhalt ab — das echte Seitenformat bleibt erkennbar
             Image = ScanService.LoadThumbnail(tiffPath, ThumbImageWidth),
             Cursor = Cursors.Hand,
         };
