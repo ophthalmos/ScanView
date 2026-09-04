@@ -301,4 +301,5 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>&amp;Descendre</value></data>
   <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Renommer</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Un profil de ce nom existe déjà.</value></data>
+  <data name="hinzufügen" xml:space="preserve"><value>ajouter</value></data>
 </root>
