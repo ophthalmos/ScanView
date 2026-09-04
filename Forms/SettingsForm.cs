@@ -30,6 +30,7 @@ internal sealed partial class SettingsForm : Form
     {
         InitializeComponent();
         Lng.Apply(this);
+        TextBoxMargins.Apply(this);
         // Mehrzeilige Texte brauchen explizite Schlüssel (Zeilenumbrüche taugen nicht als resx-Schlüssel)
         labelLanguageHint.Text = Lng.T("Hint.OcrLanguages", labelLanguageHint.Text);
         labelTessInstruction.Text = Lng.T("Hint.TessdataSteps", labelTessInstruction.Text);
