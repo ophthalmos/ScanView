@@ -40,7 +40,8 @@ internal sealed partial class ProfileForm : Form
             FeedIndex = p.FeedIndex, Brightness = p.Brightness,
         })];
         tracked = Profiles.FirstOrDefault(p => p.Name == selectedName);
-        RefreshList(selectedName); // das in der MainForm gewählte Profil startet markiert → „Umbenennen"
+        RefreshList(selectedName); // das in der MainForm gewählte Profil startet markiert
+        if (listProfiles.SelectedIndex >= 0) { ActiveControl = textRename; } // Umbenennen ist dann der nächstliegende Zweck
     }
 
     private void RefreshList(string selectName)
