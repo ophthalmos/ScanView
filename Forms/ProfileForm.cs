@@ -12,8 +12,12 @@ internal sealed partial class ProfileForm : Form
     /// <summary>Die (bei OK zu übernehmende) Profilliste.</summary>
     public List<ScanProfile> Profiles { get; }
 
-    /// <summary>Name des markierten Profils — damit die Profil-Combo nach einem Umbenennen folgt.</summary>
-    public string SelectedName => listProfiles.SelectedIndex >= 0 ? Profiles[listProfiles.SelectedIndex].Name : null;
+    /// <summary>Aktueller Name des beim Öffnen in der MainForm gewählten Profils — folgt einem
+    /// Umbenennen und Umsortieren, null nach dem Löschen. Damit behält die Profil-Combo
+    /// ihre Auswahl, egal was im Dialog markiert wurde.</summary>
+    public string TrackedName => tracked != null && Profiles.Contains(tracked) ? tracked.Name : null;
+
+    private readonly ScanProfile tracked; // das beim Öffnen gewählte Profil (Objekt der Dialog-Kopie)
 
     private readonly ScanProfile current; // die aktuellen Panel-Einstellungen als Vorlage fürs Hinzufügen
 
@@ -32,6 +36,7 @@ internal sealed partial class ProfileForm : Form
             Name = p.Name, DpiIndex = p.DpiIndex, ColorIndex = p.ColorIndex, AreaIndex = p.AreaIndex,
             FeedIndex = p.FeedIndex, Brightness = p.Brightness,
         }).ToList();
+        tracked = Profiles.FirstOrDefault(p => p.Name == selectedName);
         RefreshList(selectedName); // das in der MainForm gewählte Profil startet markiert → „Umbenennen"
     }
 
