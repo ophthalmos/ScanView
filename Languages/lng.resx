@@ -315,4 +315,10 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Gespeicherte Profile" xml:space="preserve"><value>Gespeicherte Profile</value></data>
   <data name="Profilverwaltung" xml:space="preserve"><value>Profilverwaltung</value></data>
   <data name="verwalten" xml:space="preserve"><value>verwalten</value></data>
+  <data name="Grau" xml:space="preserve"><value>Grau</value></data>
+  <data name="SW" xml:space="preserve"><value>SW</value></data>
+  <data name="max." xml:space="preserve"><value>max.</value></data>
+  <data name="Visitenk." xml:space="preserve"><value>Visitenk.</value></data>
+  <data name="Einzug" xml:space="preserve"><value>Einzug</value></data>
+  <data name="Hell. {0} %" xml:space="preserve"><value>Hell. {0} %</value></data>
 </root>

@@ -1466,8 +1466,18 @@ public partial class MainForm : Form, IMessageFilter
     private void LinkProfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
         var summary = string.Join(" · ", comboDpi.Text, comboColor.Text, comboArea.Text, comboFeed.Text);
-        if (trackBrightness.Value != 0) { summary += " · " + string.Format(Lng.T("Helligkeit {0} %"), trackBrightness.Value.ToString("+0;-0")); }
-        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), summary, comboProfile.Text);
+        // Kurzform für den Fall, dass die volle Aufzählung nicht in die Dialogbreite passt
+        var compactColor = comboColor.SelectedIndex switch { 1 => Lng.T("Grau"), 2 => Lng.T("SW"), _ => comboColor.Text };
+        var compactArea = comboArea.SelectedIndex switch { 0 => Lng.T("max."), 5 => Lng.T("Visitenk."), _ => comboArea.Text };
+        var compactFeed = comboFeed.SelectedIndex == 1 ? Lng.T("Einzug") : comboFeed.Text;
+        var compact = string.Join(" · ", comboDpi.Text, compactColor, compactArea, compactFeed);
+        if (trackBrightness.Value != 0)
+        {
+            var brightness = trackBrightness.Value.ToString("+0;-0");
+            summary += " · " + string.Format(Lng.T("Helligkeit {0} %"), brightness);
+            compact += " · " + string.Format(Lng.T("Hell. {0} %"), brightness);
+        }
+        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), summary, compact, comboProfile.Text);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.ScanProfiles = dialog.Profiles;
         settings.Save();
