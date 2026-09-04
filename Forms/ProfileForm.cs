@@ -16,6 +16,11 @@ internal sealed partial class ProfileForm : Form
     {
         InitializeComponent();
         Lng.Apply(this);
+        // Nota bene vor dem Hinweis: das Windows-Ausrufezeichen in DPI-passender Größe
+        using (var warning = SystemIcons.GetStockIcon(StockIconId.Warning, LogicalToDeviceUnits(16)))
+        {
+            picHint.Image = warning.ToBitmap();
+        }
         this.current = current;
         Profiles = profiles.Select(p => new ScanProfile // Kopie — Abbrechen lässt die Originale unberührt
         {
