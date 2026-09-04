@@ -322,6 +322,7 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Einzug" xml:space="preserve"><value>Alim.</value></data>
   <data name="Hell. {0} %" xml:space="preserve"><value>Brillo {0} %</value></data>
   <data name="Als &amp;neue Seite speichern" xml:space="preserve"><value>Guardar como página &amp;nueva</value></data>
-  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — das Original bleibt unverändert" xml:space="preserve"><value>El resultado se inserta como página adicional detrás de la editada — el original se conserva sin cambios</value></data>
   <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Guardado como página nueva ({0} × {1} píxeles)</value></data>
+  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)" xml:space="preserve"><value>El resultado se inserta como página adicional detrás de la editada — después el diálogo vuelve a mostrar el original (p. ej. para separar varias fotos)</value></data>
+  <data name="Als neue Seite gespeichert — das Original ist wieder da" xml:space="preserve"><value>Guardado como página nueva — el original está de vuelta</value></data>
 </root>

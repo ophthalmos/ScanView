@@ -322,6 +322,7 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Einzug" xml:space="preserve"><value>Chargeur</value></data>
   <data name="Hell. {0} %" xml:space="preserve"><value>Lum. {0} %</value></data>
   <data name="Als &amp;neue Seite speichern" xml:space="preserve"><value>Enregistrer comme &amp;nouvelle page</value></data>
-  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — das Original bleibt unverändert" xml:space="preserve"><value>Le résultat est inséré comme page supplémentaire après la page modifiée — l'original reste inchangé</value></data>
   <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Enregistré comme nouvelle page ({0} × {1} pixels)</value></data>
+  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)" xml:space="preserve"><value>Le résultat est inséré comme page supplémentaire après la page modifiée — le dialogue réaffiche ensuite l'original (p. ex. pour séparer plusieurs photos)</value></data>
+  <data name="Als neue Seite gespeichert — das Original ist wieder da" xml:space="preserve"><value>Enregistré comme nouvelle page — l'original est de retour</value></data>
 </root>

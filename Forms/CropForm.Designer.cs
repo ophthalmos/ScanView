@@ -135,7 +135,7 @@ namespace ScanView.Forms
             btnSaveAsNew.Name = "btnSaveAsNew";
             btnSaveAsNew.Size = new Size(180, 30);
             btnSaveAsNew.Text = "Als &neue Seite speichern";
-            btnSaveAsNew.ToolTipText = "Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — das Original bleibt unverändert";
+            btnSaveAsNew.ToolTipText = "Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)";
             btnSaveAsNew.Click += BtnSaveAsNew_Click;
             //
             // btnApply

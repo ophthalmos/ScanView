@@ -322,6 +322,7 @@ Grayscale scans save additional space.</value></data>
   <data name="Einzug" xml:space="preserve"><value>Feeder</value></data>
   <data name="Hell. {0} %" xml:space="preserve"><value>Bright. {0} %</value></data>
   <data name="Als &amp;neue Seite speichern" xml:space="preserve"><value>Save as &amp;new page</value></data>
-  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — das Original bleibt unverändert" xml:space="preserve"><value>The result is inserted as an additional page after the edited one — the original is kept unchanged</value></data>
   <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Saved as a new page ({0} × {1} pixels)</value></data>
+  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)" xml:space="preserve"><value>The result is inserted as an additional page after the edited one — the dialog then shows the original again (e.g. to separate several photos)</value></data>
+  <data name="Als neue Seite gespeichert — das Original ist wieder da" xml:space="preserve"><value>Saved as a new page — the original is back</value></data>
 </root>

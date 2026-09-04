@@ -831,9 +831,11 @@ public partial class MainForm : Form, IMessageFilter
     private void MenuEditCrop_Click(object sender, EventArgs e)
     {
         if (selected == null) { return; }
+        var sourceThumb = selected; // die bearbeitete Seite — „Als neue Seite speichern" markiert zwischenzeitlich die Kopien
         var path = (string)selected.Tag;
         using var image = ScanService.LoadUnlocked(path);
         using CropForm dialog = new(image, new Rectangle(settings.CropX, settings.CropY, settings.CropWidth, settings.CropHeight));
+        dialog.SaveAsNewPageRequested += SaveCropAsNewPage; // der Dialog bleibt dabei offen (Fotos vereinzeln)
         var result = dialog.ShowDialog(this);
         var bounds = dialog.WindowState == FormWindowState.Normal ? dialog.Bounds : dialog.RestoreBounds;
         settings.CropX = bounds.X; // Größe/Position des Dialogs merken — auch bei Abbruch
@@ -841,20 +843,23 @@ public partial class MainForm : Form, IMessageFilter
         settings.CropWidth = bounds.Width;
         settings.CropHeight = bounds.Height;
         if (result != DialogResult.OK || !dialog.Edited) { return; }
-        if (dialog.SaveAsNewPage) // Ergebnis als zusätzliche Seite hinter der bearbeiteten einfügen (Original bleibt)
+        dialog.ResultImage.Save(path, ImageFormatFor(path));
+        if (!ReferenceEquals(selected, sourceThumb)) { Select(sourceThumb); } // „Als neue Seite" hat inzwischen umgekehrt markiert
+        ReloadSelectedThumbnail();
+        statusLabel.Text = string.Format(Lng.T("Seite bearbeitet übernommen ({0} × {1} Pixel)"), dialog.ResultImage.Width, dialog.ResultImage.Height);
+
+        // Fügt das Zwischenergebnis als zusätzliche Seite hinter der Markierung ein (Original bleibt) —
+        // AddPage markiert die neue Seite, weitere Fotos reihen sich dadurch dahinter ein
+        void SaveCropAsNewPage(Image cropResult)
         {
             var insertAt = flowPanel.Controls.GetChildIndex(selected) + 1;
             var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(path)}");
-            dialog.ResultImage.Save(copy, ImageFormatFor(copy));
-            AddPage(copy); // markiert die neue Seite
+            cropResult.Save(copy, ImageFormatFor(copy));
+            AddPage(copy);
             flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt);
             UpdateUiState();
-            statusLabel.Text = string.Format(Lng.T("Als neue Seite gespeichert ({0} × {1} Pixel)"), dialog.ResultImage.Width, dialog.ResultImage.Height);
-            return;
+            statusLabel.Text = string.Format(Lng.T("Als neue Seite gespeichert ({0} × {1} Pixel)"), cropResult.Width, cropResult.Height);
         }
-        dialog.ResultImage.Save(path, ImageFormatFor(path));
-        ReloadSelectedThumbnail();
-        statusLabel.Text = string.Format(Lng.T("Seite bearbeitet übernommen ({0} × {1} Pixel)"), dialog.ResultImage.Width, dialog.ResultImage.Height);
     }
 
     /// <summary>Duplex von Hand: erst alle Vorderseiten scannen, dann den Stapel gewendet — die
