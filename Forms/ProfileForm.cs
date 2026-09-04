@@ -31,11 +31,11 @@ internal sealed partial class ProfileForm : Form
             picHint.Image = info.ToBitmap();
         }
         this.current = current;
-        Profiles = profiles.Select(p => new ScanProfile // Kopie — Abbrechen lässt die Originale unberührt
+        Profiles = [.. profiles.Select(p => new ScanProfile // Kopie — Abbrechen lässt die Originale unberührt
         {
             Name = p.Name, DpiIndex = p.DpiIndex, ColorIndex = p.ColorIndex, AreaIndex = p.AreaIndex,
             FeedIndex = p.FeedIndex, Brightness = p.Brightness,
-        }).ToList();
+        })];
         tracked = Profiles.FirstOrDefault(p => p.Name == selectedName);
         RefreshList(selectedName); // das in der MainForm gewählte Profil startet markiert → „Umbenennen"
     }

@@ -118,6 +118,7 @@
             labelCopyTitle = new Label();
             labelCopyPrinter = new Label();
             comboCopyPrinter = new ComboBox();
+            linkCopyProperties = new LinkLabel();
             labelCopyPaper = new Label();
             comboCopyPaper = new ComboBox();
             labelCopySource = new Label();
@@ -903,6 +904,7 @@
             panelCopyMode.Controls.Add(labelCopyTitle);
             panelCopyMode.Controls.Add(labelCopyPrinter);
             panelCopyMode.Controls.Add(comboCopyPrinter);
+            panelCopyMode.Controls.Add(linkCopyProperties);
             panelCopyMode.Controls.Add(labelCopyPaper);
             panelCopyMode.Controls.Add(comboCopyPaper);
             panelCopyMode.Controls.Add(labelCopySource);
@@ -948,6 +950,17 @@
             comboCopyPrinter.Size = new Size(267, 23);
             comboCopyPrinter.TabIndex = 2;
             comboCopyPrinter.SelectedIndexChanged += ComboCopyPrinter_SelectedIndexChanged;
+            //
+            // linkCopyProperties
+            //
+            linkCopyProperties.AutoSize = true;
+            linkCopyProperties.Location = new Point(183, 44);
+            linkCopyProperties.Name = "linkCopyProperties";
+            linkCopyProperties.Size = new Size(100, 15);
+            linkCopyProperties.TabIndex = 14;
+            linkCopyProperties.TabStop = true;
+            linkCopyProperties.Text = "Eigenschaften …";
+            linkCopyProperties.LinkClicked += LinkCopyProperties_LinkClicked;
             // 
             // labelCopyPaper
             // 
@@ -1209,6 +1222,7 @@
         private System.Windows.Forms.Label labelCopyTitle;
         private System.Windows.Forms.Label labelCopyPrinter;
         private System.Windows.Forms.ComboBox comboCopyPrinter;
+        private System.Windows.Forms.LinkLabel linkCopyProperties;
         private System.Windows.Forms.Label labelCopyPaper;
         private System.Windows.Forms.ComboBox comboCopyPaper;
         private System.Windows.Forms.Label labelCopySource;

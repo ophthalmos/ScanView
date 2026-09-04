@@ -75,6 +75,7 @@ public partial class MainForm : Form, IMessageFilter
         Lng.Apply(this); // Designer-Texte übersetzen (direkt nach InitializeComponent)
         Lng.Apply(thumbContextMenu);
         Lng.TranslateItems(comboColor, comboArea, comboFeed, comboCopyDuplex); // alle werden über SelectedIndex ausgewertet
+        linkCopyProperties.Left = comboCopyPrinter.Right - linkCopyProperties.Width; // rechtsbündig (Textbreite je Sprache)
         toolStrip.Renderer = new BigArrowRenderer();
         // Eigenes Menü statt des auto-generierten: das erbt in WinForms live die fette
         // 11-pt-Schrift des Toolbar-Buttons (gleiche Lösung wie in PDFlight)
@@ -616,6 +617,31 @@ public partial class MainForm : Form, IMessageFilter
             chkCopyColor.Checked = copyPrinterSettings.SupportsColor && copyPrinterSettings.DefaultPageSettings.Color;
         }
         catch (InvalidPrinterException) { } // Drucker gerade entfernt — die Combos bleiben leer
+    }
+
+    /// <summary>Öffnet den Treiber-Eigenschaften-Dialog des Kopiermodus-Druckers und gleicht danach
+    /// die Panel-Controls an die dort geänderten Werte an.</summary>
+    private void LinkCopyProperties_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        if (comboCopyPrinter.SelectedItem is not string) { return; }
+        if (!PrinterDialog.ShowProperties(this, copyPrinterSettings)) { return; }
+        var paper = copyPrinterSettings.DefaultPageSettings.PaperSize;
+        var paperIndex = paper != null ? copyPaperSizes.FindIndex(p => p.RawKind == paper.RawKind) : -1;
+        if (paperIndex >= 0) { comboCopyPaper.SelectedIndex = paperIndex; }
+        var source = copyPrinterSettings.DefaultPageSettings.PaperSource;
+        var sourceIndex = source != null ? copyPaperSources.FindIndex(s => s.RawKind == source.RawKind) : -1;
+        if (sourceIndex >= 0) { comboCopySource.SelectedIndex = sourceIndex; }
+        if (comboCopyDuplex.Enabled)
+        {
+            comboCopyDuplex.SelectedIndex = copyPrinterSettings.Duplex switch
+            {
+                Duplex.Vertical => 1,
+                Duplex.Horizontal => 2,
+                _ => 0
+            };
+        }
+        if (chkCopyColor.Enabled) { chkCopyColor.Checked = copyPrinterSettings.DefaultPageSettings.Color; }
+        if (copyPrinterSettings.Copies >= numCopies.Minimum && copyPrinterSettings.Copies <= numCopies.Maximum) { numCopies.Value = copyPrinterSettings.Copies; }
     }
 
     /// <summary>Druckt einen frischen Scan sofort mit den Kopiermodus-Einstellungen.</summary>
@@ -1344,6 +1370,7 @@ public partial class MainForm : Form, IMessageFilter
         settings.Save();
         SyncCopyModeUi();
         if (!dialog.AllPages) { pages = [(string)selected.Tag]; }
+        document.PrinterSettings = dialog.DriverSettings; // Treiber-Extras aus dem Eigenschaften-Dialog mitnehmen
         ApplySharedPrinterSettings(document); // wendet die eben übernommenen Vorgaben an
         var pageIndex = 0;
         document.PrintPage += (s, args) =>

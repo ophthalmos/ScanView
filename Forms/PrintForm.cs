@@ -29,6 +29,10 @@ internal sealed partial class PrintForm : Form
 
     public bool FitToPage => chkFit.Checked;
 
+    /// <summary>Die PrinterSettings mit dem DEVMODE aus dem Eigenschaften-Dialog — die MainForm
+    /// hängt sie an das PrintDocument, damit Treiber-Extras (Qualität, Papierart …) den Druck erreichen.</summary>
+    public PrinterSettings DriverSettings => printerSettings;
+
     private readonly PrinterSettings printerSettings = new(); // zum Abfragen der Fähigkeiten des gewählten Druckers
     private readonly List<PaperSize> paperSizes = [];         // Papierformate parallel zur Combo
     private readonly List<PaperSource> paperSources = [];     // Papierzufuhren parallel zur Combo
@@ -89,5 +93,30 @@ internal sealed partial class PrintForm : Form
             chkColor.Checked = printerSettings.SupportsColor && printerSettings.DefaultPageSettings.Color;
         }
         catch (InvalidPrinterException) { } // Drucker gerade entfernt — die Combos bleiben leer
+    }
+
+    /// <summary>Öffnet den Treiber-Eigenschaften-Dialog und übernimmt danach die dort geänderten
+    /// Werte (Papierformat, Zufuhr, Duplex, Farbe, Exemplare) in die Controls.</summary>
+    private void LinkProperties_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+    {
+        if (comboPrinter.SelectedItem is not string) { return; }
+        if (!PrinterDialog.ShowProperties(this, printerSettings)) { return; }
+        var paper = printerSettings.DefaultPageSettings.PaperSize;
+        var paperIndex = paper != null ? paperSizes.FindIndex(p => p.RawKind == paper.RawKind) : -1;
+        if (paperIndex >= 0) { comboPaper.SelectedIndex = paperIndex; }
+        var source = printerSettings.DefaultPageSettings.PaperSource;
+        var sourceIndex = source != null ? paperSources.FindIndex(s => s.RawKind == source.RawKind) : -1;
+        if (sourceIndex >= 0) { comboSource.SelectedIndex = sourceIndex; }
+        if (comboDuplex.Enabled)
+        {
+            comboDuplex.SelectedIndex = printerSettings.Duplex switch
+            {
+                Duplex.Vertical => 1,
+                Duplex.Horizontal => 2,
+                _ => 0
+            };
+        }
+        if (chkColor.Enabled) { chkColor.Checked = printerSettings.DefaultPageSettings.Color; }
+        if (printerSettings.Copies >= numCopies.Minimum && printerSettings.Copies <= numCopies.Maximum) { numCopies.Value = printerSettings.Copies; }
     }
 }
