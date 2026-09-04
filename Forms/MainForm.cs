@@ -96,6 +96,7 @@ public partial class MainForm : Form, IMessageFilter
         comboOcr.Items.Add(Lng.T("Ohne Texterkennung"));
         foreach (var code in OcrLanguages.Installed()) { comboOcr.Items.Add(new OcrLanguageItem(code)); }
         SelectOcrLanguage(settings.OcrLanguage); // bevorzugte Sprache aus den Optionen als Vorgabe
+        RefreshProfileCombo(settings.ScanProfile); // Profilnamen listen; die Werte kommen aus den Einzel-Settings
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
         ApplyToolbarIcons();
@@ -1353,6 +1354,58 @@ public partial class MainForm : Form, IMessageFilter
         }
     }
 
+    // ------------------------------------------------------------------ Scan-Profile
+
+    private bool updatingProfiles; // programmatisches Befüllen der Profil-Combo löst kein Anwenden aus
+
+    /// <summary>Füllt die Profil-Combo neu und selektiert den Namen STILL (ohne die Werte anzuwenden).</summary>
+    private void RefreshProfileCombo(string selectName)
+    {
+        updatingProfiles = true;
+        comboProfile.BeginUpdate();
+        comboProfile.Items.Clear();
+        foreach (var profile in settings.ScanProfiles) { comboProfile.Items.Add(profile.Name); }
+        comboProfile.SelectedIndex = settings.ScanProfiles.FindIndex(p => p.Name == selectName);
+        comboProfile.EndUpdate();
+        updatingProfiles = false;
+    }
+
+    /// <summary>Die aktuellen Werte des Scan-Panels als (namenloses) Profil — Vorlage fürs Speichern.</summary>
+    private ScanProfile CurrentScanProfile() => new()
+    {
+        DpiIndex = comboDpi.SelectedIndex,
+        ColorIndex = comboColor.SelectedIndex,
+        AreaIndex = comboArea.SelectedIndex,
+        FeedIndex = comboFeed.SelectedIndex,
+        OcrLanguage = CurrentOcrLanguage, // null = Ohne Texterkennung
+        Brightness = trackBrightness.Value,
+    };
+
+    /// <summary>Gewähltes Profil auf das Scan-Panel anwenden.</summary>
+    private void ComboProfile_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (updatingProfiles || comboProfile.SelectedIndex < 0) { return; }
+        var profile = settings.ScanProfiles[comboProfile.SelectedIndex];
+        static int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
+        comboDpi.SelectedIndex = Clamped(profile.DpiIndex, comboDpi, 2);
+        comboColor.SelectedIndex = Clamped(profile.ColorIndex, comboColor, 0);
+        comboArea.SelectedIndex = Clamped(profile.AreaIndex, comboArea, 0);
+        comboFeed.SelectedIndex = Clamped(profile.FeedIndex, comboFeed, 0);
+        if (profile.OcrLanguage == null) { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
+        else { SelectOcrLanguage(profile.OcrLanguage); }
+        trackBrightness.Value = Math.Clamp(profile.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
+    }
+
+    /// <summary>Button neben der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
+    private void BtnProfiles_Click(object sender, EventArgs e)
+    {
+        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile());
+        if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        settings.ScanProfiles = dialog.Profiles;
+        settings.Save();
+        RefreshProfileCombo(comboProfile.Text); // bisherige Auswahl beibehalten, falls noch vorhanden
+    }
+
     /// <summary>Extras → Faxprogramm: virtuellen Faxdrucker festlegen (z.B. FRITZ!fax-Drucker).</summary>
     private void MenuExtrasFax_Click(object sender, EventArgs e)
     {
@@ -1408,6 +1461,7 @@ public partial class MainForm : Form, IMessageFilter
         settings.AreaIndex = comboArea.SelectedIndex;
         settings.FeedIndex = comboFeed.SelectedIndex;
         settings.Brightness = trackBrightness.Value;
+        settings.ScanProfile = comboProfile.Text; // nur die Combo-Anzeige — die Werte stehen einzeln daneben
         settings.ThumbWidth = thumbWidth;
         settings.ScannerId = selectedScannerId;
         settings.ScannerName = selectedScannerName;

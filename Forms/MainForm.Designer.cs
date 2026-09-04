@@ -101,6 +101,9 @@
             toolStripSeparatorRight = new ToolStripSeparator();
             panelSettings = new Panel();
             labelSettings = new Label();
+            labelProfile = new Label();
+            comboProfile = new ComboBox();
+            btnProfiles = new Button();
             labelDpi = new Label();
             comboDpi = new ComboBox();
             labelColor = new Label();
@@ -736,6 +739,9 @@
             // 
             panelSettings.BackColor = Color.FromArgb(233, 241, 248);
             panelSettings.Controls.Add(labelSettings);
+            panelSettings.Controls.Add(labelProfile);
+            panelSettings.Controls.Add(comboProfile);
+            panelSettings.Controls.Add(btnProfiles);
             panelSettings.Controls.Add(labelDpi);
             panelSettings.Controls.Add(comboDpi);
             panelSettings.Controls.Add(labelColor);
@@ -765,10 +771,38 @@
             labelSettings.TabIndex = 0;
             labelSettings.Text = "Scan-Einstellungen";
             // 
+            // labelProfile
+            // 
+            labelProfile.AutoSize = true;
+            labelProfile.Location = new Point(8, 44);
+            labelProfile.Name = "labelProfile";
+            labelProfile.Size = new Size(39, 15);
+            labelProfile.TabIndex = 20;
+            labelProfile.Text = "&Profil:";
+            // 
+            // comboProfile
+            // 
+            comboProfile.DropDownStyle = ComboBoxStyle.DropDownList;
+            comboProfile.Location = new Point(8, 62);
+            comboProfile.Name = "comboProfile";
+            comboProfile.Size = new Size(102, 23);
+            comboProfile.TabIndex = 21;
+            comboProfile.SelectedIndexChanged += ComboProfile_SelectedIndexChanged;
+            // 
+            // btnProfiles
+            // 
+            btnProfiles.Location = new Point(116, 61);
+            btnProfiles.Name = "btnProfiles";
+            btnProfiles.Size = new Size(24, 25);
+            btnProfiles.TabIndex = 22;
+            btnProfiles.Text = "…";
+            btnProfiles.UseVisualStyleBackColor = true;
+            btnProfiles.Click += BtnProfiles_Click;
+            // 
             // labelDpi
             // 
             labelDpi.AutoSize = true;
-            labelDpi.Location = new Point(8, 44);
+            labelDpi.Location = new Point(8, 96);
             labelDpi.Name = "labelDpi";
             labelDpi.Size = new Size(65, 15);
             labelDpi.TabIndex = 1;
@@ -778,7 +812,7 @@
             // 
             comboDpi.DropDownStyle = ComboBoxStyle.DropDownList;
             comboDpi.Items.AddRange(new object[] { "150 dpi", "200 dpi", "300 dpi", "600 dpi" });
-            comboDpi.Location = new Point(8, 62);
+            comboDpi.Location = new Point(8, 114);
             comboDpi.Name = "comboDpi";
             comboDpi.Size = new Size(132, 23);
             comboDpi.TabIndex = 2;
@@ -786,7 +820,7 @@
             // labelColor
             // 
             labelColor.AutoSize = true;
-            labelColor.Location = new Point(8, 96);
+            labelColor.Location = new Point(8, 148);
             labelColor.Name = "labelColor";
             labelColor.Size = new Size(70, 15);
             labelColor.TabIndex = 3;
@@ -796,7 +830,7 @@
             // 
             comboColor.DropDownStyle = ComboBoxStyle.DropDownList;
             comboColor.Items.AddRange(new object[] { "Farbe", "Graustufen", "Schwarz-weiß" });
-            comboColor.Location = new Point(8, 114);
+            comboColor.Location = new Point(8, 166);
             comboColor.Name = "comboColor";
             comboColor.Size = new Size(132, 23);
             comboColor.TabIndex = 4;
@@ -804,7 +838,7 @@
             // labelArea
             // 
             labelArea.AutoSize = true;
-            labelArea.Location = new Point(8, 148);
+            labelArea.Location = new Point(8, 200);
             labelArea.Name = "labelArea";
             labelArea.Size = new Size(74, 15);
             labelArea.TabIndex = 5;
@@ -814,7 +848,7 @@
             // 
             comboArea.DropDownStyle = ComboBoxStyle.DropDownList;
             comboArea.Items.AddRange(new object[] { "maximal", "A4", "A5", "A6", "US-Letter", "Visitenkarte" });
-            comboArea.Location = new Point(8, 166);
+            comboArea.Location = new Point(8, 218);
             comboArea.Name = "comboArea";
             comboArea.Size = new Size(132, 23);
             comboArea.TabIndex = 6;
@@ -822,7 +856,7 @@
             // labelFeed
             // 
             labelFeed.AutoSize = true;
-            labelFeed.Location = new Point(8, 200);
+            labelFeed.Location = new Point(8, 252);
             labelFeed.Name = "labelFeed";
             labelFeed.Size = new Size(77, 15);
             labelFeed.TabIndex = 9;
@@ -832,7 +866,7 @@
             // 
             comboFeed.DropDownStyle = ComboBoxStyle.DropDownList;
             comboFeed.Items.AddRange(new object[] { "Flachbett", "Automatischer Einzug" });
-            comboFeed.Location = new Point(8, 218);
+            comboFeed.Location = new Point(8, 270);
             comboFeed.Name = "comboFeed";
             comboFeed.Size = new Size(132, 23);
             comboFeed.TabIndex = 10;
@@ -840,7 +874,7 @@
             // labelOcr
             // 
             labelOcr.AutoSize = true;
-            labelOcr.Location = new Point(8, 252);
+            labelOcr.Location = new Point(8, 304);
             labelOcr.Name = "labelOcr";
             labelOcr.Size = new Size(88, 15);
             labelOcr.TabIndex = 11;
@@ -849,7 +883,7 @@
             // comboOcr
             // 
             comboOcr.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboOcr.Location = new Point(8, 270);
+            comboOcr.Location = new Point(8, 322);
             comboOcr.Name = "comboOcr";
             comboOcr.Size = new Size(132, 23);
             comboOcr.TabIndex = 12;
@@ -857,7 +891,7 @@
             // labelBrightness
             // 
             labelBrightness.AutoSize = true;
-            labelBrightness.Location = new Point(8, 304);
+            labelBrightness.Location = new Point(8, 356);
             labelBrightness.Name = "labelBrightness";
             labelBrightness.Size = new Size(69, 15);
             labelBrightness.TabIndex = 7;
@@ -867,7 +901,7 @@
             // 
             trackBrightness.AutoSize = false;
             trackBrightness.LargeChange = 25;
-            trackBrightness.Location = new Point(4, 322);
+            trackBrightness.Location = new Point(4, 374);
             trackBrightness.Maximum = 100;
             trackBrightness.Minimum = -100;
             trackBrightness.Name = "trackBrightness";
@@ -1081,7 +1115,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 461);
+            ClientSize = new Size(984, 516);
             Controls.Add(flowPanel);
             Controls.Add(panelCopyMode);
             Controls.Add(panelSettings);
@@ -1089,7 +1123,7 @@
             Controls.Add(toolStrip);
             Controls.Add(menuStrip);
             MainMenuStrip = menuStrip;
-            MinimumSize = new Size(700, 480);
+            MinimumSize = new Size(700, 535);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ScanView";
@@ -1200,6 +1234,9 @@
         private System.Windows.Forms.NumericUpDown numCopies;
         private System.Windows.Forms.CheckBox chkCopyFit;
         private System.Windows.Forms.Label labelSettings;
+        private System.Windows.Forms.Label labelProfile;
+        private System.Windows.Forms.ComboBox comboProfile;
+        private System.Windows.Forms.Button btnProfiles;
         private System.Windows.Forms.Label labelDpi;
         private System.Windows.Forms.ComboBox comboDpi;
         private System.Windows.Forms.Label labelColor;

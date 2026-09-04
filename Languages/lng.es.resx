@@ -290,4 +290,13 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
 (p. ej. FRITZ!fax) con las páginas impresas.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} página(s) enviadas a {1}</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Error al enviar el fax.</value></data>
+  <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Perfil:</value></data>
+  <data name="Scan-Profile" xml:space="preserve"><value>Perfiles de escaneo</value></data>
+  <data name="&amp;Hinzufügen" xml:space="preserve"><value>Aña&amp;dir</value></data>
+  <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>Perfiles &amp;guardados:</value></data>
+  <data name="Gespeichert werden die aktuellen Scan-Einstellungen." xml:space="preserve"><value>Se guardan los ajustes de escaneo actuales.</value></data>
+  <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Introduzca un nombre de perfil.</value></data>
+  <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>¿Reemplazar el perfil «{0}»?</value></data>
+  <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Se sobrescribirán los ajustes guardados.</value></data>
+  <data name="&amp;Name:" xml:space="preserve"><value>&amp;Nombre:</value></data>
 </root>

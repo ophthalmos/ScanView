@@ -2,6 +2,19 @@
 
 namespace ScanView.Classes;
 
+/// <summary>Benanntes Scan-Profil: die Einstellungen des Scan-Panels unter einem Namen
+/// (Profil-Combo zuoberst im Panel; verwaltet im Profil-Dialog daneben).</summary>
+internal sealed class ScanProfile
+{
+    public string Name { get; set; } = "";
+    public int DpiIndex { get; set; } = 2;   // 300 dpi
+    public int ColorIndex { get; set; }      // Farbe
+    public int AreaIndex { get; set; }       // maximal
+    public int FeedIndex { get; set; }       // Flachbett
+    public string OcrLanguage { get; set; } = "deu";
+    public int Brightness { get; set; }
+}
+
 /// <summary>Programmeinstellungen, gespeichert als JSON in %APPDATA%\ScanView\settings.json.</summary>
 internal sealed class AppSettings
 {
@@ -32,6 +45,8 @@ internal sealed class AppSettings
     public int AreaIndex { get; set; }       // maximal
     public int FeedIndex { get; set; }       // Flachbett
     public int Brightness { get; set; }
+    public List<ScanProfile> ScanProfiles { get; set; } = []; // benannte Scan-Profile (Profil-Combo im Panel)
+    public string ScanProfile { get; set; } = ""; // zuletzt gewähltes Profil (nur die Combo-Anzeige)
     public int ThumbWidth { get; set; } = 160;
     public string CopyPrinter { get; set; }            // Kopiermodus: Drucker samt Einstellungen
     public int CopyPaperRawKind { get; set; } = -1;    // -1 = Druckerstandard
