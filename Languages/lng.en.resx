@@ -299,7 +299,7 @@ the latest version.</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>JPEG &amp;quality:</value></data>
   <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Brightness:</value></data>
   <data name="Vorgaben lassen sich in den Optionen ändern." xml:space="preserve"><value>Defaults can be changed in the options.</value></data>
-  <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>JPEG &amp;quality of the images in the PDF:</value></data>
+  <data name="Bevorzugte JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>Preferred JPEG &amp;quality of the images in the PDF:</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Smaller values give smaller files; 75 is a good compromise.
 Grayscale scans save additional space.</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Brightness: {0}%</value></data>
@@ -307,4 +307,5 @@ Grayscale scans save additional space.</value></data>
   <data name="Drucker" xml:space="preserve"><value>Printer</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Print all pages or only the selected one (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>print pages (all or selected)</value></data>
+  <data name="Eigenschaften …" xml:space="preserve"><value>Properties…</value></data>
 </root>

@@ -299,7 +299,7 @@ um die neueste Version zu installieren.</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>JPEG-&amp;Qualität:</value></data>
   <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Helligkeit:</value></data>
   <data name="Vorgaben lassen sich in den Optionen ändern." xml:space="preserve"><value>Vorgaben lassen sich in den Optionen ändern.</value></data>
-  <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>JPEG-&amp;Qualität der Bilder in der PDF:</value></data>
+  <data name="Bevorzugte JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>Bevorzugte JPEG-&amp;Qualität der Bilder in der PDF:</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter
 Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Helligkeit: {0} %</value></data>
@@ -307,4 +307,5 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Drucker" xml:space="preserve"><value>Drucker</value></data>
   <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Alle oder nur die markierte Seite drucken (F6)</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>Seiten drucken (alle oder markierte)</value></data>
+  <data name="Eigenschaften …" xml:space="preserve"><value>Eigenschaften …</value></data>
 </root>

@@ -346,25 +346,26 @@
             labelQuality.AutoSize = true;
             labelQuality.Location = new Point(8, 124);
             labelQuality.Name = "labelQuality";
-            labelQuality.Size = new Size(192, 15);
+            labelQuality.Size = new Size(254, 15);
             labelQuality.TabIndex = 3;
-            labelQuality.Text = "JPEG-&Qualität der Bilder in der PDF:";
+            labelQuality.Text = "Bevorzugte JPEG-&Qualität der Bilder in der PDF:";
             // 
             // trackQuality
             // 
             trackQuality.AutoSize = false;
+            trackQuality.BackColor = SystemColors.ControlLightLight;
             trackQuality.LargeChange = 2;
-            trackQuality.Location = new Point(27, 142);
+            trackQuality.Location = new Point(28, 142);
             trackQuality.Maximum = 20;
             trackQuality.Minimum = 6;
             trackQuality.Name = "trackQuality";
-            trackQuality.Size = new Size(208, 23);
+            trackQuality.Size = new Size(202, 23);
             trackQuality.TabIndex = 4;
             trackQuality.Value = 15;
             trackQuality.ValueChanged += TrackQuality_ValueChanged;
-            //
+            // 
             // labelQualityValue
-            //
+            // 
             labelQualityValue.Location = new Point(237, 145);
             labelQualityValue.Name = "labelQualityValue";
             labelQualityValue.Size = new Size(34, 15);
@@ -424,9 +425,9 @@
             tabGeneral.ResumeLayout(false);
             tabGeneral.PerformLayout();
             panelBackColors.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)trackQuality).EndInit();
             tabOcr.ResumeLayout(false);
             tabOcr.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackQuality).EndInit();
             ResumeLayout(false);
         }
 

@@ -1,4 +1,4 @@
-namespace ScanView.Forms
+﻿namespace ScanView.Forms
 {
     partial class PrintForm
     {
@@ -34,6 +34,7 @@ namespace ScanView.Forms
             groupPrinter = new GroupBox();
             labelPrinter = new Label();
             comboPrinter = new ComboBox();
+            linkProperties = new LinkLabel();
             labelPaper = new Label();
             comboPaper = new ComboBox();
             labelSource = new Label();
@@ -88,6 +89,7 @@ namespace ScanView.Forms
             //
             groupPrinter.Controls.Add(labelPrinter);
             groupPrinter.Controls.Add(comboPrinter);
+            groupPrinter.Controls.Add(linkProperties);
             groupPrinter.Controls.Add(labelPaper);
             groupPrinter.Controls.Add(comboPaper);
             groupPrinter.Controls.Add(labelSource);
@@ -100,7 +102,7 @@ namespace ScanView.Forms
             groupPrinter.Controls.Add(chkFit);
             groupPrinter.Location = new Point(12, 68);
             groupPrinter.Name = "groupPrinter";
-            groupPrinter.Size = new Size(380, 198);
+            groupPrinter.Size = new Size(380, 220);
             groupPrinter.TabIndex = 1;
             groupPrinter.TabStop = false;
             groupPrinter.Text = "Drucker";
@@ -123,10 +125,21 @@ namespace ScanView.Forms
             comboPrinter.TabIndex = 1;
             comboPrinter.SelectedIndexChanged += ComboPrinter_SelectedIndexChanged;
             //
+            // linkProperties
+            //
+            linkProperties.AutoSize = true;
+            linkProperties.Location = new Point(268, 48);
+            linkProperties.Name = "linkProperties";
+            linkProperties.Size = new Size(100, 15);
+            linkProperties.TabIndex = 12;
+            linkProperties.TabStop = true;
+            linkProperties.Text = "Eigenschaften …";
+            linkProperties.LinkClicked += LinkProperties_LinkClicked;
+            //
             // labelPaper
             //
             labelPaper.AutoSize = true;
-            labelPaper.Location = new Point(12, 54);
+            labelPaper.Location = new Point(12, 76);
             labelPaper.Name = "labelPaper";
             labelPaper.Size = new Size(82, 15);
             labelPaper.TabIndex = 2;
@@ -135,7 +148,7 @@ namespace ScanView.Forms
             // comboPaper
             //
             comboPaper.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboPaper.Location = new Point(124, 51);
+            comboPaper.Location = new Point(124, 73);
             comboPaper.Name = "comboPaper";
             comboPaper.Size = new Size(244, 23);
             comboPaper.TabIndex = 3;
@@ -143,7 +156,7 @@ namespace ScanView.Forms
             // labelSource
             //
             labelSource.AutoSize = true;
-            labelSource.Location = new Point(12, 83);
+            labelSource.Location = new Point(12, 105);
             labelSource.Name = "labelSource";
             labelSource.Size = new Size(77, 15);
             labelSource.TabIndex = 4;
@@ -152,7 +165,7 @@ namespace ScanView.Forms
             // comboSource
             //
             comboSource.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboSource.Location = new Point(124, 80);
+            comboSource.Location = new Point(124, 102);
             comboSource.Name = "comboSource";
             comboSource.Size = new Size(244, 23);
             comboSource.TabIndex = 5;
@@ -160,7 +173,7 @@ namespace ScanView.Forms
             // labelDuplex
             //
             labelDuplex.AutoSize = true;
-            labelDuplex.Location = new Point(12, 112);
+            labelDuplex.Location = new Point(12, 134);
             labelDuplex.Name = "labelDuplex";
             labelDuplex.Size = new Size(112, 15);
             labelDuplex.TabIndex = 6;
@@ -170,7 +183,7 @@ namespace ScanView.Forms
             //
             comboDuplex.DropDownStyle = ComboBoxStyle.DropDownList;
             comboDuplex.Items.AddRange(new object[] { "Einseitig", "Beidseitig (lange Kante)", "Beidseitig (kurze Kante)" });
-            comboDuplex.Location = new Point(124, 109);
+            comboDuplex.Location = new Point(124, 131);
             comboDuplex.Name = "comboDuplex";
             comboDuplex.Size = new Size(244, 23);
             comboDuplex.TabIndex = 7;
@@ -178,7 +191,7 @@ namespace ScanView.Forms
             // labelCopies
             //
             labelCopies.AutoSize = true;
-            labelCopies.Location = new Point(12, 141);
+            labelCopies.Location = new Point(12, 163);
             labelCopies.Name = "labelCopies";
             labelCopies.Size = new Size(68, 15);
             labelCopies.TabIndex = 8;
@@ -186,7 +199,7 @@ namespace ScanView.Forms
             //
             // numCopies
             //
-            numCopies.Location = new Point(124, 138);
+            numCopies.Location = new Point(124, 160);
             numCopies.Maximum = new decimal(new int[] { 99, 0, 0, 0 });
             numCopies.Minimum = new decimal(new int[] { 1, 0, 0, 0 });
             numCopies.Name = "numCopies";
@@ -197,7 +210,7 @@ namespace ScanView.Forms
             // chkColor
             //
             chkColor.AutoSize = true;
-            chkColor.Location = new Point(214, 140);
+            chkColor.Location = new Point(214, 162);
             chkColor.Name = "chkColor";
             chkColor.Size = new Size(108, 19);
             chkColor.TabIndex = 10;
@@ -207,7 +220,7 @@ namespace ScanView.Forms
             // chkFit
             //
             chkFit.AutoSize = true;
-            chkFit.Location = new Point(124, 168);
+            chkFit.Location = new Point(124, 190);
             chkFit.Name = "chkFit";
             chkFit.Size = new Size(214, 19);
             chkFit.TabIndex = 11;
@@ -217,7 +230,7 @@ namespace ScanView.Forms
             // btnPrint
             //
             btnPrint.DialogResult = DialogResult.OK;
-            btnPrint.Location = new Point(226, 278);
+            btnPrint.Location = new Point(226, 300);
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(80, 26);
             btnPrint.TabIndex = 2;
@@ -227,7 +240,7 @@ namespace ScanView.Forms
             // btnCancel
             //
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(312, 278);
+            btnCancel.Location = new Point(312, 300);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 3;
@@ -240,7 +253,7 @@ namespace ScanView.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(404, 316);
+            ClientSize = new Size(404, 338);
             Controls.Add(groupScope);
             Controls.Add(groupPrinter);
             Controls.Add(btnPrint);
@@ -269,6 +282,7 @@ namespace ScanView.Forms
         private System.Windows.Forms.GroupBox groupPrinter;
         private System.Windows.Forms.Label labelPrinter;
         private System.Windows.Forms.ComboBox comboPrinter;
+        private System.Windows.Forms.LinkLabel linkProperties;
         private System.Windows.Forms.Label labelPaper;
         private System.Windows.Forms.ComboBox comboPaper;
         private System.Windows.Forms.Label labelSource;
