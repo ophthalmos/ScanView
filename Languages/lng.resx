@@ -323,6 +323,6 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Hell. {0} %" xml:space="preserve"><value>Hell. {0} %</value></data>
   <data name="Als &amp;neue Seite speichern" xml:space="preserve"><value>Als &amp;neue Seite speichern</value></data>
   <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Als neue Seite gespeichert ({0} × {1} Pixel)</value></data>
-  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)" xml:space="preserve"><value>Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)</value></data>
   <data name="Als neue Seite gespeichert — das Original ist wieder da" xml:space="preserve"><value>Als neue Seite gespeichert — das Original ist wieder da</value></data>
+  <data name="&amp;Vorschlagen" xml:space="preserve"><value>&amp;Vorschlagen</value></data>
 </root>

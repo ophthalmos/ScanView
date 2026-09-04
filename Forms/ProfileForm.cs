@@ -11,7 +11,10 @@ namespace ScanView.Forms;
 internal sealed partial class ProfileForm : Form
 {
     /// <summary>Die (bei OK zu übernehmende) Profilliste.</summary>
-    public List<ScanProfile> Profiles { get; }
+    public List<ScanProfile> Profiles
+    {
+        get;
+    }
 
     /// <summary>Aktueller Name des beim Öffnen in der MainForm gewählten Profils — folgt einem
     /// Umbenennen und Umsortieren, null nach dem Löschen. Damit behält die Profil-Combo
@@ -22,11 +25,14 @@ internal sealed partial class ProfileForm : Form
 
     private readonly ScanProfile current; // die aktuellen Panel-Einstellungen als Vorlage fürs Hinzufügen
 
-    public ProfileForm(List<ScanProfile> profiles, ScanProfile current, string currentSummary, string compactSummary, string selectedName)
+    private readonly string nameSuggestion; // fertiger Profilname aus den Panel-Werten (Button „Vorschlagen")
+
+    public ProfileForm(List<ScanProfile> profiles, ScanProfile current, string currentSummary, string compactSummary, string nameSuggestion, string selectedName)
     {
         InitializeComponent();
         Lng.Apply(this);
         TextBoxMargins.Apply(this);
+        this.nameSuggestion = nameSuggestion;
         labelSettings.Text = currentSummary; // die Panel-Werte im Klartext — das speichert der Button
         if (labelSettings.Right > groupSave.Width - 12) { labelSettings.Text = compactSummary; } // zu breit → Kurzform
         btnOk.Left = btnCancel.Left - 6 - btnOk.Width; // rechtsbündig neben Abbrechen (AutoSize, Textbreite je Sprache)
@@ -73,8 +79,12 @@ internal sealed partial class ProfileForm : Form
         }
         Profiles.Add(new ScanProfile
         {
-            Name = name, DpiIndex = current.DpiIndex, ColorIndex = current.ColorIndex, AreaIndex = current.AreaIndex,
-            FeedIndex = current.FeedIndex, Brightness = current.Brightness,
+            Name = name,
+            DpiIndex = current.DpiIndex,
+            ColorIndex = current.ColorIndex,
+            AreaIndex = current.AreaIndex,
+            FeedIndex = current.FeedIndex,
+            Brightness = current.Brightness,
         });
         RefreshList(name);
         btnOk.Enabled = true; // es gibt jetzt etwas zu speichern
@@ -151,5 +161,20 @@ internal sealed partial class ProfileForm : Form
     private void ListProfiles_MouseDown(object sender, MouseEventArgs e)
     {
         if (listProfiles.IndexFromPoint(e.Location) < 0) { listProfiles.ClearSelected(); }
+    }
+
+    /// <summary>Schlägt einen Profilnamen aus den aktuellen Panel-Werten vor („Grau 300 dpi A4");
+    /// existiert der Name schon, wird „(2)", „(3)" … angehängt. Der Fokus wandert ins Namensfeld,
+    /// damit Enter direkt speichert oder sich der Vorschlag noch anpassen lässt.</summary>
+    private void BtnSuggest_Click(object sender, EventArgs e)
+    {
+        var name = nameSuggestion;
+        for (var n = 2; Profiles.Any(p => string.Equals(p.Name, name, StringComparison.OrdinalIgnoreCase)); n++)
+        {
+            name = $"{nameSuggestion} ({n})";
+        }
+        textName.Text = name;
+        textName.Focus();
+        textName.SelectionStart = textName.TextLength; // Cursor ans Ende — Ergänzen sofort möglich
     }
 }

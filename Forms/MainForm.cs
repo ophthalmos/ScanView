@@ -996,7 +996,7 @@ public partial class MainForm : Form, IMessageFilter
         PictureBox pic = new()
         {
             SizeMode = PictureBoxSizeMode.Zoom,
-            BackColor = Color.AliceBlue, // hebt sich vom weißen Seiteninhalt ab — das echte Seitenformat bleibt erkennbar
+            BackColor = Color.GhostWhite, // hebt sich vom weißen Seiteninhalt ab — das echte Seitenformat bleibt erkennbar
             Image = ScanService.LoadThumbnail(tiffPath, ThumbImageWidth),
             Cursor = Cursors.Hand,
         };
@@ -1493,7 +1493,11 @@ public partial class MainForm : Form, IMessageFilter
             summary += " · " + string.Format(Lng.T("Helligkeit {0} %"), brightness);
             compact += " · " + string.Format(Lng.T("Hell. {0} %"), brightness);
         }
-        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), summary, compact, comboProfile.Text);
+        // Namensvorschlag im Stil der üblichen Profilnamen („Grau 300 dpi A4") — Zufuhr und Helligkeit nur bei Abweichung
+        var suggestion = string.Join(" ", compactColor, comboDpi.Text, compactArea);
+        if (comboFeed.SelectedIndex == 1) { suggestion += " " + Lng.T("Einzug"); }
+        if (trackBrightness.Value != 0) { suggestion += " " + trackBrightness.Value.ToString("+0;-0") + " %"; }
+        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), summary, compact, suggestion, comboProfile.Text);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.ScanProfiles = dialog.Profiles;
         settings.Save();
