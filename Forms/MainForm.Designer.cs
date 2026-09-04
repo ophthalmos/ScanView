@@ -814,6 +814,7 @@
             comboDpi.Name = "comboDpi";
             comboDpi.Size = new Size(132, 23);
             comboDpi.TabIndex = 2;
+            comboDpi.SelectedIndexChanged += ScanSetting_Changed;
             // 
             // labelColor
             // 
@@ -832,6 +833,7 @@
             comboColor.Name = "comboColor";
             comboColor.Size = new Size(132, 23);
             comboColor.TabIndex = 4;
+            comboColor.SelectedIndexChanged += ScanSetting_Changed;
             // 
             // labelArea
             // 
@@ -850,6 +852,7 @@
             comboArea.Name = "comboArea";
             comboArea.Size = new Size(132, 23);
             comboArea.TabIndex = 6;
+            comboArea.SelectedIndexChanged += ScanSetting_Changed;
             // 
             // labelFeed
             // 
@@ -868,6 +871,7 @@
             comboFeed.Name = "comboFeed";
             comboFeed.Size = new Size(132, 23);
             comboFeed.TabIndex = 10;
+            comboFeed.SelectedIndexChanged += ScanSetting_Changed;
             // 
             // labelBrightness
             // 
@@ -891,6 +895,7 @@
             trackBrightness.TabIndex = 13;
             trackBrightness.TickFrequency = 25;
             trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
+            trackBrightness.ValueChanged += ScanSetting_Changed;
             // 
             // panelCopyMode
             // 

@@ -94,6 +94,7 @@ public partial class MainForm : Form, IMessageFilter
         comboFeed.SelectedIndex = Clamped(settings.FeedIndex, comboFeed, 0);
         trackBrightness.Value = Math.Clamp(settings.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
         RefreshProfileCombo(settings.ScanProfile); // Profilnamen listen; die Werte kommen aus den Einzel-Settings
+        ScanSetting_Changed(this, EventArgs.Empty); // die gemerkte Profilwahl nur behalten, wenn die Werte noch dazu passen
         linkProfiles.Left = comboProfile.Right - linkProfiles.Width; // rechtsbündig — die Übersetzungen sind unterschiedlich breit
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
@@ -169,9 +170,7 @@ public partial class MainForm : Form, IMessageFilter
         Set(btnRemove, ToolbarIcons.Delete);
         Set(btnCrop, ToolbarIcons.Crop);
         Set(btnCopyMode, ToolbarIcons.Copy);
-        btnNew.Image = ToolbarIcons.GetNewPage(size); // leeres Blatt mit Sternchen
-        btnNew.TextImageRelation = TextImageRelation.ImageAboveText;
-        btnNew.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
+        Set(btnNew, ToolbarIcons.Page);
         Set(btnZoomIn, ToolbarIcons.ZoomIn, imageOnly: true);
         Set(btnZoomOut, ToolbarIcons.ZoomOut, imageOnly: true);
     }
@@ -183,7 +182,7 @@ public partial class MainForm : Form, IMessageFilter
         var size = LogicalToDeviceUnits(new Size(16, 16));
         menuStrip.ImageScalingSize = size;
         Image Icon16(char glyph) => ToolbarIcons.Get(glyph, size);
-        menuActionNew.Image = ToolbarIcons.GetNewPage(size);
+        menuActionNew.Image = Icon16(ToolbarIcons.Page);
         menuActionImport.Image = Icon16(ToolbarIcons.Import);
         menuActionScan.Image = Icon16(ToolbarIcons.Scan);
         menuActionSave.Image = Icon16(ToolbarIcons.Save);
@@ -1371,11 +1370,30 @@ public partial class MainForm : Form, IMessageFilter
         if (updatingProfiles || comboProfile.SelectedIndex < 0) { return; }
         var profile = settings.ScanProfiles[comboProfile.SelectedIndex];
         static int Clamped(int value, ComboBox combo, int fallback) => value >= 0 && value < combo.Items.Count ? value : fallback;
+        updatingProfiles = true; // die Einzel-Änderungen sollen die Profilwahl nicht gleich wieder leeren
         comboDpi.SelectedIndex = Clamped(profile.DpiIndex, comboDpi, 2);
         comboColor.SelectedIndex = Clamped(profile.ColorIndex, comboColor, 0);
         comboArea.SelectedIndex = Clamped(profile.AreaIndex, comboArea, 0);
         comboFeed.SelectedIndex = Clamped(profile.FeedIndex, comboFeed, 0);
         trackBrightness.Value = Math.Clamp(profile.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
+        updatingProfiles = false;
+    }
+
+    /// <summary>Sobald eine Scan-Einstellung vom gewählten Profil abweicht, wird die Profil-Combo
+    /// geleert — sonst zeigte sie einen Namen, dessen Werte nicht mehr stimmen.</summary>
+    private void ScanSetting_Changed(object sender, EventArgs e)
+    {
+        if (updatingProfiles || comboProfile.SelectedIndex < 0) { return; }
+        var profile = settings.ScanProfiles[comboProfile.SelectedIndex];
+        var matches = comboDpi.SelectedIndex == profile.DpiIndex
+            && comboColor.SelectedIndex == profile.ColorIndex
+            && comboArea.SelectedIndex == profile.AreaIndex
+            && comboFeed.SelectedIndex == profile.FeedIndex
+            && trackBrightness.Value == profile.Brightness;
+        if (matches) { return; }
+        updatingProfiles = true;
+        comboProfile.SelectedIndex = -1;
+        updatingProfiles = false;
     }
 
     /// <summary>Link über der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
@@ -1386,6 +1404,7 @@ public partial class MainForm : Form, IMessageFilter
         settings.ScanProfiles = dialog.Profiles;
         settings.Save();
         RefreshProfileCombo(comboProfile.Text); // bisherige Auswahl beibehalten, falls noch vorhanden
+        ScanSetting_Changed(sender, e); // … aber nur, wenn die Panel-Werte noch zum (evtl. ersetzten) Profil passen
     }
 
     /// <summary>Extras → Faxprogramm: virtuellen Faxdrucker festlegen (z.B. FRITZ!fax-Drucker).</summary>

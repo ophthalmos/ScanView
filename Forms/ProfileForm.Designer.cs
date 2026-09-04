@@ -34,6 +34,8 @@ namespace ScanView.Forms
             labelList = new Label();
             listProfiles = new ListBox();
             btnDelete = new Button();
+            btnUp = new Button();
+            btnDown = new Button();
             labelHint = new Label();
             btnOk = new Button();
             btnCancel = new Button();
@@ -92,6 +94,28 @@ namespace ScanView.Forms
             btnDelete.Text = "&Löschen";
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += BtnDelete_Click;
+            //
+            // btnUp
+            //
+            btnUp.Enabled = false;
+            btnUp.Location = new Point(260, 142);
+            btnUp.Name = "btnUp";
+            btnUp.Size = new Size(92, 25);
+            btnUp.TabIndex = 9;
+            btnUp.Text = "Nach &oben";
+            btnUp.UseVisualStyleBackColor = true;
+            btnUp.Click += BtnUp_Click;
+            //
+            // btnDown
+            //
+            btnDown.Enabled = false;
+            btnDown.Location = new Point(260, 173);
+            btnDown.Name = "btnDown";
+            btnDown.Size = new Size(92, 25);
+            btnDown.TabIndex = 10;
+            btnDown.Text = "Nach &unten";
+            btnDown.UseVisualStyleBackColor = true;
+            btnDown.Click += BtnDown_Click;
             // 
             // labelHint
             // 
@@ -137,6 +161,8 @@ namespace ScanView.Forms
             Controls.Add(labelList);
             Controls.Add(listProfiles);
             Controls.Add(btnDelete);
+            Controls.Add(btnUp);
+            Controls.Add(btnDown);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -159,6 +185,8 @@ namespace ScanView.Forms
         private System.Windows.Forms.Label labelList;
         private System.Windows.Forms.ListBox listProfiles;
         private System.Windows.Forms.Button btnDelete;
+        private System.Windows.Forms.Button btnUp;
+        private System.Windows.Forms.Button btnDown;
         private System.Windows.Forms.Label labelHint;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;

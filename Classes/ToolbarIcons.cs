@@ -20,9 +20,7 @@ internal static class ToolbarIcons
     public const char ZoomOut = '';
     public const char ZoomIn = '';
 
-    private const char Page = '';
-    private const char Star = '';       // FavoriteStarFill
-    private const char NewPageKey = ''; // Cache-Schlüssel für das zusammengesetzte "Neu"-Symbol
+    public const char Page = '';        // Neue Seite
 
     public const char Import = '';
     public const char Power = '';      // Schließen
@@ -78,28 +76,6 @@ internal static class ToolbarIcons
             mirrored.RotateFlip(RotateFlipType.RotateNoneFlipX);
             image = mirrored;
             mirroredCache[(glyph, size.Width)] = image;
-        }
-        return image;
-    }
-
-    /// <summary>Zusammengesetztes Symbol für "Neu": leeres Blatt mit Sternchen rechts oben.</summary>
-    public static Image GetNewPage(Size size)
-    {
-        if (!cache.TryGetValue((NewPageKey, size.Width), out var image))
-        {
-            Bitmap bitmap = new(size.Width, size.Height);
-            using (var g = Graphics.FromImage(bitmap))
-            {
-                g.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-                using StringFormat format = new() { Alignment = StringAlignment.Center, LineAlignment = StringAlignment.Center };
-                using SolidBrush brush = new(Color.FromArgb(64, 64, 64));
-                using Font pageFont = new(FontName, size.Height * 0.72f, GraphicsUnit.Pixel);
-                g.DrawString(Page.ToString(), pageFont, brush, new RectangleF(-size.Width * 0.08f, size.Height * 0.10f, size.Width, size.Height), format);
-                using Font starFont = new(FontName, size.Height * 0.42f, GraphicsUnit.Pixel);
-                g.DrawString(Star.ToString(), starFont, brush, new RectangleF(size.Width * 0.30f, -size.Height * 0.30f, size.Width, size.Height), format);
-            }
-            image = bitmap;
-            cache[(NewPageKey, size.Width)] = image;
         }
         return image;
     }
