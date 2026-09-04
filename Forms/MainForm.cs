@@ -1403,7 +1403,7 @@ public partial class MainForm : Form, IMessageFilter
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.ScanProfiles = dialog.Profiles;
         settings.Save();
-        RefreshProfileCombo(dialog.SelectedName ?? comboProfile.Text); // nach Umbenennen dem neuen Namen folgen
+        RefreshProfileCombo(dialog.TrackedName ?? comboProfile.Text); // das gewählte Profil überlebt Umbenennen (Fallback: Ersetzen unter gleichem Namen)
         ScanSetting_Changed(sender, e); // … aber nur, wenn die Panel-Werte noch zum (evtl. ersetzten) Profil passen
     }
 
