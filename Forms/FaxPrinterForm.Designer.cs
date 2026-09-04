@@ -34,36 +34,36 @@ namespace ScanView.Forms
             btnOk = new Button();
             btnCancel = new Button();
             SuspendLayout();
-            //
+            // 
             // labelPrinter
-            //
+            // 
             labelPrinter.AutoSize = true;
             labelPrinter.Location = new Point(12, 15);
             labelPrinter.Name = "labelPrinter";
-            labelPrinter.Size = new Size(130, 15);
+            labelPrinter.Size = new Size(243, 15);
             labelPrinter.TabIndex = 0;
-            labelPrinter.Text = "Virtueller Fax&drucker:";
-            //
+            labelPrinter.Text = "Virtueller Fax&drucker (z.B. FRITZ!fax-Drucker):";
+            // 
             // comboPrinter
-            //
+            // 
             comboPrinter.DropDownStyle = ComboBoxStyle.DropDownList;
             comboPrinter.Location = new Point(12, 33);
             comboPrinter.Name = "comboPrinter";
             comboPrinter.Size = new Size(300, 23);
             comboPrinter.TabIndex = 1;
-            //
+            // 
             // labelHint
-            //
+            // 
             labelHint.AutoSize = true;
             labelHint.ForeColor = SystemColors.GrayText;
             labelHint.Location = new Point(12, 66);
             labelHint.Name = "labelHint";
-            labelHint.Size = new Size(297, 30);
+            labelHint.Size = new Size(275, 30);
             labelHint.TabIndex = 2;
-            labelHint.Text = "Der Druck an diesen Drucker öffnet das Faxprogramm\n(z. B. FRITZ!fax) mit den gedruckten Seiten.";
-            //
+            labelHint.Text = "Wähle hier den Faxdrucker deines Faxprogramms.\r\nOhne Eintrag wird keine Schaltfläche eingeblendet.";
+            // 
             // btnOk
-            //
+            // 
             btnOk.DialogResult = DialogResult.OK;
             btnOk.Location = new Point(146, 110);
             btnOk.Name = "btnOk";
@@ -71,9 +71,9 @@ namespace ScanView.Forms
             btnOk.TabIndex = 3;
             btnOk.Text = "OK";
             btnOk.UseVisualStyleBackColor = true;
-            //
+            // 
             // btnCancel
-            //
+            // 
             btnCancel.DialogResult = DialogResult.Cancel;
             btnCancel.Location = new Point(232, 110);
             btnCancel.Name = "btnCancel";
@@ -81,9 +81,9 @@ namespace ScanView.Forms
             btnCancel.TabIndex = 4;
             btnCancel.Text = "Abbrechen";
             btnCancel.UseVisualStyleBackColor = true;
-            //
+            // 
             // FaxPrinterForm
-            //
+            // 
             AcceptButton = btnOk;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;

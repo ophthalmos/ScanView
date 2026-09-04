@@ -11,7 +11,6 @@ internal sealed class ScanProfile
     public int ColorIndex { get; set; }      // Farbe
     public int AreaIndex { get; set; }       // maximal
     public int FeedIndex { get; set; }       // Flachbett
-    public string OcrLanguage { get; set; } = "deu";
     public int Brightness { get; set; }
 }
 

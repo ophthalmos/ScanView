@@ -38,99 +38,98 @@ namespace ScanView.Forms
             btnOk = new Button();
             btnCancel = new Button();
             SuspendLayout();
-            //
+            // 
             // labelName
-            //
+            // 
             labelName.AutoSize = true;
             labelName.Location = new Point(12, 15);
             labelName.Name = "labelName";
-            labelName.Size = new Size(42, 15);
+            labelName.Size = new Size(68, 15);
             labelName.TabIndex = 0;
-            labelName.Text = "&Name:";
-            //
+            labelName.Text = "Profil&name:";
+            // 
             // textName
-            //
-            textName.Location = new Point(64, 12);
+            // 
+            textName.Location = new Point(12, 33);
             textName.Name = "textName";
-            textName.Size = new Size(190, 23);
+            textName.Size = new Size(242, 23);
             textName.TabIndex = 1;
-            //
+            // 
             // btnAdd
-            //
-            btnAdd.Location = new Point(260, 11);
+            // 
+            btnAdd.Location = new Point(260, 31);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(92, 25);
             btnAdd.TabIndex = 2;
             btnAdd.Text = "&Hinzufügen";
             btnAdd.UseVisualStyleBackColor = true;
             btnAdd.Click += BtnAdd_Click;
-            //
-            // labelHint
-            //
-            labelHint.AutoSize = true;
-            labelHint.ForeColor = SystemColors.GrayText;
-            labelHint.Location = new Point(12, 40);
-            labelHint.Name = "labelHint";
-            labelHint.Size = new Size(297, 15);
-            labelHint.TabIndex = 3;
-            labelHint.Text = "Gespeichert werden die aktuellen Scan-Einstellungen.";
-            //
+            // 
             // labelList
-            //
+            // 
             labelList.AutoSize = true;
-            labelList.Location = new Point(12, 68);
+            labelList.Location = new Point(12, 93);
             labelList.Name = "labelList";
-            labelList.Size = new Size(122, 15);
+            labelList.Size = new Size(115, 15);
             labelList.TabIndex = 4;
             labelList.Text = "&Gespeicherte Profile:";
-            //
+            // 
             // listProfiles
-            //
-            listProfiles.ItemHeight = 15;
-            listProfiles.Location = new Point(12, 86);
+            // 
+            listProfiles.Location = new Point(12, 111);
             listProfiles.Name = "listProfiles";
             listProfiles.Size = new Size(242, 124);
             listProfiles.TabIndex = 5;
             listProfiles.SelectedIndexChanged += ListProfiles_SelectedIndexChanged;
-            //
+            // 
             // btnDelete
-            //
+            // 
             btnDelete.Enabled = false;
-            btnDelete.Location = new Point(260, 86);
+            btnDelete.Location = new Point(260, 111);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(92, 25);
             btnDelete.TabIndex = 6;
             btnDelete.Text = "&Löschen";
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += BtnDelete_Click;
-            //
+            // 
+            // labelHint
+            // 
+            labelHint.AutoSize = true;
+            labelHint.ForeColor = SystemColors.GrayText;
+            labelHint.Location = new Point(12, 59);
+            labelHint.Name = "labelHint";
+            labelHint.Size = new Size(288, 15);
+            labelHint.TabIndex = 3;
+            labelHint.Text = "Gespeichert werden die aktuellen Scan-Einstellungen.";
+            // 
             // btnOk
-            //
+            // 
             btnOk.DialogResult = DialogResult.OK;
-            btnOk.Location = new Point(186, 226);
+            btnOk.Location = new Point(169, 253);
             btnOk.Name = "btnOk";
-            btnOk.Size = new Size(80, 26);
+            btnOk.Size = new Size(85, 26);
             btnOk.TabIndex = 7;
             btnOk.Text = "OK";
             btnOk.UseVisualStyleBackColor = true;
-            //
+            // 
             // btnCancel
-            //
+            // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(272, 226);
+            btnCancel.Location = new Point(260, 253);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(80, 26);
+            btnCancel.Size = new Size(92, 26);
             btnCancel.TabIndex = 8;
             btnCancel.Text = "Abbrechen";
             btnCancel.UseVisualStyleBackColor = true;
-            //
+            // 
             // ProfileForm
-            //
+            // 
             AcceptButton = btnOk;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(364, 264);
+            ClientSize = new Size(364, 291);
             Controls.Add(labelName);
             Controls.Add(textName);
             Controls.Add(btnAdd);

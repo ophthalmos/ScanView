@@ -75,9 +75,9 @@
             menuViewSeparator2 = new ToolStripSeparator();
             menuViewFullScreen = new ToolStripMenuItem();
             menuExtras = new ToolStripMenuItem();
+            menuExtrasOptions = new ToolStripMenuItem();
             menuExtrasScanner = new ToolStripMenuItem();
             menuExtrasFax = new ToolStripMenuItem();
-            menuExtrasOptions = new ToolStripMenuItem();
             menuHelp = new ToolStripMenuItem();
             menuHelpShortcuts = new ToolStripMenuItem();
             menuHelpUpdate = new ToolStripMenuItem();
@@ -103,7 +103,7 @@
             labelSettings = new Label();
             labelProfile = new Label();
             comboProfile = new ComboBox();
-            btnProfiles = new Button();
+            linkProfiles = new LinkLabel();
             labelDpi = new Label();
             comboDpi = new ComboBox();
             labelColor = new Label();
@@ -112,8 +112,6 @@
             comboArea = new ComboBox();
             labelFeed = new Label();
             comboFeed = new ComboBox();
-            labelOcr = new Label();
-            comboOcr = new ComboBox();
             labelBrightness = new Label();
             trackBrightness = new TrackBar();
             panelCopyMode = new Panel();
@@ -136,6 +134,7 @@
             statusSize = new ToolStripStatusLabel();
             statusLabel = new ToolStripStatusLabel();
             statusScanner = new ToolStripStatusLabel();
+            thumbContextMenu.SuspendLayout();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
             panelSettings.SuspendLayout();
@@ -149,14 +148,14 @@
             // 
             thumbContextMenu.Items.AddRange(new ToolStripItem[] { contextCrop, contextRotateLeft, contextRotate180, contextRotateRight, contextSeparator1, contextCut, contextCopy, contextPaste, contextDelete, contextSeparator2, contextOpenViewer });
             thumbContextMenu.Name = "thumbContextMenu";
-            thumbContextMenu.Size = new Size(230, 220);
+            thumbContextMenu.Size = new Size(261, 214);
             thumbContextMenu.Opening += ThumbContextMenu_Opening;
             // 
             // contextCrop
             // 
             contextCrop.Name = "contextCrop";
             contextCrop.ShortcutKeyDisplayString = "F10";
-            contextCrop.Size = new Size(229, 22);
+            contextCrop.Size = new Size(260, 22);
             contextCrop.Text = "&Zuschneiden …";
             contextCrop.Click += MenuEditCrop_Click;
             // 
@@ -164,7 +163,7 @@
             // 
             contextRotateLeft.Name = "contextRotateLeft";
             contextRotateLeft.ShortcutKeyDisplayString = "Strg+L";
-            contextRotateLeft.Size = new Size(229, 22);
+            contextRotateLeft.Size = new Size(260, 22);
             contextRotateLeft.Text = "Drehen nach &links";
             contextRotateLeft.Click += MenuEditRotateLeft_Click;
             // 
@@ -172,7 +171,7 @@
             // 
             contextRotate180.Name = "contextRotate180";
             contextRotate180.ShortcutKeyDisplayString = "Strg+Umschalt+R";
-            contextRotate180.Size = new Size(229, 22);
+            contextRotate180.Size = new Size(260, 22);
             contextRotate180.Text = "Drehen um 1&80°";
             contextRotate180.Click += MenuEditRotate180_Click;
             // 
@@ -180,20 +179,20 @@
             // 
             contextRotateRight.Name = "contextRotateRight";
             contextRotateRight.ShortcutKeyDisplayString = "Strg+R";
-            contextRotateRight.Size = new Size(229, 22);
+            contextRotateRight.Size = new Size(260, 22);
             contextRotateRight.Text = "Drehen nach &rechts";
             contextRotateRight.Click += MenuEditRotateRight_Click;
             // 
             // contextSeparator1
             // 
             contextSeparator1.Name = "contextSeparator1";
-            contextSeparator1.Size = new Size(226, 6);
+            contextSeparator1.Size = new Size(257, 6);
             // 
             // contextCut
             // 
             contextCut.Name = "contextCut";
             contextCut.ShortcutKeyDisplayString = "Strg+X";
-            contextCut.Size = new Size(229, 22);
+            contextCut.Size = new Size(260, 22);
             contextCut.Text = "&Ausschneiden";
             contextCut.Click += MenuEditCut_Click;
             // 
@@ -201,7 +200,7 @@
             // 
             contextCopy.Name = "contextCopy";
             contextCopy.ShortcutKeyDisplayString = "Strg+C";
-            contextCopy.Size = new Size(229, 22);
+            contextCopy.Size = new Size(260, 22);
             contextCopy.Text = "&Kopieren";
             contextCopy.Click += MenuEditCopy_Click;
             // 
@@ -209,7 +208,7 @@
             // 
             contextPaste.Name = "contextPaste";
             contextPaste.ShortcutKeyDisplayString = "Strg+V";
-            contextPaste.Size = new Size(229, 22);
+            contextPaste.Size = new Size(260, 22);
             contextPaste.Text = "Ein&fügen";
             contextPaste.Click += MenuEditPaste_Click;
             // 
@@ -217,19 +216,19 @@
             // 
             contextDelete.Name = "contextDelete";
             contextDelete.ShortcutKeyDisplayString = "Entf";
-            contextDelete.Size = new Size(229, 22);
+            contextDelete.Size = new Size(260, 22);
             contextDelete.Text = "&Löschen";
             contextDelete.Click += BtnRemove_Click;
             // 
             // contextSeparator2
             // 
             contextSeparator2.Name = "contextSeparator2";
-            contextSeparator2.Size = new Size(226, 6);
+            contextSeparator2.Size = new Size(257, 6);
             // 
             // contextOpenViewer
             // 
             contextOpenViewer.Name = "contextOpenViewer";
-            contextOpenViewer.Size = new Size(229, 22);
+            contextOpenViewer.Size = new Size(260, 22);
             contextOpenViewer.Text = "Im &Bildbetrachter öffnen";
             contextOpenViewer.Click += ContextOpenViewer_Click;
             // 
@@ -519,30 +518,30 @@
             menuExtras.Size = new Size(49, 20);
             menuExtras.Text = "E&xtras";
             // 
-            // menuExtrasScanner
-            // 
-            menuExtrasScanner.Name = "menuExtrasScanner";
-            menuExtrasScanner.Size = new Size(180, 22);
-            menuExtrasScanner.Text = "&Scanner …";
-            menuExtrasScanner.ToolTipText = "Scanner wählen und Gerätetasten konfigurieren";
-            menuExtrasScanner.Click += MenuExtrasScanner_Click;
-            //
-            // menuExtrasFax
-            //
-            menuExtrasFax.Name = "menuExtrasFax";
-            menuExtrasFax.Size = new Size(180, 22);
-            menuExtrasFax.Text = "Fax&programm …";
-            menuExtrasFax.ToolTipText = "Virtuellen Faxdrucker festlegen";
-            menuExtrasFax.Click += MenuExtrasFax_Click;
-            // 
             // menuExtrasOptions
             // 
             menuExtrasOptions.Name = "menuExtrasOptions";
             menuExtrasOptions.ShortcutKeyDisplayString = "Strg+,";
             menuExtrasOptions.ShortcutKeys = Keys.Control | Keys.Oemcomma;
-            menuExtrasOptions.Size = new Size(180, 22);
+            menuExtrasOptions.Size = new Size(175, 22);
             menuExtrasOptions.Text = "&Optionen …";
             menuExtrasOptions.Click += MenuExtrasOptions_Click;
+            // 
+            // menuExtrasScanner
+            // 
+            menuExtrasScanner.Name = "menuExtrasScanner";
+            menuExtrasScanner.Size = new Size(175, 22);
+            menuExtrasScanner.Text = "&Scanner …";
+            menuExtrasScanner.ToolTipText = "Scanner wählen und Gerätetasten konfigurieren";
+            menuExtrasScanner.Click += MenuExtrasScanner_Click;
+            // 
+            // menuExtrasFax
+            // 
+            menuExtrasFax.Name = "menuExtrasFax";
+            menuExtrasFax.Size = new Size(175, 22);
+            menuExtrasFax.Text = "Fax&programm …";
+            menuExtrasFax.ToolTipText = "Virtuellen Faxdrucker festlegen";
+            menuExtrasFax.Click += MenuExtrasFax_Click;
             // 
             // menuHelp
             // 
@@ -555,27 +554,27 @@
             // 
             menuHelpShortcuts.Name = "menuHelpShortcuts";
             menuHelpShortcuts.ShortcutKeys = Keys.F1;
-            menuHelpShortcuts.Size = new Size(194, 22);
+            menuHelpShortcuts.Size = new Size(201, 22);
             menuHelpShortcuts.Text = "&Hilfe (Tastenkürzel)";
             menuHelpShortcuts.ToolTipText = "Tastenkürzel-Übersicht als PDF erstellen und anzeigen";
             menuHelpShortcuts.Click += MenuHelpShortcuts_Click;
-            //
+            // 
             // menuHelpUpdate
-            //
+            // 
             menuHelpUpdate.Name = "menuHelpUpdate";
-            menuHelpUpdate.Size = new Size(194, 22);
+            menuHelpUpdate.Size = new Size(201, 22);
             menuHelpUpdate.Text = "Nach &Updates suchen …";
             menuHelpUpdate.Click += MenuHelpUpdate_Click;
-            //
+            // 
             // menuHelpSeparator
-            //
+            // 
             menuHelpSeparator.Name = "menuHelpSeparator";
-            menuHelpSeparator.Size = new Size(191, 6);
-            //
+            menuHelpSeparator.Size = new Size(198, 6);
+            // 
             // menuHelpAbout
-            //
+            // 
             menuHelpAbout.Name = "menuHelpAbout";
-            menuHelpAbout.Size = new Size(194, 22);
+            menuHelpAbout.Size = new Size(201, 22);
             menuHelpAbout.Text = "&Info …";
             menuHelpAbout.Click += MenuHelpAbout_Click;
             // 
@@ -625,9 +624,9 @@
             btnPrint.Text = "&Drucken";
             btnPrint.ToolTipText = "Alle Seiten drucken (F6)";
             btnPrint.Click += BtnPrint_Click;
-            //
+            // 
             // btnFax
-            //
+            // 
             btnFax.AutoSize = false;
             btnFax.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnFax.Enabled = false;
@@ -701,25 +700,25 @@
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 60);
-            //
+            // 
             // btnZoomIn
-            //
+            // 
             btnZoomIn.Name = "btnZoomIn";
-            btnZoomIn.Size = new Size(23, 60);
+            btnZoomIn.Size = new Size(23, 57);
             btnZoomIn.Text = "+";
             btnZoomIn.ToolTipText = "Miniaturen vergrößern (Strg++)";
             btnZoomIn.Click += BtnZoomIn_Click;
-            //
+            // 
             // btnZoomOut
-            //
+            // 
             btnZoomOut.Name = "btnZoomOut";
-            btnZoomOut.Size = new Size(23, 60);
+            btnZoomOut.Size = new Size(23, 57);
             btnZoomOut.Text = "−";
             btnZoomOut.ToolTipText = "Miniaturen verkleinern (Strg+−)";
             btnZoomOut.Click += BtnZoomOut_Click;
-            //
+            // 
             // btnCopyMode
-            //
+            // 
             btnCopyMode.Alignment = ToolStripItemAlignment.Right;
             btnCopyMode.AutoSize = false;
             btnCopyMode.DisplayStyle = ToolStripItemDisplayStyle.Text;
@@ -741,7 +740,7 @@
             panelSettings.Controls.Add(labelSettings);
             panelSettings.Controls.Add(labelProfile);
             panelSettings.Controls.Add(comboProfile);
-            panelSettings.Controls.Add(btnProfiles);
+            panelSettings.Controls.Add(linkProfiles);
             panelSettings.Controls.Add(labelDpi);
             panelSettings.Controls.Add(comboDpi);
             panelSettings.Controls.Add(labelColor);
@@ -750,15 +749,13 @@
             panelSettings.Controls.Add(comboArea);
             panelSettings.Controls.Add(labelFeed);
             panelSettings.Controls.Add(comboFeed);
-            panelSettings.Controls.Add(labelOcr);
-            panelSettings.Controls.Add(comboOcr);
             panelSettings.Controls.Add(labelBrightness);
             panelSettings.Controls.Add(trackBrightness);
             panelSettings.Dock = DockStyle.Left;
             panelSettings.Location = new Point(0, 84);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(8);
-            panelSettings.Size = new Size(150, 355);
+            panelSettings.Size = new Size(150, 408);
             panelSettings.TabIndex = 1;
             // 
             // labelSettings
@@ -776,7 +773,7 @@
             labelProfile.AutoSize = true;
             labelProfile.Location = new Point(8, 44);
             labelProfile.Name = "labelProfile";
-            labelProfile.Size = new Size(39, 15);
+            labelProfile.Size = new Size(38, 15);
             labelProfile.TabIndex = 20;
             labelProfile.Text = "&Profil:";
             // 
@@ -785,19 +782,20 @@
             comboProfile.DropDownStyle = ComboBoxStyle.DropDownList;
             comboProfile.Location = new Point(8, 62);
             comboProfile.Name = "comboProfile";
-            comboProfile.Size = new Size(102, 23);
+            comboProfile.Size = new Size(132, 23);
             comboProfile.TabIndex = 21;
             comboProfile.SelectedIndexChanged += ComboProfile_SelectedIndexChanged;
             // 
-            // btnProfiles
-            // 
-            btnProfiles.Location = new Point(116, 61);
-            btnProfiles.Name = "btnProfiles";
-            btnProfiles.Size = new Size(24, 25);
-            btnProfiles.TabIndex = 22;
-            btnProfiles.Text = "…";
-            btnProfiles.UseVisualStyleBackColor = true;
-            btnProfiles.Click += BtnProfiles_Click;
+            // linkProfiles
+            //
+            linkProfiles.AutoSize = true;
+            linkProfiles.Location = new Point(100, 44);
+            linkProfiles.Name = "linkProfiles";
+            linkProfiles.Size = new Size(40, 15);
+            linkProfiles.TabIndex = 22;
+            linkProfiles.TabStop = true;
+            linkProfiles.Text = "ändern";
+            linkProfiles.LinkClicked += LinkProfiles_LinkClicked;
             // 
             // labelDpi
             // 
@@ -871,27 +869,10 @@
             comboFeed.Size = new Size(132, 23);
             comboFeed.TabIndex = 10;
             // 
-            // labelOcr
-            // 
-            labelOcr.AutoSize = true;
-            labelOcr.Location = new Point(8, 304);
-            labelOcr.Name = "labelOcr";
-            labelOcr.Size = new Size(88, 15);
-            labelOcr.TabIndex = 11;
-            labelOcr.Text = "&Texterkennung:";
-            // 
-            // comboOcr
-            // 
-            comboOcr.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboOcr.Location = new Point(8, 322);
-            comboOcr.Name = "comboOcr";
-            comboOcr.Size = new Size(132, 23);
-            comboOcr.TabIndex = 12;
-            // 
             // labelBrightness
             // 
             labelBrightness.AutoSize = true;
-            labelBrightness.Location = new Point(8, 356);
+            labelBrightness.Location = new Point(8, 304);
             labelBrightness.Name = "labelBrightness";
             labelBrightness.Size = new Size(69, 15);
             labelBrightness.TabIndex = 7;
@@ -901,7 +882,7 @@
             // 
             trackBrightness.AutoSize = false;
             trackBrightness.LargeChange = 25;
-            trackBrightness.Location = new Point(4, 374);
+            trackBrightness.Location = new Point(4, 322);
             trackBrightness.Maximum = 100;
             trackBrightness.Minimum = -100;
             trackBrightness.Name = "trackBrightness";
@@ -932,7 +913,7 @@
             panelCopyMode.Location = new Point(150, 84);
             panelCopyMode.Name = "panelCopyMode";
             panelCopyMode.Padding = new Padding(16);
-            panelCopyMode.Size = new Size(834, 355);
+            panelCopyMode.Size = new Size(834, 408);
             panelCopyMode.TabIndex = 3;
             panelCopyMode.Visible = false;
             // 
@@ -1065,7 +1046,7 @@
             flowPanel.Location = new Point(150, 84);
             flowPanel.Name = "flowPanel";
             flowPanel.Padding = new Padding(8);
-            flowPanel.Size = new Size(834, 355);
+            flowPanel.Size = new Size(834, 408);
             flowPanel.TabIndex = 2;
             flowPanel.DragEnter += FlowPanel_DragEnter;
             flowPanel.DragOver += FlowPanel_DragOver;
@@ -1073,49 +1054,49 @@
             // statusStrip
             // 
             statusStrip.Items.AddRange(new ToolStripItem[] { statusPages, statusSize, statusLabel, statusScanner });
-            statusStrip.Location = new Point(0, 439);
+            statusStrip.Location = new Point(0, 492);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(984, 22);
+            statusStrip.Size = new Size(984, 24);
             statusStrip.TabIndex = 3;
-            //
+            // 
             // statusPages
-            //
+            // 
             statusPages.BorderSides = ToolStripStatusLabelBorderSides.Right;
             statusPages.BorderStyle = Border3DStyle.Etched;
             statusPages.Name = "statusPages";
             statusPages.Padding = new Padding(0, 0, 4, 0);
-            statusPages.Size = new Size(107, 17);
+            statusPages.Size = new Size(110, 19);
             statusPages.Text = "Noch keine Seiten";
-            //
+            // 
             // statusSize
-            //
+            // 
             statusSize.BorderSides = ToolStripStatusLabelBorderSides.Right;
             statusSize.BorderStyle = Border3DStyle.Etched;
             statusSize.Name = "statusSize";
             statusSize.Padding = new Padding(4, 0, 4, 0);
-            statusSize.Size = new Size(4, 17);
+            statusSize.Size = new Size(12, 19);
             // 
             // statusLabel
             // 
             statusLabel.Name = "statusLabel";
             statusLabel.Padding = new Padding(4, 0, 4, 0);
-            statusLabel.Size = new Size(717, 17);
+            statusLabel.Size = new Size(839, 19);
             statusLabel.Spring = true;
             statusLabel.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // statusScanner
-            //
+            // 
             statusScanner.BorderSides = ToolStripStatusLabelBorderSides.Left;
             statusScanner.BorderStyle = Border3DStyle.Etched;
             statusScanner.Name = "statusScanner";
             statusScanner.Padding = new Padding(4, 0, 0, 0);
-            statusScanner.Size = new Size(4, 17);
+            statusScanner.Size = new Size(8, 19);
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 516);
+            ClientSize = new Size(984, 461);
             Controls.Add(flowPanel);
             Controls.Add(panelCopyMode);
             Controls.Add(panelSettings);
@@ -1123,13 +1104,14 @@
             Controls.Add(toolStrip);
             Controls.Add(menuStrip);
             MainMenuStrip = menuStrip;
-            MinimumSize = new Size(700, 535);
+            MinimumSize = new Size(700, 480);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ScanView";
             FormClosing += MainForm_FormClosing;
             FormClosed += MainForm_FormClosed;
             Shown += MainForm_Shown;
+            thumbContextMenu.ResumeLayout(false);
             menuStrip.ResumeLayout(false);
             menuStrip.PerformLayout();
             toolStrip.ResumeLayout(false);
@@ -1236,7 +1218,7 @@
         private System.Windows.Forms.Label labelSettings;
         private System.Windows.Forms.Label labelProfile;
         private System.Windows.Forms.ComboBox comboProfile;
-        private System.Windows.Forms.Button btnProfiles;
+        private System.Windows.Forms.LinkLabel linkProfiles;
         private System.Windows.Forms.Label labelDpi;
         private System.Windows.Forms.ComboBox comboDpi;
         private System.Windows.Forms.Label labelColor;
@@ -1245,8 +1227,6 @@
         private System.Windows.Forms.ComboBox comboArea;
         private System.Windows.Forms.Label labelFeed;
         private System.Windows.Forms.ComboBox comboFeed;
-        private System.Windows.Forms.Label labelOcr;
-        private System.Windows.Forms.ComboBox comboOcr;
         private System.Windows.Forms.Label labelBrightness;
         private System.Windows.Forms.TrackBar trackBrightness;
         private System.Windows.Forms.FlowLayoutPanel flowPanel;
