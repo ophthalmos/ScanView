@@ -31,7 +31,6 @@ namespace ScanView.Forms
             groupSave = new GroupBox();
             labelName = new Label();
             textName = new TextBox();
-            picHint = new PictureBox();
             labelHint = new Label();
             labelSettings = new Label();
             btnAdd = new Button();
@@ -47,7 +46,6 @@ namespace ScanView.Forms
             btnCancel = new Button();
             panelCanvas = new Panel();
             groupSave.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)picHint).BeginInit();
             groupProfiles.SuspendLayout();
             panelCanvas.SuspendLayout();
             SuspendLayout();
@@ -56,7 +54,6 @@ namespace ScanView.Forms
             // 
             groupSave.Controls.Add(labelName);
             groupSave.Controls.Add(textName);
-            groupSave.Controls.Add(picHint);
             groupSave.Controls.Add(labelHint);
             groupSave.Controls.Add(labelSettings);
             groupSave.Controls.Add(btnAdd);
@@ -85,21 +82,12 @@ namespace ScanView.Forms
             textName.TabIndex = 1;
             textName.Enter += TextName_Enter;
             textName.Leave += TextName_Leave;
-            // 
-            // picHint
-            // 
-            picHint.Location = new Point(12, 69);
-            picHint.Name = "picHint";
-            picHint.Size = new Size(16, 16);
-            picHint.SizeMode = PictureBoxSizeMode.Zoom;
-            picHint.TabIndex = 4;
-            picHint.TabStop = false;
-            // 
+            //
             // labelHint
-            // 
+            //
             labelHint.AutoSize = true;
             labelHint.ForeColor = SystemColors.GrayText;
-            labelHint.Location = new Point(32, 70);
+            labelHint.Location = new Point(12, 70);
             labelHint.Name = "labelHint";
             labelHint.Size = new Size(288, 15);
             labelHint.TabIndex = 3;
@@ -108,7 +96,7 @@ namespace ScanView.Forms
             // labelSettings
             // 
             labelSettings.AutoSize = true;
-            labelSettings.Location = new Point(32, 88);
+            labelSettings.Location = new Point(12, 88);
             labelSettings.Name = "labelSettings";
             labelSettings.Size = new Size(193, 15);
             labelSettings.TabIndex = 5;
@@ -270,7 +258,6 @@ namespace ScanView.Forms
             Text = "Profilverwaltung";
             groupSave.ResumeLayout(false);
             groupSave.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)picHint).EndInit();
             groupProfiles.ResumeLayout(false);
             groupProfiles.PerformLayout();
             panelCanvas.ResumeLayout(false);
@@ -283,7 +270,6 @@ namespace ScanView.Forms
         private System.Windows.Forms.GroupBox groupSave;
         private System.Windows.Forms.Label labelName;
         private System.Windows.Forms.TextBox textName;
-        private System.Windows.Forms.PictureBox picHint;
         private System.Windows.Forms.Label labelHint;
         private System.Windows.Forms.Label labelSettings;
         private System.Windows.Forms.Button btnAdd;

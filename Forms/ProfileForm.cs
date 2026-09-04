@@ -28,11 +28,6 @@ internal sealed partial class ProfileForm : Form
         Lng.Apply(this);
         labelSettings.Text = currentSummary; // die Panel-Werte im Klartext — das speichert der Button
         btnOk.Left = btnCancel.Left - 6 - btnOk.Width; // rechtsbündig neben Abbrechen (AutoSize, Textbreite je Sprache)
-        // Nota bene vor dem Hinweis: das Windows-Infosymbol in DPI-passender Größe
-        using (var info = SystemIcons.GetStockIcon(StockIconId.Info, LogicalToDeviceUnits(16)))
-        {
-            picHint.Image = info.ToBitmap();
-        }
         this.current = current;
         Profiles = [.. profiles.Select(p => new ScanProfile // Kopie — Abbrechen lässt die Originale unberührt
         {
