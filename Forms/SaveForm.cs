@@ -24,7 +24,8 @@ internal sealed partial class SaveForm : Form
     /// <summary>Gewählte OCR-Sprache — null bei „Ohne Texterkennung" oder Bild-Dateitypen.</summary>
     public string OcrLanguage => FileType == SaveFileType.Pdf && comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
 
-    public int JpgQuality => trackQuality.Value * 5; // der Slider läuft in 5er-Schritten (6–20 → 30–100)
+    /// <summary>JPEG-Qualität für den Encoder (30–100), gemappt aus den 13 Photoshop-Stufen 0–12.</summary>
+    public int JpgQuality => 30 + (int)Math.Round(trackQuality.Value * 70 / 12.0);
 
     public string MetaTitle => textTitle.Text.Trim();
 
@@ -43,7 +44,7 @@ internal sealed partial class SaveForm : Form
     {
         InitializeComponent();
         Lng.Apply(this);
-        Lng.TranslateItems(comboFileType);
+        Lng.TranslateItems(comboFileType, comboQuality); // beide werden über SelectedIndex ausgewertet
         this.hasSelection = hasSelection;
         textTitle.PlaceholderText = Lng.T("wie Dateiname");
         radioSelected.Enabled = hasSelection;
@@ -55,8 +56,8 @@ internal sealed partial class SaveForm : Form
             .FirstOrDefault(item => string.Equals(item.Code, ocrLanguage, StringComparison.OrdinalIgnoreCase));
         if (match != null) { comboOcr.SelectedItem = match; }
         else { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
-        trackQuality.Value = Math.Clamp((int)Math.Round(jpgQuality / 5.0), trackQuality.Minimum, trackQuality.Maximum);
-        TrackQuality_ValueChanged(this, EventArgs.Empty); // Wertanzeige auch dann, wenn der Startwert dem Designer-Wert entspricht
+        trackQuality.Value = Math.Clamp((int)Math.Round((jpgQuality - 30) * 12 / 70.0), 0, 12);
+        TrackQuality_ValueChanged(this, EventArgs.Empty); // TextBox und Stufen-Combo auch beim Designer-Startwert füllen
         textAuthor.Text = author ?? string.Empty;
         cbOpenAfter.Checked = openAfter;
         comboFileType.SelectedIndex = 0;
@@ -79,13 +80,56 @@ internal sealed partial class SaveForm : Form
         comboOcr.Enabled = hasOcr;
         groupMeta.Enabled = FileType is SaveFileType.Pdf or SaveFileType.PdfA;
         var usesJpgQuality = FileType is SaveFileType.Pdf or SaveFileType.PdfA or SaveFileType.Jpeg;
-        labelQuality.Enabled = usesJpgQuality;
-        trackQuality.Enabled = usesJpgQuality;
+        foreach (Control control in new Control[] { labelQuality, textBoxQuality, comboQuality, trackQuality, labelLowSize, labelLargeSize })
+        {
+            control.Enabled = usesJpgQuality;
+        }
     }
 
+    // ------------------------------------------------------------------ Qualitätsstufen (0–12 wie in Photoshop)
+
+    private bool syncingQuality; // der Slider ist der zentrale Wert; TextBox und Stufen-Combo folgen ihm
+
+    /// <summary>Verteilt den Sliderwert an TextBox und Stufen-Combo (0–4 Niedrig, 5–7 Mittel, 8–12 Hoch).</summary>
     private void TrackQuality_ValueChanged(object sender, EventArgs e)
     {
-        labelQuality.Text = string.Format(Lng.T("JPEG-&Qualität: {0}"), JpgQuality);
+        syncingQuality = true;
+        var value = trackQuality.Value;
+        if (!int.TryParse(textBoxQuality.Text, out var typed) || typed != value) { textBoxQuality.Text = value.ToString(); }
+        comboQuality.SelectedIndex = value <= 4 ? 0 : value <= 7 ? 1 : 2;
+        syncingQuality = false;
+    }
+
+    private void TextBoxQuality_KeyPress(object sender, KeyPressEventArgs e)
+    {
+        if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)) { e.Handled = true; } // nur Ziffern
+    }
+
+    private void TextBoxQuality_TextChanged(object sender, EventArgs e)
+    {
+        if (syncingQuality || !int.TryParse(textBoxQuality.Text, out var value)) { return; } // leer: erst beim Verlassen normalisieren
+        if (value > 12) // Eingaben über dem Maximum sofort kappen
+        {
+            textBoxQuality.Text = "12";
+            textBoxQuality.SelectionStart = textBoxQuality.TextLength;
+            return;
+        }
+        trackQuality.Value = value; // verteilt über ValueChanged an die Stufen-Combo
+    }
+
+    private void TextBoxQuality_Leave(object sender, EventArgs e)
+    {
+        if (!int.TryParse(textBoxQuality.Text, out var value) || value != trackQuality.Value)
+        {
+            textBoxQuality.Text = trackQuality.Value.ToString(); // leere/ungültige Eingabe zurücksetzen
+        }
+    }
+
+    /// <summary>Stufenwahl setzt den typischen Wert der Kategorie (wie in Photoshop: 3 / 5 / 8).</summary>
+    private void ComboQuality_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (syncingQuality) { return; }
+        trackQuality.Value = comboQuality.SelectedIndex switch { 0 => 3, 1 => 5, _ => 8 };
     }
 
     protected override void OnFormClosing(FormClosingEventArgs e)

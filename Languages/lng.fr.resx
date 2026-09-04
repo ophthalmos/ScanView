@@ -304,6 +304,10 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>La numérisation a échoué.</value></data>
   <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>Le scanner sélectionné est introuvable. Est-il branché et allumé ?</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>L'acquisition d'images Windows (WIA) n'est pas disponible.</value></data>
-  <data name="JPEG-&amp;Qualität: 75" xml:space="preserve"><value>&amp;Qualité JPEG : 75</value></data>
-  <data name="JPEG-&amp;Qualität: {0}" xml:space="preserve"><value>&amp;Qualité JPEG : {0}</value></data>
+  <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>&amp;Qualité JPEG :</value></data>
+  <data name="Niedrig" xml:space="preserve"><value>Faible</value></data>
+  <data name="Mittel" xml:space="preserve"><value>Moyenne</value></data>
+  <data name="Hoch" xml:space="preserve"><value>Élevée</value></data>
+  <data name="Kleine Datei" xml:space="preserve"><value>Petit fichier</value></data>
+  <data name="Große Datei" xml:space="preserve"><value>Gros fichier</value></data>
 </root>

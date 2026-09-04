@@ -304,6 +304,10 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Scannen fehlgeschlagen.</value></data>
   <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>Die Windows-Bilderfassung (WIA) ist nicht verfügbar.</value></data>
-  <data name="JPEG-&amp;Qualität: 75" xml:space="preserve"><value>JPEG-&amp;Qualität: 75</value></data>
-  <data name="JPEG-&amp;Qualität: {0}" xml:space="preserve"><value>JPEG-&amp;Qualität: {0}</value></data>
+  <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>JPEG-&amp;Qualität:</value></data>
+  <data name="Niedrig" xml:space="preserve"><value>Niedrig</value></data>
+  <data name="Mittel" xml:space="preserve"><value>Mittel</value></data>
+  <data name="Hoch" xml:space="preserve"><value>Hoch</value></data>
+  <data name="Kleine Datei" xml:space="preserve"><value>Kleine Datei</value></data>
+  <data name="Große Datei" xml:space="preserve"><value>Große Datei</value></data>
 </root>
