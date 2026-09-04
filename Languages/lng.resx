@@ -302,4 +302,7 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="umbenennen" xml:space="preserve"><value>umbenennen</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} von {1} Seiten verarbeitet</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>PDF erstellen</value></data>
+  <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Scannen fehlgeschlagen.</value></data>
+  <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?</value></data>
+  <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>Die Windows-Bilderfassung (WIA) ist nicht verfügbar.</value></data>
 </root>

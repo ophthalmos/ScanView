@@ -302,4 +302,7 @@ Grayscale scans save additional space.</value></data>
   <data name="umbenennen" xml:space="preserve"><value>rename</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} of {1} pages processed</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Creating PDF</value></data>
+  <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Scanning failed.</value></data>
+  <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>The selected scanner was not found. Is it connected and switched on?</value></data>
+  <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>Windows Image Acquisition (WIA) is not available.</value></data>
 </root>

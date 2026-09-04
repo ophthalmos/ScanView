@@ -50,20 +50,30 @@ internal static class ScanService
     /// <summary>Scannt eine Seite direkt vom angegebenen Gerät (ohne Gerätewahl-Dialog) und
     /// speichert sie als TIFF. Auflösung, Farbmodus, Scanfenster (areaMm, null = maximal),
     /// Helligkeit (−100 … +100, 0 = neutral) und Papierzufuhr werden gesetzt, soweit das
-    /// Gerät sie annimmt. Null bei Fehlern.</summary>
-    public static string ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder)
+    /// Gerät sie annimmt. Null bei Fehlern — error beschreibt sie (übersetzt); beim
+    /// Nutzer-Abbruch im WIA-Fortschritt bleibt error null.</summary>
+    public static string ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, out string error)
     {
+        error = null;
         try
         {
             var managerType = Type.GetTypeFromProgID("WIA.DeviceManager");
-            if (managerType == null) { return null; }
+            if (managerType == null)
+            {
+                error = Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar.");
+                return null;
+            }
             dynamic manager = Activator.CreateInstance(managerType);
             dynamic device = null;
             foreach (var info in manager.DeviceInfos)
             {
                 if ((string)info.DeviceID == deviceId) { device = info.Connect(); break; }
             }
-            if (device == null) { return null; }
+            if (device == null)
+            {
+                error = Lng.T("Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?");
+                return null;
+            }
             TrySetProperty(device, WiaDocumentHandlingSelect, useFeeder ? 1 : 2); // Geräte ohne Einzug kennen die Eigenschaft nicht
             dynamic item = device.Items[1];
             TrySetProperty(item, WiaCurrentIntent, colorIntent);
@@ -83,11 +93,12 @@ internal static class ScanService
             var dialogType = Type.GetTypeFromProgID("WIA.CommonDialog");
             dynamic dialog = Activator.CreateInstance(dialogType);
             dynamic image = dialog.ShowTransfer(item, WiaFormatTiff, false); // Format ist ein Wunsch — das Gerät darf abweichen
-            return image == null ? null : SaveAsTiff(image, path);
+            return image == null ? null : SaveAsTiff(image, path); // null ohne Ausnahme = Abbruch durch den Anwender
         }
         catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException)
         {
             System.Diagnostics.Debug.WriteLine("WIA-Scan: " + ex.Message);
+            error = ex.Message;
             return null;
         }
     }

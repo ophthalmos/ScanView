@@ -302,4 +302,7 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="umbenennen" xml:space="preserve"><value>renommer</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} page(s) sur {1} traitée(s)</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Création du PDF</value></data>
+  <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>La numérisation a échoué.</value></data>
+  <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>Le scanner sélectionné est introuvable. Est-il branché et allumé ?</value></data>
+  <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>L'acquisition d'images Windows (WIA) n'est pas disponible.</value></data>
 </root>
