@@ -454,9 +454,10 @@ public partial class MainForm : Form, IMessageFilter
         // UseWaitCursor statt Cursor.Current: die WIA-Fortschrittsanzeige pumpt Nachrichten und würde Cursor.Current sofort zurücksetzen
         Application.UseWaitCursor = true;
         string scanned;
+        string scanError;
         try
         {
-            scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1);
+            scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1, out scanError);
         }
         finally
         {
@@ -465,6 +466,10 @@ public partial class MainForm : Form, IMessageFilter
         if (scanned == null)
         {
             statusLabel.Text = Lng.T("Scan abgebrochen oder fehlgeschlagen");
+            if (scanError != null) // echter Fehler — der Nutzer-Abbruch bleibt ohne Dialog
+            {
+                TaskDlg.MsgTaskDlg(Handle, Lng.T("Scannen fehlgeschlagen."), scanError, TaskDialogIcon.Error);
+            }
             return;
         }
         if (panelCopyMode.Visible) { PrintCopy(scanned); return; } // Kopiermodus: direkt drucken statt sammeln

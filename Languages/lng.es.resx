@@ -302,4 +302,7 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="umbenennen" xml:space="preserve"><value>renombrar</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} de {1} páginas procesadas</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Creando PDF</value></data>
+  <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Error al escanear.</value></data>
+  <data name="Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?" xml:space="preserve"><value>No se encontró el escáner seleccionado. ¿Está conectado y encendido?</value></data>
+  <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>La adquisición de imágenes de Windows (WIA) no está disponible.</value></data>
 </root>
