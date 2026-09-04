@@ -53,6 +53,10 @@
             labelLanguage = new Label();
             comboLanguage = new ComboBox();
             labelLanguageHint = new Label();
+            labelBulletRepo = new Label();
+            linkTessdataRepo = new LinkLabel();
+            labelTessInstruction = new Label();
+            linkTessdataFolder = new LinkLabel();
             labelQuality = new Label();
             trackQuality = new TrackBar();
             labelQualityValue = new Label();
@@ -302,6 +306,10 @@
             tabOcr.Controls.Add(labelLanguage);
             tabOcr.Controls.Add(comboLanguage);
             tabOcr.Controls.Add(labelLanguageHint);
+            tabOcr.Controls.Add(labelBulletRepo);
+            tabOcr.Controls.Add(linkTessdataRepo);
+            tabOcr.Controls.Add(labelTessInstruction);
+            tabOcr.Controls.Add(linkTessdataFolder);
             tabOcr.Controls.Add(labelQuality);
             tabOcr.Controls.Add(trackQuality);
             tabOcr.Controls.Add(labelQualityValue);
@@ -339,12 +347,54 @@
             labelLanguageHint.Name = "labelLanguageHint";
             labelLanguageHint.Size = new Size(313, 30);
             labelLanguageHint.TabIndex = 2;
-            labelLanguageHint.Text = "Weitere Sprachen: .traineddata-Dateien (tessdata_best)\nin den Ordner \"tessdata\" neben der Programmdatei legen.";
-            // 
+            labelLanguageHint.Text = "ScanView bringt Deutsch und Englisch mit. Fehlt dir eine\nSprache für die Texterkennung, rüste sie so nach:";
+            //
+            // labelBulletRepo
+            //
+            labelBulletRepo.AutoSize = true;
+            labelBulletRepo.ForeColor = SystemColors.GrayText;
+            labelBulletRepo.Location = new Point(8, 96);
+            labelBulletRepo.Name = "labelBulletRepo";
+            labelBulletRepo.Size = new Size(12, 15);
+            labelBulletRepo.TabIndex = 9;
+            labelBulletRepo.Text = "•";
+            //
+            // linkTessdataRepo
+            //
+            linkTessdataRepo.AutoSize = true;
+            linkTessdataRepo.Location = new Point(20, 96);
+            linkTessdataRepo.Name = "linkTessdataRepo";
+            linkTessdataRepo.Size = new Size(268, 15);
+            linkTessdataRepo.TabIndex = 10;
+            linkTessdataRepo.TabStop = true;
+            linkTessdataRepo.Text = "https://github.com/tesseract-ocr/tessdata_best";
+            linkTessdataRepo.LinkClicked += LinkTessdataRepo_LinkClicked;
+            //
+            // labelTessInstruction
+            //
+            labelTessInstruction.AutoSize = true;
+            labelTessInstruction.ForeColor = SystemColors.GrayText;
+            labelTessInstruction.Location = new Point(8, 114);
+            labelTessInstruction.Name = "labelTessInstruction";
+            labelTessInstruction.Size = new Size(280, 45);
+            labelTessInstruction.TabIndex = 11;
+            labelTessInstruction.Text = "• Lade dort die gewünschte Sprachdatei herunter\n   (z. B. »ita.traineddata« für Italienisch).\n• Lege die Datei anschließend in diesen Ordner:";
+            //
+            // linkTessdataFolder
+            //
+            linkTessdataFolder.AutoSize = true;
+            linkTessdataFolder.Location = new Point(20, 162);
+            linkTessdataFolder.Name = "linkTessdataFolder";
+            linkTessdataFolder.Size = new Size(60, 15);
+            linkTessdataFolder.TabIndex = 12;
+            linkTessdataFolder.TabStop = true;
+            linkTessdataFolder.Text = "tessdata";
+            linkTessdataFolder.LinkClicked += LinkTessdataFolder_LinkClicked;
+            //
             // labelQuality
             // 
             labelQuality.AutoSize = true;
-            labelQuality.Location = new Point(8, 124);
+            labelQuality.Location = new Point(8, 196);
             labelQuality.Name = "labelQuality";
             labelQuality.Size = new Size(254, 15);
             labelQuality.TabIndex = 3;
@@ -355,7 +405,7 @@
             trackQuality.AutoSize = false;
             trackQuality.BackColor = SystemColors.ControlLightLight;
             trackQuality.LargeChange = 2;
-            trackQuality.Location = new Point(28, 142);
+            trackQuality.Location = new Point(28, 214);
             trackQuality.Maximum = 20;
             trackQuality.Minimum = 6;
             trackQuality.Name = "trackQuality";
@@ -366,7 +416,7 @@
             // 
             // labelQualityValue
             // 
-            labelQualityValue.Location = new Point(237, 145);
+            labelQualityValue.Location = new Point(237, 217);
             labelQualityValue.Name = "labelQualityValue";
             labelQualityValue.Size = new Size(34, 15);
             labelQualityValue.TabIndex = 8;
@@ -377,11 +427,11 @@
             // 
             labelQualityHint.AutoSize = true;
             labelQualityHint.ForeColor = SystemColors.GrayText;
-            labelQualityHint.Location = new Point(8, 174);
+            labelQualityHint.Location = new Point(8, 246);
             labelQualityHint.Name = "labelQualityHint";
-            labelQualityHint.Size = new Size(299, 30);
+            labelQualityHint.Size = new Size(300, 45);
             labelQualityHint.TabIndex = 5;
-            labelQualityHint.Text = "Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter\nKompromiss. Graustufen-Scans sparen zusätzlich Platz.";
+            labelQualityHint.Text = "Kleinere Werte ergeben kleinere Dateien; 75 ist ein guter\r\nKompromiss. Graustufen-Scans sparen zusätzlich Platz\r\ngegenüber Farb-Scans. Noch sparsamer sind SW-Scans.";
             // 
             // btnOk
             // 
@@ -458,6 +508,10 @@
         private System.Windows.Forms.Label labelLanguage;
         private System.Windows.Forms.ComboBox comboLanguage;
         private System.Windows.Forms.Label labelLanguageHint;
+        private System.Windows.Forms.Label labelBulletRepo;
+        private System.Windows.Forms.LinkLabel linkTessdataRepo;
+        private System.Windows.Forms.Label labelTessInstruction;
+        private System.Windows.Forms.LinkLabel linkTessdataFolder;
         private System.Windows.Forms.Label labelQuality;
         private System.Windows.Forms.TrackBar trackQuality;
         private System.Windows.Forms.Label labelQualityValue;
