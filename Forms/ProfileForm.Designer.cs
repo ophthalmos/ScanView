@@ -29,6 +29,7 @@ namespace ScanView.Forms
         private void InitializeComponent()
         {
             groupSave = new GroupBox();
+            btnSuggest = new Button();
             labelName = new Label();
             textName = new TextBox();
             labelHint = new Label();
@@ -44,30 +45,38 @@ namespace ScanView.Forms
             btnRename = new Button();
             btnOk = new Button();
             btnCancel = new Button();
-            panelCanvas = new Panel();
             groupSave.SuspendLayout();
             groupProfiles.SuspendLayout();
-            panelCanvas.SuspendLayout();
             SuspendLayout();
             // 
             // groupSave
             // 
+            groupSave.Controls.Add(btnSuggest);
             groupSave.Controls.Add(labelName);
             groupSave.Controls.Add(textName);
             groupSave.Controls.Add(labelHint);
             groupSave.Controls.Add(labelSettings);
             groupSave.Controls.Add(btnAdd);
-            groupSave.Location = new Point(12, 8);
+            groupSave.Location = new Point(12, 12);
             groupSave.Name = "groupSave";
-            groupSave.Size = new Size(340, 146);
+            groupSave.Size = new Size(340, 128);
             groupSave.TabIndex = 0;
             groupSave.TabStop = false;
             groupSave.Text = "Neues Profil";
             // 
+            // btnSuggest
+            // 
+            btnSuggest.Location = new Point(242, 22);
+            btnSuggest.Name = "btnSuggest";
+            btnSuggest.Size = new Size(92, 25);
+            btnSuggest.TabIndex = 2;
+            btnSuggest.Text = "&Vorschlagen";
+            btnSuggest.Click += BtnSuggest_Click;
+            // 
             // labelName
             // 
             labelName.AutoSize = true;
-            labelName.Location = new Point(12, 22);
+            labelName.Location = new Point(6, 24);
             labelName.Name = "labelName";
             labelName.Size = new Size(68, 15);
             labelName.TabIndex = 0;
@@ -76,9 +85,9 @@ namespace ScanView.Forms
             // textName
             // 
             textName.BorderStyle = BorderStyle.FixedSingle;
-            textName.Location = new Point(12, 40);
+            textName.Location = new Point(110, 22);
             textName.Name = "textName";
-            textName.Size = new Size(316, 23);
+            textName.Size = new Size(126, 23);
             textName.TabIndex = 1;
             textName.Enter += TextName_Enter;
             textName.Leave += TextName_Leave;
@@ -87,7 +96,7 @@ namespace ScanView.Forms
             // 
             labelHint.AutoSize = true;
             labelHint.ForeColor = SystemColors.GrayText;
-            labelHint.Location = new Point(12, 70);
+            labelHint.Location = new Point(6, 53);
             labelHint.Name = "labelHint";
             labelHint.Size = new Size(288, 15);
             labelHint.TabIndex = 3;
@@ -96,7 +105,7 @@ namespace ScanView.Forms
             // labelSettings
             // 
             labelSettings.AutoSize = true;
-            labelSettings.Location = new Point(12, 88);
+            labelSettings.Location = new Point(6, 73);
             labelSettings.Name = "labelSettings";
             labelSettings.Size = new Size(193, 15);
             labelSettings.TabIndex = 5;
@@ -104,13 +113,11 @@ namespace ScanView.Forms
             // 
             // btnAdd
             // 
-            btnAdd.BackColor = SystemColors.ControlLight;
-            btnAdd.Location = new Point(12, 111);
+            btnAdd.Location = new Point(6, 97);
             btnAdd.Name = "btnAdd";
-            btnAdd.Size = new Size(316, 25);
-            btnAdd.TabIndex = 2;
+            btnAdd.Size = new Size(328, 25);
+            btnAdd.TabIndex = 3;
             btnAdd.Text = "&Aktuelle Einstellungen speichern";
-            btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += BtnAdd_Click;
             // 
             // groupProfiles
@@ -122,62 +129,56 @@ namespace ScanView.Forms
             groupProfiles.Controls.Add(labelRename);
             groupProfiles.Controls.Add(textRename);
             groupProfiles.Controls.Add(btnRename);
-            groupProfiles.Location = new Point(12, 162);
+            groupProfiles.Location = new Point(12, 146);
             groupProfiles.Name = "groupProfiles";
-            groupProfiles.Size = new Size(340, 186);
+            groupProfiles.Size = new Size(340, 181);
             groupProfiles.TabIndex = 1;
             groupProfiles.TabStop = false;
             groupProfiles.Text = "Gespeicherte Profile";
             // 
             // listProfiles
             // 
-            listProfiles.Location = new Point(12, 22);
+            listProfiles.Location = new Point(6, 22);
             listProfiles.Name = "listProfiles";
-            listProfiles.Size = new Size(216, 124);
+            listProfiles.Size = new Size(230, 124);
             listProfiles.TabIndex = 0;
             listProfiles.SelectedIndexChanged += ListProfiles_SelectedIndexChanged;
             listProfiles.MouseDown += ListProfiles_MouseDown;
             // 
             // btnDelete
             // 
-            btnDelete.BackColor = SystemColors.ControlLight;
             btnDelete.Enabled = false;
-            btnDelete.Location = new Point(236, 22);
+            btnDelete.Location = new Point(242, 22);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(92, 25);
             btnDelete.TabIndex = 1;
             btnDelete.Text = "&Löschen";
-            btnDelete.UseVisualStyleBackColor = false;
             btnDelete.Click += BtnDelete_Click;
             // 
             // btnUp
             // 
-            btnUp.BackColor = SystemColors.ControlLight;
             btnUp.Enabled = false;
-            btnUp.Location = new Point(236, 63);
+            btnUp.Location = new Point(242, 63);
             btnUp.Name = "btnUp";
             btnUp.Size = new Size(92, 25);
             btnUp.TabIndex = 2;
             btnUp.Text = "Nach &oben";
-            btnUp.UseVisualStyleBackColor = false;
             btnUp.Click += BtnUp_Click;
             // 
             // btnDown
             // 
-            btnDown.BackColor = SystemColors.ControlLight;
             btnDown.Enabled = false;
-            btnDown.Location = new Point(236, 94);
+            btnDown.Location = new Point(242, 94);
             btnDown.Name = "btnDown";
             btnDown.Size = new Size(92, 25);
             btnDown.TabIndex = 3;
             btnDown.Text = "Nach &unten";
-            btnDown.UseVisualStyleBackColor = false;
             btnDown.Click += BtnDown_Click;
             // 
             // labelRename
             // 
             labelRename.AutoSize = true;
-            labelRename.Location = new Point(12, 155);
+            labelRename.Location = new Point(6, 154);
             labelRename.Name = "labelRename";
             labelRename.Size = new Size(77, 15);
             labelRename.TabIndex = 4;
@@ -188,21 +189,19 @@ namespace ScanView.Forms
             textRename.BorderStyle = BorderStyle.FixedSingle;
             textRename.Location = new Point(110, 152);
             textRename.Name = "textRename";
-            textRename.Size = new Size(118, 23);
+            textRename.Size = new Size(126, 23);
             textRename.TabIndex = 5;
             textRename.Enter += TextRename_Enter;
             textRename.Leave += TextRename_Leave;
             // 
             // btnRename
             // 
-            btnRename.BackColor = SystemColors.ControlLight;
             btnRename.Enabled = false;
-            btnRename.Location = new Point(236, 151);
+            btnRename.Location = new Point(242, 149);
             btnRename.Name = "btnRename";
             btnRename.Size = new Size(92, 25);
             btnRename.TabIndex = 6;
             btnRename.Text = "&Umbenennen";
-            btnRename.UseVisualStyleBackColor = false;
             btnRename.Click += BtnRename_Click;
             // 
             // btnOk
@@ -210,9 +209,9 @@ namespace ScanView.Forms
             btnOk.AutoSize = true;
             btnOk.DialogResult = DialogResult.OK;
             btnOk.Enabled = false;
-            btnOk.Location = new Point(112, 358);
+            btnOk.Location = new Point(18, 333);
             btnOk.Name = "btnOk";
-            btnOk.Size = new Size(142, 26);
+            btnOk.Size = new Size(230, 26);
             btnOk.TabIndex = 1;
             btnOk.Text = "Änderungen &speichern";
             btnOk.UseVisualStyleBackColor = true;
@@ -220,23 +219,12 @@ namespace ScanView.Forms
             // btnCancel
             // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(260, 358);
+            btnCancel.Location = new Point(254, 333);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(92, 26);
             btnCancel.TabIndex = 2;
             btnCancel.Text = "Abbrechen";
             btnCancel.UseVisualStyleBackColor = true;
-            // 
-            // panelCanvas
-            // 
-            panelCanvas.BackColor = SystemColors.InactiveBorder;
-            panelCanvas.Controls.Add(groupProfiles);
-            panelCanvas.Controls.Add(groupSave);
-            panelCanvas.Dock = DockStyle.Top;
-            panelCanvas.Location = new Point(0, 0);
-            panelCanvas.Name = "panelCanvas";
-            panelCanvas.Size = new Size(364, 352);
-            panelCanvas.TabIndex = 0;
             // 
             // ProfileForm
             // 
@@ -244,8 +232,9 @@ namespace ScanView.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(364, 396);
-            Controls.Add(panelCanvas);
+            ClientSize = new Size(364, 371);
+            Controls.Add(groupSave);
+            Controls.Add(groupProfiles);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -260,7 +249,6 @@ namespace ScanView.Forms
             groupSave.PerformLayout();
             groupProfiles.ResumeLayout(false);
             groupProfiles.PerformLayout();
-            panelCanvas.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -283,6 +271,6 @@ namespace ScanView.Forms
         private System.Windows.Forms.Button btnRename;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
-        private Panel panelCanvas;
+        private Button btnSuggest;
     }
 }
