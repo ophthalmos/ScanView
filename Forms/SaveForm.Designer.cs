@@ -40,7 +40,8 @@
             labelFileType = new Label();
             comboFileType = new ComboBox();
             groupOcr = new GroupBox();
-            qualityJpeg = new ScanView.Controls.JpegQualityControl();
+            trackQuality = new TrackBar();
+            labelQualityValue = new Label();
             labelDefaultsHint = new Label();
             labelOcr = new Label();
             comboOcr = new ComboBox();
@@ -60,6 +61,7 @@
             groupScope.SuspendLayout();
             groupFile.SuspendLayout();
             groupOcr.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackQuality).BeginInit();
             groupMeta.SuspendLayout();
             SuspendLayout();
             // 
@@ -175,7 +177,8 @@
             // 
             // groupOcr
             // 
-            groupOcr.Controls.Add(qualityJpeg);
+            groupOcr.Controls.Add(trackQuality);
+            groupOcr.Controls.Add(labelQualityValue);
             groupOcr.Controls.Add(labelDefaultsHint);
             groupOcr.Controls.Add(labelOcr);
             groupOcr.Controls.Add(comboOcr);
@@ -217,12 +220,27 @@
             labelQuality.TabIndex = 2;
             labelQuality.Text = "JPEG-&Qualität:";
             //
-            // qualityJpeg
+            // trackQuality
             //
-            qualityJpeg.Location = new Point(124, 53);
-            qualityJpeg.Name = "qualityJpeg";
-            qualityJpeg.Size = new Size(244, 23);
-            qualityJpeg.TabIndex = 3;
+            trackQuality.AutoSize = false;
+            trackQuality.LargeChange = 2;
+            trackQuality.Location = new Point(124, 53);
+            trackQuality.Maximum = 20;
+            trackQuality.Minimum = 6;
+            trackQuality.Name = "trackQuality";
+            trackQuality.Size = new Size(208, 23);
+            trackQuality.TabIndex = 3;
+            trackQuality.Value = 15;
+            trackQuality.ValueChanged += TrackQuality_ValueChanged;
+            //
+            // labelQualityValue
+            //
+            labelQualityValue.Location = new Point(334, 56);
+            labelQualityValue.Name = "labelQualityValue";
+            labelQualityValue.Size = new Size(34, 15);
+            labelQualityValue.TabIndex = 4;
+            labelQualityValue.Text = "75";
+            labelQualityValue.TextAlign = ContentAlignment.MiddleRight;
             //
             // labelDefaultsHint
             //
@@ -373,6 +391,7 @@
             groupFile.PerformLayout();
             groupOcr.ResumeLayout(false);
             groupOcr.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackQuality).EndInit();
             groupMeta.ResumeLayout(false);
             groupMeta.PerformLayout();
             ResumeLayout(false);
@@ -396,7 +415,8 @@
         private System.Windows.Forms.Label labelOcr;
         private System.Windows.Forms.ComboBox comboOcr;
         private System.Windows.Forms.Label labelQuality;
-        private ScanView.Controls.JpegQualityControl qualityJpeg;
+        private System.Windows.Forms.TrackBar trackQuality;
+        private System.Windows.Forms.Label labelQualityValue;
         private System.Windows.Forms.Label labelDefaultsHint;
         private System.Windows.Forms.GroupBox groupMeta;
         private System.Windows.Forms.Label labelTitle;
