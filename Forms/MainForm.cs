@@ -1236,7 +1236,7 @@ public partial class MainForm : Form, IMessageFilter
     private void BtnNew_Click(object sender, EventArgs e)
     {
         if (flowPanel.Controls.Count > 0 && !TaskDlg.ConfirmTaskDlg(Handle, Lng.T("Alle Seiten aus der Übersicht entfernen?"),
-            Lng.T("Die gescannten Seiten dieser Sitzung gehen verloren."), defaultNo: true))
+            Lng.T("Die gescannten Seiten dieser Sitzung gehen verloren."), TaskDialogIcon.ShieldWarningYellowBar, defaultNo: true))
         {
             return;
         }
@@ -1475,7 +1475,9 @@ public partial class MainForm : Form, IMessageFilter
     /// <summary>Link über der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
     private void LinkProfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), comboProfile.Text);
+        var summary = string.Join(" · ", comboDpi.Text, comboColor.Text, comboArea.Text, comboFeed.Text);
+        if (trackBrightness.Value != 0) { summary += " · " + string.Format(Lng.T("Helligkeit {0} %"), trackBrightness.Value.ToString("+0;-0")); }
+        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), summary, comboProfile.Text);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.ScanProfiles = dialog.Profiles;
         settings.Save();
