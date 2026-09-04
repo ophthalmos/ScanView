@@ -24,8 +24,8 @@ internal sealed partial class SaveForm : Form
     /// <summary>Gewählte OCR-Sprache — null bei „Ohne Texterkennung" oder Bild-Dateitypen.</summary>
     public string OcrLanguage => FileType == SaveFileType.Pdf && comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
 
-    /// <summary>JPEG-Qualität für den Encoder (30–100) aus dem gemeinsamen Stufen-Control.</summary>
-    public int JpgQuality => qualityJpeg.Quality;
+    /// <summary>JPEG-Qualität für den Encoder (30–100) — der Slider läuft intern in 5er-Einheiten.</summary>
+    public int JpgQuality => trackQuality.Value * 5;
 
     public string MetaTitle => textTitle.Text.Trim();
 
@@ -56,7 +56,8 @@ internal sealed partial class SaveForm : Form
             .FirstOrDefault(item => string.Equals(item.Code, ocrLanguage, StringComparison.OrdinalIgnoreCase));
         if (match != null) { comboOcr.SelectedItem = match; }
         else { comboOcr.SelectedIndex = 0; } // Ohne Texterkennung
-        qualityJpeg.Quality = jpgQuality; // Vorgabe aus den Optionen (der Hinweis darunter sagt das dem Anwender)
+        trackQuality.Value = Math.Clamp((int)Math.Round(jpgQuality / 5.0), trackQuality.Minimum, trackQuality.Maximum); // Vorgabe aus den Optionen
+        TrackQuality_ValueChanged(this, EventArgs.Empty); // Wertanzeige auch beim Designer-Startwert
         textAuthor.Text = author ?? string.Empty;
         cbOpenAfter.Checked = openAfter;
         comboFileType.SelectedIndex = 0;
@@ -80,7 +81,13 @@ internal sealed partial class SaveForm : Form
         groupMeta.Enabled = FileType is SaveFileType.Pdf or SaveFileType.PdfA;
         var usesJpgQuality = FileType is SaveFileType.Pdf or SaveFileType.PdfA or SaveFileType.Jpeg;
         labelQuality.Enabled = usesJpgQuality;
-        qualityJpeg.Enabled = usesJpgQuality;
+        trackQuality.Enabled = usesJpgQuality;
+        labelQualityValue.Enabled = usesJpgQuality;
+    }
+
+    private void TrackQuality_ValueChanged(object sender, EventArgs e)
+    {
+        labelQualityValue.Text = JpgQuality.ToString();
     }
 
     protected override void OnFormClosing(FormClosingEventArgs e)

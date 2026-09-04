@@ -11,7 +11,7 @@ internal sealed partial class SettingsForm : Form
 
     public string OcrLanguage => comboLanguage.SelectedItem is OcrLanguageItem item ? item.Code : "deu";
 
-    public int OcrJpgQuality => qualityJpeg.Quality;
+    public int OcrJpgQuality => trackQuality.Value * 5; // der Slider läuft intern in 5er-Einheiten
 
     public string SaveDirectory => textSaveDirectory.Text.Trim();
 
@@ -49,7 +49,8 @@ internal sealed partial class SettingsForm : Form
         var current = comboLanguage.Items.Cast<OcrLanguageItem>().FirstOrDefault(i => string.Equals(i.Code, ocrLanguage, StringComparison.OrdinalIgnoreCase));
         if (current != null) { comboLanguage.SelectedItem = current; }
         else if (comboLanguage.Items.Count > 0) { comboLanguage.SelectedIndex = 0; }
-        qualityJpeg.Quality = ocrJpgQuality;
+        trackQuality.Value = Math.Clamp((int)Math.Round(ocrJpgQuality / 5.0), trackQuality.Minimum, trackQuality.Maximum);
+        TrackQuality_ValueChanged(this, EventArgs.Empty); // Wertanzeige auch beim Designer-Startwert
     }
 
     /// <summary>Markiert das gewählte Farbfeld mit einem dickeren Rahmen.</summary>
@@ -58,6 +59,11 @@ internal sealed partial class SettingsForm : Form
         var radio = (RadioButton)sender;
         radio.FlatAppearance.BorderSize = radio.Checked ? 3 : 1;
         radio.FlatAppearance.BorderColor = radio.Checked ? SystemColors.Highlight : SystemColors.ControlDark;
+    }
+
+    private void TrackQuality_ValueChanged(object sender, EventArgs e)
+    {
+        labelQualityValue.Text = OcrJpgQuality.ToString();
     }
 
     private void BtnBrowse_Click(object sender, EventArgs e)

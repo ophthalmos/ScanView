@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.RegularExpressions;
 using PdfSharp.Pdf;
 
 namespace ScanView.Classes;
@@ -11,8 +12,18 @@ namespace ScanView.Classes;
 /// die Tesseract-Textschicht dagegen fiel bei veraPDF durch (GlyphLessFont/Transparenz-Gruppen).
 /// Läuft als NACHBEARBEITUNG der gespeicherten Datei, weil PDFsharp den /Producer erst beim
 /// Speichern einträgt — das XMP muss ihn aber wortgleich wiederholen.</summary>
-internal static class PdfAHelper
+internal static partial class PdfAHelper
 {
+    // zur Kompilierzeit generierte Regexe (SYSLIB1045)
+    [GeneratedRegex(@"(\d+) 0 obj(?!.*\d+ 0 obj)", RegexOptions.Singleline)]
+    private static partial Regex LastObjectHeaderRegex(); // der letzte Objektkopf vor einer Fundstelle
+
+    [GeneratedRegex(@"/Metadata (\d+) 0 R")]
+    private static partial Regex MetadataReferenceRegex();
+
+    [GeneratedRegex(@"/Interpolate\s+true")]
+    private static partial Regex InterpolateTrueRegex();
+
     /// <summary>Ergänzt die eben gespeicherte PDF um Metadata-Stream und OutputIntent
     /// und speichert sie erneut.</summary>
     public static void Finish(string pdfPath)
@@ -57,13 +68,12 @@ internal static class PdfAHelper
         var text = Encoding.GetEncoding(28591).GetString(File.ReadAllBytes(pdfPath));
         var pdfaIndex = text.IndexOf("pdfaid:part", StringComparison.Ordinal);
         if (pdfaIndex < 0) { return false; }
-        var objMatch = System.Text.RegularExpressions.Regex.Match(text[..pdfaIndex], @"(\d+) 0 obj(?!.*\d+ 0 obj)",
-            System.Text.RegularExpressions.RegexOptions.Singleline);
-        var catalogMatch = System.Text.RegularExpressions.Regex.Match(text, @"/Metadata (\d+) 0 R");
+        var objMatch = LastObjectHeaderRegex().Match(text[..pdfaIndex]);
+        var catalogMatch = MetadataReferenceRegex().Match(text);
         return objMatch.Success && catalogMatch.Success
             && objMatch.Groups[1].Value == catalogMatch.Groups[1].Value.Trim()
             && !text.Contains("/Transparency")
-            && !System.Text.RegularExpressions.Regex.IsMatch(text, @"/Interpolate\s+true");
+            && !InterpolateTrueRegex().IsMatch(text);
     }
 
     /// <summary>PDFsharp erzwingt beim Speichern zwei Dinge, die sich nicht per API abstellen
@@ -83,10 +93,8 @@ internal static class PdfAHelper
 
         // unser Metadata-Objekt (das mit pdfaid) finden: rückwärts vom pdfaid-Vorkommen zum "n 0 obj"
         var pdfaIndex = text.IndexOf("pdfaid:part", StringComparison.Ordinal);
-        var objMatch = pdfaIndex < 0 ? null
-            : System.Text.RegularExpressions.Regex.Match(text[..pdfaIndex], @"(\d+) 0 obj(?!.*\d+ 0 obj)",
-                System.Text.RegularExpressions.RegexOptions.Singleline);
-        var catalogMatch = System.Text.RegularExpressions.Regex.Match(text, @"/Metadata (\d+) 0 R");
+        var objMatch = pdfaIndex < 0 ? null : LastObjectHeaderRegex().Match(text[..pdfaIndex]);
+        var catalogMatch = MetadataReferenceRegex().Match(text);
         if (objMatch != null && objMatch.Success && catalogMatch.Success && objMatch.Groups[1].Value != catalogMatch.Groups[1].Value)
         {
             // Ersatz mit Leerzeichen auf gleiche Länge auffüllen — unser Objekt wurde vor PDFsharps

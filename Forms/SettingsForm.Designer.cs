@@ -54,7 +54,8 @@
             comboLanguage = new ComboBox();
             labelLanguageHint = new Label();
             labelQuality = new Label();
-            qualityJpeg = new ScanView.Controls.JpegQualityControl();
+            trackQuality = new TrackBar();
+            labelQualityValue = new Label();
             labelQualityHint = new Label();
             btnOk = new Button();
             btnCancel = new Button();
@@ -62,6 +63,7 @@
             tabGeneral.SuspendLayout();
             panelBackColors.SuspendLayout();
             tabOcr.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackQuality).BeginInit();
             SuspendLayout();
             // 
             // tabs
@@ -301,7 +303,8 @@
             tabOcr.Controls.Add(comboLanguage);
             tabOcr.Controls.Add(labelLanguageHint);
             tabOcr.Controls.Add(labelQuality);
-            tabOcr.Controls.Add(qualityJpeg);
+            tabOcr.Controls.Add(trackQuality);
+            tabOcr.Controls.Add(labelQualityValue);
             tabOcr.Controls.Add(labelQualityHint);
             tabOcr.Location = new Point(4, 24);
             tabOcr.Name = "tabOcr";
@@ -325,7 +328,7 @@
             comboLanguage.DropDownStyle = ComboBoxStyle.DropDownList;
             comboLanguage.Location = new Point(28, 37);
             comboLanguage.Name = "comboLanguage";
-            comboLanguage.Size = new Size(220, 23);
+            comboLanguage.Size = new Size(202, 23);
             comboLanguage.TabIndex = 1;
             // 
             // labelLanguageHint
@@ -343,16 +346,31 @@
             labelQuality.AutoSize = true;
             labelQuality.Location = new Point(8, 124);
             labelQuality.Name = "labelQuality";
-            labelQuality.Size = new Size(239, 15);
+            labelQuality.Size = new Size(192, 15);
             labelQuality.TabIndex = 3;
             labelQuality.Text = "JPEG-&Qualität der Bilder in der PDF:";
             // 
-            // qualityJpeg
+            // trackQuality
             // 
-            qualityJpeg.Location = new Point(28, 142);
-            qualityJpeg.Name = "qualityJpeg";
-            qualityJpeg.Size = new Size(244, 23);
-            qualityJpeg.TabIndex = 4;
+            trackQuality.AutoSize = false;
+            trackQuality.LargeChange = 2;
+            trackQuality.Location = new Point(27, 142);
+            trackQuality.Maximum = 20;
+            trackQuality.Minimum = 6;
+            trackQuality.Name = "trackQuality";
+            trackQuality.Size = new Size(208, 23);
+            trackQuality.TabIndex = 4;
+            trackQuality.Value = 15;
+            trackQuality.ValueChanged += TrackQuality_ValueChanged;
+            //
+            // labelQualityValue
+            //
+            labelQualityValue.Location = new Point(237, 145);
+            labelQualityValue.Name = "labelQualityValue";
+            labelQualityValue.Size = new Size(34, 15);
+            labelQualityValue.TabIndex = 8;
+            labelQualityValue.Text = "75";
+            labelQualityValue.TextAlign = ContentAlignment.MiddleRight;
             // 
             // labelQualityHint
             // 
@@ -406,6 +424,7 @@
             tabGeneral.ResumeLayout(false);
             tabGeneral.PerformLayout();
             panelBackColors.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)trackQuality).EndInit();
             tabOcr.ResumeLayout(false);
             tabOcr.PerformLayout();
             ResumeLayout(false);
@@ -439,7 +458,8 @@
         private System.Windows.Forms.ComboBox comboLanguage;
         private System.Windows.Forms.Label labelLanguageHint;
         private System.Windows.Forms.Label labelQuality;
-        private ScanView.Controls.JpegQualityControl qualityJpeg;
+        private System.Windows.Forms.TrackBar trackQuality;
+        private System.Windows.Forms.Label labelQualityValue;
         private System.Windows.Forms.Label labelQualityHint;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
