@@ -82,9 +82,9 @@ namespace ScanView.Forms
             textName.TabIndex = 1;
             textName.Enter += TextName_Enter;
             textName.Leave += TextName_Leave;
-            //
+            // 
             // labelHint
-            //
+            // 
             labelHint.AutoSize = true;
             labelHint.ForeColor = SystemColors.GrayText;
             labelHint.Location = new Point(12, 70);
@@ -104,7 +104,7 @@ namespace ScanView.Forms
             // 
             // btnAdd
             // 
-            btnAdd.BackColor = SystemColors.Control;
+            btnAdd.BackColor = SystemColors.ControlLight;
             btnAdd.Location = new Point(12, 111);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(316, 25);
@@ -140,7 +140,7 @@ namespace ScanView.Forms
             // 
             // btnDelete
             // 
-            btnDelete.BackColor = SystemColors.Control;
+            btnDelete.BackColor = SystemColors.ControlLight;
             btnDelete.Enabled = false;
             btnDelete.Location = new Point(236, 22);
             btnDelete.Name = "btnDelete";
@@ -152,7 +152,7 @@ namespace ScanView.Forms
             // 
             // btnUp
             // 
-            btnUp.BackColor = SystemColors.Control;
+            btnUp.BackColor = SystemColors.ControlLight;
             btnUp.Enabled = false;
             btnUp.Location = new Point(236, 63);
             btnUp.Name = "btnUp";
@@ -164,7 +164,7 @@ namespace ScanView.Forms
             // 
             // btnDown
             // 
-            btnDown.BackColor = SystemColors.Control;
+            btnDown.BackColor = SystemColors.ControlLight;
             btnDown.Enabled = false;
             btnDown.Location = new Point(236, 94);
             btnDown.Name = "btnDown";
@@ -195,7 +195,7 @@ namespace ScanView.Forms
             // 
             // btnRename
             // 
-            btnRename.BackColor = SystemColors.Control;
+            btnRename.BackColor = SystemColors.ControlLight;
             btnRename.Enabled = false;
             btnRename.Location = new Point(236, 151);
             btnRename.Name = "btnRename";
@@ -229,7 +229,7 @@ namespace ScanView.Forms
             // 
             // panelCanvas
             // 
-            panelCanvas.BackColor = SystemColors.ControlLightLight;
+            panelCanvas.BackColor = SystemColors.InactiveBorder;
             panelCanvas.Controls.Add(groupProfiles);
             panelCanvas.Controls.Add(groupSave);
             panelCanvas.Dock = DockStyle.Top;
