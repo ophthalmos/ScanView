@@ -42,6 +42,7 @@ internal sealed partial class PrintForm : Form
         InitializeComponent();
         Lng.Apply(this);
         Lng.TranslateItems(comboDuplex); // wird über SelectedIndex ausgewertet
+        linkProperties.Left = comboPrinter.Right - linkProperties.Width; // rechtsbündig (Textbreite je Sprache)
         radioSelected.Enabled = hasSelection;
         foreach (string printer in PrinterSettings.InstalledPrinters) { comboPrinter.Items.Add(printer); }
         var index = comboPrinter.Items.IndexOf(settings.CopyPrinter); // gemeinsame Vorgabe, sonst der Standarddrucker
