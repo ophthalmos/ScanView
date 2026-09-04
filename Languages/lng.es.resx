@@ -45,7 +45,6 @@
   <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve"><value>Elegir escáner y configurar los botones</value></data>
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Crear y mostrar el resumen de atajos en PDF</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Escanear una página (F4) — flecha: elegir escáner</value></data>
-  <data name="Alle Seiten drucken (F6)" xml:space="preserve"><value>Imprimir todas las páginas (F6)</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Vaciar la vista de páginas (F9)</value></data>
   <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Adelantar la página seleccionada (Alt+←)</value></data>
   <data name="Markierte Seite nach hinten schieben (Alt+→)" xml:space="preserve"><value>Atrasar la página seleccionada (Alt+→)</value></data>
@@ -147,7 +146,6 @@ modo copia</value></data>
   <data name="Scan" xml:space="preserve"><value>Escaneo</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Guardado: {0}</value></data>
   <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>Error al crear el PDF.</value></data>
-  <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve"><value>{0} página(s) enviadas a la impresora</value></data>
   <data name="Seitenübersicht leeren?" xml:space="preserve"><value>¿Vaciar la vista de páginas?</value></data>
   <data name="Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht." xml:space="preserve"><value>Si elige No, las páginas reaparecerán en el próximo inicio.</value></data>
   <data name="Technische Details anzeigen" xml:space="preserve"><value>Mostrar detalles técnicos</value></data>
@@ -175,7 +173,6 @@ El diseño está inspirado en «Scanner Interface 7»
   <data name="Tastenkürzel" xml:space="preserve"><value>Atajos de teclado</value></data>
   <data name="Seite scannen" xml:space="preserve"><value>Escanear una página</value></data>
   <data name="durchsuchbare PDF speichern (mit Texterkennung)" xml:space="preserve"><value>guardar PDF con OCR</value></data>
-  <data name="alle Seiten drucken" xml:space="preserve"><value>imprimir todas las páginas</value></data>
   <data name="Kopiermodus ein/aus" xml:space="preserve"><value>modo copia sí/no</value></data>
   <data name="Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein." xml:space="preserve"><value>Cada escaneo va directo a la impresora — el escáner se convierte en copiadora. Impresora, copias y escala se ajustan en el panel del modo copia.</value></data>
   <data name="Seitenübersicht leeren (Neu)" xml:space="preserve"><value>vaciar la vista de páginas (Nuevo)</value></data>
@@ -306,4 +303,8 @@ para instalar la última versión.</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Valores menores dan archivos más pequeños; 75 es un buen tér-
 mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Brillo: {0} %</value></data>
+  <data name="Drucken" xml:space="preserve"><value>Imprimir</value></data>
+  <data name="Drucker" xml:space="preserve"><value>Impresora</value></data>
+  <data name="Alle oder nur die markierte Seite drucken (F6)" xml:space="preserve"><value>Imprimir todas las páginas o solo la marcada (F6)</value></data>
+  <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>imprimir páginas (todas o la marcada)</value></data>
 </root>

@@ -164,7 +164,7 @@ internal static class TaskDlg
     [
         ("F4", "Seite scannen", null),
         ("Strg+S", "durchsuchbare PDF speichern (mit Texterkennung)", null),
-        ("F6", "alle Seiten drucken", null),
+        ("F6", "Seiten drucken (alle oder markierte)", null),
         ("F7", "Kopiermodus ein/aus",
             "Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein."),
         ("F9", "Seitenübersicht leeren (Neu)", null),

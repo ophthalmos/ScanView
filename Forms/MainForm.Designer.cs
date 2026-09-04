@@ -622,7 +622,7 @@
             btnPrint.Name = "btnPrint";
             btnPrint.Size = new Size(90, 57);
             btnPrint.Text = "&Drucken";
-            btnPrint.ToolTipText = "Alle Seiten drucken (F6)";
+            btnPrint.ToolTipText = "Alle oder nur die markierte Seite drucken (F6)";
             btnPrint.Click += BtnPrint_Click;
             // 
             // btnFax
