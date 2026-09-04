@@ -795,7 +795,7 @@
             linkProfiles.Size = new Size(78, 15);
             linkProfiles.TabIndex = 22;
             linkProfiles.TabStop = true;
-            linkProfiles.Text = "umbenennen";
+            linkProfiles.Text = "Profile verwalten";
             linkProfiles.LinkClicked += LinkProfiles_LinkClicked;
             // 
             // labelDpi

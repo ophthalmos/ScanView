@@ -278,8 +278,6 @@ para instalar la última versión.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} página(s) enviadas a {1}</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Error al enviar el fax.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Perfil:</value></data>
-  <data name="Scan-Profile" xml:space="preserve"><value>Perfiles de escaneo</value></data>
-  <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>Perfiles &amp;guardados:</value></data>
   <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Introduzca un nombre de perfil.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>¿Reemplazar el perfil «{0}»?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Se sobrescribirán los ajustes guardados.</value></data>
@@ -290,8 +288,6 @@ para instalar la última versión.</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>&amp;Bajar</value></data>
   <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Renombrar</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Ya existe un perfil con ese nombre.</value></data>
-  <data name="hinzufügen" xml:space="preserve"><value>añadir</value></data>
-  <data name="umbenennen" xml:space="preserve"><value>renombrar</value></data>
   <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} de {1} páginas procesadas</value></data>
   <data name="PDF erstellen" xml:space="preserve"><value>Creando PDF</value></data>
   <data name="Scannen fehlgeschlagen." xml:space="preserve"><value>Error al escanear.</value></data>
@@ -314,4 +310,9 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Gespeichert werden die aktuellen Scan-Einstellungen:" xml:space="preserve"><value>Se guardarán los ajustes de escaneo actuales:</value></data>
   <data name="Helligkeit {0} %" xml:space="preserve"><value>Brillo {0} %</value></data>
   <data name="Neuer Na&amp;me:" xml:space="preserve"><value>Nuevo no&amp;mbre:</value></data>
+  <data name="Änderungen &amp;speichern" xml:space="preserve"><value>&amp;Guardar los cambios</value></data>
+  <data name="Neues Profil" xml:space="preserve"><value>Perfil nuevo</value></data>
+  <data name="Gespeicherte Profile" xml:space="preserve"><value>Perfiles guardados</value></data>
+  <data name="Profile verwalten" xml:space="preserve"><value>Administrar perfiles</value></data>
+  <data name="Profilverwaltung" xml:space="preserve"><value>Administración de perfiles</value></data>
 </root>

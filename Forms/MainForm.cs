@@ -76,6 +76,7 @@ public partial class MainForm : Form, IMessageFilter
         Lng.Apply(thumbContextMenu);
         Lng.TranslateItems(comboColor, comboArea, comboFeed, comboCopyDuplex); // alle werden über SelectedIndex ausgewertet
         linkCopyProperties.Left = comboCopyPrinter.Right - linkCopyProperties.Width; // rechtsbündig (Textbreite je Sprache)
+        linkProfiles.Left = comboProfile.Right - linkProfiles.Width; // dito — der Text ist seit der Profilverwaltung statisch
         toolStrip.Renderer = new BigArrowRenderer();
         // Eigenes Menü statt des auto-generierten: das erbt in WinForms live die fette
         // 11-pt-Schrift des Toolbar-Buttons (gleiche Lösung wie in PDFlight)
@@ -1413,15 +1414,6 @@ public partial class MainForm : Form, IMessageFilter
         comboProfile.SelectedIndex = settings.ScanProfiles.FindIndex(p => p.Name == selectName);
         comboProfile.EndUpdate();
         updatingProfiles = false;
-        UpdateProfileLink();
-    }
-
-    /// <summary>Der Link über der Combo benennt die nächstliegende Aktion: „hinzufügen" bei leerer
-    /// Auswahl, sonst „ändern" — rechtsbündig, weil die Texte unterschiedlich breit sind.</summary>
-    private void UpdateProfileLink()
-    {
-        linkProfiles.Text = Lng.T(comboProfile.SelectedIndex >= 0 ? "umbenennen" : "hinzufügen");
-        linkProfiles.Left = comboProfile.Right - linkProfiles.Width;
     }
 
     /// <summary>Die aktuellen Werte des Scan-Panels als (namenloses) Profil — Vorlage fürs Speichern.</summary>
@@ -1447,7 +1439,6 @@ public partial class MainForm : Form, IMessageFilter
         comboFeed.SelectedIndex = Clamped(profile.FeedIndex, comboFeed, 0);
         trackBrightness.Value = Math.Clamp(profile.Brightness, trackBrightness.Minimum, trackBrightness.Maximum);
         updatingProfiles = false;
-        UpdateProfileLink();
     }
 
     /// <summary>Hält die Profil-Combo synchron zu den Scan-Einstellungen: Sie zeigt das Profil,
@@ -1469,10 +1460,9 @@ public partial class MainForm : Form, IMessageFilter
         updatingProfiles = true;
         comboProfile.SelectedIndex = index;
         updatingProfiles = false;
-        UpdateProfileLink();
     }
 
-    /// <summary>Link über der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
+    /// <summary>Link über der Profil-Combo: Profile verwalten (speichern, umbenennen, löschen, sortieren).</summary>
     private void LinkProfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
         var summary = string.Join(" · ", comboDpi.Text, comboColor.Text, comboArea.Text, comboFeed.Text);
