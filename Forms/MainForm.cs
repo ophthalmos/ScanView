@@ -1496,7 +1496,7 @@ public partial class MainForm : Form, IMessageFilter
         // Namensvorschlag im Stil der üblichen Profilnamen („Grau 300 dpi A4") — Zufuhr und Helligkeit nur bei Abweichung
         var suggestion = string.Join(" ", compactColor, comboDpi.Text, compactArea);
         if (comboFeed.SelectedIndex == 1) { suggestion += " " + Lng.T("Einzug"); }
-        if (trackBrightness.Value != 0) { suggestion += " " + trackBrightness.Value.ToString("+0;-0") + " %"; }
+        if (trackBrightness.Value != 0) { suggestion += " " + trackBrightness.Value.ToString("+0;-0"); }
         using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), summary, compact, suggestion, comboProfile.Text);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.ScanProfiles = dialog.Profiles;
