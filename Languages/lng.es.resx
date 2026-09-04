@@ -313,4 +313,5 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="&amp;Aktuelle Einstellungen speichern" xml:space="preserve"><value>&amp;Guardar los ajustes actuales</value></data>
   <data name="Gespeichert werden die aktuellen Scan-Einstellungen:" xml:space="preserve"><value>Se guardarán los ajustes de escaneo actuales:</value></data>
   <data name="Helligkeit {0} %" xml:space="preserve"><value>Brillo {0} %</value></data>
+  <data name="Neuer Na&amp;me:" xml:space="preserve"><value>Nuevo no&amp;mbre:</value></data>
 </root>

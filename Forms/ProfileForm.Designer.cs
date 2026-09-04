@@ -39,6 +39,10 @@ namespace ScanView.Forms
             picHint = new PictureBox();
             labelHint = new Label();
             labelSettings = new Label();
+            labelSeparator = new Label();
+            labelRename = new Label();
+            textRename = new TextBox();
+            btnRename = new Button();
             btnOk = new Button();
             btnCancel = new Button();
             ((System.ComponentModel.ISupportInitialize)picHint).BeginInit();
@@ -75,7 +79,7 @@ namespace ScanView.Forms
             // labelList
             // 
             labelList.AutoSize = true;
-            labelList.Location = new Point(12, 141);
+            labelList.Location = new Point(12, 150);
             labelList.Name = "labelList";
             labelList.Size = new Size(115, 15);
             labelList.TabIndex = 4;
@@ -83,7 +87,7 @@ namespace ScanView.Forms
             // 
             // listProfiles
             // 
-            listProfiles.Location = new Point(12, 159);
+            listProfiles.Location = new Point(12, 168);
             listProfiles.Name = "listProfiles";
             listProfiles.Size = new Size(242, 124);
             listProfiles.TabIndex = 5;
@@ -93,7 +97,7 @@ namespace ScanView.Forms
             // btnDelete
             // 
             btnDelete.Enabled = false;
-            btnDelete.Location = new Point(260, 159);
+            btnDelete.Location = new Point(260, 168);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(92, 25);
             btnDelete.TabIndex = 6;
@@ -104,7 +108,7 @@ namespace ScanView.Forms
             // btnUp
             // 
             btnUp.Enabled = false;
-            btnUp.Location = new Point(260, 200);
+            btnUp.Location = new Point(260, 209);
             btnUp.Name = "btnUp";
             btnUp.Size = new Size(92, 25);
             btnUp.TabIndex = 9;
@@ -115,7 +119,7 @@ namespace ScanView.Forms
             // btnDown
             // 
             btnDown.Enabled = false;
-            btnDown.Location = new Point(260, 231);
+            btnDown.Location = new Point(260, 240);
             btnDown.Name = "btnDown";
             btnDown.Size = new Size(92, 25);
             btnDown.TabIndex = 10;
@@ -150,11 +154,48 @@ namespace ScanView.Forms
             labelSettings.Size = new Size(220, 15);
             labelSettings.TabIndex = 12;
             labelSettings.Text = "300 dpi · Graustufen · A4 · Flachbett";
-            // 
+            //
+            // labelSeparator
+            //
+            labelSeparator.BorderStyle = BorderStyle.Fixed3D;
+            labelSeparator.Location = new Point(12, 140);
+            labelSeparator.Name = "labelSeparator";
+            labelSeparator.Size = new Size(340, 2);
+            labelSeparator.TabIndex = 13;
+            //
+            // labelRename
+            //
+            labelRename.AutoSize = true;
+            labelRename.Location = new Point(12, 301);
+            labelRename.Name = "labelRename";
+            labelRename.Size = new Size(75, 15);
+            labelRename.TabIndex = 14;
+            labelRename.Text = "Neuer Na&me:";
+            //
+            // textRename
+            //
+            textRename.Location = new Point(110, 298);
+            textRename.Name = "textRename";
+            textRename.Size = new Size(144, 23);
+            textRename.TabIndex = 15;
+            textRename.Enter += TextRename_Enter;
+            textRename.Leave += TextRename_Leave;
+            //
+            // btnRename
+            //
+            btnRename.Enabled = false;
+            btnRename.Location = new Point(260, 297);
+            btnRename.Name = "btnRename";
+            btnRename.Size = new Size(92, 25);
+            btnRename.TabIndex = 16;
+            btnRename.Text = "&Umbenennen";
+            btnRename.UseVisualStyleBackColor = true;
+            btnRename.Click += BtnRename_Click;
+            //
             // btnOk
             // 
             btnOk.DialogResult = DialogResult.OK;
-            btnOk.Location = new Point(169, 301);
+            btnOk.Location = new Point(169, 335);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(85, 26);
             btnOk.TabIndex = 7;
@@ -164,7 +205,7 @@ namespace ScanView.Forms
             // btnCancel
             // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(260, 301);
+            btnCancel.Location = new Point(260, 335);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(92, 26);
             btnCancel.TabIndex = 8;
@@ -177,18 +218,22 @@ namespace ScanView.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(364, 339);
+            ClientSize = new Size(364, 373);
             Controls.Add(labelName);
             Controls.Add(textName);
             Controls.Add(btnAdd);
             Controls.Add(picHint);
             Controls.Add(labelHint);
             Controls.Add(labelSettings);
+            Controls.Add(labelSeparator);
             Controls.Add(labelList);
             Controls.Add(listProfiles);
             Controls.Add(btnDelete);
             Controls.Add(btnUp);
             Controls.Add(btnDown);
+            Controls.Add(labelRename);
+            Controls.Add(textRename);
+            Controls.Add(btnRename);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -217,6 +262,10 @@ namespace ScanView.Forms
         private System.Windows.Forms.PictureBox picHint;
         private System.Windows.Forms.Label labelHint;
         private System.Windows.Forms.Label labelSettings;
+        private System.Windows.Forms.Label labelSeparator;
+        private System.Windows.Forms.Label labelRename;
+        private System.Windows.Forms.TextBox textRename;
+        private System.Windows.Forms.Button btnRename;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
     }

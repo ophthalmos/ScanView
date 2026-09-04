@@ -313,4 +313,5 @@ Grayscale scans save additional space.</value></data>
   <data name="&amp;Aktuelle Einstellungen speichern" xml:space="preserve"><value>S&amp;ave current settings</value></data>
   <data name="Gespeichert werden die aktuellen Scan-Einstellungen:" xml:space="preserve"><value>The current scan settings will be saved:</value></data>
   <data name="Helligkeit {0} %" xml:space="preserve"><value>Brightness {0} %</value></data>
+  <data name="Neuer Na&amp;me:" xml:space="preserve"><value>New na&amp;me:</value></data>
 </root>
