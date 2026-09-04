@@ -37,7 +37,8 @@ internal sealed partial class ProfileForm : Form
         })];
         tracked = Profiles.FirstOrDefault(p => p.Name == selectedName);
         RefreshList(selectedName); // das in der MainForm gewählte Profil startet markiert
-        if (listProfiles.SelectedIndex >= 0) { ActiveControl = textRename; } // Umbenennen ist dann der nächstliegende Zweck
+        // Startfokus: bei markiertem Profil ist Umbenennen der nächstliegende Zweck, sonst das Anlegen
+        ActiveControl = listProfiles.SelectedIndex >= 0 ? textRename : textName;
     }
 
     private void RefreshList(string selectName)
