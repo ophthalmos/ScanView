@@ -11,7 +11,7 @@ internal sealed partial class SettingsForm : Form
 
     public string OcrLanguage => comboLanguage.SelectedItem is OcrLanguageItem item ? item.Code : "deu";
 
-    public int OcrJpgQuality => (int)numJpgQuality.Value;
+    public int OcrJpgQuality => qualityJpeg.Quality;
 
     public string SaveDirectory => textSaveDirectory.Text.Trim();
 
@@ -49,7 +49,7 @@ internal sealed partial class SettingsForm : Form
         var current = comboLanguage.Items.Cast<OcrLanguageItem>().FirstOrDefault(i => string.Equals(i.Code, ocrLanguage, StringComparison.OrdinalIgnoreCase));
         if (current != null) { comboLanguage.SelectedItem = current; }
         else if (comboLanguage.Items.Count > 0) { comboLanguage.SelectedIndex = 0; }
-        numJpgQuality.Value = Math.Clamp(ocrJpgQuality, 30, 100);
+        qualityJpeg.Quality = ocrJpgQuality;
     }
 
     /// <summary>Markiert das gewählte Farbfeld mit einem dickeren Rahmen.</summary>

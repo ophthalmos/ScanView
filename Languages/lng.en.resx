@@ -111,7 +111,6 @@
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Empty: Windows suggests the last used folder.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>Bac&amp;kground color:</value></data>
   <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Preferred OCR lang&amp;uage (default for new sessions):</value></data>
-  <data name="&amp;JPEG-Qualität der Bilder in der PDF (30–100):" xml:space="preserve"><value>&amp;JPEG quality of images in the PDF (30–100):</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>More languages: put .traineddata files (tessdata_best)
 into the &quot;tessdata&quot; folder next to the program file.</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Preferred save location for PDF files</value></data>
@@ -266,8 +265,6 @@ the latest version.</value></data>
   <data name="Strg+S" xml:space="preserve"><value>Ctrl+S</value></data>
   <data name="Nach dem Speichern öff&amp;nen" xml:space="preserve"><value>Open after &amp;saving</value></data>
   <data name="PDF/A (ohne Texterkennung)" xml:space="preserve"><value>PDF/A (no text recognition)</value></data>
-  <data name="Hint.JpgQuality" xml:space="preserve"><value>Smaller values give smaller files; 75 is a good compromise.
-Grayscale scans save additional space.</value></data>
   <data name="Seite {0} von {1}" xml:space="preserve"><value>Page {0} of {1}</value></data>
   <data name="quer" xml:space="preserve"><value>landscape</value></data>
   <data name="Scanner: {0}" xml:space="preserve"><value>Scanner: {0}</value></data>
@@ -310,4 +307,8 @@ Grayscale scans save additional space.</value></data>
   <data name="Große Datei" xml:space="preserve"><value>Large file</value></data>
   <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Brightness:</value></data>
   <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Brightness: {0}%</value></data>
+  <data name="Vorgaben lassen sich in den Optionen ändern." xml:space="preserve"><value>Defaults can be changed in the options.</value></data>
+  <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>JPEG &amp;quality of the images in the PDF:</value></data>
+  <data name="Hint.JpgQuality" xml:space="preserve"><value>Lower levels give smaller files; level 8 is a good
+compromise. Grayscale scans save additional space.</value></data>
 </root>

@@ -40,14 +40,11 @@
             labelFileType = new Label();
             comboFileType = new ComboBox();
             groupOcr = new GroupBox();
-            textBoxQuality = new TextBox();
-            comboQuality = new ComboBox();
-            labelLargeSize = new Label();
-            labelLowSize = new Label();
+            qualityJpeg = new ScanView.Controls.JpegQualityControl();
+            labelDefaultsHint = new Label();
             labelOcr = new Label();
             comboOcr = new ComboBox();
             labelQuality = new Label();
-            trackQuality = new TrackBar();
             groupMeta = new GroupBox();
             labelTitle = new Label();
             textTitle = new TextBox();
@@ -63,7 +60,6 @@
             groupScope.SuspendLayout();
             groupFile.SuspendLayout();
             groupOcr.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackQuality).BeginInit();
             groupMeta.SuspendLayout();
             SuspendLayout();
             // 
@@ -179,61 +175,21 @@
             // 
             // groupOcr
             // 
-            groupOcr.Controls.Add(textBoxQuality);
-            groupOcr.Controls.Add(comboQuality);
-            groupOcr.Controls.Add(labelLargeSize);
-            groupOcr.Controls.Add(labelLowSize);
+            groupOcr.Controls.Add(qualityJpeg);
+            groupOcr.Controls.Add(labelDefaultsHint);
             groupOcr.Controls.Add(labelOcr);
             groupOcr.Controls.Add(comboOcr);
             groupOcr.Controls.Add(labelQuality);
-            groupOcr.Controls.Add(trackQuality);
             groupOcr.Location = new Point(12, 191);
             groupOcr.Name = "groupOcr";
-            groupOcr.Size = new Size(380, 122);
+            groupOcr.Size = new Size(380, 144);
             groupOcr.TabIndex = 2;
             groupOcr.TabStop = false;
             groupOcr.Text = "Texterkennung";
             // 
-            // textBoxQuality
             // 
-            textBoxQuality.Location = new Point(124, 53);
-            textBoxQuality.MaxLength = 2;
-            textBoxQuality.Name = "textBoxQuality";
-            textBoxQuality.Size = new Size(77, 23);
-            textBoxQuality.TabIndex = 7;
-            textBoxQuality.TextChanged += TextBoxQuality_TextChanged;
-            textBoxQuality.KeyPress += TextBoxQuality_KeyPress;
-            textBoxQuality.Leave += TextBoxQuality_Leave;
             // 
-            // comboQuality
             // 
-            comboQuality.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboQuality.Items.AddRange(new object[] { "Niedrig", "Mittel", "Hoch" });
-            comboQuality.Location = new Point(214, 53);
-            comboQuality.Name = "comboQuality";
-            comboQuality.Size = new Size(154, 23);
-            comboQuality.TabIndex = 6;
-            comboQuality.SelectedIndexChanged += ComboQuality_SelectedIndexChanged;
-            // 
-            // labelLargeSize
-            // 
-            labelLargeSize.AutoSize = true;
-            labelLargeSize.Font = new Font("Segoe UI", 8F);
-            labelLargeSize.Location = new Point(300, 79);
-            labelLargeSize.Name = "labelLargeSize";
-            labelLargeSize.Size = new Size(68, 13);
-            labelLargeSize.TabIndex = 5;
-            labelLargeSize.Text = "Große Datei";
-            // 
-            // labelLowSize
-            // 
-            labelLowSize.AutoSize = true;
-            labelLowSize.Font = new Font("Segoe UI", 8F);
-            labelLowSize.Location = new Point(124, 79);
-            labelLowSize.Name = "labelLowSize";
-            labelLowSize.Size = new Size(68, 13);
-            labelLowSize.TabIndex = 4;
-            labelLowSize.Text = "Kleine Datei";
             // 
             // labelOcr
             // 
@@ -260,21 +216,26 @@
             labelQuality.Size = new Size(82, 15);
             labelQuality.TabIndex = 2;
             labelQuality.Text = "JPEG-&Qualität:";
-            // 
-            // trackQuality
-            // 
-            trackQuality.AutoSize = false;
-            trackQuality.LargeChange = 2;
-            trackQuality.Location = new Point(124, 93);
-            trackQuality.Maximum = 12;
-            trackQuality.Name = "trackQuality";
-            trackQuality.Size = new Size(244, 23);
-            trackQuality.TabIndex = 3;
-            trackQuality.Value = 8;
-            trackQuality.ValueChanged += TrackQuality_ValueChanged;
-            // 
+            //
+            // qualityJpeg
+            //
+            qualityJpeg.Location = new Point(124, 53);
+            qualityJpeg.Name = "qualityJpeg";
+            qualityJpeg.Size = new Size(244, 63);
+            qualityJpeg.TabIndex = 3;
+            //
+            // labelDefaultsHint
+            //
+            labelDefaultsHint.AutoSize = true;
+            labelDefaultsHint.ForeColor = SystemColors.GrayText;
+            labelDefaultsHint.Location = new Point(12, 121);
+            labelDefaultsHint.Name = "labelDefaultsHint";
+            labelDefaultsHint.Size = new Size(240, 15);
+            labelDefaultsHint.TabIndex = 5;
+            labelDefaultsHint.Text = "Vorgaben lassen sich in den Optionen ändern.";
+            //
             // groupMeta
-            // 
+            //
             groupMeta.Controls.Add(labelTitle);
             groupMeta.Controls.Add(textTitle);
             groupMeta.Controls.Add(labelSubject);
@@ -283,7 +244,7 @@
             groupMeta.Controls.Add(textKeywords);
             groupMeta.Controls.Add(labelAuthor);
             groupMeta.Controls.Add(textAuthor);
-            groupMeta.Location = new Point(12, 319);
+            groupMeta.Location = new Point(12, 341);
             groupMeta.Name = "groupMeta";
             groupMeta.Size = new Size(380, 146);
             groupMeta.TabIndex = 3;
@@ -357,7 +318,7 @@
             // cbOpenAfter
             // 
             cbOpenAfter.AutoSize = true;
-            cbOpenAfter.Location = new Point(28, 482);
+            cbOpenAfter.Location = new Point(28, 504);
             cbOpenAfter.Name = "cbOpenAfter";
             cbOpenAfter.Size = new Size(174, 19);
             cbOpenAfter.TabIndex = 6;
@@ -367,7 +328,7 @@
             // btnSave
             // 
             btnSave.DialogResult = DialogResult.OK;
-            btnSave.Location = new Point(226, 477);
+            btnSave.Location = new Point(226, 499);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(80, 26);
             btnSave.TabIndex = 4;
@@ -377,7 +338,7 @@
             // btnCancel
             // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(312, 477);
+            btnCancel.Location = new Point(312, 499);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 5;
@@ -390,7 +351,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(404, 515);
+            ClientSize = new Size(404, 537);
             Controls.Add(groupScope);
             Controls.Add(groupFile);
             Controls.Add(groupOcr);
@@ -412,7 +373,6 @@
             groupFile.PerformLayout();
             groupOcr.ResumeLayout(false);
             groupOcr.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackQuality).EndInit();
             groupMeta.ResumeLayout(false);
             groupMeta.PerformLayout();
             ResumeLayout(false);
@@ -436,7 +396,8 @@
         private System.Windows.Forms.Label labelOcr;
         private System.Windows.Forms.ComboBox comboOcr;
         private System.Windows.Forms.Label labelQuality;
-        private System.Windows.Forms.TrackBar trackQuality;
+        private ScanView.Controls.JpegQualityControl qualityJpeg;
+        private System.Windows.Forms.Label labelDefaultsHint;
         private System.Windows.Forms.GroupBox groupMeta;
         private System.Windows.Forms.Label labelTitle;
         private System.Windows.Forms.TextBox textTitle;
@@ -449,9 +410,5 @@
         private System.Windows.Forms.CheckBox cbOpenAfter;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnCancel;
-        private ComboBox comboQuality;
-        private Label labelLargeSize;
-        private Label labelLowSize;
-        private TextBox textBoxQuality;
     }
 }

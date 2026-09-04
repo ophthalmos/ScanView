@@ -54,7 +54,7 @@
             comboLanguage = new ComboBox();
             labelLanguageHint = new Label();
             labelQuality = new Label();
-            numJpgQuality = new NumericUpDown();
+            qualityJpeg = new ScanView.Controls.JpegQualityControl();
             labelQualityHint = new Label();
             btnOk = new Button();
             btnCancel = new Button();
@@ -62,7 +62,6 @@
             tabGeneral.SuspendLayout();
             panelBackColors.SuspendLayout();
             tabOcr.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numJpgQuality).BeginInit();
             SuspendLayout();
             // 
             // tabs
@@ -302,7 +301,7 @@
             tabOcr.Controls.Add(comboLanguage);
             tabOcr.Controls.Add(labelLanguageHint);
             tabOcr.Controls.Add(labelQuality);
-            tabOcr.Controls.Add(numJpgQuality);
+            tabOcr.Controls.Add(qualityJpeg);
             tabOcr.Controls.Add(labelQualityHint);
             tabOcr.Location = new Point(4, 24);
             tabOcr.Name = "tabOcr";
@@ -346,22 +345,20 @@
             labelQuality.Name = "labelQuality";
             labelQuality.Size = new Size(239, 15);
             labelQuality.TabIndex = 3;
-            labelQuality.Text = "&JPEG-Qualität der Bilder in der PDF (30–100):";
+            labelQuality.Text = "JPEG-&Qualität der Bilder in der PDF:";
             // 
-            // numJpgQuality
+            // qualityJpeg
             // 
-            numJpgQuality.Location = new Point(28, 142);
-            numJpgQuality.Minimum = new decimal(new int[] { 30, 0, 0, 0 });
-            numJpgQuality.Name = "numJpgQuality";
-            numJpgQuality.Size = new Size(60, 23);
-            numJpgQuality.TabIndex = 4;
-            numJpgQuality.Value = new decimal(new int[] { 75, 0, 0, 0 });
+            qualityJpeg.Location = new Point(28, 142);
+            qualityJpeg.Name = "qualityJpeg";
+            qualityJpeg.Size = new Size(244, 63);
+            qualityJpeg.TabIndex = 4;
             // 
             // labelQualityHint
             // 
             labelQualityHint.AutoSize = true;
             labelQualityHint.ForeColor = SystemColors.GrayText;
-            labelQualityHint.Location = new Point(8, 168);
+            labelQualityHint.Location = new Point(8, 214);
             labelQualityHint.Name = "labelQualityHint";
             labelQualityHint.Size = new Size(299, 30);
             labelQualityHint.TabIndex = 5;
@@ -411,7 +408,6 @@
             panelBackColors.ResumeLayout(false);
             tabOcr.ResumeLayout(false);
             tabOcr.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numJpgQuality).EndInit();
             ResumeLayout(false);
         }
 
@@ -443,7 +439,7 @@
         private System.Windows.Forms.ComboBox comboLanguage;
         private System.Windows.Forms.Label labelLanguageHint;
         private System.Windows.Forms.Label labelQuality;
-        private System.Windows.Forms.NumericUpDown numJpgQuality;
+        private ScanView.Controls.JpegQualityControl qualityJpeg;
         private System.Windows.Forms.Label labelQualityHint;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
