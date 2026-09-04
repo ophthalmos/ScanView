@@ -149,8 +149,6 @@ beenden</value></data>
   <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>Die gescannten Seiten dieser Sitzung gehen verloren.</value></data>
   <data name="Scan" xml:space="preserve"><value>Scan</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Gespeichert: {0}</value></data>
-  <data name="Texterkennung {0}/{1} …" xml:space="preserve"><value>Texterkennung {0}/{1} …</value></data>
-  <data name="Seite {0}/{1} …" xml:space="preserve"><value>Seite {0}/{1} …</value></data>
   <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>PDF erstellen fehlgeschlagen.</value></data>
   <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve"><value>{0} Seite(n) an den Drucker übergeben</value></data>
   <data name="Seitenübersicht leeren?" xml:space="preserve"><value>Seitenübersicht leeren?</value></data>
@@ -302,4 +300,7 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Es gibt bereits ein Profil mit diesem Namen.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>hinzufügen</value></data>
   <data name="umbenennen" xml:space="preserve"><value>umbenennen</value></data>
+  <data name="{0} von {1} Seiten erkannt" xml:space="preserve"><value>{0} von {1} Seiten erkannt</value></data>
+  <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} von {1} Seiten verarbeitet</value></data>
+  <data name="PDF erstellen" xml:space="preserve"><value>PDF erstellen</value></data>
 </root>

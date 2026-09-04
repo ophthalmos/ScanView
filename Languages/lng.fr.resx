@@ -149,8 +149,6 @@ mode copie</value></data>
   <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>Les pages numérisées de cette session seront perdues.</value></data>
   <data name="Scan" xml:space="preserve"><value>Numérisation</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Enregistré : {0}</value></data>
-  <data name="Texterkennung {0}/{1} …" xml:space="preserve"><value>Reconnaissance {0}/{1}…</value></data>
-  <data name="Seite {0}/{1} …" xml:space="preserve"><value>Page {0}/{1}…</value></data>
   <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>Échec de la création du PDF.</value></data>
   <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve"><value>{0} page(s) envoyée(s) à l'imprimante</value></data>
   <data name="Seitenübersicht leeren?" xml:space="preserve"><value>Vider l'aperçu des pages ?</value></data>
@@ -302,4 +300,7 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Un profil de ce nom existe déjà.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>ajouter</value></data>
   <data name="umbenennen" xml:space="preserve"><value>renommer</value></data>
+  <data name="{0} von {1} Seiten erkannt" xml:space="preserve"><value>{0} page(s) sur {1} reconnue(s)</value></data>
+  <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} page(s) sur {1} traitée(s)</value></data>
+  <data name="PDF erstellen" xml:space="preserve"><value>Création du PDF</value></data>
 </root>

@@ -1283,7 +1283,8 @@ public partial class MainForm : Form, IMessageFilter
         try
         {
             string ProgressText(int done, int total) =>
-                string.Format(Lng.T(language != null ? "Texterkennung {0}/{1} …" : "Seite {0}/{1} …"), done, total);
+                string.Format(Lng.T(language != null ? "{0} von {1} Seiten erkannt" : "{0} von {1} Seiten verarbeitet"), done, total);
+            progressForm.Text = Lng.T(language != null ? "Texterkennung" : "PDF erstellen"); // Titelzeile
             progressForm.Show(this);
             progressForm.SetProgress(ProgressText(0, tiffFiles.Count), 0, tiffFiles.Count);
             void Progress(int done, int total) => BeginInvoke(() => // kommt aus den Worker-Threads

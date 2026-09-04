@@ -149,8 +149,6 @@ mode</value></data>
   <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>The scanned pages of this session will be lost.</value></data>
   <data name="Scan" xml:space="preserve"><value>Scan</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Saved: {0}</value></data>
-  <data name="Texterkennung {0}/{1} …" xml:space="preserve"><value>Text recognition {0}/{1}…</value></data>
-  <data name="Seite {0}/{1} …" xml:space="preserve"><value>Page {0}/{1}…</value></data>
   <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>Creating the PDF failed.</value></data>
   <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve"><value>{0} page(s) sent to the printer</value></data>
   <data name="Seitenübersicht leeren?" xml:space="preserve"><value>Clear the page overview?</value></data>
@@ -302,4 +300,7 @@ Grayscale scans save additional space.</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>A profile with this name already exists.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>add</value></data>
   <data name="umbenennen" xml:space="preserve"><value>rename</value></data>
+  <data name="{0} von {1} Seiten erkannt" xml:space="preserve"><value>{0} of {1} pages recognized</value></data>
+  <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} of {1} pages processed</value></data>
+  <data name="PDF erstellen" xml:space="preserve"><value>Creating PDF</value></data>
 </root>

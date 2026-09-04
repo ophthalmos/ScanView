@@ -149,8 +149,6 @@ modo copia</value></data>
   <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>Se perderán las páginas escaneadas de esta sesión.</value></data>
   <data name="Scan" xml:space="preserve"><value>Escaneo</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Guardado: {0}</value></data>
-  <data name="Texterkennung {0}/{1} …" xml:space="preserve"><value>Reconocimiento {0}/{1}…</value></data>
-  <data name="Seite {0}/{1} …" xml:space="preserve"><value>Página {0}/{1}…</value></data>
   <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>Error al crear el PDF.</value></data>
   <data name="{0} Seite(n) an den Drucker übergeben" xml:space="preserve"><value>{0} página(s) enviadas a la impresora</value></data>
   <data name="Seitenübersicht leeren?" xml:space="preserve"><value>¿Vaciar la vista de páginas?</value></data>
@@ -302,4 +300,7 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Ya existe un perfil con ese nombre.</value></data>
   <data name="hinzufügen" xml:space="preserve"><value>añadir</value></data>
   <data name="umbenennen" xml:space="preserve"><value>renombrar</value></data>
+  <data name="{0} von {1} Seiten erkannt" xml:space="preserve"><value>{0} de {1} páginas reconocidas</value></data>
+  <data name="{0} von {1} Seiten verarbeitet" xml:space="preserve"><value>{0} de {1} páginas procesadas</value></data>
+  <data name="PDF erstellen" xml:space="preserve"><value>Creando PDF</value></data>
 </root>
