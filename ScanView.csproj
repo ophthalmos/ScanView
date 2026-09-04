@@ -20,4 +20,13 @@
   <ItemGroup>
     <None Update="tessdata\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+  <!-- Nur 64-Bit: die x86-Natives des Tesseract-Pakets (build\Tesseract.targets verlinkt x86\ UND x64\)
+       nicht in die Ausgabe kopieren — das Paket-Target wird nach der Projektdatei importiert,
+       darum geht das Entfernen nur in einem eigenen Target. -->
+  <Target Name="PruneX86Natives" BeforeTargets="AssignTargetPaths">
+    <ItemGroup>
+      <_X86Native Include="@(None)" Condition="$([System.String]::Copy('%(None.Link)').StartsWith('x86\'))" />
+      <None Remove="@(_X86Native)" />
+    </ItemGroup>
+  </Target>
 </Project>

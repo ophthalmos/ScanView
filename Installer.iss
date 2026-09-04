@@ -7,14 +7,16 @@
 ;   - Visual C++ Redistributable (x64) für die nativen Tesseract-DLLs
 ;     (auf den meisten Systemen vorhanden; das Setup warnt, falls es fehlt).
 ;
-; Vor dem Kompilieren: Release-Build erstellen (dotnet build -c Release) —
-; der Ordner enthält dann auch x64\ (native DLLs) und tessdata\.
+; Vor dem Kompilieren: Release-Build für x64 erstellen — in Visual Studio mit der
+; Projektmappenplattform "x64", per Kommandozeile: dotnet build -c Release -p:Platform=x64
+; Der Ordner enthält dann x64\ (native Tesseract-DLLs) und tessdata\; die x86-Natives
+; des Tesseract-Pakets filtert das Target PruneX86Natives in der csproj heraus.
 ; ============================================================================
 
 #define appName "ScanView"
 #define appVersion "1.0.0"
 #define stiEventGuid "{{A7E4C9D2-3B61-48F5-8E27-D90B41C6A358}"
-#define releaseDir "bin\Release\net10.0-windows"
+#define releaseDir "bin\x64\Release\net10.0-windows"
 
 [Setup]
 AppId={{9C4E2D71-8B0F-4A46-B4E3-6E5F0D2A7C18}
