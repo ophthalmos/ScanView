@@ -290,4 +290,13 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
 (z. B. FRITZ!fax) mit den gedruckten Seiten.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} Seite(n) an {1} übergeben</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Faxen fehlgeschlagen.</value></data>
+  <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profil:</value></data>
+  <data name="Scan-Profile" xml:space="preserve"><value>Scan-Profile</value></data>
+  <data name="&amp;Hinzufügen" xml:space="preserve"><value>&amp;Hinzufügen</value></data>
+  <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>&amp;Gespeicherte Profile:</value></data>
+  <data name="Gespeichert werden die aktuellen Scan-Einstellungen." xml:space="preserve"><value>Gespeichert werden die aktuellen Scan-Einstellungen.</value></data>
+  <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Bitte gib einen Profilnamen an.</value></data>
+  <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Profil „{0}“ ersetzen?</value></data>
+  <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Die gespeicherten Einstellungen werden überschrieben.</value></data>
+  <data name="&amp;Name:" xml:space="preserve"><value>&amp;Name:</value></data>
 </root>

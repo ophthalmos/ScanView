@@ -290,4 +290,13 @@ un bon compromis. Le gris économise encore de la place.</value></data>
 de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} page(s) transmise(s) à {1}</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>L'envoi du fax a échoué.</value></data>
+  <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profil :</value></data>
+  <data name="Scan-Profile" xml:space="preserve"><value>Profils de numérisation</value></data>
+  <data name="&amp;Hinzufügen" xml:space="preserve"><value>A&amp;jouter</value></data>
+  <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>Profils enre&amp;gistrés :</value></data>
+  <data name="Gespeichert werden die aktuellen Scan-Einstellungen." xml:space="preserve"><value>Les paramètres de numérisation actuels sont enregistrés.</value></data>
+  <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Veuillez saisir un nom de profil.</value></data>
+  <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Remplacer le profil « {0} » ?</value></data>
+  <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Les paramètres enregistrés seront écrasés.</value></data>
+  <data name="&amp;Name:" xml:space="preserve"><value>&amp;Nom :</value></data>
 </root>
