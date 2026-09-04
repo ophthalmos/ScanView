@@ -48,9 +48,6 @@ public partial class MainForm : Form, IMessageFilter
     private readonly PrinterSettings copyPrinterSettings = new(); // Kopiermodus: gewählter Drucker samt Treiber-Einstellungen
     private readonly List<PaperSize> copyPaperSizes = []; // Papierformate des gewählten Druckers (parallel zur Combo)
     private readonly List<PaperSource> copyPaperSources = []; // Papierzufuhren des gewählten Druckers (parallel zur Combo)
-    private readonly ToolTip toolTip = new();
-    private Button btnZoomOut; // übereinander gestapelt in einem ToolStripControlHost (s. CreateZoomButtons)
-    private Button btnZoomIn;
     private Font copyModeBoldFont; // „Kopiermodus beenden" fett, solange der Modus aktiv ist
     private bool pendingStiScan;   // Start über die Scanner-Taste: nach dem Anzeigen sofort scannen
     private bool ocrBusy;          // Texterkennung läuft im Hintergrund — Beenden solange abweisen
@@ -101,7 +98,6 @@ public partial class MainForm : Form, IMessageFilter
         SelectOcrLanguage(settings.OcrLanguage); // bevorzugte Sprache aus den Optionen als Vorgabe
         try { Icon = Icon.ExtractAssociatedIcon(Application.ExecutablePath); } // Fenstersymbol = Programmicon der EXE
         catch (Exception ex) when (ex is ArgumentException or IOException) { }
-        CreateZoomButtons();
         ApplyToolbarIcons();
         ApplyMenuIcons();
         Application.AddMessageFilter(this); // Strg+Mausrad-Zoom (s. PreFilterMessage)
@@ -151,28 +147,6 @@ public partial class MainForm : Form, IMessageFilter
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
     }
 
-    /// <summary>Baut die beiden Zoom-Buttons übereinander in einen ToolStripControlHost — der
-    /// ToolStrip selbst kann Items nur nebeneinander anordnen.</summary>
-    private void CreateZoomButtons()
-    {
-        Button Make(string text, string tip, EventHandler onClick)
-        {
-            Button button = new() { Size = new Size(32, 27), Text = text, TabStop = false, FlatStyle = FlatStyle.Flat };
-            button.FlatAppearance.BorderSize = 0;
-            toolTip.SetToolTip(button, tip);
-            button.Click += onClick;
-            return button;
-        }
-        btnZoomIn = Make("+", "Miniaturen vergrößern (Strg++)", BtnZoomIn_Click);
-        btnZoomOut = Make("−", "Miniaturen verkleinern (Strg+−)", BtnZoomOut_Click);
-        Panel host = new() { Size = new Size(32, 56) };
-        btnZoomIn.Location = new Point(0, 1);
-        btnZoomOut.Location = new Point(0, 28);
-        host.Controls.Add(btnZoomIn);
-        host.Controls.Add(btnZoomOut);
-        toolStrip.Items.Insert(toolStrip.Items.IndexOf(toolStripSeparator2) + 1, new ToolStripControlHost(host));
-    }
-
     /// <summary>Versieht die Toolbar-Buttons mit Symbolen aus der Windows-Symbolschrift
     /// "Segoe MDL2 Assets" — fehlt sie, bleiben es reine Textbuttons.</summary>
     private void ApplyToolbarIcons()
@@ -198,11 +172,8 @@ public partial class MainForm : Form, IMessageFilter
         btnNew.Image = ToolbarIcons.GetNewPage(size); // leeres Blatt mit Sternchen
         btnNew.TextImageRelation = TextImageRelation.ImageAboveText;
         btnNew.DisplayStyle = ToolStripItemDisplayStyle.ImageAndText;
-        var zoomEdge = LogicalToDeviceUnits(18);
-        btnZoomOut.Image = ToolbarIcons.Get(ToolbarIcons.ZoomOut, new Size(zoomEdge, zoomEdge));
-        btnZoomIn.Image = ToolbarIcons.Get(ToolbarIcons.ZoomIn, new Size(zoomEdge, zoomEdge));
-        btnZoomOut.Text = string.Empty;
-        btnZoomIn.Text = string.Empty;
+        Set(btnZoomIn, ToolbarIcons.ZoomIn, imageOnly: true);
+        Set(btnZoomOut, ToolbarIcons.ZoomOut, imageOnly: true);
     }
 
     /// <summary>Symbole für alle Menüeinträge (16 px, wie in PDFlight).</summary>
