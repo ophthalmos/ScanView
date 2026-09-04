@@ -301,9 +301,9 @@ d'installation pour installer la dernière version.</value></data>
   <data name="Die Windows-Bilderfassung (WIA) ist nicht verfügbar." xml:space="preserve"><value>L'acquisition d'images Windows (WIA) n'est pas disponible.</value></data>
   <data name="JPEG-&amp;Qualität:" xml:space="preserve"><value>&amp;Qualité JPEG :</value></data>
   <data name="&amp;Helligkeit:" xml:space="preserve"><value>&amp;Luminosité :</value></data>
-  <data name="&amp;Helligkeit: {0} %" xml:space="preserve"><value>&amp;Luminosité : {0} %</value></data>
   <data name="Vorgaben lassen sich in den Optionen ändern." xml:space="preserve"><value>Les valeurs par défaut se règlent dans les options.</value></data>
   <data name="JPEG-&amp;Qualität der Bilder in der PDF:" xml:space="preserve"><value>&amp;Qualité JPEG des images du PDF :</value></data>
   <data name="Hint.JpgQuality" xml:space="preserve"><value>Des valeurs plus faibles donnent des fichiers plus petits ; 75 est
 un bon compromis. Le gris économise encore de la place.</value></data>
+  <data name="&amp;Helligkeit: {0}" xml:space="preserve"><value>&amp;Luminosité : {0}</value></data>
 </root>

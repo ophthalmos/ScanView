@@ -337,7 +337,7 @@ public partial class MainForm : Form, IMessageFilter
         AddPage(ScanService.RenderTestPage(NextScanPath(), "Selbsttest Seite zwei", "Prüfung der Umlaute: Ärzte, Öfen, Übungen."));
         var output = Path.Combine(sessionFolder, "Selbsttest.pdf");
         // synchron direkt über den Service — ein GetResult auf CreatePdfAsync würde den UI-Thread deadlocken
-        OcrPdfService.CreateSearchablePdf(flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList(), output, "deu", 75, null);
+        OcrPdfService.CreateSearchablePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)], output, "deu", 75, null);
         var pageCount = 0;
         try
         {
@@ -346,7 +346,7 @@ public partial class MainForm : Form, IMessageFilter
         }
         catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
         var outputA = Path.Combine(sessionFolder, "SelbsttestA.pdf"); // PDF/A: reiner Bild-PDF-Weg
-        OcrPdfService.CreateImagePdf(flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList(), outputA, 75, null,
+        OcrPdfService.CreateImagePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)], outputA, 75, null,
             new PdfMeta("Selbsttest", "PDF/A-Prüfung", "Scan, Test", "ScanView", PdfA: true));
         var pageCountA = 0;
         try
@@ -423,13 +423,13 @@ public partial class MainForm : Form, IMessageFilter
         e.Graphics.DrawLine(pen, panelSettings.Width - 1, 0, panelSettings.Width - 1, toolStrip.Height);
     }
 
-    /// <summary>Helligkeit ist die Abweichung von der Mitte: mit Vorzeichen und Prozentzeichen,
+    /// <summary>Helligkeit ist die Abweichung von der Mitte: der Wert mit Vorzeichen,
     /// in Neutralstellung ganz ohne Zahl.</summary>
     private void TrackBrightness_ValueChanged(object sender, EventArgs e)
     {
         labelBrightness.Text = trackBrightness.Value == 0
             ? Lng.T("&Helligkeit:")
-            : string.Format(Lng.T("&Helligkeit: {0} %"), trackBrightness.Value.ToString("+0;-0"));
+            : string.Format(Lng.T("&Helligkeit: {0}"), trackBrightness.Value.ToString("+0;-0"));
     }
 
     // ------------------------------------------------------------------ Scannen
@@ -1248,7 +1248,7 @@ public partial class MainForm : Form, IMessageFilter
             return;
         }
         List<string> files = dialog.AllPages
-            ? flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList()
+            ? [.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)]
             : [(string)selected.Tag];
         if (dialog.FileType is SaveFileType.Jpeg or SaveFileType.Png or SaveFileType.Tiff)
         {
@@ -1465,7 +1465,7 @@ public partial class MainForm : Form, IMessageFilter
         using FaxForm dialog = new(selected != null);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         List<string> pages = dialog.AllPages
-            ? flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList()
+            ? [.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)]
             : [(string)selected.Tag];
         using PrintDocument document = new();
         document.DocumentName = "ScanView";
