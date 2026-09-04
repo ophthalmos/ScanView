@@ -36,9 +36,11 @@ namespace ScanView.Forms
             btnDelete = new Button();
             btnUp = new Button();
             btnDown = new Button();
+            picHint = new PictureBox();
             labelHint = new Label();
             btnOk = new Button();
             btnCancel = new Button();
+            ((System.ComponentModel.ISupportInitialize)picHint).BeginInit();
             SuspendLayout();
             // 
             // labelName
@@ -94,34 +96,43 @@ namespace ScanView.Forms
             btnDelete.Text = "&Löschen";
             btnDelete.UseVisualStyleBackColor = true;
             btnDelete.Click += BtnDelete_Click;
-            //
+            // 
             // btnUp
-            //
+            // 
             btnUp.Enabled = false;
-            btnUp.Location = new Point(260, 142);
+            btnUp.Location = new Point(260, 152);
             btnUp.Name = "btnUp";
             btnUp.Size = new Size(92, 25);
             btnUp.TabIndex = 9;
             btnUp.Text = "Nach &oben";
             btnUp.UseVisualStyleBackColor = true;
             btnUp.Click += BtnUp_Click;
-            //
+            // 
             // btnDown
-            //
+            // 
             btnDown.Enabled = false;
-            btnDown.Location = new Point(260, 173);
+            btnDown.Location = new Point(260, 183);
             btnDown.Name = "btnDown";
             btnDown.Size = new Size(92, 25);
             btnDown.TabIndex = 10;
             btnDown.Text = "Nach &unten";
             btnDown.UseVisualStyleBackColor = true;
             btnDown.Click += BtnDown_Click;
-            // 
+            //
+            // picHint
+            //
+            picHint.Location = new Point(12, 58);
+            picHint.Name = "picHint";
+            picHint.Size = new Size(16, 16);
+            picHint.SizeMode = PictureBoxSizeMode.Zoom;
+            picHint.TabIndex = 11;
+            picHint.TabStop = false;
+            //
             // labelHint
-            // 
+            //
             labelHint.AutoSize = true;
             labelHint.ForeColor = SystemColors.GrayText;
-            labelHint.Location = new Point(12, 59);
+            labelHint.Location = new Point(32, 59);
             labelHint.Name = "labelHint";
             labelHint.Size = new Size(288, 15);
             labelHint.TabIndex = 3;
@@ -157,6 +168,7 @@ namespace ScanView.Forms
             Controls.Add(labelName);
             Controls.Add(textName);
             Controls.Add(btnAdd);
+            Controls.Add(picHint);
             Controls.Add(labelHint);
             Controls.Add(labelList);
             Controls.Add(listProfiles);
@@ -173,6 +185,7 @@ namespace ScanView.Forms
             ShowInTaskbar = false;
             StartPosition = FormStartPosition.CenterParent;
             Text = "Scan-Profile";
+            ((System.ComponentModel.ISupportInitialize)picHint).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -187,6 +200,7 @@ namespace ScanView.Forms
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.Button btnUp;
         private System.Windows.Forms.Button btnDown;
+        private System.Windows.Forms.PictureBox picHint;
         private System.Windows.Forms.Label labelHint;
         private System.Windows.Forms.Button btnOk;
         private System.Windows.Forms.Button btnCancel;
