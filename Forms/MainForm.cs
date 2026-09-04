@@ -1399,11 +1399,11 @@ public partial class MainForm : Form, IMessageFilter
     /// <summary>Link über der Profil-Combo: Profile verwalten (hinzufügen und löschen).</summary>
     private void LinkProfiles_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
     {
-        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile());
+        using ProfileForm dialog = new(settings.ScanProfiles, CurrentScanProfile(), comboProfile.Text);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.ScanProfiles = dialog.Profiles;
         settings.Save();
-        RefreshProfileCombo(comboProfile.Text); // bisherige Auswahl beibehalten, falls noch vorhanden
+        RefreshProfileCombo(dialog.SelectedName ?? comboProfile.Text); // nach Umbenennen dem neuen Namen folgen
         ScanSetting_Changed(sender, e); // … aber nur, wenn die Panel-Werte noch zum (evtl. ersetzten) Profil passen
     }
 

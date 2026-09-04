@@ -299,4 +299,6 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="ändern" xml:space="preserve"><value>ändern</value></data>
   <data name="Nach &amp;oben" xml:space="preserve"><value>Nach &amp;oben</value></data>
   <data name="Nach &amp;unten" xml:space="preserve"><value>Nach &amp;unten</value></data>
+  <data name="&amp;Umbenennen" xml:space="preserve"><value>&amp;Umbenennen</value></data>
+  <data name="Es gibt bereits ein Profil mit diesem Namen." xml:space="preserve"><value>Es gibt bereits ein Profil mit diesem Namen.</value></data>
 </root>
