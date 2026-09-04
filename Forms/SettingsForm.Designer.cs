@@ -351,14 +351,14 @@
             // 
             qualityJpeg.Location = new Point(28, 142);
             qualityJpeg.Name = "qualityJpeg";
-            qualityJpeg.Size = new Size(244, 63);
+            qualityJpeg.Size = new Size(244, 23);
             qualityJpeg.TabIndex = 4;
             // 
             // labelQualityHint
             // 
             labelQualityHint.AutoSize = true;
             labelQualityHint.ForeColor = SystemColors.GrayText;
-            labelQualityHint.Location = new Point(8, 214);
+            labelQualityHint.Location = new Point(8, 174);
             labelQualityHint.Name = "labelQualityHint";
             labelQualityHint.Size = new Size(299, 30);
             labelQualityHint.TabIndex = 5;
