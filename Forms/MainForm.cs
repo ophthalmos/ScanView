@@ -423,13 +423,16 @@ public partial class MainForm : Form, IMessageFilter
         e.Graphics.DrawLine(pen, panelSettings.Width - 1, 0, panelSettings.Width - 1, toolStrip.Height);
     }
 
-    /// <summary>Helligkeit ist die Abweichung von der Mitte: der Wert mit Vorzeichen,
-    /// in Neutralstellung ganz ohne Zahl.</summary>
+    /// <summary>Helligkeit ist die Abweichung von der Mitte: der Wert mit Vorzeichen und
+    /// Prozentzeichen, in Neutralstellung ganz ohne Zahl. Ruft auch die Profil-Prüfung auf —
+    /// der VS-Designer verwaltet nur EINEN Handler je Ereignis, ein zweites Wiring
+    /// (ScanSetting_Changed) würde er beim Regenerieren verwerfen.</summary>
     private void TrackBrightness_ValueChanged(object sender, EventArgs e)
     {
         labelBrightness.Text = trackBrightness.Value == 0
             ? Lng.T("&Helligkeit:")
-            : string.Format(Lng.T("&Helligkeit: {0}"), trackBrightness.Value.ToString("+0;-0"));
+            : string.Format(Lng.T("&Helligkeit: {0} %"), trackBrightness.Value.ToString("+0;-0"));
+        ScanSetting_Changed(sender, e);
     }
 
     // ------------------------------------------------------------------ Scannen

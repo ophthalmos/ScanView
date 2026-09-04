@@ -894,7 +894,7 @@
             trackBrightness.SmallChange = 5;
             trackBrightness.TabIndex = 13;
             trackBrightness.TickFrequency = 25;
-            trackBrightness.ValueChanged += ScanSetting_Changed;
+            trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
             // 
             // panelCopyMode
             // 
