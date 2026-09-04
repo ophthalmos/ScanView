@@ -3,10 +3,10 @@ using ScanView.Classes;
 namespace ScanView.Forms;
 
 /// <summary>Scan-Profile verwalten (Link über der Profil-Combo): die aktuellen Einstellungen
-/// des Scan-Panels unter einem Namen speichern, Profile umbenennen (bei markiertem Listeneintrag
-/// wird aus „Hinzufügen" ein „Umbenennen"; Klick auf die leere Listenfläche hebt die Markierung
-/// auf), löschen oder umsortieren. Der Dialog arbeitet auf einer Kopie der Liste — erst OK
-/// übernimmt die Änderungen.</summary>
+/// des Scan-Panels (als Klartext im Dialog aufgelistet) unter einem Namen speichern, Profile
+/// umbenennen (bei markiertem Listeneintrag wird aus „Aktuelle Einstellungen speichern" ein
+/// „Umbenennen"; Klick auf die leere Listenfläche hebt die Markierung auf), löschen oder
+/// umsortieren. Der Dialog arbeitet auf einer Kopie der Liste — erst OK übernimmt die Änderungen.</summary>
 internal sealed partial class ProfileForm : Form
 {
     /// <summary>Die (bei OK zu übernehmende) Profilliste.</summary>
@@ -21,10 +21,11 @@ internal sealed partial class ProfileForm : Form
 
     private readonly ScanProfile current; // die aktuellen Panel-Einstellungen als Vorlage fürs Hinzufügen
 
-    public ProfileForm(List<ScanProfile> profiles, ScanProfile current, string selectedName)
+    public ProfileForm(List<ScanProfile> profiles, ScanProfile current, string currentSummary, string selectedName)
     {
         InitializeComponent();
         Lng.Apply(this);
+        labelSettings.Text = currentSummary; // die Panel-Werte im Klartext — das speichert der Button
         // Nota bene vor dem Hinweis: das Windows-Infosymbol in DPI-passender Größe
         using (var info = SystemIcons.GetStockIcon(StockIconId.Info, LogicalToDeviceUnits(16)))
         {
@@ -118,7 +119,7 @@ internal sealed partial class ProfileForm : Form
         btnDelete.Enabled = index >= 0;
         btnUp.Enabled = index > 0;
         btnDown.Enabled = index >= 0 && index < listProfiles.Items.Count - 1;
-        btnAdd.Text = Lng.T(index >= 0 ? "&Umbenennen" : "&Hinzufügen");
+        btnAdd.Text = Lng.T(index >= 0 ? "&Umbenennen" : "&Aktuelle Einstellungen speichern");
         if (index >= 0) { textName.Text = (string)listProfiles.SelectedItem; }
     }
 

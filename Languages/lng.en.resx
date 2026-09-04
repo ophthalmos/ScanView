@@ -279,9 +279,7 @@ the latest version.</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>Fax failed.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profile:</value></data>
   <data name="Scan-Profile" xml:space="preserve"><value>Scan profiles</value></data>
-  <data name="&amp;Hinzufügen" xml:space="preserve"><value>&amp;Add</value></data>
   <data name="&amp;Gespeicherte Profile:" xml:space="preserve"><value>Sa&amp;ved profiles:</value></data>
-  <data name="Gespeichert werden die aktuellen Scan-Einstellungen." xml:space="preserve"><value>The current scan settings are saved.</value></data>
   <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Please enter a profile name.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Replace profile &quot;{0}&quot;?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>The saved settings will be overwritten.</value></data>
@@ -312,4 +310,7 @@ Grayscale scans save additional space.</value></data>
   <data name="Seiten drucken (alle oder markierte)" xml:space="preserve"><value>print pages (all or selected)</value></data>
   <data name="Eigenschaften" xml:space="preserve"><value>Properties</value></data>
   <data name="Der Ordner konnte nicht geöffnet werden." xml:space="preserve"><value>The folder could not be opened.</value></data>
+  <data name="&amp;Aktuelle Einstellungen speichern" xml:space="preserve"><value>S&amp;ave current settings</value></data>
+  <data name="Gespeichert werden die aktuellen Scan-Einstellungen:" xml:space="preserve"><value>The current scan settings will be saved:</value></data>
+  <data name="Helligkeit {0} %" xml:space="preserve"><value>Brightness {0} %</value></data>
 </root>
