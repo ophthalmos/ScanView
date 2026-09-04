@@ -53,6 +53,10 @@ internal sealed partial class CropForm : Form, IMessageFilter
     /// <summary>True, sobald mindestens eine Aktion ausgeführt wurde.</summary>
     public bool Edited => !ReferenceEquals(workingImage, image);
 
+    /// <summary>True, wenn das Ergebnis als zusätzliche Seite eingefügt werden soll —
+    /// das Original bleibt dann unverändert (Button „Als neue Seite speichern").</summary>
+    public bool SaveAsNewPage { get; private set; }
+
     public CropForm(Image image, Rectangle storedBounds)
     {
         this.image = image;
@@ -75,6 +79,7 @@ internal sealed partial class CropForm : Form, IMessageFilter
             btnIsolate.Image = ToolbarIcons.Get(ToolbarIcons.SinglePage, toolStrip.ImageScalingSize);
             btnCropAction.Image = ToolbarIcons.Get(ToolbarIcons.Crop, toolStrip.ImageScalingSize);
             btnRemove.Image = ToolbarIcons.Get(ToolbarIcons.Cut, toolStrip.ImageScalingSize);
+            btnSaveAsNew.Image = ToolbarIcons.Get(ToolbarIcons.Page, toolStrip.ImageScalingSize);
             btnApply.Image = ToolbarIcons.Get(ToolbarIcons.Accept, toolStrip.ImageScalingSize);
             btnCancel.Image = ToolbarIcons.Get(ToolbarIcons.Cancel, toolStrip.ImageScalingSize);
         }
@@ -85,6 +90,9 @@ internal sealed partial class CropForm : Form, IMessageFilter
             btnZoomOut.Text = "−";
             btnZoomIn.Text = "+";
         }
+        // Die Toolbar bestimmt die Mindestbreite mit — sonst wandern die rechten Buttons ins Overflow-Menü
+        var chromeWidth = Width - ClientSize.Width;
+        MinimumSize = new Size(Math.Max(MinimumSize.Width, toolStrip.PreferredSize.Width + chromeWidth), MinimumSize.Height);
         comboZoom.SelectedIndex = 0; // Einpassen
         Application.AddMessageFilter(this); // Strg+Mausrad-Zoom (s. PreFilterMessage)
 
@@ -165,6 +173,12 @@ internal sealed partial class CropForm : Form, IMessageFilter
 
     private void BtnApply_Click(object sender, EventArgs e)
     {
+        DialogResult = DialogResult.OK;
+    }
+
+    private void BtnSaveAsNew_Click(object sender, EventArgs e)
+    {
+        SaveAsNewPage = true;
         DialogResult = DialogResult.OK;
     }
 
@@ -396,6 +410,7 @@ internal sealed partial class CropForm : Form, IMessageFilter
         btnCropAction.Enabled = valid;
         btnRemove.Enabled = valid;
         btnApply.Enabled = Edited;
+        btnSaveAsNew.Enabled = Edited;
         btnApply.Font = Edited ? applyBoldFont : null; // fett, sobald es etwas zu übernehmen gibt (null = ToolStrip-Schrift)
         if (valid)
         {

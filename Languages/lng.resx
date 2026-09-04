@@ -321,4 +321,7 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Visitenk." xml:space="preserve"><value>Visitenk.</value></data>
   <data name="Einzug" xml:space="preserve"><value>Einzug</value></data>
   <data name="Hell. {0} %" xml:space="preserve"><value>Hell. {0} %</value></data>
+  <data name="Als &amp;neue Seite speichern" xml:space="preserve"><value>Als &amp;neue Seite speichern</value></data>
+  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — das Original bleibt unverändert" xml:space="preserve"><value>Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — das Original bleibt unverändert</value></data>
+  <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Als neue Seite gespeichert ({0} × {1} Pixel)</value></data>
 </root>
