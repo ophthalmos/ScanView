@@ -16,6 +16,8 @@ $ignore = @(
     "ScanView", "OK", "PDF",
     "English", "Español", "Français", # Eigennamen der Sprachen — erscheinen bewusst in der jeweiligen Sprache
     "300 dpi · Graustufen · A4 · Flachbett",       # Designer-Platzhalter; zur Laufzeit dynamisch zusammengesetzt
+    " Scanner und Kameras",                        # Designer-Platzhalter; zur Laufzeit " " + Lng.T("Scanner und Kameras")
+    "&Title:", "Su&bject:", "&Keywords:", "Aut&hor:", # PDF-Konventionsnamen — bewusst in allen Sprachen original (Wilhelms Entscheidung)
     "C:\Program Files\ScanView\tessdata",          # Designer-Platzhalter; zur Laufzeit der echte Pfad
     "https://github.com/tesseract-ocr/tessdata_best" # Link-Beschriftung (URL, sprachneutral)
 )

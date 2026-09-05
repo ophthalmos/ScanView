@@ -109,7 +109,6 @@
   <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve"><value>Emplacement d'enregi&amp;strement préféré des PDF :</value></data>
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Vide : Windows propose le dernier dossier utilisé.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>&amp;Couleur de fond :</value></data>
-  <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Lang&amp;ue de reconnaissance préférée (défaut des nouvelles sessions) :</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView est fourni avec l'allemand et l'anglais. S'il vous
 manque une langue pour l'OCR, ajoutez-la ainsi :</value></data>
   <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Téléchargez-y le fichier de langue souhaité
@@ -344,4 +343,12 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Reihenfolge geändert" xml:space="preserve"><value>Ordre modifié</value></data>
   <data name="Sortierung umgekehrt" xml:space="preserve"><value>Ordre inversé</value></data>
   <data name="Rückseiten einsortiert" xml:space="preserve"><value>Versos intercalés</value></data>
+  <data name="Bevorzugte &amp;Sprache (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Langue &amp;préférée (défaut des nouvelles sessions) :</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>L'impression vers cette imprimante ouvre le programme
+de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
+  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)" xml:space="preserve"><value>Le résultat est inséré comme page supplémentaire après la page modifiée — le dialogue réaffiche ensuite l'original (p. ex. pour séparer plusieurs photos)</value></data>
+  <data name="E&amp;xtras" xml:space="preserve"><value>&amp;Outils</value></data>
+  <data name="Im &amp;Bildbetrachter öffnen" xml:space="preserve"><value>Ouvrir dans la &amp;visionneuse d'images</value></data>
+  <data name="&amp;Drucker:" xml:space="preserve"><value>Im&amp;primante :</value></data>
+  <data name="letzten Schritt rückgängig machen" xml:space="preserve"><value>annuler la dernière étape</value></data>
 </root>
