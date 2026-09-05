@@ -160,32 +160,33 @@ internal static class TaskDlg
     }
 
     /// <summary>Alle Tastenkürzel: Kürzel, Kurztext und optionale Zusatzerklärung für die PDF-Übersicht.</summary>
+    // Sortierung: F-Tasten (numerisch), Strg+Zahl, Strg+Buchstabe (alphabetisch), Strg+Sondertaste, Übrige
     public static readonly (string Key, string Text, string Detail)[] ShortcutRows =
     [
+        ("F1", "diese Kürzel-Übersicht", null),
         ("F4", "Seite scannen", null),
-        ("Strg+S", "durchsuchbare PDF speichern (mit Texterkennung)", null),
         ("F6", "Seiten drucken (alle oder markierte)", null),
         ("F7", "Kopiermodus ein/aus",
             "Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein."),
         ("F9", "Seitenübersicht leeren (Neu)", null),
-        ("Strg+I", "Bilddateien als Seiten importieren", null),
-        ("Strg+X / C / V", "Seite ausschneiden / kopieren / einfügen", null),
-        ("Entf", "markierte Seite entfernen", null),
         ("F10", "markierte Seite zuschneiden", null),
-        ("Strg+L / Strg+R", "Seite nach links / rechts drehen", null),
-        ("Strg+Umschalt+R", "Seite um 180° drehen", null),
+        ("F11", "Vollbild ein/aus", null),
+        ("Strg+1 … 4", "Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole", null),
         ("Strg+D", "Rückseiten einfügen",
             "Duplex von Hand: erst alle Vorderseiten scannen, dann den gewendeten Stapel — die Rückseiten werden verzahnt einsortiert."),
+        ("Strg+I", "Bilddateien als Seiten importieren", null),
+        ("Strg+L / Strg+R", "Seite nach links / rechts drehen", null),
+        ("Strg+Umschalt+R", "Seite um 180° drehen", null),
+        ("Strg+S", "durchsuchbare PDF speichern (mit Texterkennung)", null),
         ("Strg+U", "Sortierung umkehren", null),
-        ("Strg+1 … 4", "Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole", null),
+        ("Strg+X / C / V", "Seite ausschneiden / kopieren / einfügen", null),
         ("Strg++ / Strg+−", "Miniaturen vergrößern / verkleinern", null),
+        ("Strg+,", "Optionen öffnen", null),
         ("Strg+Mausrad", "Miniaturen vergrößern / verkleinern", null),
+        ("Entf", "markierte Seite entfernen", null),
         ("Alt+← / →", "markierte Seite verschieben (auch: Ziehen mit der Maus)", null),
         ("Doppelklick", "Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)", null),
-        ("F11", "Vollbild ein/aus", null),
-        ("Strg+,", "Optionen öffnen", null),
         ("2× Esc / Umschalt+Esc", "Programm beenden (Option)", null),
-        ("F1", "diese Kürzel-Übersicht", null),
     ];
 
     /// <summary>Kürzel-Übersicht (F1 und ?-Menü): erstellt die PDF im Downloads-Ordner und öffnet sie
