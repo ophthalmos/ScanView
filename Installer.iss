@@ -14,7 +14,7 @@
 ; ============================================================================
 
 #define appName "ScanView"
-#define appVersion "1.0.0"
+#define appVersion "1.0.1"
 #define stiEventGuid "{{A7E4C9D2-3B61-48F5-8E27-D90B41C6A358}"
 #define releaseDir "bin\Release\net10.0-windows"
 
