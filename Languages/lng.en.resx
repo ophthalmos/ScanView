@@ -109,7 +109,6 @@
   <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve"><value>Preferred &amp;save location for PDF files:</value></data>
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Empty: Windows suggests the last used folder.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>Bac&amp;kground color:</value></data>
-  <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Preferred OCR lang&amp;uage (default for new sessions):</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView ships with German and English. If the language
 you want to recognize is missing, add it like this:</value></data>
   <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Download the language file you need there
@@ -344,4 +343,12 @@ Grayscale scans save additional space.</value></data>
   <data name="Reihenfolge geändert" xml:space="preserve"><value>Order changed</value></data>
   <data name="Sortierung umgekehrt" xml:space="preserve"><value>Order reversed</value></data>
   <data name="Rückseiten einsortiert" xml:space="preserve"><value>Back sides interleaved</value></data>
+  <data name="Bevorzugte &amp;Sprache (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Preferred &amp;language (default for new sessions):</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Printing to this printer opens the fax program
+(e.g. FRITZ!fax) with the printed pages.</value></data>
+  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)" xml:space="preserve"><value>The result is inserted as an additional page after the edited one — the dialog then shows the original again (e.g. to separate several photos)</value></data>
+  <data name="E&amp;xtras" xml:space="preserve"><value>&amp;Tools</value></data>
+  <data name="Im &amp;Bildbetrachter öffnen" xml:space="preserve"><value>Open in image &amp;viewer</value></data>
+  <data name="&amp;Drucker:" xml:space="preserve"><value>&amp;Printer:</value></data>
+  <data name="letzten Schritt rückgängig machen" xml:space="preserve"><value>undo the last step</value></data>
 </root>

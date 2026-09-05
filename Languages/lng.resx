@@ -109,7 +109,6 @@
   <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve"><value>Bevorzugter &amp;Speicherort für PDF-Dateien:</value></data>
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Leer: Windows schlägt den zuletzt verwendeten Ordner vor.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>&amp;Hintergrundfarbe:</value></data>
-  <data name="Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Bevorzugte &amp;Sprache der Texterkennung (Vorgabe für neue Sitzungen):</value></data>
   <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView bringt Deutsch und Englisch mit. Fehlt dir eine
 Sprache für die Texterkennung, rüste sie so nach:</value></data>
   <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Lade dort die gewünschte Sprachdatei herunter
@@ -344,4 +343,12 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Reihenfolge geändert" xml:space="preserve"><value>Reihenfolge geändert</value></data>
   <data name="Sortierung umgekehrt" xml:space="preserve"><value>Sortierung umgekehrt</value></data>
   <data name="Rückseiten einsortiert" xml:space="preserve"><value>Rückseiten einsortiert</value></data>
+  <data name="Bevorzugte &amp;Sprache (Vorgabe für neue Sitzungen):" xml:space="preserve"><value>Bevorzugte &amp;Sprache (Vorgabe für neue Sitzungen):</value></data>
+  <data name="Hint.FaxPrinter" xml:space="preserve"><value>Wähle hier den Faxdrucker deines Faxprogramms.
+Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
+  <data name="Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)" xml:space="preserve"><value>Das Ergebnis wird als zusätzliche Seite hinter der bearbeiteten eingefügt — danach zeigt der Dialog wieder das Original (z.B. um mehrere Fotos zu vereinzeln)</value></data>
+  <data name="E&amp;xtras" xml:space="preserve"><value>E&amp;xtras</value></data>
+  <data name="Im &amp;Bildbetrachter öffnen" xml:space="preserve"><value>Im &amp;Bildbetrachter öffnen</value></data>
+  <data name="&amp;Drucker:" xml:space="preserve"><value>&amp;Drucker:</value></data>
+  <data name="letzten Schritt rückgängig machen" xml:space="preserve"><value>letzten Schritt rückgängig machen</value></data>
 </root>
