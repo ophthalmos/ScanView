@@ -66,7 +66,7 @@ namespace ScanView.Forms
             // 
             // btnSuggest
             // 
-            btnSuggest.Location = new Point(242, 22);
+            btnSuggest.Location = new Point(242, 21);
             btnSuggest.Name = "btnSuggest";
             btnSuggest.Size = new Size(92, 25);
             btnSuggest.TabIndex = 2;
@@ -89,6 +89,7 @@ namespace ScanView.Forms
             textName.Name = "textName";
             textName.Size = new Size(126, 23);
             textName.TabIndex = 1;
+            textName.TextChanged += TextName_TextChanged;
             textName.Enter += TextName_Enter;
             textName.Leave += TextName_Leave;
             // 
