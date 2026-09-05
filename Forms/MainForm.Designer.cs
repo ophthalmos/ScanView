@@ -52,6 +52,8 @@
             menuActionSeparator = new ToolStripSeparator();
             menuActionClose = new ToolStripMenuItem();
             menuEdit = new ToolStripMenuItem();
+            menuEditUndo = new ToolStripMenuItem();
+            menuEditSeparator0 = new ToolStripSeparator();
             menuEditCut = new ToolStripMenuItem();
             menuEditCopy = new ToolStripMenuItem();
             menuEditPaste = new ToolStripMenuItem();
@@ -318,13 +320,28 @@
             // 
             // menuEdit
             // 
-            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
+            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditUndo, menuEditSeparator0, menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
             menuEdit.Name = "menuEdit";
             menuEdit.Size = new Size(75, 20);
             menuEdit.Text = "&Bearbeiten";
-            // 
+            //
+            // menuEditUndo
+            //
+            menuEditUndo.Enabled = false;
+            menuEditUndo.Name = "menuEditUndo";
+            menuEditUndo.ShortcutKeyDisplayString = "Strg+Z";
+            menuEditUndo.ShortcutKeys = Keys.Control | Keys.Z;
+            menuEditUndo.Size = new Size(260, 22);
+            menuEditUndo.Text = "&Rückgängig";
+            menuEditUndo.Click += MenuEditUndo_Click;
+            //
+            // menuEditSeparator0
+            //
+            menuEditSeparator0.Name = "menuEditSeparator0";
+            menuEditSeparator0.Size = new Size(257, 6);
+            //
             // menuEditCut
-            // 
+            //
             menuEditCut.Enabled = false;
             menuEditCut.Name = "menuEditCut";
             menuEditCut.ShortcutKeyDisplayString = "Strg+X";
@@ -1170,6 +1187,8 @@
         private System.Windows.Forms.ToolStripSeparator menuActionSeparator;
         private System.Windows.Forms.ToolStripMenuItem menuActionClose;
         private System.Windows.Forms.ToolStripMenuItem menuEdit;
+        private System.Windows.Forms.ToolStripMenuItem menuEditUndo;
+        private System.Windows.Forms.ToolStripSeparator menuEditSeparator0;
         private System.Windows.Forms.ToolStripMenuItem menuEditCut;
         private System.Windows.Forms.ToolStripMenuItem menuEditCopy;
         private System.Windows.Forms.ToolStripMenuItem menuEditPaste;

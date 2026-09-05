@@ -328,4 +328,20 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Mindestens eine Zieldatei existiert bereits." xml:space="preserve"><value>Mindestens eine Zieldatei existiert bereits.</value></data>
   <data name="Sollen die vorhandenen Dateien ersetzt werden?" xml:space="preserve"><value>Sollen die vorhandenen Dateien ersetzt werden?</value></data>
   <data name="{0} Seiten als einzelne Bilddateien gespeichert in {1}" xml:space="preserve"><value>{0} Seiten als einzelne Bilddateien gespeichert in {1}</value></data>
+  <data name="Strg+Z" xml:space="preserve"><value>Strg+Z</value></data>
+  <data name="&amp;Rückgängig" xml:space="preserve"><value>&amp;Rückgängig</value></data>
+  <data name="&amp;Rückgängig: {0}" xml:space="preserve"><value>&amp;Rückgängig: {0}</value></data>
+  <data name="Rückgängig gemacht: {0}" xml:space="preserve"><value>Rückgängig gemacht: {0}</value></data>
+  <data name="Seite entfernt" xml:space="preserve"><value>Seite entfernt</value></data>
+  <data name="Übersicht geleert" xml:space="preserve"><value>Übersicht geleert</value></data>
+  <data name="Seite gedreht" xml:space="preserve"><value>Seite gedreht</value></data>
+  <data name="Seite bearbeitet" xml:space="preserve"><value>Seite bearbeitet</value></data>
+  <data name="Seite gescannt" xml:space="preserve"><value>Seite gescannt</value></data>
+  <data name="Seite(n) importiert" xml:space="preserve"><value>Seite(n) importiert</value></data>
+  <data name="Seite eingefügt" xml:space="preserve"><value>Seite eingefügt</value></data>
+  <data name="Als neue Seite gespeichert" xml:space="preserve"><value>Als neue Seite gespeichert</value></data>
+  <data name="Seite verschoben" xml:space="preserve"><value>Seite verschoben</value></data>
+  <data name="Reihenfolge geändert" xml:space="preserve"><value>Reihenfolge geändert</value></data>
+  <data name="Sortierung umgekehrt" xml:space="preserve"><value>Sortierung umgekehrt</value></data>
+  <data name="Rückseiten einsortiert" xml:space="preserve"><value>Rückseiten einsortiert</value></data>
 </root>

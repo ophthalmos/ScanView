@@ -190,6 +190,7 @@ public partial class MainForm : Form, IMessageFilter
         menuActionSave.Image = Icon16(ToolbarIcons.Save);
         menuActionPrint.Image = Icon16(ToolbarIcons.Print);
         menuActionClose.Image = Icon16(ToolbarIcons.Power);
+        menuEditUndo.Image = Icon16(ToolbarIcons.Undo);
         menuEditCut.Image = Icon16(ToolbarIcons.Cut);
         menuEditCopy.Image = Icon16(ToolbarIcons.Copy);
         menuEditPaste.Image = Icon16(ToolbarIcons.Paste);
@@ -483,6 +484,7 @@ public partial class MainForm : Form, IMessageFilter
         }
         if (panelCopyMode.Visible) { PrintCopy(scanned); return; } // Kopiermodus: direkt drucken statt sammeln
         AddPage(scanned);
+        PushUndo(Lng.T("Seite gescannt"), () => RemovePageByPath(scanned));
     }
 
     // ------------------------------------------------------------------ Kopiermodus
@@ -731,6 +733,7 @@ public partial class MainForm : Form, IMessageFilter
             Title = Lng.T("Bilder importieren"),
         };
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        List<string> imported = []; // der ganze Import ist EIN Rückgängig-Schritt
         foreach (var file in dialog.FileNames)
         {
             var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(file).ToLowerInvariant()}");
@@ -744,12 +747,116 @@ public partial class MainForm : Form, IMessageFilter
                 continue;
             }
             AddPage(copy);
+            imported.Add(copy);
+        }
+        if (imported.Count > 0)
+        {
+            PushUndo(Lng.T("Seite(n) importiert"), () => { foreach (var copy in imported) { RemovePageByPath(copy); } });
         }
     }
 
     private void MenuClose_Click(object sender, EventArgs e)
     {
         Close();
+    }
+
+    // ------------------------------------------------------------------ Rückgängig (Strg+Z)
+
+    private readonly List<(string Text, Action Revert)> undoStack = []; // [^1] = jüngster Schritt
+    private int undoFileCounter; // eindeutige Namen für Sicherungskopien überschriebener Seiten
+    private const int UndoLimit = 20;
+
+    /// <summary>Merkt einen Rückgängig-Schritt (LIFO, gedeckelt) — der Menüeintrag nennt ihn beim Namen.</summary>
+    private void PushUndo(string text, Action revert)
+    {
+        undoStack.Add((text, revert));
+        if (undoStack.Count > UndoLimit) { undoStack.RemoveAt(0); } // verwaiste .bak-Dateien räumt das Beenden auf
+        UpdateUndoUi();
+    }
+
+    private void MenuEditUndo_Click(object sender, EventArgs e)
+    {
+        if (undoStack.Count == 0 || panelCopyMode.Visible) { return; }
+        var (text, revert) = undoStack[^1];
+        undoStack.RemoveAt(undoStack.Count - 1);
+        revert();
+        statusLabel.Text = string.Format(Lng.T("Rückgängig gemacht: {0}"), text);
+        UpdateUndoUi();
+    }
+
+    /// <summary>Der Menüeintrag nennt den nächsten Rückgängig-Schritt beim Namen (oder ist gegraut).</summary>
+    private void UpdateUndoUi()
+    {
+        menuEditUndo.Enabled = !panelCopyMode.Visible && undoStack.Count > 0;
+        menuEditUndo.Text = undoStack.Count > 0
+            ? string.Format(Lng.T("&Rückgängig: {0}"), undoStack[^1].Text)
+            : Lng.T("&Rückgängig");
+    }
+
+    private List<string> CurrentPageOrder() => [.. flowPanel.Controls.Cast<Panel>().Select(t => (string)t.Tag)];
+
+    /// <summary>Merkt die aktuelle Seitenreihenfolge als Rückgängig-Schritt (vor dem Umsortieren aufrufen).</summary>
+    private void PushOrderUndo(string text)
+    {
+        var order = CurrentPageOrder();
+        PushUndo(text, () => RestorePageOrder(order));
+    }
+
+    /// <summary>Stellt eine gemerkte Reihenfolge wieder her — über die Dateipfade, damit auch nach
+    /// zwischenzeitlichem Entfernen und Wiederherstellen die richtigen Kacheln greifen.</summary>
+    private void RestorePageOrder(List<string> order)
+    {
+        var byPath = flowPanel.Controls.Cast<Panel>().ToDictionary(t => (string)t.Tag, StringComparer.OrdinalIgnoreCase);
+        ReorderPages([.. order.Where(byPath.ContainsKey).Select(p => byPath[p])]);
+    }
+
+    /// <summary>Sichert die Seitendatei vor dem Überschreiben (Drehen/Zuschneiden) und merkt das
+    /// Zurückkopieren als Rückgängig-Schritt — verlustfrei auch bei JPEG-Seiten.</summary>
+    private void PushOverwriteUndo(string text, string path)
+    {
+        var backup = Path.Combine(sessionFolder, $"undo_{++undoFileCounter}.bak");
+        try { File.Copy(path, backup, true); }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { return; } // dann eben ohne Undo
+        PushUndo(text, () =>
+        {
+            try
+            {
+                File.Copy(backup, path, true);
+                File.Delete(backup);
+            }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { return; }
+            var thumb = FindThumb(path);
+            if (thumb == null) { return; } // Seite ist gerade entfernt — die Datei selbst ist wiederhergestellt
+            var pic = PicOf(thumb);
+            var old = pic.Image;
+            pic.Image = ScanService.LoadThumbnail(path, ThumbImageWidth);
+            old?.Dispose();
+            UpdateUiState();
+        });
+    }
+
+    private Panel FindThumb(string path) => flowPanel.Controls.Cast<Panel>()
+        .FirstOrDefault(t => string.Equals((string)t.Tag, path, StringComparison.OrdinalIgnoreCase));
+
+    /// <summary>Nimmt eine hinzugekommene Seite wieder aus der Übersicht (die Datei bleibt liegen).</summary>
+    private void RemovePageByPath(string path)
+    {
+        var thumb = FindThumb(path);
+        if (thumb == null) { return; }
+        if (ReferenceEquals(selected, thumb)) { Select(null); }
+        flowPanel.Controls.Remove(thumb);
+        PicOf(thumb).Image?.Dispose();
+        thumb.Dispose();
+        UpdateUiState();
+    }
+
+    /// <summary>Fügt eine entfernte Seite an ihrer alten Position wieder ein.</summary>
+    private void RestorePage(string path, int index)
+    {
+        if (!File.Exists(path)) { return; } // Dateien bleiben bis zum Beenden liegen — nur zur Sicherheit
+        AddPage(path);
+        flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], Math.Min(index, flowPanel.Controls.Count - 1));
+        UpdateUiState();
     }
 
     // ------------------------------------------------------------------ Menü „Bearbeiten"
@@ -777,6 +884,7 @@ public partial class MainForm : Form, IMessageFilter
         File.Copy(clipboardPath, copy);
         AddPage(copy);
         flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt);
+        PushUndo(Lng.T("Seite eingefügt"), () => RemovePageByPath(copy));
         UpdateUiState();
     }
 
@@ -818,6 +926,7 @@ public partial class MainForm : Form, IMessageFilter
     {
         if (selected == null) { return; }
         var path = (string)selected.Tag;
+        PushOverwriteUndo(Lng.T("Seite gedreht"), path);
         using (var image = ScanService.LoadUnlocked(path))
         {
             image.RotateFlip(rotation);
@@ -843,6 +952,7 @@ public partial class MainForm : Form, IMessageFilter
         settings.CropWidth = bounds.Width;
         settings.CropHeight = bounds.Height;
         if (result != DialogResult.OK || !dialog.Edited) { return; }
+        PushOverwriteUndo(Lng.T("Seite bearbeitet"), path);
         dialog.ResultImage.Save(path, ImageFormatFor(path));
         if (!ReferenceEquals(selected, sourceThumb)) { Select(sourceThumb); } // „Als neue Seite" hat inzwischen umgekehrt markiert
         ReloadSelectedThumbnail();
@@ -857,6 +967,7 @@ public partial class MainForm : Form, IMessageFilter
             cropResult.Save(copy, ImageFormatFor(copy));
             AddPage(copy);
             flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt);
+            PushUndo(Lng.T("Als neue Seite gespeichert"), () => RemovePageByPath(copy));
             UpdateUiState();
             statusLabel.Text = string.Format(Lng.T("Als neue Seite gespeichert ({0} × {1} Pixel)"), cropResult.Width, cropResult.Height);
         }
@@ -874,10 +985,15 @@ public partial class MainForm : Form, IMessageFilter
             order.Add(panels[i]);
             order.Add(panels[panels.Count - 1 - i]);
         }
+        PushOrderUndo(Lng.T("Rückseiten einsortiert"));
         ReorderPages(order);
     }
 
-    private void MenuEditReverse_Click(object sender, EventArgs e) => ReorderPages([.. flowPanel.Controls.Cast<Panel>().Reverse()]);
+    private void MenuEditReverse_Click(object sender, EventArgs e)
+    {
+        PushOrderUndo(Lng.T("Sortierung umgekehrt"));
+        ReorderPages([.. flowPanel.Controls.Cast<Panel>().Reverse()]);
+    }
 
     private void ReorderPages(List<Panel> order)
     {
@@ -1038,7 +1154,12 @@ public partial class MainForm : Form, IMessageFilter
                 return;
             }
             Select(thumb);
+            var orderBefore = CurrentPageOrder(); // DoDragDrop blockiert bis zum Loslassen
             pic.DoDragDrop(thumb, DragDropEffects.Move);
+            if (!orderBefore.SequenceEqual(CurrentPageOrder()))
+            {
+                PushUndo(Lng.T("Reihenfolge geändert"), () => RestorePageOrder(orderBefore));
+            }
             UpdateUiState();
         };
         flowPanel.Controls.Add(thumb);
@@ -1151,6 +1272,7 @@ public partial class MainForm : Form, IMessageFilter
         menuViewFitPage.Enabled = pagesVisible;
         menuViewTwoPages.Enabled = pagesVisible;
         menuViewIcons.Enabled = pagesVisible;
+        UpdateUndoUi(); // Rückgängig ist im Kopiermodus gesperrt
         menuEditCut.Enabled = pagesVisible && selected != null;
         menuEditCopy.Enabled = pagesVisible && selected != null;
         menuEditPaste.Enabled = pagesVisible && clipboardPath != null;
@@ -1235,6 +1357,7 @@ public partial class MainForm : Form, IMessageFilter
         if (selected == null) { return; }
         var index = flowPanel.Controls.GetChildIndex(selected) + delta;
         if (index < 0 || index >= flowPanel.Controls.Count) { return; }
+        PushOrderUndo(Lng.T("Seite verschoben"));
         flowPanel.Controls.SetChildIndex(selected, index);
         UpdateUiState();
     }
@@ -1244,6 +1367,8 @@ public partial class MainForm : Form, IMessageFilter
         if (selected == null) { return; }
         var box = selected;
         var index = flowPanel.Controls.GetChildIndex(box); // die nachrückende Seite übernimmt die Markierung
+        var removedPath = (string)box.Tag;
+        PushUndo(Lng.T("Seite entfernt"), () => RestorePage(removedPath, index)); // die Datei bleibt bis zum Beenden liegen
         Select(null);
         flowPanel.Controls.Remove(box);
         PicOf(box).Image?.Dispose();
@@ -1261,6 +1386,15 @@ public partial class MainForm : Form, IMessageFilter
             Lng.T("Die gescannten Seiten dieser Sitzung gehen verloren."), TaskDialogIcon.ShieldWarningYellowBar, defaultNo: true))
         {
             return;
+        }
+        var cleared = CurrentPageOrder();
+        if (cleared.Count > 0)
+        {
+            PushUndo(Lng.T("Übersicht geleert"), () =>
+            {
+                foreach (var path in cleared.Where(File.Exists)) { AddPage(path); }
+                UpdateUiState();
+            });
         }
         Select(null);
         foreach (var box in flowPanel.Controls.Cast<Panel>().ToList())

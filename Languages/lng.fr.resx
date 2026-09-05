@@ -328,4 +328,20 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Mindestens eine Zieldatei existiert bereits." xml:space="preserve"><value>Au moins un fichier cible existe déjà.</value></data>
   <data name="Sollen die vorhandenen Dateien ersetzt werden?" xml:space="preserve"><value>Remplacer les fichiers existants ?</value></data>
   <data name="{0} Seiten als einzelne Bilddateien gespeichert in {1}" xml:space="preserve"><value>{0} pages enregistrées en fichiers image individuels dans {1}</value></data>
+  <data name="Strg+Z" xml:space="preserve"><value>Ctrl+Z</value></data>
+  <data name="&amp;Rückgängig" xml:space="preserve"><value>Annu&amp;ler</value></data>
+  <data name="&amp;Rückgängig: {0}" xml:space="preserve"><value>Annu&amp;ler : {0}</value></data>
+  <data name="Rückgängig gemacht: {0}" xml:space="preserve"><value>Annulé : {0}</value></data>
+  <data name="Seite entfernt" xml:space="preserve"><value>Page retirée</value></data>
+  <data name="Übersicht geleert" xml:space="preserve"><value>Aperçu vidé</value></data>
+  <data name="Seite gedreht" xml:space="preserve"><value>Page pivotée</value></data>
+  <data name="Seite bearbeitet" xml:space="preserve"><value>Page modifiée</value></data>
+  <data name="Seite gescannt" xml:space="preserve"><value>Page numérisée</value></data>
+  <data name="Seite(n) importiert" xml:space="preserve"><value>Page(s) importée(s)</value></data>
+  <data name="Seite eingefügt" xml:space="preserve"><value>Page collée</value></data>
+  <data name="Als neue Seite gespeichert" xml:space="preserve"><value>Enregistré comme nouvelle page</value></data>
+  <data name="Seite verschoben" xml:space="preserve"><value>Page déplacée</value></data>
+  <data name="Reihenfolge geändert" xml:space="preserve"><value>Ordre modifié</value></data>
+  <data name="Sortierung umgekehrt" xml:space="preserve"><value>Ordre inversé</value></data>
+  <data name="Rückseiten einsortiert" xml:space="preserve"><value>Versos intercalés</value></data>
 </root>

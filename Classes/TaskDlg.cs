@@ -180,6 +180,7 @@ internal static class TaskDlg
         ("Strg+S", "durchsuchbare PDF speichern (mit Texterkennung)", null),
         ("Strg+U", "Sortierung umkehren", null),
         ("Strg+X / C / V", "Seite ausschneiden / kopieren / einfügen", null),
+        ("Strg+Z", "letzten Schritt rückgängig machen", null),
         ("Strg++ / Strg+−", "Miniaturen vergrößern / verkleinern", null),
         ("Strg+,", "Optionen öffnen", null),
         ("Strg+Mausrad", "Miniaturen vergrößern / verkleinern", null),
