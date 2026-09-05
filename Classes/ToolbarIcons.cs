@@ -23,6 +23,7 @@ internal static class ToolbarIcons
     public const char Page = '';        // Neue Seite
 
     public const char Import = '';
+    public const char Undo = '';       // Rückgängig
     public const char Power = '';      // Schließen
     public const char Cut = '';
     public const char Copy = '';

@@ -328,4 +328,20 @@ Grayscale scans save additional space.</value></data>
   <data name="Mindestens eine Zieldatei existiert bereits." xml:space="preserve"><value>At least one target file already exists.</value></data>
   <data name="Sollen die vorhandenen Dateien ersetzt werden?" xml:space="preserve"><value>Replace the existing files?</value></data>
   <data name="{0} Seiten als einzelne Bilddateien gespeichert in {1}" xml:space="preserve"><value>{0} pages saved as individual image files in {1}</value></data>
+  <data name="Strg+Z" xml:space="preserve"><value>Ctrl+Z</value></data>
+  <data name="&amp;Rückgängig" xml:space="preserve"><value>&amp;Undo</value></data>
+  <data name="&amp;Rückgängig: {0}" xml:space="preserve"><value>&amp;Undo: {0}</value></data>
+  <data name="Rückgängig gemacht: {0}" xml:space="preserve"><value>Undone: {0}</value></data>
+  <data name="Seite entfernt" xml:space="preserve"><value>Page removed</value></data>
+  <data name="Übersicht geleert" xml:space="preserve"><value>Overview cleared</value></data>
+  <data name="Seite gedreht" xml:space="preserve"><value>Page rotated</value></data>
+  <data name="Seite bearbeitet" xml:space="preserve"><value>Page edited</value></data>
+  <data name="Seite gescannt" xml:space="preserve"><value>Page scanned</value></data>
+  <data name="Seite(n) importiert" xml:space="preserve"><value>Page(s) imported</value></data>
+  <data name="Seite eingefügt" xml:space="preserve"><value>Page pasted</value></data>
+  <data name="Als neue Seite gespeichert" xml:space="preserve"><value>Saved as a new page</value></data>
+  <data name="Seite verschoben" xml:space="preserve"><value>Page moved</value></data>
+  <data name="Reihenfolge geändert" xml:space="preserve"><value>Order changed</value></data>
+  <data name="Sortierung umgekehrt" xml:space="preserve"><value>Order reversed</value></data>
+  <data name="Rückseiten einsortiert" xml:space="preserve"><value>Back sides interleaved</value></data>
 </root>
