@@ -325,4 +325,7 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Als neue Seite gespeichert ({0} × {1} Pixel)</value></data>
   <data name="Als neue Seite gespeichert — das Original ist wieder da" xml:space="preserve"><value>Als neue Seite gespeichert — das Original ist wieder da</value></data>
   <data name="&amp;Vorschlagen" xml:space="preserve"><value>&amp;Vorschlagen</value></data>
+  <data name="Mindestens eine Zieldatei existiert bereits." xml:space="preserve"><value>Mindestens eine Zieldatei existiert bereits.</value></data>
+  <data name="Sollen die vorhandenen Dateien ersetzt werden?" xml:space="preserve"><value>Sollen die vorhandenen Dateien ersetzt werden?</value></data>
+  <data name="{0} Seiten als einzelne JPEG-Dateien gespeichert in {1}" xml:space="preserve"><value>{0} Seiten als einzelne JPEG-Dateien gespeichert in {1}</value></data>
 </root>

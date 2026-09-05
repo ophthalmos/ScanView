@@ -8,9 +8,9 @@ internal enum SaveFileType { Pdf, PdfA, Jpeg, Png, Tiff }
 /// <summary>Speichern-Dialog: Seitenauswahl, Dateiname und Ordner, Dateityp (PDF, PDF/A, JPEG,
 /// PNG, TIFF), Texterkennung samt JPEG-Qualität und die PDF-Metadaten. Texterkennung gibt es nur
 /// in der normalen PDF — PDF/A ist bewusst eine reine Bild-PDF, weil nur so echte Konformität
-/// erreichbar ist (s. PdfAHelper); Metadaten tragen PDF und PDF/A. JPEG und PNG kennen keine
-/// Seiten und gelten darum nur für die markierte Seite (die Auswahl springt beim Wählen um),
-/// TIFF speichert „Alle Seiten" als mehrseitige Datei.</summary>
+/// erreichbar ist (s. PdfAHelper); Metadaten tragen PDF und PDF/A. PNG kennt keine Seiten und
+/// gilt darum nur für die markierte Seite (die Auswahl springt beim Wählen um); JPEG speichert
+/// bei „Alle Seiten" nummerierte Einzeldateien (Foto-Workflow), TIFF eine mehrseitige Datei.</summary>
 internal sealed partial class SaveForm : Form
 {
     public bool AllPages => radioAll.Checked;
@@ -65,14 +65,15 @@ internal sealed partial class SaveForm : Form
     }
 
     /// <summary>Nur die normale PDF trägt eine Textschicht (PDF/A ist eine reine Bild-PDF);
-    /// Metadaten gibt es in PDF und PDF/A. JPEG und PNG brauchen die markierte Seite
-    /// (eine Bilddatei kennt keine Seiten), die JPEG-Qualität zählt nicht für PNG und TIFF.</summary>
+    /// Metadaten gibt es in PDF und PDF/A. PNG braucht die markierte Seite (eine Bilddatei kennt
+    /// keine Seiten); JPEG darf auch „Alle Seiten" — dann entstehen nummerierte Einzeldateien.
+    /// Die JPEG-Qualität zählt nicht für PNG und TIFF.</summary>
     private void ComboFileType_SelectedIndexChanged(object sender, EventArgs e)
     {
-        var singlePageOnly = FileType is SaveFileType.Jpeg or SaveFileType.Png;
+        var singlePageOnly = FileType == SaveFileType.Png;
         if (singlePageOnly)
         {
-            if (!hasSelection) { comboFileType.SelectedIndex = 0; return; } // ohne markierte Seite kein JPEG/PNG
+            if (!hasSelection) { comboFileType.SelectedIndex = 0; return; } // ohne markierte Seite kein PNG
             radioSelected.Checked = true;
         }
         radioAll.Enabled = !singlePageOnly;

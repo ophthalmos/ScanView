@@ -325,4 +325,7 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Guardado como página nueva ({0} × {1} píxeles)</value></data>
   <data name="Als neue Seite gespeichert — das Original ist wieder da" xml:space="preserve"><value>Guardado como página nueva — el original está de vuelta</value></data>
   <data name="&amp;Vorschlagen" xml:space="preserve"><value>S&amp;ugerir</value></data>
+  <data name="Mindestens eine Zieldatei existiert bereits." xml:space="preserve"><value>Al menos un archivo de destino ya existe.</value></data>
+  <data name="Sollen die vorhandenen Dateien ersetzt werden?" xml:space="preserve"><value>¿Reemplazar los archivos existentes?</value></data>
+  <data name="{0} Seiten als einzelne JPEG-Dateien gespeichert in {1}" xml:space="preserve"><value>{0} páginas guardadas como archivos JPEG individuales en {1}</value></data>
 </root>
