@@ -8,9 +8,9 @@
     <PlatformTarget>x64</PlatformTarget>
     <ApplicationIcon>ScanView.ico</ApplicationIcon>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
-    <FileVersion>1.0.0</FileVersion>
-    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.1</AssemblyVersion>
+    <FileVersion>1.0.1</FileVersion>
+    <Version>1.0.1</Version>
     <SourceRevisionId>build$([System.DateTime]::UtcNow.ToString("yyyyMMddHHmmss"))</SourceRevisionId>
   </PropertyGroup>
   <ItemGroup>
@@ -28,5 +28,11 @@
       <_X86Native Include="@(None)" Condition="$([System.String]::Copy('%(None.Link)').StartsWith('x86\'))" />
       <None Remove="@(_X86Native)" />
     </ItemGroup>
+  </Target>
+
+  <!-- Übersetzungs-Konsistenz (deutscher Text = resx-Schlüssel): meldet nach jedem Debug-Build
+       fehlende und verwaiste Schlüssel als Warnungen (LNG001/LNG002), s. check-lng.ps1 -->
+  <Target Name="CheckTranslations" AfterTargets="Build" Condition="'$(Configuration)' == 'Debug'">
+    <Exec Command="powershell -NoProfile -ExecutionPolicy Bypass -File &quot;$(MSBuildProjectDirectory)\check-lng.ps1&quot;" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="true" />
   </Target>
 </Project>
