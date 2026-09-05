@@ -1243,10 +1243,15 @@ public partial class MainForm : Form, IMessageFilter
     {
         if (selected == null) { return; }
         var box = selected;
+        var index = flowPanel.Controls.GetChildIndex(box); // die nachrückende Seite übernimmt die Markierung
         Select(null);
         flowPanel.Controls.Remove(box);
         PicOf(box).Image?.Dispose();
         box.Dispose();
+        if (flowPanel.Controls.Count > 0)
+        {
+            Select((Panel)flowPanel.Controls[Math.Min(index, flowPanel.Controls.Count - 1)]); // war es die letzte: die davor
+        }
         UpdateUiState();
     }
 

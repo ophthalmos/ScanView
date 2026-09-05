@@ -177,4 +177,6 @@ internal sealed partial class ProfileForm : Form
         textName.Focus();
         textName.SelectionStart = textName.TextLength; // Cursor ans Ende — Ergänzen sofort möglich
     }
+
+    private void TextName_TextChanged(object sender, EventArgs e) => btnSuggest.Enabled = textName.Text.Length == 0;
 }
