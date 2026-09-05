@@ -1296,14 +1296,14 @@ public partial class MainForm : Form, IMessageFilter
         List<string> files = dialog.AllPages
             ? [.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)]
             : [(string)selected.Tag];
-        // JPEG mit „Alle Seiten": jede Seite wird eine eigene nummerierte Datei (Foto-Workflow)
-        var jpegSeries = dialog.FileType == SaveFileType.Jpeg && files.Count > 1;
-        List<string> targets = jpegSeries
+        // JPEG/PNG mit „Alle Seiten": jede Seite wird eine eigene nummerierte Datei (Foto-Workflow)
+        var imageSeries = dialog.FileType is SaveFileType.Jpeg or SaveFileType.Png && files.Count > 1;
+        List<string> targets = imageSeries
             ? [.. files.Select((_, i) => Path.Combine(dialog.Folder, $"{dialog.FileName}_{i + 1:D3}{extension}"))]
             : [outputPath];
         if (targets.Any(File.Exists) && !TaskDlg.ConfirmTaskDlg(Handle,
-            Lng.T(jpegSeries ? "Mindestens eine Zieldatei existiert bereits." : "Die Datei existiert bereits."),
-            Lng.T(jpegSeries ? "Sollen die vorhandenen Dateien ersetzt werden?" : "Soll die vorhandene Datei ersetzt werden?"),
+            Lng.T(imageSeries ? "Mindestens eine Zieldatei existiert bereits." : "Die Datei existiert bereits."),
+            Lng.T(imageSeries ? "Sollen die vorhandenen Dateien ersetzt werden?" : "Soll die vorhandene Datei ersetzt werden?"),
             TaskDialogIcon.Warning, defaultNo: true))
         {
             return;
@@ -1316,7 +1316,10 @@ public partial class MainForm : Form, IMessageFilter
                 {
                     for (var i = 0; i < files.Count; i++) { ScanService.SaveAsJpeg(files[i], targets[i], dialog.JpgQuality); }
                 }
-                else if (dialog.FileType == SaveFileType.Png) { ScanService.SaveAsPng(files[0], outputPath); }
+                else if (dialog.FileType == SaveFileType.Png)
+                {
+                    for (var i = 0; i < files.Count; i++) { ScanService.SaveAsPng(files[i], targets[i]); }
+                }
                 else { ScanService.SaveAsMultipageTiff(files, outputPath); }
             }
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or System.Runtime.InteropServices.ExternalException)
@@ -1332,12 +1335,12 @@ public partial class MainForm : Form, IMessageFilter
                 dialog.FileType == SaveFileType.PdfA);
             await CreatePdfAsync(files, outputPath, dialog.OcrLanguage, dialog.JpgQuality, meta);
         }
-        statusLabel.Text = jpegSeries
-            ? string.Format(Lng.T("{0} Seiten als einzelne JPEG-Dateien gespeichert in {1}"), files.Count, dialog.Folder)
+        statusLabel.Text = imageSeries
+            ? string.Format(Lng.T("{0} Seiten als einzelne Bilddateien gespeichert in {1}"), files.Count, dialog.Folder)
             : string.Format(Lng.T("Gespeichert: {0}"), outputPath);
-        if (dialog.OpenAfter) // bei der JPEG-Serie öffnet sich der Ordner statt einer Einzeldatei
+        if (dialog.OpenAfter) // bei der Bilddatei-Serie öffnet sich der Ordner statt einer Einzeldatei
         {
-            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(jpegSeries ? dialog.Folder : outputPath) { UseShellExecute = true });
+            System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(imageSeries ? dialog.Folder : outputPath) { UseShellExecute = true });
         }
     }
 
