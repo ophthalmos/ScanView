@@ -325,4 +325,7 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Als neue Seite gespeichert ({0} × {1} Pixel)" xml:space="preserve"><value>Enregistré comme nouvelle page ({0} × {1} pixels)</value></data>
   <data name="Als neue Seite gespeichert — das Original ist wieder da" xml:space="preserve"><value>Enregistré comme nouvelle page — l'original est de retour</value></data>
   <data name="&amp;Vorschlagen" xml:space="preserve"><value>&amp;Proposer</value></data>
+  <data name="Mindestens eine Zieldatei existiert bereits." xml:space="preserve"><value>Au moins un fichier cible existe déjà.</value></data>
+  <data name="Sollen die vorhandenen Dateien ersetzt werden?" xml:space="preserve"><value>Remplacer les fichiers existants ?</value></data>
+  <data name="{0} Seiten als einzelne JPEG-Dateien gespeichert in {1}" xml:space="preserve"><value>{0} pages enregistrées en fichiers JPEG individuels dans {1}</value></data>
 </root>
