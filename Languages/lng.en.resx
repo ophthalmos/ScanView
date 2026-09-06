@@ -353,7 +353,7 @@ Grayscale scans save additional space.</value></data>
   <data name="Im &amp;Bildbetrachter öffnen" xml:space="preserve"><value>Open in image &amp;viewer</value></data>
   <data name="&amp;Drucker:" xml:space="preserve"><value>&amp;Printer:</value></data>
   <data name="letzten Schritt rückgängig machen" xml:space="preserve"><value>undo the last step</value></data>
-  <data name="Grafik auf eine {0}-Seite legen?" xml:space="preserve"><value>Place the graphic on {0} page?</value></data>
+  <data name="Wähle eine der Optionen für den Grafikimport" xml:space="preserve"><value>Choose an option for the graphic import</value></data>
   <data name="Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat." xml:space="preserve"><value>For {0} of {1} files the image size does not match any paper format.</value></data>
   <data name="Auf {0}-Seite einpassen" xml:space="preserve"><value>Fit to {0} page</value></data>
   <data name="Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>White {0} page at 300 dpi, the graphic is centred</value></data>
