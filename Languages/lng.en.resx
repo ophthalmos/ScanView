@@ -358,5 +358,5 @@ Grayscale scans save additional space.</value></data>
   <data name="Auf {0}-Seite einpassen" xml:space="preserve"><value>Fit to {0} page</value></data>
   <data name="Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>White {0} page at 300 dpi, the graphic is centred</value></data>
   <data name="Originalgröße beibehalten" xml:space="preserve"><value>Keep the original size</value></data>
-  <data name="Die PDF-Seite wird nur so groß wie das Bild" xml:space="preserve"><value>The PDF page will only be as large as the image</value></data>
+  <data name="Beim Speichern wird die PDF-Seite nur so groß wie das Bild" xml:space="preserve"><value>When saving, the PDF page will only be as large as the image</value></data>
 </root>
