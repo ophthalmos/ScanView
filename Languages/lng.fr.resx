@@ -353,7 +353,7 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Im &amp;Bildbetrachter öffnen" xml:space="preserve"><value>Ouvrir dans la &amp;visionneuse d'images</value></data>
   <data name="&amp;Drucker:" xml:space="preserve"><value>Im&amp;primante :</value></data>
   <data name="letzten Schritt rückgängig machen" xml:space="preserve"><value>annuler la dernière étape</value></data>
-  <data name="Grafik auf eine {0}-Seite legen?" xml:space="preserve"><value>Placer le graphique sur une page {0} ?</value></data>
+  <data name="Wähle eine der Optionen für den Grafikimport" xml:space="preserve"><value>Choisis une option pour l'importation du graphique</value></data>
   <data name="Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat." xml:space="preserve"><value>Pour {0} des {1} fichiers, la taille de l'image ne correspond à aucun format de papier.</value></data>
   <data name="Auf {0}-Seite einpassen" xml:space="preserve"><value>Ajuster sur une page {0}</value></data>
   <data name="Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>Page {0} blanche à 300 dpi, le graphique est centré</value></data>

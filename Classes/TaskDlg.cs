@@ -58,7 +58,7 @@ internal static class TaskDlg
         TaskDialogPage page = new()
         {
             Caption = Application.ProductName,
-            Heading = string.Format(Lng.T("Grafik auf eine {0}-Seite legen?"), formatName),
+            Heading = Lng.T("Wähle eine der Optionen für den Grafikimport"),
             Text = string.Format(Lng.T("Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat."), offFormatCount, totalCount),
             Icon = icon32 == null ? TaskDialogIcon.None : new TaskDialogIcon(icon32),
             AllowCancel = true,
