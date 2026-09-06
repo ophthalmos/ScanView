@@ -42,15 +42,15 @@
             contextSeparator2 = new ToolStripSeparator();
             contextOpenViewer = new ToolStripMenuItem();
             menuStrip = new MenuStrip();
-            menuAction = new ToolStripMenuItem();
-            menuActionNew = new ToolStripMenuItem();
-            menuActionImport = new ToolStripMenuItem();
-            menuActionScan = new ToolStripMenuItem();
-            menuActionSave = new ToolStripMenuItem();
-            menuActionPrint = new ToolStripMenuItem();
-            menuActionCopyMode = new ToolStripMenuItem();
-            menuActionSeparator = new ToolStripSeparator();
-            menuActionClose = new ToolStripMenuItem();
+            menuFile = new ToolStripMenuItem();
+            menuFileNew = new ToolStripMenuItem();
+            menuFileImport = new ToolStripMenuItem();
+            menuExtrasScan = new ToolStripMenuItem();
+            menuFileSave = new ToolStripMenuItem();
+            menuFilePrint = new ToolStripMenuItem();
+            menuExtrasCopyMode = new ToolStripMenuItem();
+            menuFileSeparator = new ToolStripSeparator();
+            menuFileClose = new ToolStripMenuItem();
             menuEdit = new ToolStripMenuItem();
             menuEditUndo = new ToolStripMenuItem();
             menuEditSeparator0 = new ToolStripSeparator();
@@ -77,6 +77,7 @@
             menuViewSeparator2 = new ToolStripSeparator();
             menuViewFullScreen = new ToolStripMenuItem();
             menuExtras = new ToolStripMenuItem();
+            menuExtrasSeparator = new ToolStripSeparator();
             menuExtrasOptions = new ToolStripMenuItem();
             menuExtrasScanner = new ToolStripMenuItem();
             menuExtrasFax = new ToolStripMenuItem();
@@ -87,6 +88,7 @@
             menuHelpAbout = new ToolStripMenuItem();
             toolStrip = new ToolStrip();
             splitScan = new ToolStripSplitButton();
+            btnImport = new ToolStripButton();
             btnSave = new ToolStripButton();
             btnPrint = new ToolStripButton();
             btnFax = new ToolStripButton();
@@ -237,86 +239,69 @@
             // 
             // menuStrip
             // 
-            menuStrip.Items.AddRange(new ToolStripItem[] { menuAction, menuEdit, menuView, menuExtras, menuHelp });
+            menuStrip.Items.AddRange(new ToolStripItem[] { menuFile, menuEdit, menuView, menuExtras, menuHelp });
             menuStrip.Location = new Point(0, 0);
             menuStrip.Name = "menuStrip";
             menuStrip.ShowItemToolTips = true;
-            menuStrip.Size = new Size(984, 24);
+            menuStrip.Size = new Size(1084, 24);
             menuStrip.TabIndex = 4;
             // 
-            // menuAction
+            // menuFile
             // 
-            menuAction.DropDownItems.AddRange(new ToolStripItem[] { menuActionNew, menuActionImport, menuActionScan, menuActionSave, menuActionPrint, menuActionCopyMode, menuActionSeparator, menuActionClose });
-            menuAction.Name = "menuAction";
-            menuAction.Size = new Size(54, 20);
-            menuAction.Text = "&Aktion";
+            menuFile.DropDownItems.AddRange(new ToolStripItem[] { menuFileNew, menuFileImport, menuFileSave, menuFilePrint, menuFileSeparator, menuFileClose });
+            menuFile.Name = "menuFile";
+            menuFile.Size = new Size(54, 20);
+            menuFile.Text = "&Datei";
             // 
-            // menuActionNew
+            // menuFileNew
             // 
-            menuActionNew.Enabled = false;
-            menuActionNew.Name = "menuActionNew";
-            menuActionNew.ShortcutKeys = Keys.F9;
-            menuActionNew.Size = new Size(187, 22);
-            menuActionNew.Text = "&Neu";
-            menuActionNew.ToolTipText = "Seitenübersicht leeren";
-            menuActionNew.Click += BtnNew_Click;
+            menuFileNew.Enabled = false;
+            menuFileNew.Name = "menuFileNew";
+            menuFileNew.ShortcutKeys = Keys.F9;
+            menuFileNew.Size = new Size(187, 22);
+            menuFileNew.Text = "&Neu";
+            menuFileNew.ToolTipText = "Seitenübersicht leeren";
+            menuFileNew.Click += BtnNew_Click;
             // 
-            // menuActionImport
+            // menuFileImport
             // 
-            menuActionImport.Name = "menuActionImport";
-            menuActionImport.ShortcutKeyDisplayString = "Strg+I";
-            menuActionImport.ShortcutKeys = Keys.Control | Keys.I;
-            menuActionImport.Size = new Size(187, 22);
-            menuActionImport.Text = "&Importieren …";
-            menuActionImport.ToolTipText = "Bilddateien als Seiten in die Übersicht aufnehmen";
-            menuActionImport.Click += MenuImport_Click;
+            menuFileImport.Name = "menuFileImport";
+            menuFileImport.ShortcutKeyDisplayString = "Strg+I";
+            menuFileImport.ShortcutKeys = Keys.Control | Keys.I;
+            menuFileImport.Size = new Size(187, 22);
+            menuFileImport.Text = "&Importieren …";
+            menuFileImport.ToolTipText = "Bilddateien als Seiten in die Übersicht aufnehmen";
+            menuFileImport.Click += MenuImport_Click;
             // 
-            // menuActionScan
+            // menuFileSave
             // 
-            menuActionScan.Name = "menuActionScan";
-            menuActionScan.ShortcutKeys = Keys.F4;
-            menuActionScan.Size = new Size(187, 22);
-            menuActionScan.Text = "&Scannen";
-            menuActionScan.Click += SplitScan_ButtonClick;
+            menuFileSave.Enabled = false;
+            menuFileSave.Name = "menuFileSave";
+            menuFileSave.ShortcutKeys = Keys.Control | Keys.S;
+            menuFileSave.Size = new Size(187, 22);
+            menuFileSave.Text = "S&peichern …";
+            menuFileSave.Click += BtnSave_Click;
             // 
-            // menuActionSave
+            // menuFilePrint
             // 
-            menuActionSave.Enabled = false;
-            menuActionSave.Name = "menuActionSave";
-            menuActionSave.ShortcutKeys = Keys.Control | Keys.S;
-            menuActionSave.Size = new Size(187, 22);
-            menuActionSave.Text = "S&peichern …";
-            menuActionSave.Click += BtnSave_Click;
+            menuFilePrint.Enabled = false;
+            menuFilePrint.Name = "menuFilePrint";
+            menuFilePrint.ShortcutKeys = Keys.F6;
+            menuFilePrint.Size = new Size(187, 22);
+            menuFilePrint.Text = "&Drucken …";
+            menuFilePrint.Click += BtnPrint_Click;
             // 
-            // menuActionPrint
+            // menuFileSeparator
             // 
-            menuActionPrint.Enabled = false;
-            menuActionPrint.Name = "menuActionPrint";
-            menuActionPrint.ShortcutKeys = Keys.F6;
-            menuActionPrint.Size = new Size(187, 22);
-            menuActionPrint.Text = "&Drucken …";
-            menuActionPrint.Click += BtnPrint_Click;
+            menuFileSeparator.Name = "menuFileSeparator";
+            menuFileSeparator.Size = new Size(184, 6);
             // 
-            // menuActionCopyMode
+            // menuFileClose
             // 
-            menuActionCopyMode.Name = "menuActionCopyMode";
-            menuActionCopyMode.ShortcutKeys = Keys.F7;
-            menuActionCopyMode.Size = new Size(187, 22);
-            menuActionCopyMode.Text = "Kopier&modus";
-            menuActionCopyMode.ToolTipText = "Scans direkt drucken — der Scanner wird zum Kopierer";
-            menuActionCopyMode.Click += BtnCopyMode_Click;
-            // 
-            // menuActionSeparator
-            // 
-            menuActionSeparator.Name = "menuActionSeparator";
-            menuActionSeparator.Size = new Size(184, 6);
-            // 
-            // menuActionClose
-            // 
-            menuActionClose.Name = "menuActionClose";
-            menuActionClose.Size = new Size(187, 22);
-            menuActionClose.Text = "Schließen";
-            menuActionClose.Click += MenuClose_Click;
+            menuFileClose.Name = "menuFileClose";
+            menuFileClose.Size = new Size(187, 22);
+            menuFileClose.Text = "Schließen";
+            menuFileClose.Click += MenuClose_Click;
             // 
             // menuEdit
             // 
@@ -531,10 +516,32 @@
             // 
             // menuExtras
             // 
-            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasOptions, menuExtrasScanner, menuExtrasFax });
+            menuExtras.DropDownItems.AddRange(new ToolStripItem[] { menuExtrasScan, menuExtrasCopyMode, menuExtrasSeparator, menuExtrasOptions, menuExtrasScanner, menuExtrasFax });
             menuExtras.Name = "menuExtras";
             menuExtras.Size = new Size(49, 20);
             menuExtras.Text = "E&xtras";
+            // 
+            // menuExtrasScan
+            // 
+            menuExtrasScan.Name = "menuExtrasScan";
+            menuExtrasScan.ShortcutKeys = Keys.F4;
+            menuExtrasScan.Size = new Size(187, 22);
+            menuExtrasScan.Text = "&Scannen";
+            menuExtrasScan.Click += SplitScan_ButtonClick;
+            // 
+            // menuExtrasCopyMode
+            // 
+            menuExtrasCopyMode.Name = "menuExtrasCopyMode";
+            menuExtrasCopyMode.ShortcutKeys = Keys.F7;
+            menuExtrasCopyMode.Size = new Size(187, 22);
+            menuExtrasCopyMode.Text = "Kopier&modus";
+            menuExtrasCopyMode.ToolTipText = "Scans direkt drucken — der Scanner wird zum Kopierer";
+            menuExtrasCopyMode.Click += BtnCopyMode_Click;
+            // 
+            // menuExtrasSeparator
+            // 
+            menuExtrasSeparator.Name = "menuExtrasSeparator";
+            menuExtrasSeparator.Size = new Size(172, 6);
             // 
             // menuExtrasOptions
             // 
@@ -600,11 +607,11 @@
             // 
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnSave, btnPrint, btnFax, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnImport, btnSave, btnPrint, btnFax, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
-            toolStrip.Size = new Size(984, 60);
+            toolStrip.Size = new Size(1084, 60);
             toolStrip.TabIndex = 0;
             toolStrip.Paint += ToolStrip_Paint;
             // 
@@ -620,12 +627,22 @@
             splitScan.ButtonClick += SplitScan_ButtonClick;
             splitScan.DropDownOpening += SplitScan_DropDownOpening;
             // 
+            // btnImport
+            // 
+            btnImport.AutoSize = false;
+            btnImport.DisplayStyle = ToolStripItemDisplayStyle.Text;
+            btnImport.Margin = new Padding(8, 1, 0, 2);
+            btnImport.Name = "btnImport";
+            btnImport.Size = new Size(110, 57);
+            btnImport.Text = "&Importieren";
+            btnImport.ToolTipText = "Bilddateien als Seiten in die Übersicht aufnehmen (Strg+I)";
+            btnImport.Click += MenuImport_Click;
+            // 
             // btnSave
             // 
             btnSave.AutoSize = false;
             btnSave.DisplayStyle = ToolStripItemDisplayStyle.Text;
             btnSave.Enabled = false;
-            btnSave.Margin = new Padding(8, 1, 0, 2);
             btnSave.Name = "btnSave";
             btnSave.Size = new Size(90, 57);
             btnSave.Text = "S&peichern";
@@ -1090,7 +1107,7 @@
             statusStrip.Items.AddRange(new ToolStripItem[] { statusPages, statusSize, statusLabel, statusScanner });
             statusStrip.Location = new Point(0, 437);
             statusStrip.Name = "statusStrip";
-            statusStrip.Size = new Size(984, 24);
+            statusStrip.Size = new Size(1084, 24);
             statusStrip.TabIndex = 3;
             // 
             // statusPages
@@ -1130,7 +1147,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(984, 461);
+            ClientSize = new Size(1084, 461);
             Controls.Add(flowPanel);
             Controls.Add(panelCopyMode);
             Controls.Add(panelSettings);
@@ -1177,15 +1194,15 @@
         private System.Windows.Forms.ToolStripMenuItem contextDelete;
         private System.Windows.Forms.ToolStripSeparator contextSeparator2;
         private System.Windows.Forms.ToolStripMenuItem contextOpenViewer;
-        private System.Windows.Forms.ToolStripMenuItem menuAction;
-        private System.Windows.Forms.ToolStripMenuItem menuActionNew;
-        private System.Windows.Forms.ToolStripMenuItem menuActionImport;
-        private System.Windows.Forms.ToolStripMenuItem menuActionScan;
-        private System.Windows.Forms.ToolStripMenuItem menuActionSave;
-        private System.Windows.Forms.ToolStripMenuItem menuActionPrint;
-        private System.Windows.Forms.ToolStripMenuItem menuActionCopyMode;
-        private System.Windows.Forms.ToolStripSeparator menuActionSeparator;
-        private System.Windows.Forms.ToolStripMenuItem menuActionClose;
+        private System.Windows.Forms.ToolStripMenuItem menuFile;
+        private System.Windows.Forms.ToolStripMenuItem menuFileNew;
+        private System.Windows.Forms.ToolStripMenuItem menuFileImport;
+        private System.Windows.Forms.ToolStripMenuItem menuExtrasScan;
+        private System.Windows.Forms.ToolStripMenuItem menuFileSave;
+        private System.Windows.Forms.ToolStripMenuItem menuFilePrint;
+        private System.Windows.Forms.ToolStripMenuItem menuExtrasCopyMode;
+        private System.Windows.Forms.ToolStripSeparator menuFileSeparator;
+        private System.Windows.Forms.ToolStripMenuItem menuFileClose;
         private System.Windows.Forms.ToolStripMenuItem menuEdit;
         private System.Windows.Forms.ToolStripMenuItem menuEditUndo;
         private System.Windows.Forms.ToolStripSeparator menuEditSeparator0;
@@ -1213,6 +1230,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuViewFullScreen;
         private System.Windows.Forms.ToolStripMenuItem menuExtras;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasScanner;
+        private System.Windows.Forms.ToolStripSeparator menuExtrasSeparator;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasOptions;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasFax;
         private System.Windows.Forms.ToolStripMenuItem menuHelp;
@@ -1222,6 +1240,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuHelpAbout;
         private System.Windows.Forms.ToolStrip toolStrip;
         private System.Windows.Forms.ToolStripSplitButton splitScan;
+        private System.Windows.Forms.ToolStripButton btnImport;
         private System.Windows.Forms.ToolStripButton btnSave;
         private System.Windows.Forms.ToolStripButton btnPrint;
         private System.Windows.Forms.ToolStripButton btnNew;
