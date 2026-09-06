@@ -354,9 +354,9 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="&amp;Drucker:" xml:space="preserve"><value>Im&amp;presora:</value></data>
   <data name="letzten Schritt rückgängig machen" xml:space="preserve"><value>deshacer el último paso</value></data>
   <data name="Grafik auf eine A4-Seite legen?" xml:space="preserve"><value>¿Colocar el gráfico en una página A4?</value></data>
-  <data name="Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat, z. B. bei einer kleinen Grafik oder einem Screenshot." xml:space="preserve"><value>En {0} de {1} archivos el tamaño de la imagen no corresponde a ningún formato de papel, p. ej. un gráfico pequeño o una captura de pantalla.</value></data>
+  <data name="Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat." xml:space="preserve"><value>En {0} de {1} archivos el tamaño de la imagen no corresponde a ningún formato de papel.</value></data>
   <data name="Auf A4-Seite einpassen" xml:space="preserve"><value>Ajustar a una página A4</value></data>
-  <data name="Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert mit Rand eingepasst" xml:space="preserve"><value>Página A4 blanca a 300 dpi, el gráfico se centra con margen</value></data>
+  <data name="Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>Página A4 blanca a 300 dpi, el gráfico se centra</value></data>
   <data name="Originalgröße beibehalten" xml:space="preserve"><value>Mantener el tamaño original</value></data>
   <data name="Die PDF-Seite wird nur so groß wie das Bild" xml:space="preserve"><value>La página PDF solo tendrá el tamaño de la imagen</value></data>
 </root>

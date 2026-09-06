@@ -750,7 +750,7 @@ public partial class MainForm : Form, IMessageFilter
         var fitToPage = false;
         if (offFormat.Count > 0)
         {
-            var answer = TaskDlg.FitToPageTaskDlg(Handle, offFormat.Count, dialog.FileNames.Length);
+            var answer = TaskDlg.FitToPageTaskDlg(Handle, Icon, offFormat.Count, dialog.FileNames.Length);
             if (answer == null) { return; }
             fitToPage = answer.Value;
         }

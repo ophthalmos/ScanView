@@ -354,9 +354,9 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="&amp;Drucker:" xml:space="preserve"><value>&amp;Drucker:</value></data>
   <data name="letzten Schritt rückgängig machen" xml:space="preserve"><value>letzten Schritt rückgängig machen</value></data>
   <data name="Grafik auf eine A4-Seite legen?" xml:space="preserve"><value>Grafik auf eine A4-Seite legen?</value></data>
-  <data name="Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat, z. B. bei einer kleinen Grafik oder einem Screenshot." xml:space="preserve"><value>Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat, z. B. bei einer kleinen Grafik oder einem Screenshot.</value></data>
+  <data name="Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat." xml:space="preserve"><value>Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat.</value></data>
   <data name="Auf A4-Seite einpassen" xml:space="preserve"><value>Auf A4-Seite einpassen</value></data>
-  <data name="Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert mit Rand eingepasst" xml:space="preserve"><value>Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert mit Rand eingepasst</value></data>
+  <data name="Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert</value></data>
   <data name="Originalgröße beibehalten" xml:space="preserve"><value>Originalgröße beibehalten</value></data>
   <data name="Die PDF-Seite wird nur so groß wie das Bild" xml:space="preserve"><value>Die PDF-Seite wird nur so groß wie das Bild</value></data>
 </root>
