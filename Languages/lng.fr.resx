@@ -91,7 +91,7 @@
   <data name="Die Auswahl wird aus dem Bild entfernt (weiß) — die Bildgröße bleibt erhalten" xml:space="preserve"><value>La sélection est retirée de l'image (blanc) — la taille est conservée</value></data>
   <data name="Ergebnis in die Seite übernehmen (Enter)" xml:space="preserve"><value>Appliquer le résultat à la page (Entrée)</value></data>
   <data name="Alle Aktionen verwerfen und schließen (Esc)" xml:space="preserve"><value>Abandonner toutes les actions et fermer (Échap)</value></data>
-  <data name="Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung" xml:space="preserve"><value>Tracez un cadre ou déplacez les poignées — Échap ferme sans modification</value></data>
+  <data name="Rahmen aufziehen oder Griffe verschieben — Esc schließt ohne Änderung" xml:space="preserve"><value>Trace un cadre ou déplace les poignées — Échap ferme sans modification</value></data>
   <data name="Freigestellt: außerhalb der Auswahl weiß" xml:space="preserve"><value>Isolé : blanc hors de la sélection</value></data>
   <data name="Zugeschnitten auf {0} × {1} Pixel" xml:space="preserve"><value>Rogné à {0} × {1} pixels</value></data>
   <data name="Ausgeschnitten: die Auswahl wurde weiß entfernt" xml:space="preserve"><value>Découpé : la sélection a été retirée (blanc)</value></data>
@@ -109,11 +109,11 @@
   <data name="Bevorzugter &amp;Speicherort für PDF-Dateien:" xml:space="preserve"><value>Emplacement d'enregi&amp;strement préféré des PDF :</value></data>
   <data name="Leer: Windows schlägt den zuletzt verwendeten Ordner vor." xml:space="preserve"><value>Vide : Windows propose le dernier dossier utilisé.</value></data>
   <data name="&amp;Hintergrundfarbe:" xml:space="preserve"><value>&amp;Couleur de fond :</value></data>
-  <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView est fourni avec l'allemand et l'anglais. S'il vous
-manque une langue pour l'OCR, ajoutez-la ainsi :</value></data>
-  <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Téléchargez-y le fichier de langue souhaité
+  <data name="Hint.OcrLanguages" xml:space="preserve"><value>ScanView est fourni avec l'allemand et l'anglais. S'il te
+manque une langue pour l'OCR, ajoute-la ainsi :</value></data>
+  <data name="Hint.TessdataSteps" xml:space="preserve"><value>• Télécharge-y le fichier de langue souhaité
    (p. ex. « ita.traineddata » pour l'italien).
-• Placez ensuite le fichier dans ce dossier :</value></data>
+• Place ensuite le fichier dans ce dossier :</value></data>
   <data name="Bevorzugter Speicherort für PDF-Dateien" xml:space="preserve"><value>Emplacement d'enregistrement préféré des PDF</value></data>
   <data name="Sprache geändert." xml:space="preserve"><value>Langue modifiée.</value></data>
   <data name="Die neue Sprache gilt nach dem nächsten Programmstart." xml:space="preserve"><value>La nouvelle langue prendra effet au prochain démarrage.</value></data>
@@ -121,12 +121,12 @@ manque une langue pour l'OCR, ajoutez-la ainsi :</value></data>
   <data name="Dieses &amp;Gerät verwenden:" xml:space="preserve"><value>Utiliser cet a&amp;ppareil :</value></data>
   <data name="Windows-Einstellungen" xml:space="preserve"><value>Paramètres Windows</value></data>
   <data name="Scanner und Kameras" xml:space="preserve"><value>Scanneurs et appareils photo</value></data>
-  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Vous pouvez y associer les touches de l'appareil
+  <data name="Hint.DeviceKeys" xml:space="preserve"><value>Tu peux y associer les touches de l'appareil
 à ScanView (Propriétés → Événements).</value></data>
   <data name="(kein Scanner gefunden)" xml:space="preserve"><value>(aucun scanner trouvé)</value></data>
   <data name="Die Windows-Einstellungen konnten nicht geöffnet werden." xml:space="preserve"><value>Impossible d'ouvrir les paramètres Windows.</value></data>
   <data name="Kein Scanner gefunden." xml:space="preserve"><value>Aucun scanner trouvé.</value></data>
-  <data name="Bitte schließe einen Scanner an oder schalte ihn ein." xml:space="preserve"><value>Veuillez brancher ou allumer un scanner.</value></data>
+  <data name="Bitte schließe einen Scanner an oder schalte ihn ein." xml:space="preserve"><value>Branche ou allume un scanner.</value></data>
   <data name="Scanne …" xml:space="preserve"><value>Numérisation…</value></data>
   <data name="Scan abgebrochen oder fehlgeschlagen" xml:space="preserve"><value>Numérisation annulée ou échouée</value></data>
   <data name="CopyMode.Stop" xml:space="preserve"><value>Quitter le
@@ -142,14 +142,14 @@ mode copie</value></data>
   <data name="Noch keine Seiten" xml:space="preserve"><value>Pas encore de pages</value></data>
   <data name="1 Seite" xml:space="preserve"><value>1 page</value></data>
   <data name="{0} Seiten" xml:space="preserve"><value>{0} pages</value></data>
-  <data name="Esc erneut drücken, um das Programm zu beenden" xml:space="preserve"><value>Appuyez de nouveau sur Échap pour quitter</value></data>
+  <data name="Esc erneut drücken, um das Programm zu beenden" xml:space="preserve"><value>Appuie de nouveau sur Échap pour quitter</value></data>
   <data name="Alle Seiten aus der Übersicht entfernen?" xml:space="preserve"><value>Retirer toutes les pages de l'aperçu ?</value></data>
   <data name="Die gescannten Seiten dieser Sitzung gehen verloren." xml:space="preserve"><value>Les pages numérisées de cette session seront perdues.</value></data>
   <data name="Scan" xml:space="preserve"><value>Numérisation</value></data>
   <data name="Gespeichert: {0}" xml:space="preserve"><value>Enregistré : {0}</value></data>
   <data name="PDF erstellen fehlgeschlagen." xml:space="preserve"><value>Échec de la création du PDF.</value></data>
   <data name="Seitenübersicht leeren?" xml:space="preserve"><value>Vider l'aperçu des pages ?</value></data>
-  <data name="Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht." xml:space="preserve"><value>Si vous répondez Non, les pages réapparaîtront au prochain démarrage.</value></data>
+  <data name="Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht." xml:space="preserve"><value>Si tu réponds Non, les pages réapparaîtront au prochain démarrage.</value></data>
   <data name="Technische Details anzeigen" xml:space="preserve"><value>Afficher les détails techniques</value></data>
   <data name="Details ausblenden" xml:space="preserve"><value>Masquer les détails</value></data>
   <data name="unbekannt" xml:space="preserve"><value>inconnue</value></data>
@@ -185,7 +185,7 @@ Le design s'inspire de « Scanner Interface 7 »
   <data name="Seite nach links / rechts drehen" xml:space="preserve"><value>pivoter la page à gauche / droite</value></data>
   <data name="Seite um 180° drehen" xml:space="preserve"><value>pivoter la page de 180°</value></data>
   <data name="Rückseiten einfügen" xml:space="preserve"><value>insérer les versos</value></data>
-  <data name="Duplex von Hand: erst alle Vorderseiten scannen, dann den gewendeten Stapel — die Rückseiten werden verzahnt einsortiert." xml:space="preserve"><value>Recto verso manuel : numérisez d'abord tous les rectos, puis la pile retournée — les versos sont intercalés automatiquement.</value></data>
+  <data name="Duplex von Hand: erst alle Vorderseiten scannen, dann den gewendeten Stapel — die Rückseiten werden verzahnt einsortiert." xml:space="preserve"><value>Recto verso manuel : numérise d'abord tous les rectos, puis la pile retournée — les versos sont intercalés automatiquement.</value></data>
   <data name="Sortierung umkehren" xml:space="preserve"><value>inverser l'ordre</value></data>
   <data name="Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole" xml:space="preserve"><value>affichage : largeur optimale, page entière, deux pages, icônes</value></data>
   <data name="Miniaturen vergrößern / verkleinern" xml:space="preserve"><value>agrandir / réduire les miniatures</value></data>
@@ -229,12 +229,12 @@ Le design s'inspire de « Scanner Interface 7 »
   <data name="Nach &amp;Updates suchen …" xml:space="preserve"><value>Rechercher des mises à jo&amp;ur…</value></data>
   <data name="ScanViewSetup.exe herunterladen" xml:space="preserve"><value>Télécharger ScanViewSetup.exe</value></data>
   <data name="Download.Detail" xml:space="preserve"><value>ScanViewSetup.exe sera enregistré dans le dossier
-Téléchargements. Exécutez le programme
+Téléchargements. Exécute le programme
 d'installation pour installer la dernière version.</value></data>
   <data name="{0} ist auf dem neuesten Stand." xml:space="preserve"><value>{0} est à jour.</value></data>
   <data name="Die Update-Suche ist fehlgeschlagen." xml:space="preserve"><value>La recherche de mise à jour a échoué.</value></data>
   <data name="Die Update-Informationen wurden nicht gefunden." xml:space="preserve"><value>Les informations de mise à jour sont introuvables.</value></data>
-  <data name="Zeitüberschreitung – bitte prüfe die Internetverbindung." xml:space="preserve"><value>Délai dépassé – veuillez vérifier votre connexion Internet.</value></data>
+  <data name="Zeitüberschreitung – bitte prüfe die Internetverbindung." xml:space="preserve"><value>Délai dépassé – vérifie ta connexion Internet.</value></data>
   <data name="Die Versionsangabe in der Update-Datei konnte nicht gelesen werden." xml:space="preserve"><value>Le numéro de version du fichier de mise à jour n'a pas pu être lu.</value></data>
   <data name="Es steht ein Update zur Verfügung!" xml:space="preserve"><value>Une mise à jour est disponible !</value></data>
   <data name="vom" xml:space="preserve"><value>du</value></data>
@@ -252,8 +252,8 @@ d'installation pour installer la dernière version.</value></data>
   <data name="Speichern fehlgeschlagen." xml:space="preserve"><value>L'enregistrement a échoué.</value></data>
   <data name="Ordner wählen" xml:space="preserve"><value>Choisir le dossier</value></data>
   <data name="Ungültiger Dateiname." xml:space="preserve"><value>Nom de fichier non valide.</value></data>
-  <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve"><value>Veuillez saisir un nom de fichier sans \ / : * ? &quot; &lt; &gt; |.</value></data>
-  <data name="Bitte wähle einen Ordner." xml:space="preserve"><value>Veuillez choisir un dossier.</value></data>
+  <data name="Bitte gib einen Dateinamen ohne \ / : * ? &quot; &lt; &gt; | an." xml:space="preserve"><value>Saisis un nom de fichier sans \ / : * ? &quot; &lt; &gt; |.</value></data>
+  <data name="Bitte wähle einen Ordner." xml:space="preserve"><value>Choisis un dossier.</value></data>
   <data name="Datei" xml:space="preserve"><value>Fichier</value></data>
   <data name="Metadaten" xml:space="preserve"><value>Métadonnées</value></data>
   <data name="&amp;Sprache:" xml:space="preserve"><value>&amp;Langue :</value></data>
@@ -277,7 +277,7 @@ d'installation pour installer la dernière version.</value></data>
   <data name="{0} Seite(n) an {1} übergeben" xml:space="preserve"><value>{0} page(s) transmise(s) à {1}</value></data>
   <data name="Faxen fehlgeschlagen." xml:space="preserve"><value>L'envoi du fax a échoué.</value></data>
   <data name="&amp;Profil:" xml:space="preserve"><value>&amp;Profil :</value></data>
-  <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Veuillez saisir un nom de profil.</value></data>
+  <data name="Bitte gib einen Profilnamen an." xml:space="preserve"><value>Saisis un nom de profil.</value></data>
   <data name="Profil „{0}“ ersetzen?" xml:space="preserve"><value>Remplacer le profil « {0} » ?</value></data>
   <data name="Die gespeicherten Einstellungen werden überschrieben." xml:space="preserve"><value>Les paramètres enregistrés seront écrasés.</value></data>
   <data name="Virtueller Fax&amp;drucker (z.B. FRITZ!fax-Drucker):" xml:space="preserve"><value>Imprimante de fax &amp;virtuelle (p. ex. FRITZ!fax) :</value></data>
