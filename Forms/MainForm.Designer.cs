@@ -93,6 +93,7 @@
             btnPrint = new ToolStripButton();
             btnFax = new ToolStripButton();
             btnNew = new ToolStripButton();
+            toolStripSeparatorScan = new ToolStripSeparator();
             toolStripSeparatorImport = new ToolStripSeparator();
             toolStripSeparator1 = new ToolStripSeparator();
             btnMoveLeft = new ToolStripButton();
@@ -609,13 +610,12 @@
             // 
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnImport, toolStripSeparatorImport, btnSave, btnPrint, btnFax, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, toolStripSeparatorScan, btnImport, toolStripSeparatorImport, btnSave, btnPrint, btnFax, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
             toolStrip.Size = new Size(1084, 60);
             toolStrip.TabIndex = 0;
-            toolStrip.Paint += ToolStrip_Paint;
             // 
             // splitScan
             // 
@@ -629,11 +629,15 @@
             splitScan.ButtonClick += SplitScan_ButtonClick;
             splitScan.DropDownOpening += SplitScan_DropDownOpening;
             // 
+            // toolStripSeparatorScan
+            // 
+            toolStripSeparatorScan.Name = "toolStripSeparatorScan";
+            toolStripSeparatorScan.Size = new Size(6, 60);
+            // 
             // btnImport
             // 
             btnImport.AutoSize = false;
             btnImport.DisplayStyle = ToolStripItemDisplayStyle.Text;
-            btnImport.Margin = new Padding(8, 1, 0, 2);
             btnImport.Name = "btnImport";
             btnImport.Size = new Size(110, 57);
             btnImport.Text = "&Importieren";
@@ -1256,6 +1260,7 @@
         private System.Windows.Forms.ToolStripButton btnSave;
         private System.Windows.Forms.ToolStripButton btnPrint;
         private System.Windows.Forms.ToolStripButton btnNew;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparatorScan;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparatorImport;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btnMoveLeft;

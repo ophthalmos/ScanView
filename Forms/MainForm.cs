@@ -441,13 +441,6 @@ public partial class MainForm : Form, IMessageFilter
         _ => null,                      // maximal
     };
 
-    /// <summary>Verlängert die rechte Kante des Einstellungsbereichs optisch in die Toolbar —
-    /// Scannen-Button und Einstellungen bilden so eine gemeinsame Spalte.</summary>
-    private void ToolStrip_Paint(object sender, PaintEventArgs e)
-    {
-        using Pen pen = new(SystemColors.ControlDark);
-        e.Graphics.DrawLine(pen, panelSettings.Width - 1, 0, panelSettings.Width - 1, toolStrip.Height);
-    }
 
     /// <summary>Helligkeit ist die Abweichung von der Mitte: der Wert mit Vorzeichen und
     /// Prozentzeichen, in Neutralstellung ganz ohne Zahl. Ruft auch die Profil-Prüfung auf —
