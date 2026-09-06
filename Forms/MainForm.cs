@@ -164,6 +164,7 @@ public partial class MainForm : Form, IMessageFilter
             item.DisplayStyle = imageOnly ? ToolStripItemDisplayStyle.Image : ToolStripItemDisplayStyle.ImageAndText;
         }
         Set(splitScan, ToolbarIcons.Scan);
+        Set(btnImport, ToolbarIcons.Import);
         Set(btnSave, ToolbarIcons.Save);
         Set(btnPrint, ToolbarIcons.Print);
         Set(btnFax, ToolbarIcons.Fax);
@@ -184,12 +185,11 @@ public partial class MainForm : Form, IMessageFilter
         var size = LogicalToDeviceUnits(new Size(16, 16));
         menuStrip.ImageScalingSize = size;
         Image Icon16(char glyph) => ToolbarIcons.Get(glyph, size);
-        menuActionNew.Image = Icon16(ToolbarIcons.Page);
-        menuActionImport.Image = Icon16(ToolbarIcons.Import);
-        menuActionScan.Image = Icon16(ToolbarIcons.Scan);
-        menuActionSave.Image = Icon16(ToolbarIcons.Save);
-        menuActionPrint.Image = Icon16(ToolbarIcons.Print);
-        menuActionClose.Image = Icon16(ToolbarIcons.Power);
+        menuFileNew.Image = Icon16(ToolbarIcons.Page);
+        menuFileImport.Image = Icon16(ToolbarIcons.Import);
+        menuFileSave.Image = Icon16(ToolbarIcons.Save);
+        menuFilePrint.Image = Icon16(ToolbarIcons.Print);
+        menuFileClose.Image = Icon16(ToolbarIcons.Power);
         menuEditUndo.Image = Icon16(ToolbarIcons.Undo);
         menuEditCut.Image = Icon16(ToolbarIcons.Cut);
         menuEditCopy.Image = Icon16(ToolbarIcons.Copy);
@@ -208,6 +208,7 @@ public partial class MainForm : Form, IMessageFilter
         menuViewZoomIn.Image = Icon16(ToolbarIcons.ZoomIn);
         menuViewZoomOut.Image = Icon16(ToolbarIcons.ZoomOut);
         menuViewFullScreen.Image = Icon16(ToolbarIcons.FullScreen);
+        menuExtrasScan.Image = Icon16(ToolbarIcons.Scan);
         menuExtrasScanner.Image = Icon16(ToolbarIcons.Scan);
         menuExtrasFax.Image = Icon16(ToolbarIcons.Fax);
         menuExtrasOptions.Image = Icon16(ToolbarIcons.Settings);
@@ -511,7 +512,7 @@ public partial class MainForm : Form, IMessageFilter
         btnCopyMode.DisplayStyle = active || !ToolbarIcons.FontAvailable
             ? ToolStripItemDisplayStyle.Text
             : ToolStripItemDisplayStyle.ImageAndText;
-        menuActionCopyMode.Checked = active;
+        menuExtrasCopyMode.Checked = active;
         if (!active) { StoreCopyUiInSettings(); } // Änderungen sofort als gemeinsame Vorgabe übernehmen
         UpdateUiState(); // sperrt bzw. reaktiviert alles Seitenbezogene
         if (active) { statusLabel.Text = Lng.T("Kopiermodus: jeder Scan wird direkt gedruckt"); }
@@ -720,7 +721,7 @@ public partial class MainForm : Form, IMessageFilter
         }
     }
 
-    // ------------------------------------------------------------------ Menü „Aktion"
+    // ------------------------------------------------------------------ Menü „Datei"
 
     /// <summary>Bilddateien als Seiten aufnehmen — Kopien im Sitzungsordner, damit die
     /// Originale unangetastet bleiben und die Aufräumlogik beim Beenden greift.</summary>
@@ -1256,10 +1257,11 @@ public partial class MainForm : Form, IMessageFilter
         btnFax.Visible = !string.IsNullOrEmpty(settings.FaxPrinter); // ohne Faxdrucker (Extras → Faxprogramm) keine Schaltfläche
         btnFax.Enabled = pagesVisible && count > 0;
         btnNew.Enabled = pagesVisible && count > 0;
-        menuActionSave.Enabled = pagesVisible && count > 0;
-        menuActionPrint.Enabled = pagesVisible && count > 0;
-        menuActionNew.Enabled = pagesVisible && count > 0;
-        menuActionImport.Enabled = pagesVisible;
+        menuFileSave.Enabled = pagesVisible && count > 0;
+        menuFilePrint.Enabled = pagesVisible && count > 0;
+        menuFileNew.Enabled = pagesVisible && count > 0;
+        menuFileImport.Enabled = pagesVisible;
+        btnImport.Enabled = pagesVisible;
         btnRemove.Enabled = pagesVisible && selected != null;
         var index = selected != null ? flowPanel.Controls.GetChildIndex(selected) : -1;
         btnMoveLeft.Enabled = pagesVisible && index > 0;

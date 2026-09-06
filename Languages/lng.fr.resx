@@ -4,9 +4,10 @@
   <resheader name="version"><value>2.0</value></resheader>
   <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
   <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
-  <data name="&amp;Aktion" xml:space="preserve"><value>&amp;Action</value></data>
+  <data name="&amp;Datei" xml:space="preserve"><value>&amp;Fichier</value></data>
   <data name="&amp;Neu" xml:space="preserve"><value>&amp;Nouveau</value></data>
   <data name="&amp;Importieren …" xml:space="preserve"><value>&amp;Importer…</value></data>
+  <data name="&amp;Importieren" xml:space="preserve"><value>&amp;Importer</value></data>
   <data name="&amp;Scannen" xml:space="preserve"><value>&amp;Numériser</value></data>
   <data name="S&amp;peichern …" xml:space="preserve"><value>Enre&amp;gistrer…</value></data>
   <data name="S&amp;peichern" xml:space="preserve"><value>Enre&amp;gistrer</value></data>
@@ -42,6 +43,7 @@
   <data name="&amp;Entfernen" xml:space="preserve"><value>Retire&amp;r</value></data>
   <data name="Seitenübersicht leeren" xml:space="preserve"><value>Vider l'aperçu des pages</value></data>
   <data name="Bilddateien als Seiten in die Übersicht aufnehmen" xml:space="preserve"><value>Ajouter des fichiers image comme pages</value></data>
+  <data name="Bilddateien als Seiten in die Übersicht aufnehmen (Strg+I)" xml:space="preserve"><value>Ajouter des fichiers image comme pages (Ctrl+I)</value></data>
   <data name="Scanner wählen und Gerätetasten konfigurieren" xml:space="preserve"><value>Choisir le scanner et configurer les touches</value></data>
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Créer et afficher l'aperçu des raccourcis en PDF</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Numériser une page (F4) — flèche : choisir le scanner</value></data>
