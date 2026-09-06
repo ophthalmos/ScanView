@@ -45,6 +45,7 @@
             menuFile = new ToolStripMenuItem();
             menuFileNew = new ToolStripMenuItem();
             menuFileImport = new ToolStripMenuItem();
+            menuFileSeparator1 = new ToolStripSeparator();
             menuFileSave = new ToolStripMenuItem();
             menuFilePrint = new ToolStripMenuItem();
             menuFileSeparator2 = new ToolStripSeparator();
@@ -88,13 +89,13 @@
             menuHelpAbout = new ToolStripMenuItem();
             toolStrip = new ToolStrip();
             splitScan = new ToolStripSplitButton();
+            toolStripSeparatorScan = new ToolStripSeparator();
             btnImport = new ToolStripButton();
+            toolStripSeparatorImport = new ToolStripSeparator();
             btnSave = new ToolStripButton();
             btnPrint = new ToolStripButton();
             btnFax = new ToolStripButton();
             btnNew = new ToolStripButton();
-            toolStripSeparatorScan = new ToolStripSeparator();
-            toolStripSeparatorImport = new ToolStripSeparator();
             toolStripSeparator1 = new ToolStripSeparator();
             btnMoveLeft = new ToolStripButton();
             btnMoveRight = new ToolStripButton();
@@ -141,7 +142,6 @@
             statusSize = new ToolStripStatusLabel();
             statusLabel = new ToolStripStatusLabel();
             statusScanner = new ToolStripStatusLabel();
-            menuFileSeparator1 = new ToolStripSeparator();
             thumbContextMenu.SuspendLayout();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
@@ -275,6 +275,11 @@
             menuFileImport.Text = "&Importieren …";
             menuFileImport.ToolTipText = "Bilddateien als Seiten in die Übersicht aufnehmen";
             menuFileImport.Click += MenuImport_Click;
+            // 
+            // menuFileSeparator1
+            // 
+            menuFileSeparator1.Name = "menuFileSeparator1";
+            menuFileSeparator1.Size = new Size(184, 6);
             // 
             // menuFileSave
             // 
@@ -801,7 +806,7 @@
             panelSettings.Location = new Point(0, 84);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(8);
-            panelSettings.Size = new Size(150, 353);
+            panelSettings.Size = new Size(153, 353);
             panelSettings.TabIndex = 1;
             // 
             // labelSettings
@@ -828,7 +833,7 @@
             comboProfile.DropDownStyle = ComboBoxStyle.DropDownList;
             comboProfile.Location = new Point(8, 62);
             comboProfile.Name = "comboProfile";
-            comboProfile.Size = new Size(132, 23);
+            comboProfile.Size = new Size(134, 23);
             comboProfile.TabIndex = 21;
             comboProfile.SelectedIndexChanged += ComboProfile_SelectedIndexChanged;
             // 
@@ -858,7 +863,7 @@
             comboDpi.Items.AddRange(new object[] { "150 dpi", "200 dpi", "300 dpi", "600 dpi" });
             comboDpi.Location = new Point(8, 114);
             comboDpi.Name = "comboDpi";
-            comboDpi.Size = new Size(132, 23);
+            comboDpi.Size = new Size(134, 23);
             comboDpi.TabIndex = 2;
             comboDpi.SelectedIndexChanged += ScanSetting_Changed;
             // 
@@ -877,7 +882,7 @@
             comboColor.Items.AddRange(new object[] { "Farbe", "Graustufen", "Schwarz-weiß" });
             comboColor.Location = new Point(8, 166);
             comboColor.Name = "comboColor";
-            comboColor.Size = new Size(132, 23);
+            comboColor.Size = new Size(134, 23);
             comboColor.TabIndex = 4;
             comboColor.SelectedIndexChanged += ScanSetting_Changed;
             // 
@@ -896,7 +901,7 @@
             comboArea.Items.AddRange(new object[] { "maximal", "A4", "A5", "A6", "US-Letter", "Visitenkarte" });
             comboArea.Location = new Point(8, 218);
             comboArea.Name = "comboArea";
-            comboArea.Size = new Size(132, 23);
+            comboArea.Size = new Size(134, 23);
             comboArea.TabIndex = 6;
             comboArea.SelectedIndexChanged += ScanSetting_Changed;
             // 
@@ -915,7 +920,7 @@
             comboFeed.Items.AddRange(new object[] { "Flachbett", "Automatischer Einzug" });
             comboFeed.Location = new Point(8, 270);
             comboFeed.Name = "comboFeed";
-            comboFeed.Size = new Size(132, 23);
+            comboFeed.Size = new Size(134, 23);
             comboFeed.TabIndex = 10;
             comboFeed.SelectedIndexChanged += ScanSetting_Changed;
             // 
@@ -936,7 +941,7 @@
             trackBrightness.Maximum = 100;
             trackBrightness.Minimum = -100;
             trackBrightness.Name = "trackBrightness";
-            trackBrightness.Size = new Size(142, 30);
+            trackBrightness.Size = new Size(144, 30);
             trackBrightness.SmallChange = 5;
             trackBrightness.TabIndex = 13;
             trackBrightness.TickFrequency = 25;
@@ -961,10 +966,10 @@
             panelCopyMode.Controls.Add(chkCopyColor);
             panelCopyMode.Controls.Add(chkCopyFit);
             panelCopyMode.Dock = DockStyle.Fill;
-            panelCopyMode.Location = new Point(150, 84);
+            panelCopyMode.Location = new Point(153, 84);
             panelCopyMode.Name = "panelCopyMode";
             panelCopyMode.Padding = new Padding(16);
-            panelCopyMode.Size = new Size(934, 353);
+            panelCopyMode.Size = new Size(931, 353);
             panelCopyMode.TabIndex = 3;
             panelCopyMode.Visible = false;
             // 
@@ -1105,10 +1110,10 @@
             flowPanel.BackColor = Color.White;
             flowPanel.BorderStyle = BorderStyle.FixedSingle;
             flowPanel.Dock = DockStyle.Fill;
-            flowPanel.Location = new Point(150, 84);
+            flowPanel.Location = new Point(153, 84);
             flowPanel.Name = "flowPanel";
             flowPanel.Padding = new Padding(8);
-            flowPanel.Size = new Size(934, 353);
+            flowPanel.Size = new Size(931, 353);
             flowPanel.TabIndex = 2;
             flowPanel.DragEnter += FlowPanel_DragEnter;
             flowPanel.DragOver += FlowPanel_DragOver;
@@ -1153,11 +1158,6 @@
             statusScanner.Name = "statusScanner";
             statusScanner.Padding = new Padding(4, 0, 0, 0);
             statusScanner.Size = new Size(8, 19);
-            // 
-            // menuFileSeparator1
-            // 
-            menuFileSeparator1.Name = "menuFileSeparator1";
-            menuFileSeparator1.Size = new Size(184, 6);
             // 
             // MainForm
             // 
