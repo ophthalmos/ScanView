@@ -47,6 +47,27 @@ internal static class TaskDlg
         return TaskDialog.ShowDialog(hwnd, page) == TaskDialogButton.Yes;
     }
 
+    /// <summary>Import-Rückfrage für Bilder, die keinem Papierformat entsprechen: auf eine A4-Seite
+    /// einpassen (true), Originalgröße behalten (false) oder Import abbrechen (null).</summary>
+    public static bool? FitToPageTaskDlg(nint hwnd, int offFormatCount, int totalCount)
+    {
+        TaskDialogButton fitButton = new TaskDialogCommandLinkButton(Lng.T("Auf A4-Seite einpassen"), Lng.T("Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert mit Rand eingepasst"));
+        TaskDialogButton keepButton = new TaskDialogCommandLinkButton(Lng.T("Originalgröße beibehalten"), Lng.T("Die PDF-Seite wird nur so groß wie das Bild"));
+        TaskDialogPage page = new()
+        {
+            Caption = Application.ProductName,
+            Heading = Lng.T("Grafik auf eine A4-Seite legen?"),
+            Text = string.Format(Lng.T("Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat, z. B. bei einer kleinen Grafik oder einem Screenshot."), offFormatCount, totalCount),
+            Icon = TaskDialogIcon.Information,
+            AllowCancel = true,
+            SizeToContent = true,
+            Buttons = { fitButton, keepButton, TaskDialogButton.Cancel },
+            DefaultButton = fitButton
+        };
+        var result = TaskDialog.ShowDialog(hwnd, page);
+        return result == fitButton ? true : result == keepButton ? false : null;
+    }
+
     /// <summary>Über-Dialog mit Programm-Icon, Komponenten-Versionen und PayPal-Spendenlink
     /// (derselbe wie in PDFlight).</summary>
     public static void AboutTaskDlg(nint hwnd, Icon icon)

@@ -339,6 +339,17 @@ public partial class MainForm : Form, IMessageFilter
         // Selbsttest für die Werkzeugkette: zwei Testseiten, PDF erstellen, Ergebnis melden, beenden
         AddPage(ScanService.RenderTestPage(NextScanPath(), "Selbsttest Seite eins", "Der Blutdruck lag bei 120 zu 80 mmHg."));
         AddPage(ScanService.RenderTestPage(NextScanPath(), "Selbsttest Seite zwei", "Prüfung der Umlaute: Ärzte, Öfen, Übungen."));
+        // Import-Einpassung: eine 600×400-Grafik (96 dpi, kein Papierformat) muss als A4-Querseite mit 300 dpi landen
+        var graphic = Path.Combine(sessionFolder, "grafik.png");
+        using (Bitmap small = new(600, 400)) { small.SetResolution(96, 96); using (var g = Graphics.FromImage(small)) { g.Clear(Color.LightSteelBlue); } small.Save(graphic, System.Drawing.Imaging.ImageFormat.Png); }
+        var placed = Path.Combine(sessionFolder, "grafik-a4.png");
+        var placedOk = false;
+        if (IsOffPaperFormat(graphic))
+        {
+            ScanService.PlaceOnPage(graphic, placed, new SizeF(210, 297));
+            using var check = ScanService.LoadUnlocked(placed);
+            placedOk = check.Width == 3508 && check.Height == 2480 && Math.Round(check.HorizontalResolution) == 300 && !IsOffPaperFormat(placed);
+        }
         var output = Path.Combine(sessionFolder, "Selbsttest.pdf");
         // synchron direkt über den Service — ein GetResult auf CreatePdfAsync würde den UI-Thread deadlocken
         OcrPdfService.CreateSearchablePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)], output, "deu", 75, null);
@@ -399,7 +410,7 @@ public partial class MainForm : Form, IMessageFilter
         }
         Application.RemoveMessageFilter(this);
         Hide(); // keine Paint-Zyklen mehr, während der Prozess mitten im Nachrichtenbetrieb endet
-        Environment.Exit(pageCount == 2 && pageCountA == 2 ? 0 : 1);
+        Environment.Exit(pageCount == 2 && pageCountA == 2 && placedOk ? 0 : 1);
     }
 
     private string NextScanPath() => Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}.tif");
@@ -734,15 +745,25 @@ public partial class MainForm : Form, IMessageFilter
             Title = Lng.T("Bilder importieren"),
         };
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
+        // Bilder ohne Papierformat (kleine Grafiken, Screenshots) ergäben winzige PDF-Seiten — einmal je Import nachfragen
+        var offFormat = dialog.FileNames.Where(IsOffPaperFormat).ToHashSet(StringComparer.OrdinalIgnoreCase);
+        var fitToPage = false;
+        if (offFormat.Count > 0)
+        {
+            var answer = TaskDlg.FitToPageTaskDlg(Handle, offFormat.Count, dialog.FileNames.Length);
+            if (answer == null) { return; }
+            fitToPage = answer.Value;
+        }
         List<string> imported = []; // der ganze Import ist EIN Rückgängig-Schritt
         foreach (var file in dialog.FileNames)
         {
             var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(file).ToLowerInvariant()}");
             try
             {
-                File.Copy(file, copy);
+                if (fitToPage && offFormat.Contains(file)) { ScanService.PlaceOnPage(file, copy, new SizeF(210, 297)); }
+                else { File.Copy(file, copy); }
             }
-            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or OutOfMemoryException or System.Runtime.InteropServices.ExternalException)
             {
                 TaskDlg.ErrTaskDlg(Handle, Lng.T("Importieren fehlgeschlagen."), ex);
                 continue;
@@ -1326,6 +1347,23 @@ public partial class MainForm : Form, IMessageFilter
             if (format != null) { statusSize.ToolTipText = millimeters; }
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or OutOfMemoryException) { }
+    }
+
+    /// <summary>True, wenn die Bilddatei physisch keinem gängigen Papierformat entspricht (z. B. eine
+    /// kleine Grafik) — Kandidat fürs Einpassen auf eine A4-Seite beim Import. Unlesbare Dateien
+    /// gelten als passend, ihr Fehler kommt dann beim Kopieren zur Sprache.</summary>
+    private static bool IsOffPaperFormat(string path)
+    {
+        try
+        {
+            using var stream = File.OpenRead(path);
+            using var image = Image.FromStream(stream, false, false); // nur die Kopfdaten lesen
+            if (image.HorizontalResolution < 1 || image.VerticalResolution < 1) { return true; } // ohne dpi keine physischen Maße
+            var mmWidth = image.Width / (double)image.HorizontalResolution * 25.4;
+            var mmHeight = image.Height / (double)image.VerticalResolution * 25.4;
+            return DescribePaperFormat(mmWidth, mmHeight) == null;
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or ArgumentException or OutOfMemoryException) { return false; }
     }
 
     /// <summary>Erkennt gängige Papierformate mit Scan-Toleranz (±4 mm); null, wenn keines passt.</summary>

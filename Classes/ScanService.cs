@@ -196,6 +196,43 @@ internal static class ScanService
         image.Save(outputPath, encoder, encoderParams);
     }
 
+    /// <summary>Legt eine Grafik zentriert und mit Rand auf eine weiße Seite mit 300 dpi — Hoch- oder
+    /// Querformat je nach Seitenverhältnis des Bildes. Für importierte Bilder, die keinem Papierformat
+    /// entsprechen (kleine Grafiken, Screenshots): als PDF-Seite wären sie sonst nur so groß wie das Bild.
+    /// JPEG-Quellen bleiben JPEG (Fotos), alles andere wird PNG.</summary>
+    public static void PlaceOnPage(string sourcePath, string outputPath, SizeF pageMm, float marginMm = 15, int dpi = 300)
+    {
+        using var image = LoadUnlocked(sourcePath);
+        var landscape = image.Width > image.Height;
+        var pageWidth = (int)Math.Round((landscape ? pageMm.Height : pageMm.Width) / 25.4 * dpi);
+        var pageHeight = (int)Math.Round((landscape ? pageMm.Width : pageMm.Height) / 25.4 * dpi);
+        var margin = (int)Math.Round(marginMm / 25.4 * dpi);
+        var scale = Math.Min((pageWidth - 2 * margin) / (double)image.Width, (pageHeight - 2 * margin) / (double)image.Height);
+        var width = Math.Max(1, (int)Math.Round(image.Width * scale));
+        var height = Math.Max(1, (int)Math.Round(image.Height * scale));
+        using Bitmap page = new(pageWidth, pageHeight);
+        page.SetResolution(dpi, dpi);
+        using (var g = Graphics.FromImage(page))
+        {
+            g.Clear(Color.White);
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            using System.Drawing.Imaging.ImageAttributes attributes = new();
+            attributes.SetWrapMode(System.Drawing.Drawing2D.WrapMode.TileFlipXY); // kein Geistersaum an den Bildkanten
+            g.DrawImage(image, new Rectangle((pageWidth - width) / 2, (pageHeight - height) / 2, width, height), 0, 0, image.Width, image.Height, GraphicsUnit.Pixel, attributes);
+        }
+        if (Path.GetExtension(outputPath).ToLowerInvariant() is ".jpg" or ".jpeg")
+        {
+            var encoder = ImageCodecInfo.GetImageEncoders().First(c => c.FormatID == ImageFormat.Jpeg.Guid);
+            using EncoderParameters encoderParams = new(1);
+            encoderParams.Param[0] = new EncoderParameter(System.Drawing.Imaging.Encoder.Quality, 90L);
+            page.Save(outputPath, encoder, encoderParams);
+        }
+        else
+        {
+            page.Save(outputPath, ImageFormat.Png);
+        }
+    }
+
     /// <summary>Speichert einen Scan als PNG-Datei (verlustfrei); die dpi-Angabe bleibt erhalten.</summary>
     public static void SaveAsPng(string sourcePath, string outputPath)
     {
