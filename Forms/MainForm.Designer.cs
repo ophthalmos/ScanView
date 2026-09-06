@@ -45,11 +45,9 @@
             menuFile = new ToolStripMenuItem();
             menuFileNew = new ToolStripMenuItem();
             menuFileImport = new ToolStripMenuItem();
-            menuExtrasScan = new ToolStripMenuItem();
             menuFileSave = new ToolStripMenuItem();
             menuFilePrint = new ToolStripMenuItem();
-            menuExtrasCopyMode = new ToolStripMenuItem();
-            menuFileSeparator = new ToolStripSeparator();
+            menuFileSeparator2 = new ToolStripSeparator();
             menuFileClose = new ToolStripMenuItem();
             menuEdit = new ToolStripMenuItem();
             menuEditUndo = new ToolStripMenuItem();
@@ -77,6 +75,8 @@
             menuViewSeparator2 = new ToolStripSeparator();
             menuViewFullScreen = new ToolStripMenuItem();
             menuExtras = new ToolStripMenuItem();
+            menuExtrasScan = new ToolStripMenuItem();
+            menuExtrasCopyMode = new ToolStripMenuItem();
             menuExtrasSeparator = new ToolStripSeparator();
             menuExtrasOptions = new ToolStripMenuItem();
             menuExtrasScanner = new ToolStripMenuItem();
@@ -93,6 +93,7 @@
             btnPrint = new ToolStripButton();
             btnFax = new ToolStripButton();
             btnNew = new ToolStripButton();
+            toolStripSeparatorImport = new ToolStripSeparator();
             toolStripSeparator1 = new ToolStripSeparator();
             btnMoveLeft = new ToolStripButton();
             btnMoveRight = new ToolStripButton();
@@ -139,6 +140,7 @@
             statusSize = new ToolStripStatusLabel();
             statusLabel = new ToolStripStatusLabel();
             statusScanner = new ToolStripStatusLabel();
+            menuFileSeparator1 = new ToolStripSeparator();
             thumbContextMenu.SuspendLayout();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
@@ -248,9 +250,9 @@
             // 
             // menuFile
             // 
-            menuFile.DropDownItems.AddRange(new ToolStripItem[] { menuFileNew, menuFileImport, menuFileSave, menuFilePrint, menuFileSeparator, menuFileClose });
+            menuFile.DropDownItems.AddRange(new ToolStripItem[] { menuFileNew, menuFileImport, menuFileSeparator1, menuFileSave, menuFilePrint, menuFileSeparator2, menuFileClose });
             menuFile.Name = "menuFile";
-            menuFile.Size = new Size(54, 20);
+            menuFile.Size = new Size(46, 20);
             menuFile.Text = "&Datei";
             // 
             // menuFileNew
@@ -291,10 +293,10 @@
             menuFilePrint.Text = "&Drucken …";
             menuFilePrint.Click += BtnPrint_Click;
             // 
-            // menuFileSeparator
+            // menuFileSeparator2
             // 
-            menuFileSeparator.Name = "menuFileSeparator";
-            menuFileSeparator.Size = new Size(184, 6);
+            menuFileSeparator2.Name = "menuFileSeparator2";
+            menuFileSeparator2.Size = new Size(184, 6);
             // 
             // menuFileClose
             // 
@@ -309,9 +311,9 @@
             menuEdit.Name = "menuEdit";
             menuEdit.Size = new Size(75, 20);
             menuEdit.Text = "&Bearbeiten";
-            //
+            // 
             // menuEditUndo
-            //
+            // 
             menuEditUndo.Enabled = false;
             menuEditUndo.Name = "menuEditUndo";
             menuEditUndo.ShortcutKeyDisplayString = "Strg+Z";
@@ -319,14 +321,14 @@
             menuEditUndo.Size = new Size(260, 22);
             menuEditUndo.Text = "&Rückgängig";
             menuEditUndo.Click += MenuEditUndo_Click;
-            //
+            // 
             // menuEditSeparator0
-            //
+            // 
             menuEditSeparator0.Name = "menuEditSeparator0";
             menuEditSeparator0.Size = new Size(257, 6);
-            //
+            // 
             // menuEditCut
-            //
+            // 
             menuEditCut.Enabled = false;
             menuEditCut.Name = "menuEditCut";
             menuEditCut.ShortcutKeyDisplayString = "Strg+X";
@@ -525,7 +527,7 @@
             // 
             menuExtrasScan.Name = "menuExtrasScan";
             menuExtrasScan.ShortcutKeys = Keys.F4;
-            menuExtrasScan.Size = new Size(187, 22);
+            menuExtrasScan.Size = new Size(175, 22);
             menuExtrasScan.Text = "&Scannen";
             menuExtrasScan.Click += SplitScan_ButtonClick;
             // 
@@ -533,7 +535,7 @@
             // 
             menuExtrasCopyMode.Name = "menuExtrasCopyMode";
             menuExtrasCopyMode.ShortcutKeys = Keys.F7;
-            menuExtrasCopyMode.Size = new Size(187, 22);
+            menuExtrasCopyMode.Size = new Size(175, 22);
             menuExtrasCopyMode.Text = "Kopier&modus";
             menuExtrasCopyMode.ToolTipText = "Scans direkt drucken — der Scanner wird zum Kopierer";
             menuExtrasCopyMode.Click += BtnCopyMode_Click;
@@ -607,7 +609,7 @@
             // 
             toolStrip.AutoSize = false;
             toolStrip.GripStyle = ToolStripGripStyle.Hidden;
-            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnImport, btnSave, btnPrint, btnFax, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
+            toolStrip.Items.AddRange(new ToolStripItem[] { splitScan, btnImport, toolStripSeparatorImport, btnSave, btnPrint, btnFax, btnNew, toolStripSeparator1, btnMoveLeft, btnMoveRight, btnRemove, btnCrop, toolStripSeparator2, btnZoomIn, btnZoomOut, btnCopyMode, toolStripSeparatorRight });
             toolStrip.Location = new Point(0, 24);
             toolStrip.Name = "toolStrip";
             toolStrip.Padding = new Padding(0);
@@ -637,6 +639,11 @@
             btnImport.Text = "&Importieren";
             btnImport.ToolTipText = "Bilddateien als Seiten in die Übersicht aufnehmen (Strg+I)";
             btnImport.Click += MenuImport_Click;
+            // 
+            // toolStripSeparatorImport
+            // 
+            toolStripSeparatorImport.Name = "toolStripSeparatorImport";
+            toolStripSeparatorImport.Size = new Size(6, 60);
             // 
             // btnSave
             // 
@@ -826,7 +833,7 @@
             linkProfiles.AutoSize = true;
             linkProfiles.Location = new Point(100, 44);
             linkProfiles.Name = "linkProfiles";
-            linkProfiles.Size = new Size(78, 15);
+            linkProfiles.Size = new Size(58, 15);
             linkProfiles.TabIndex = 22;
             linkProfiles.TabStop = true;
             linkProfiles.Text = "verwalten";
@@ -953,7 +960,7 @@
             panelCopyMode.Location = new Point(150, 84);
             panelCopyMode.Name = "panelCopyMode";
             panelCopyMode.Padding = new Padding(16);
-            panelCopyMode.Size = new Size(834, 353);
+            panelCopyMode.Size = new Size(934, 353);
             panelCopyMode.TabIndex = 3;
             panelCopyMode.Visible = false;
             // 
@@ -984,13 +991,13 @@
             comboCopyPrinter.Size = new Size(267, 23);
             comboCopyPrinter.TabIndex = 2;
             comboCopyPrinter.SelectedIndexChanged += ComboCopyPrinter_SelectedIndexChanged;
-            //
+            // 
             // linkCopyProperties
-            //
+            // 
             linkCopyProperties.AutoSize = true;
             linkCopyProperties.Location = new Point(183, 44);
             linkCopyProperties.Name = "linkCopyProperties";
-            linkCopyProperties.Size = new Size(100, 15);
+            linkCopyProperties.Size = new Size(81, 15);
             linkCopyProperties.TabIndex = 14;
             linkCopyProperties.TabStop = true;
             linkCopyProperties.Text = "Eigenschaften";
@@ -1097,7 +1104,7 @@
             flowPanel.Location = new Point(150, 84);
             flowPanel.Name = "flowPanel";
             flowPanel.Padding = new Padding(8);
-            flowPanel.Size = new Size(834, 353);
+            flowPanel.Size = new Size(934, 353);
             flowPanel.TabIndex = 2;
             flowPanel.DragEnter += FlowPanel_DragEnter;
             flowPanel.DragOver += FlowPanel_DragOver;
@@ -1131,7 +1138,7 @@
             // 
             statusLabel.Name = "statusLabel";
             statusLabel.Padding = new Padding(4, 0, 4, 0);
-            statusLabel.Size = new Size(839, 19);
+            statusLabel.Size = new Size(939, 19);
             statusLabel.Spring = true;
             statusLabel.TextAlign = ContentAlignment.MiddleLeft;
             // 
@@ -1142,6 +1149,11 @@
             statusScanner.Name = "statusScanner";
             statusScanner.Padding = new Padding(4, 0, 0, 0);
             statusScanner.Size = new Size(8, 19);
+            // 
+            // menuFileSeparator1
+            // 
+            menuFileSeparator1.Name = "menuFileSeparator1";
+            menuFileSeparator1.Size = new Size(184, 6);
             // 
             // MainForm
             // 
@@ -1201,7 +1213,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuFileSave;
         private System.Windows.Forms.ToolStripMenuItem menuFilePrint;
         private System.Windows.Forms.ToolStripMenuItem menuExtrasCopyMode;
-        private System.Windows.Forms.ToolStripSeparator menuFileSeparator;
+        private System.Windows.Forms.ToolStripSeparator menuFileSeparator2;
         private System.Windows.Forms.ToolStripMenuItem menuFileClose;
         private System.Windows.Forms.ToolStripMenuItem menuEdit;
         private System.Windows.Forms.ToolStripMenuItem menuEditUndo;
@@ -1244,6 +1256,7 @@
         private System.Windows.Forms.ToolStripButton btnSave;
         private System.Windows.Forms.ToolStripButton btnPrint;
         private System.Windows.Forms.ToolStripButton btnNew;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparatorImport;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripButton btnMoveLeft;
         private System.Windows.Forms.ToolStripButton btnMoveRight;
@@ -1291,5 +1304,6 @@
         private System.Windows.Forms.ToolStripStatusLabel statusSize;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.ToolStripStatusLabel statusScanner;
+        private ToolStripSeparator menuFileSeparator1;
     }
 }
