@@ -53,7 +53,7 @@ internal static class TaskDlg
     public static bool? FitToPageTaskDlg(nint hwnd, Icon icon, string formatName, bool formatFromScanArea, int offFormatCount, int totalCount)
     {
         TaskDialogButton fitButton = new TaskDialogCommandLinkButton(string.Format(Lng.T("Auf {0}-Seite einpassen"), formatName), string.Format(Lng.T("Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert"), formatName));
-        TaskDialogButton keepButton = new TaskDialogCommandLinkButton(Lng.T("Originalgröße beibehalten"), Lng.T("Beim Speichern wird die PDF-Seite nur so groß wie das Bild"));
+        TaskDialogButton keepButton = new TaskDialogCommandLinkButton(Lng.T("Originalgröße beibehalten"), Lng.T("Beim Speichern wird die Seite nur so groß wie das Bild"));
         using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante
         TaskDialogPage page = new()
         {

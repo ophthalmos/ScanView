@@ -358,7 +358,7 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Auf {0}-Seite einpassen" xml:space="preserve"><value>Auf {0}-Seite einpassen</value></data>
   <data name="Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert</value></data>
   <data name="Originalgröße beibehalten" xml:space="preserve"><value>Originalgröße beibehalten</value></data>
-  <data name="Beim Speichern wird die PDF-Seite nur so groß wie das Bild" xml:space="preserve"><value>Beim Speichern wird die PDF-Seite nur so groß wie das Bild</value></data>
+  <data name="Beim Speichern wird die Seite nur so groß wie das Bild" xml:space="preserve"><value>Beim Speichern wird die Seite nur so groß wie das Bild</value></data>
   <data name="Hinweis: Das Zielformat „{0}“ folgt dem eingestellten Scanbereich." xml:space="preserve"><value>Hinweis: Das Zielformat „{0}“ folgt dem eingestellten Scanbereich.</value></data>
   <data name="Hinweis: Der eingestellte Scanbereich ergibt kein Seitenformat, daher „{0}“." xml:space="preserve"><value>Hinweis: Der eingestellte Scanbereich ergibt kein Seitenformat, daher „{0}“.</value></data>
 </root>
