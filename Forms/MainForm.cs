@@ -420,13 +420,14 @@ public partial class MainForm : Form, IMessageFilter
     private int SelectedColorIntent => comboColor.SelectedIndex switch { 1 => 2, 2 => 4, _ => 1 }; // WIA: 1 Farbe, 2 Grau, 4 SW
 
     /// <summary>Zielformat fürs Einpassen importierter Grafiken: der eingestellte Scanbereich, sofern er
-    /// ein Seitenformat ist — bei „maximal" und „Visitenkarte" bleibt es A4.</summary>
-    private (string Name, SizeF Mm) ImportPageFormat => comboArea.SelectedIndex switch
+    /// ein Seitenformat ist — bei „maximal" und „Visitenkarte" bleibt es A4 (FromScanArea = false).</summary>
+    private (string Name, SizeF Mm, bool FromScanArea) ImportPageFormat => comboArea.SelectedIndex switch
     {
-        2 => ("A5", new SizeF(148, 210)),
-        3 => ("A6", new SizeF(105, 148)),
-        4 => ("US-Letter", new SizeF(215.9f, 279.4f)),
-        _ => ("A4", new SizeF(210, 297)),
+        1 => ("A4", new SizeF(210, 297), true),
+        2 => ("A5", new SizeF(148, 210), true),
+        3 => ("A6", new SizeF(105, 148), true),
+        4 => ("US-Letter", new SizeF(215.9f, 279.4f), true),
+        _ => ("A4", new SizeF(210, 297), false),
     };
 
     /// <summary>Scanfenster in Millimetern — null steht für „maximal" (Gerätestandard).</summary>
@@ -758,10 +759,10 @@ public partial class MainForm : Form, IMessageFilter
         // Bilder ohne Papierformat (kleine Grafiken, Screenshots) ergäben winzige PDF-Seiten — einmal je Import nachfragen
         var offFormat = dialog.FileNames.Where(IsOffPaperFormat).ToHashSet(StringComparer.OrdinalIgnoreCase);
         var fitToPage = false;
-        var (formatName, formatMm) = ImportPageFormat;
+        var (formatName, formatMm, formatFromScanArea) = ImportPageFormat;
         if (offFormat.Count > 0)
         {
-            var answer = TaskDlg.FitToPageTaskDlg(Handle, Icon, formatName, offFormat.Count, dialog.FileNames.Length);
+            var answer = TaskDlg.FitToPageTaskDlg(Handle, Icon, formatName, formatFromScanArea, offFormat.Count, dialog.FileNames.Length);
             if (answer == null) { return; }
             fitToPage = answer.Value;
         }

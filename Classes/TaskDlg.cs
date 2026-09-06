@@ -50,7 +50,7 @@ internal static class TaskDlg
     /// <summary>Import-Rückfrage für Bilder, die keinem Papierformat entsprechen: auf eine Seite im
     /// Zielformat (z. B. "A4", nach dem Scanbereich) einpassen (true), Originalgröße behalten (false)
     /// oder Import abbrechen (null).</summary>
-    public static bool? FitToPageTaskDlg(nint hwnd, Icon icon, string formatName, int offFormatCount, int totalCount)
+    public static bool? FitToPageTaskDlg(nint hwnd, Icon icon, string formatName, bool formatFromScanArea, int offFormatCount, int totalCount)
     {
         TaskDialogButton fitButton = new TaskDialogCommandLinkButton(string.Format(Lng.T("Auf {0}-Seite einpassen"), formatName), string.Format(Lng.T("Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert"), formatName));
         TaskDialogButton keepButton = new TaskDialogCommandLinkButton(Lng.T("Originalgröße beibehalten"), Lng.T("Beim Speichern wird die PDF-Seite nur so groß wie das Bild"));
@@ -64,7 +64,10 @@ internal static class TaskDlg
             AllowCancel = true,
             SizeToContent = true,
             Buttons = { fitButton, keepButton, TaskDialogButton.Cancel },
-            DefaultButton = fitButton
+            DefaultButton = fitButton,
+            Footnote = new TaskDialogFootnote(string.Format(formatFromScanArea
+                ? Lng.T("Das Zielformat {0} folgt dem eingestellten Scanbereich.")
+                : Lng.T("Der eingestellte Scanbereich ergibt kein Seitenformat, daher {0}."), formatName))
         };
         var result = TaskDialog.ShowDialog(hwnd, page);
         return result == fitButton ? true : result == keepButton ? false : null;
