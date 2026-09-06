@@ -1,4 +1,4 @@
-using System.Reflection;
+﻿using System.Reflection;
 using System.Runtime.InteropServices;
 using PdfSharp.Drawing;
 using PdfSharp.Pdf;
@@ -22,7 +22,7 @@ internal static partial class ShortcutsPdf
         using PdfDocument document = new();
         document.Options.ColorMode = PdfColorMode.Rgb;
         document.Info.Title = Application.ProductName + " – " + Lng.T("Tastenkürzel");
-        document.Info.Author = Application.ProductName;
+        document.Info.Author = Application.ProductName ?? "ScanView";
         XFont titleFont = new("Segoe UI", 17, XFontStyleEx.Bold);
         XFont subFont = new("Segoe UI", 9);
         XFont keyFont = new("Segoe UI", 10, XFontStyleEx.Bold);

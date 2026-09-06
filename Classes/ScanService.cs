@@ -29,7 +29,7 @@ internal static class ScanService
         {
             var managerType = Type.GetTypeFromProgID("WIA.DeviceManager");
             if (managerType == null) { return result; }
-            dynamic manager = Activator.CreateInstance(managerType);
+            dynamic manager = Activator.CreateInstance(managerType)!;
             foreach (var info in manager.DeviceInfos)
             {
                 if ((int)info.Type != 1) { continue; } // nur Scanner
@@ -52,7 +52,7 @@ internal static class ScanService
     /// Helligkeit (−100 … +100, 0 = neutral) und Papierzufuhr werden gesetzt, soweit das
     /// Gerät sie annimmt. Null bei Fehlern — error beschreibt sie (übersetzt); beim
     /// Nutzer-Abbruch im WIA-Fortschritt bleibt error null.</summary>
-    public static string ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, out string error)
+    public static string? ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, out string? error)
     {
         error = null;
         try
@@ -63,8 +63,8 @@ internal static class ScanService
                 error = Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar.");
                 return null;
             }
-            dynamic manager = Activator.CreateInstance(managerType);
-            dynamic device = null;
+            dynamic manager = Activator.CreateInstance(managerType)!;
+            dynamic? device = null;
             foreach (var info in manager.DeviceInfos)
             {
                 if ((string)info.DeviceID == deviceId) { device = info.Connect(); break; }
@@ -91,7 +91,12 @@ internal static class ScanService
             if (brightnessPercent != 0) { TrySetScaledProperty(item, WiaBrightness, brightnessPercent); }
             // ShowTransfer zeigt nur eine schlichte Fortschrittsanzeige (keinen Einstellungsdialog)
             var dialogType = Type.GetTypeFromProgID("WIA.CommonDialog");
-            dynamic dialog = Activator.CreateInstance(dialogType);
+            if (dialogType == null)
+            {
+                error = Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar.");
+                return null;
+            }
+            dynamic dialog = Activator.CreateInstance(dialogType)!;
             dynamic image = dialog.ShowTransfer(item, WiaFormatTiff, false); // Format ist ein Wunsch — das Gerät darf abweichen
             return image == null ? null : SaveAsTiff(image, path); // null ohne Ausnahme = Abbruch durch den Anwender
         }
@@ -104,13 +109,13 @@ internal static class ScanService
     }
 
     /// <summary>Fallback ohne Gerätewahl im Menü: der komplette Windows-Scandialog.</summary>
-    public static string WiaScanToTiff(string path)
+    public static string? WiaScanToTiff(string path)
     {
         try
         {
             var dialogType = Type.GetTypeFromProgID("WIA.CommonDialog");
             if (dialogType == null) { return null; }
-            dynamic dialog = Activator.CreateInstance(dialogType);
+            dynamic dialog = Activator.CreateInstance(dialogType)!;
             dynamic image = dialog.ShowAcquireImage();
             return image == null ? null : SaveAsTiff(image, path);
         }

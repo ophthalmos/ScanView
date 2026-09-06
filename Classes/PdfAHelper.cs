@@ -55,7 +55,7 @@ internal static partial class PdfAHelper
         intent.Elements["/RegistryName"] = new PdfString("http://www.color.org");
         intent.Elements["/DestOutputProfile"] = profile.Reference;
         document.Internals.AddObject(intent);
-        document.Internals.Catalog.Elements["/OutputIntents"] = new PdfArray(document, intent.Reference);
+        document.Internals.Catalog.Elements["/OutputIntents"] = new PdfArray(document, intent.Reference!); // AddObject hat die Referenz eben vergeben
         document.Save(pdfPath);
         PatchSavedFile(pdfPath);
     }

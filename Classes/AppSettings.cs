@@ -37,8 +37,8 @@ internal sealed class AppSettings
     public string FaxPrinter { get; set; } = ""; // virtueller Faxdrucker (Extras → Faxprogramm), z.B. "FRITZfax Drucker"
     public int OcrJpgQuality { get; set; } = 75; // JPEG-Qualität der Bilder in der erzeugten PDF
     public List<string> PageFiles { get; set; } = []; // Seiten der letzten Sitzung (bei "behalten")
-    public string ScannerId { get; set; }
-    public string ScannerName { get; set; }
+    public string? ScannerId { get; set; }
+    public string? ScannerName { get; set; }
     public int DpiIndex { get; set; } = 2;   // 300 dpi
     public int ColorIndex { get; set; }      // Farbe
     public int AreaIndex { get; set; }       // maximal
@@ -47,7 +47,7 @@ internal sealed class AppSettings
     public List<ScanProfile> ScanProfiles { get; set; } = []; // benannte Scan-Profile (Profil-Combo im Panel)
     public string ScanProfile { get; set; } = ""; // zuletzt gewähltes Profil (nur die Combo-Anzeige)
     public int ThumbWidth { get; set; } = 160;
-    public string CopyPrinter { get; set; }            // Kopiermodus: Drucker samt Einstellungen
+    public string? CopyPrinter { get; set; }            // Kopiermodus: Drucker samt Einstellungen
     public int CopyPaperRawKind { get; set; } = -1;    // -1 = Druckerstandard
     public int CopyPaperSourceRawKind { get; set; } = -1;
     public int CopyDuplexIndex { get; set; }           // 0 = Einseitig
@@ -77,7 +77,7 @@ internal sealed class AppSettings
     {
         try
         {
-            Directory.CreateDirectory(Path.GetDirectoryName(FilePath));
+            Directory.CreateDirectory(Path.GetDirectoryName(FilePath)!);
             File.WriteAllText(FilePath, JsonSerializer.Serialize(this, SerializerOptions));
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }

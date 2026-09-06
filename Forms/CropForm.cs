@@ -1,4 +1,4 @@
-using System.Drawing.Drawing2D;
+﻿using System.Drawing.Drawing2D;
 using ScanView.Classes;
 
 namespace ScanView.Forms;
@@ -32,7 +32,7 @@ internal sealed partial class CropForm : Form, IMessageFilter
     private readonly Font applyBoldFont; // Übernehmen wird fett, sobald es Änderungen gibt
     private readonly Image image; // Original (gehört dem Aufrufer)
     private Image workingImage;   // Arbeitskopie, auf der die Aktionen sichtbar ausgeführt werden
-    private string lastActionText;
+    private string? lastActionText;
     private readonly int handleSize;
     private Rectangle selectionRect = Rectangle.Empty; // in PictureBox-Koordinaten
     private Point mouseDownPoint;
@@ -56,7 +56,7 @@ internal sealed partial class CropForm : Form, IMessageFilter
     /// <summary>„Als neue Seite speichern": liefert das bearbeitete Bild an den Aufrufer, der es als
     /// zusätzliche Seite einfügt — der Dialog bleibt offen und stellt das Original wieder her,
     /// damit sich z.B. mehrere gemeinsam gescannte Fotos nacheinander vereinzeln lassen.</summary>
-    public event Action<Image> SaveAsNewPageRequested;
+    public event Action<Image>? SaveAsNewPageRequested;
 
     public CropForm(Image image, Rectangle storedBounds)
     {
@@ -306,7 +306,7 @@ internal sealed partial class CropForm : Form, IMessageFilter
     /// <summary>Der Bereich der PictureBox, den das gezoomte Bild tatsächlich einnimmt.</summary>
     private Rectangle GetImageRectangle()
     {
-        var img = pictureBox.Image.Size;
+        var img = (pictureBox.Image ?? workingImage).Size;
         var ctrl = pictureBox.ClientSize;
         var ratioImg = (float)img.Width / img.Height;
         var ratioCtrl = (float)ctrl.Width / ctrl.Height;
@@ -319,7 +319,7 @@ internal sealed partial class CropForm : Form, IMessageFilter
     /// <summary>Rechnet die Auswahl aus PictureBox- in Bildpixel-Koordinaten um (Zoom-Modus).</summary>
     private Rectangle TranslateToImage(Rectangle selection)
     {
-        var img = pictureBox.Image;
+        var img = pictureBox.Image ?? workingImage;
         var valid = GetImageRectangle();
         var scale = (float)img.Width / valid.Width;
         var x = (int)Math.Max(0, (selection.X - valid.X) * scale);

@@ -1,3 +1,4 @@
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Resources;
 
@@ -12,7 +13,7 @@ namespace ScanView.Classes;
 internal static class Lng
 {
     private static readonly ResourceManager resources = new("ScanView.Languages.lng", typeof(Lng).Assembly);
-    private static CultureInfo culture; // null = Deutsch (keine Übersetzung nötig)
+    private static CultureInfo? culture; // null = Deutsch (keine Übersetzung nötig)
 
     /// <summary>Der gewählte Kultur-Code ("de", "en", …).</summary>
     public static string CultureCode { get; private set; } = "de";
@@ -24,8 +25,10 @@ internal static class Lng
         catch (CultureNotFoundException) { culture = null; CultureCode = "de"; }
     }
 
-    /// <summary>Übersetzt einen deutschen Text; ohne Eintrag (oder auf Deutsch) kommt er unverändert zurück.</summary>
-    public static string T(string german)
+    /// <summary>Übersetzt einen deutschen Text; ohne Eintrag (oder auf Deutsch) kommt er unverändert zurück.
+    /// Null bleibt null (Designer-Eigenschaften wie ToolTipText dürfen leer sein).</summary>
+    [return: NotNullIfNotNull(nameof(german))]
+    public static string? T(string? german)
     {
         if (culture == null || string.IsNullOrEmpty(german)) { return german; }
         try { return resources.GetString(german, culture) ?? german; }

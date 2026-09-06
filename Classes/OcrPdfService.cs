@@ -16,20 +16,20 @@ internal static class OcrPdfService
 
     /// <summary>Info-Dictionary aus den Dialog-Metadaten füllen (leere Felder: Dateiname als Titel,
     /// Windows-Benutzer als Verfasser).</summary>
-    private static void ApplyMeta(PdfDocument result, string outputPdf, PdfMeta meta)
+    private static void ApplyMeta(PdfDocument result, string outputPdf, PdfMeta? meta)
     {
         // Ersteller = Anwendung, Produzent = PDF-Bibliothek (PDF-Konvention) — den /Producer
         // trägt PDFsharp ohnehin selbst ein, die Eigenschaft ist dort schreibgeschützt
         result.Info.Creator = "ScanView " + (System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "");
-        result.Info.Title = string.IsNullOrWhiteSpace(meta?.Title) ? Path.GetFileNameWithoutExtension(outputPdf) : meta.Title;
-        result.Info.Author = string.IsNullOrWhiteSpace(meta?.Author) ? Environment.UserName : meta.Author;
-        if (!string.IsNullOrWhiteSpace(meta?.Subject)) { result.Info.Subject = meta.Subject; }
-        if (!string.IsNullOrWhiteSpace(meta?.Keywords)) { result.Info.Keywords = meta.Keywords; }
+        result.Info.Title = meta?.Title is { } title && !string.IsNullOrWhiteSpace(title) ? title : Path.GetFileNameWithoutExtension(outputPdf);
+        result.Info.Author = meta?.Author is { } author && !string.IsNullOrWhiteSpace(author) ? author : Environment.UserName;
+        if (meta?.Subject is { } subject && !string.IsNullOrWhiteSpace(subject)) { result.Info.Subject = subject; }
+        if (meta?.Keywords is { } keywords && !string.IsNullOrWhiteSpace(keywords)) { result.Info.Keywords = keywords; }
     }
 
     /// <summary>Erstellt eine PDF ohne Textschicht: jede Seite als JPEG in Originalgröße —
     /// für Scans, bei denen keine Texterkennung gewünscht ist.</summary>
-    public static void CreateImagePdf(IReadOnlyList<string> tiffFiles, string outputPdf, int jpgQuality, Action<int, int> progress, PdfMeta meta = null)
+    public static void CreateImagePdf(IReadOnlyList<string> tiffFiles, string outputPdf, int jpgQuality, Action<int, int>? progress, PdfMeta? meta = null)
     {
         var encoder = System.Drawing.Imaging.ImageCodecInfo.GetImageEncoders()
             .First(c => c.FormatID == System.Drawing.Imaging.ImageFormat.Jpeg.Guid);
@@ -60,7 +60,7 @@ internal static class OcrPdfService
     /// Gesamtzahl) und kann aus BELIEBIGEN Threads kommen. Die Seiten werden PARALLEL erkannt —
     /// die Texterkennung selbst ist der einzige nennenswerte Kostenpunkt (~2,6 s je volle Seite),
     /// Engine-Initialisierung ist mit ~0,03 s vernachlässigbar, daher eine Engine je Seite.</summary>
-    public static void CreateSearchablePdf(IReadOnlyList<string> tiffFiles, string outputPdf, string language, int jpgQuality, Action<int, int> progress, PdfMeta meta = null)
+    public static void CreateSearchablePdf(IReadOnlyList<string> tiffFiles, string outputPdf, string language, int jpgQuality, Action<int, int>? progress, PdfMeta? meta = null)
     {
         TesseractEnviornment.CustomSearchPath = Path.Combine(AppContext.BaseDirectory, "x64"); // native DLLs des NuGet-Pakets
         var pagePdfs = new string[tiffFiles.Count];

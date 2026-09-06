@@ -10,7 +10,7 @@ namespace ScanView.Classes;
 /// und auf ScanView zugeschnitten.</summary>
 internal static class TaskDlg
 {
-    public static void MsgTaskDlg(nint hwnd, string heading, string message, TaskDialogIcon icon = null)
+    public static void MsgTaskDlg(nint hwnd, string heading, string message, TaskDialogIcon? icon = null)
     {
         TaskDialog.ShowDialog(hwnd, new TaskDialogPage() { Caption = Application.ProductName, SizeToContent = true, Heading = heading, Text = message, Icon = icon ?? TaskDialogIcon.None, AllowCancel = true, Buttons = { TaskDialogButton.OK } });
     }
@@ -40,7 +40,7 @@ internal static class TaskDlg
 
     /// <summary>Ja/Nein-Frage; true nur bei ausdrücklichem Ja (Abbrechen/Esc zählt als Nein).
     /// Mit defaultNo steht der Fokus auf "Nein" — für destruktive Aktionen.</summary>
-    public static bool ConfirmTaskDlg(nint hwnd, string heading, string message, TaskDialogIcon icon = null, bool defaultNo = false)
+    public static bool ConfirmTaskDlg(nint hwnd, string heading, string message, TaskDialogIcon? icon = null, bool defaultNo = false)
     {
         TaskDialogPage page = new() { Caption = Application.ProductName, SizeToContent = true, Heading = heading, Text = message, Icon = icon ?? TaskDialogIcon.None, AllowCancel = true, Buttons = { TaskDialogButton.Yes, TaskDialogButton.No } };
         if (defaultNo) { page.DefaultButton = page.Buttons[1]; }
@@ -50,7 +50,7 @@ internal static class TaskDlg
     /// <summary>Import-Rückfrage für Bilder, die keinem Papierformat entsprechen: auf eine Seite im
     /// Zielformat (z. B. "A4", nach dem Scanbereich) einpassen (true), Originalgröße behalten (false)
     /// oder Import abbrechen (null).</summary>
-    public static bool? FitToPageTaskDlg(nint hwnd, Icon icon, string formatName, bool formatFromScanArea, int offFormatCount, int totalCount)
+    public static bool? FitToPageTaskDlg(nint hwnd, Icon? icon, string formatName, bool formatFromScanArea, int offFormatCount, int totalCount)
     {
         TaskDialogButton fitButton = new TaskDialogCommandLinkButton(string.Format(Lng.T("Auf {0}-Seite einpassen"), formatName), string.Format(Lng.T("Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert"), formatName));
         TaskDialogButton keepButton = new TaskDialogCommandLinkButton(Lng.T("Originalgröße beibehalten"), Lng.T("Beim Speichern wird die Seite nur so groß wie das Bild"));
@@ -75,7 +75,7 @@ internal static class TaskDlg
 
     /// <summary>Über-Dialog mit Programm-Icon, Komponenten-Versionen und PayPal-Spendenlink
     /// (derselbe wie in PDFlight).</summary>
-    public static void AboutTaskDlg(nint hwnd, Icon icon)
+    public static void AboutTaskDlg(nint hwnd, Icon? icon)
     {
         var curVersion = Assembly.GetExecutingAssembly().GetName().Version;
         var threeVersion = curVersion?.ToString(3) ?? Lng.T("unbekannt");
@@ -138,7 +138,7 @@ internal static class TaskDlg
             Buttons = { TaskDialogButton.Close }
         };
         var urlString = WebsiteUrl; // Fallback: die Webseite, falls die XML keinen Download-Link nennt
-        Version updateVersion = null;
+        Version? updateVersion = null;
         var dateString = string.Empty;
         var failed = false;
         Cursor.Current = Cursors.WaitCursor; // die Abfrage dauert im Normalfall unter einer Sekunde
@@ -176,7 +176,7 @@ internal static class TaskDlg
             updatePage.Text = Lng.T("Die Versionsangabe in der Update-Datei konnte nicht gelesen werden.");
         }
         if (failed) { updatePage.Icon = TaskDialogIcon.Error; }
-        else if (curVersion != null && updateVersion.CompareTo(curVersion) > 0)
+        else if (curVersion != null && updateVersion != null && updateVersion.CompareTo(curVersion) > 0)
         {
             updatePage.Heading = Lng.T("Es steht ein Update zur Verfügung!");
             updatePage.Text = "Version " + updateVersion + (dateString.Length > 0 ? " " + Lng.T("vom") + " " + dateString : string.Empty);
@@ -187,7 +187,7 @@ internal static class TaskDlg
 
     /// <summary>Alle Tastenkürzel: Kürzel, Kurztext und optionale Zusatzerklärung für die PDF-Übersicht.</summary>
     // Sortierung: F-Tasten (numerisch), Strg+Zahl, Strg+Buchstabe (alphabetisch), Strg+Sondertaste, Übrige
-    public static readonly (string Key, string Text, string Detail)[] ShortcutRows =
+    public static readonly (string Key, string Text, string? Detail)[] ShortcutRows =
     [
         ("F1", "diese Kürzel-Übersicht", null),
         ("F4", "Seite scannen", null),
@@ -219,7 +219,7 @@ internal static class TaskDlg
     /// <summary>Kürzel-Übersicht (F1 und ?-Menü): erstellt die PDF im Downloads-Ordner und öffnet sie
     /// im Standard-PDF-Programm. Existiert die Datei schon, fragt ein Dialog, ob sie geöffnet oder
     /// neu erstellt werden soll (Muster aus PDFlight).</summary>
-    public static void ShowShortcutsPdf(nint hwnd, Icon icon)
+    public static void ShowShortcutsPdf(nint hwnd, Icon? icon)
     {
         var path = ShortcutsPdf.DefaultPath;
         if (File.Exists(path))

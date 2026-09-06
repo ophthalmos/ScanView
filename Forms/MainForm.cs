@@ -38,17 +38,17 @@ public partial class MainForm : Form, IMessageFilter
     private static readonly Color SelectionColor = Color.FromArgb(0xA6, 0xD0, 0xF1); // Rahmen und Seitenzahl-Streifen der markierten Seite
     private static readonly Color FrameColor = Color.LightGray; // derselbe Rahmen im Ruhezustand
 
-    private Panel selected; // Miniatur-Container (Bild + Seitenzahl)
+    private Panel? selected; // Miniatur-Container (Bild + Seitenzahl)
     private Point dragStart; // Mausposition beim Drücken — Start des Miniatur-Ziehens
-    private string selectedScannerId; // DeviceID, TestPageId oder null (= noch kein Gerät gewählt)
-    private string selectedScannerName;
-    private string clipboardPath; // interne Seiten-Zwischenablage (Ausschneiden/Kopieren)
+    private string? selectedScannerId; // DeviceID, TestPageId oder null (= noch kein Gerät gewählt)
+    private string? selectedScannerName;
+    private string? clipboardPath; // interne Seiten-Zwischenablage (Ausschneiden/Kopieren)
     private FormWindowState previousWindowState; // zum Verlassen des Vollbildmodus
     private readonly AppSettings settings;
     private readonly PrinterSettings copyPrinterSettings = new(); // Kopiermodus: gewählter Drucker samt Treiber-Einstellungen
     private readonly List<PaperSize> copyPaperSizes = []; // Papierformate des gewählten Druckers (parallel zur Combo)
     private readonly List<PaperSource> copyPaperSources = []; // Papierzufuhren des gewählten Druckers (parallel zur Combo)
-    private Font copyModeBoldFont; // „Kopiermodus beenden" fett, solange der Modus aktiv ist
+    private Font? copyModeBoldFont; // „Kopiermodus beenden" fett, solange der Modus aktiv ist
     private bool pendingStiScan;   // Start über die Scanner-Taste: nach dem Anzeigen sofort scannen
     private bool ocrBusy;          // Texterkennung läuft im Hintergrund — Beenden solange abweisen
 
@@ -56,7 +56,7 @@ public partial class MainForm : Form, IMessageFilter
     {
     }
 
-    public MainForm(bool selfTest, string stiDeviceId = null)
+    public MainForm(bool selfTest, string? stiDeviceId = null)
     {
         this.selfTest = selfTest;
         settings = AppSettings.Load();
@@ -130,7 +130,7 @@ public partial class MainForm : Form, IMessageFilter
     {
         if (ocrBusy) { e.Cancel = true; return; } // erst die laufende Texterkennung fertigstellen
         if (selfTest) { return; }
-        var pages = flowPanel.Controls.Cast<Panel>().Select(p => (string)p.Tag).ToList();
+        var pages = flowPanel.Controls.Cast<Panel>().Select(p => PathOf(p)).ToList();
         var keep = pages.Count > 0 && (settings.ExitAction == 0
             || (settings.ExitAction == 1 && !TaskDlg.ConfirmTaskDlg(Handle, Lng.T("Seitenübersicht leeren?"),
                 Lng.T("Bei Nein stehen die Seiten beim nächsten Programmstart wieder in der Übersicht."))));
@@ -236,7 +236,7 @@ public partial class MainForm : Form, IMessageFilter
     private void ContextOpenViewer_Click(object sender, EventArgs e)
     {
         if (selected == null) { return; }
-        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo((string)selected.Tag) { UseShellExecute = true });
+        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(PathOf(selected)) { UseShellExecute = true });
     }
 
     // ------------------------------------------------------------------ Fensterposition merken
@@ -352,7 +352,7 @@ public partial class MainForm : Form, IMessageFilter
         }
         var output = Path.Combine(sessionFolder, "Selbsttest.pdf");
         // synchron direkt über den Service — ein GetResult auf CreatePdfAsync würde den UI-Thread deadlocken
-        OcrPdfService.CreateSearchablePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)], output, "deu", 75, null);
+        OcrPdfService.CreateSearchablePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b))], output, "deu", 75, null);
         var pageCount = 0;
         try
         {
@@ -361,7 +361,7 @@ public partial class MainForm : Form, IMessageFilter
         }
         catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
         var outputA = Path.Combine(sessionFolder, "SelbsttestA.pdf"); // PDF/A: reiner Bild-PDF-Weg
-        OcrPdfService.CreateImagePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)], outputA, 75, null,
+        OcrPdfService.CreateImagePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b))], outputA, 75, null,
             new PdfMeta("Selbsttest", "PDF/A-Prüfung", "Scan, Test", "ScanView", PdfA: true));
         var pageCountA = 0;
         try
@@ -398,7 +398,7 @@ public partial class MainForm : Form, IMessageFilter
             saveDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, saveDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-save.png"));
         }
-        using (var image = ScanService.LoadUnlocked((string)((Panel)flowPanel.Controls[0]).Tag)) // und der Zuschneide-Dialog
+        using (var image = ScanService.LoadUnlocked(PathOf((Panel)flowPanel.Controls[0]))) // und der Zuschneide-Dialog
         using (CropForm cropDialog = new(image, Rectangle.Empty))
         {
             cropDialog.StartPosition = FormStartPosition.Manual;
@@ -479,8 +479,8 @@ public partial class MainForm : Form, IMessageFilter
         statusStrip.Refresh();
         // UseWaitCursor statt Cursor.Current: die WIA-Fortschrittsanzeige pumpt Nachrichten und würde Cursor.Current sofort zurücksetzen
         Application.UseWaitCursor = true;
-        string scanned;
-        string scanError;
+        string? scanned;
+        string? scanError;
         try
         {
             scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1, out scanError);
@@ -694,12 +694,12 @@ public partial class MainForm : Form, IMessageFilter
             using var image = ScanService.LoadUnlocked(tiffPath);
             if (chkCopyFit.Checked)
             {
-                args.Graphics.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
+                args.Graphics!.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
             }
             else
             {
                 // Originalgröße: die Druck-Graphics rechnet in 1/100 Zoll
-                args.Graphics.DrawImage(image, 0, 0, image.Width * 100f / image.HorizontalResolution, image.Height * 100f / image.VerticalResolution);
+                args.Graphics!.DrawImage(image, 0, 0, image.Width * 100f / image.HorizontalResolution, image.Height * 100f / image.VerticalResolution);
             }
             args.HasMorePages = false;
         };
@@ -723,9 +723,8 @@ public partial class MainForm : Form, IMessageFilter
             ToolStripMenuItem item = new(scanner.Name) { Checked = scanner.Id == selectedScannerId, Tag = scanner };
             item.Click += (s, args) =>
             {
-                var info = (ScannerInfo)((ToolStripMenuItem)s).Tag;
-                selectedScannerId = info.Id;
-                selectedScannerName = info.Name;
+                selectedScannerId = scanner.Id;
+                selectedScannerName = scanner.Name;
                 UpdateUiState();
             };
             splitScan.DropDownItems.Add(item);
@@ -820,7 +819,7 @@ public partial class MainForm : Form, IMessageFilter
             : Lng.T("&Rückgängig");
     }
 
-    private List<string> CurrentPageOrder() => [.. flowPanel.Controls.Cast<Panel>().Select(t => (string)t.Tag)];
+    private List<string> CurrentPageOrder() => [.. flowPanel.Controls.Cast<Panel>().Select(t => PathOf(t))];
 
     /// <summary>Merkt die aktuelle Seitenreihenfolge als Rückgängig-Schritt (vor dem Umsortieren aufrufen).</summary>
     private void PushOrderUndo(string text)
@@ -833,7 +832,7 @@ public partial class MainForm : Form, IMessageFilter
     /// zwischenzeitlichem Entfernen und Wiederherstellen die richtigen Kacheln greifen.</summary>
     private void RestorePageOrder(List<string> order)
     {
-        var byPath = flowPanel.Controls.Cast<Panel>().ToDictionary(t => (string)t.Tag, StringComparer.OrdinalIgnoreCase);
+        var byPath = flowPanel.Controls.Cast<Panel>().ToDictionary(t => PathOf(t), StringComparer.OrdinalIgnoreCase);
         ReorderPages([.. order.Where(byPath.ContainsKey).Select(p => byPath[p])]);
     }
 
@@ -862,8 +861,11 @@ public partial class MainForm : Form, IMessageFilter
         });
     }
 
-    private Panel FindThumb(string path) => flowPanel.Controls.Cast<Panel>()
-        .FirstOrDefault(t => string.Equals((string)t.Tag, path, StringComparison.OrdinalIgnoreCase));
+    /// <summary>Der Dateipfad einer Miniatur — jede Kachel trägt ihn seit AddPage im Tag.</summary>
+    private static string PathOf(Panel thumb) => (string)thumb.Tag!;
+
+    private Panel? FindThumb(string path) => flowPanel.Controls.Cast<Panel>()
+        .FirstOrDefault(t => string.Equals(PathOf(t), path, StringComparison.OrdinalIgnoreCase));
 
     /// <summary>Nimmt eine hinzugekommene Seite wieder aus der Übersicht (die Datei bleibt liegen).</summary>
     private void RemovePageByPath(string path)
@@ -891,14 +893,14 @@ public partial class MainForm : Form, IMessageFilter
     private void MenuEditCut_Click(object sender, EventArgs e)
     {
         if (selected == null) { return; }
-        clipboardPath = (string)selected.Tag; // Datei bleibt im Sitzungsordner liegen
+        clipboardPath = PathOf(selected); // Datei bleibt im Sitzungsordner liegen
         BtnRemove_Click(sender, e);
     }
 
     private void MenuEditCopy_Click(object sender, EventArgs e)
     {
         if (selected == null) { return; }
-        clipboardPath = (string)selected.Tag;
+        clipboardPath = PathOf(selected);
         UpdateUiState();
     }
 
@@ -941,9 +943,10 @@ public partial class MainForm : Form, IMessageFilter
     /// <summary>Lädt die Miniatur der markierten Seite neu — nach Drehen oder Zuschneiden.</summary>
     private void ReloadSelectedThumbnail()
     {
+        if (selected == null) { return; }
         var pic = PicOf(selected);
         var old = pic.Image;
-        pic.Image = ScanService.LoadThumbnail((string)selected.Tag, ThumbImageWidth);
+        pic.Image = ScanService.LoadThumbnail(PathOf(selected), ThumbImageWidth);
         old?.Dispose();
         UpdateUiState(); // nach Drehen/Zuschneiden die Format- und Maßanzeige nachziehen
     }
@@ -952,7 +955,7 @@ public partial class MainForm : Form, IMessageFilter
     private void RotateSelected(RotateFlipType rotation)
     {
         if (selected == null) { return; }
-        var path = (string)selected.Tag;
+        var path = PathOf(selected);
         PushOverwriteUndo(Lng.T("Seite gedreht"), path);
         using (var image = ScanService.LoadUnlocked(path))
         {
@@ -968,7 +971,7 @@ public partial class MainForm : Form, IMessageFilter
     {
         if (selected == null) { return; }
         var sourceThumb = selected; // die bearbeitete Seite — „Als neue Seite speichern" markiert zwischenzeitlich die Kopien
-        var path = (string)selected.Tag;
+        var path = PathOf(selected);
         using var image = ScanService.LoadUnlocked(path);
         using CropForm dialog = new(image, new Rectangle(settings.CropX, settings.CropY, settings.CropWidth, settings.CropHeight));
         dialog.SaveAsNewPageRequested += SaveCropAsNewPage; // der Dialog bleibt dabei offen (Fotos vereinzeln)
@@ -1219,13 +1222,13 @@ public partial class MainForm : Form, IMessageFilter
 
     private void FlowPanel_DragEnter(object sender, DragEventArgs e)
     {
-        e.Effect = e.Data.GetDataPresent(typeof(Panel)) ? DragDropEffects.Move : DragDropEffects.None;
+        e.Effect = e.Data?.GetDataPresent(typeof(Panel)) == true ? DragDropEffects.Move : DragDropEffects.None;
     }
 
     /// <summary>Sortiert die gezogene Miniatur schon während des Ziehens live an die Zielposition.</summary>
     private void FlowPanel_DragOver(object sender, DragEventArgs e)
     {
-        if (e.Data.GetData(typeof(Panel)) is not Panel dragged) { return; }
+        if (e.Data?.GetData(typeof(Panel)) is not Panel dragged) { return; }
         e.Effect = DragDropEffects.Move;
         var point = flowPanel.PointToClient(new Point(e.X, e.Y));
         if (point.Y < 40 || point.Y > flowPanel.Height - 40) // am Rand weiterscrollen
@@ -1264,7 +1267,7 @@ public partial class MainForm : Form, IMessageFilter
         UpdateUiState();
     }
 
-    private void Select(Panel thumb)
+    private void Select(Panel? thumb)
     {
         // Der Rahmen (samt Seitenzahl-Streifen) bleibt immer stehen und wechselt nur die Farbe
         selected?.BackColor = FrameColor;
@@ -1337,7 +1340,7 @@ public partial class MainForm : Form, IMessageFilter
         if (selected == null) { return; }
         try
         {
-            using var stream = File.OpenRead((string)selected.Tag);
+            using var stream = File.OpenRead(PathOf(selected));
             using var image = Image.FromStream(stream, false, false); // validateImageData=false: nur die Kopfdaten lesen
             if (image.HorizontalResolution < 1 || image.VerticalResolution < 1) // ohne dpi keine physischen Maße
             {
@@ -1372,7 +1375,7 @@ public partial class MainForm : Form, IMessageFilter
     }
 
     /// <summary>Erkennt gängige Papierformate mit Scan-Toleranz (±4 mm); null, wenn keines passt.</summary>
-    private static string DescribePaperFormat(double widthMm, double heightMm)
+    private static string? DescribePaperFormat(double widthMm, double heightMm)
     {
         (string Name, double W, double H)[] formats =
         [
@@ -1412,7 +1415,7 @@ public partial class MainForm : Form, IMessageFilter
         if (selected == null) { return; }
         var box = selected;
         var index = flowPanel.Controls.GetChildIndex(box); // die nachrückende Seite übernimmt die Markierung
-        var removedPath = (string)box.Tag;
+        var removedPath = PathOf(box);
         PushUndo(Lng.T("Seite entfernt"), () => RestorePage(removedPath, index)); // die Datei bleibt bis zum Beenden liegen
         Select(null);
         flowPanel.Controls.Remove(box);
@@ -1473,8 +1476,8 @@ public partial class MainForm : Form, IMessageFilter
             return;
         }
         List<string> files = dialog.AllPages
-            ? [.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)]
-            : [(string)selected.Tag];
+            ? [.. flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b))]
+            : [PathOf(selected!)]; // „Nur markierte Seite" ist ohne Markierung nicht wählbar
         // JPEG/PNG mit „Alle Seiten": jede Seite wird eine eigene nummerierte Datei (Foto-Workflow)
         var imageSeries = dialog.FileType is SaveFileType.Jpeg or SaveFileType.Png && files.Count > 1;
         List<string> targets = imageSeries
@@ -1527,7 +1530,7 @@ public partial class MainForm : Form, IMessageFilter
     /// Speichern-Dialog mit Texterkennung (durchsuchbar) oder als reine Bild-PDF.
     /// Läuft im Hintergrund (die Seiten werden parallel erkannt); die Oberfläche bleibt
     /// bedienbar-gesperrt und zeigt den Fortschritt aus den Worker-Threads.</summary>
-    private async Task CreatePdfAsync(List<string> tiffFiles, string outputPdf, string language, int jpgQuality, PdfMeta meta)
+    private async Task CreatePdfAsync(List<string> tiffFiles, string outputPdf, string? language, int jpgQuality, PdfMeta meta)
     {
         ocrBusy = true; // FormClosing-Guard: nicht mitten in der Texterkennung beenden
         toolStrip.Enabled = false;
@@ -1569,7 +1572,7 @@ public partial class MainForm : Form, IMessageFilter
 
     private void BtnPrint_Click(object sender, EventArgs e)
     {
-        var pages = flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag).ToList();
+        var pages = flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b)).ToList();
         if (pages.Count == 0) { return; }
         using PrintDocument document = new();
         document.DocumentName = "ScanView";
@@ -1585,7 +1588,7 @@ public partial class MainForm : Form, IMessageFilter
         settings.CopyFit = dialog.FitToPage;
         settings.Save();
         SyncCopyModeUi();
-        if (!dialog.AllPages) { pages = [(string)selected.Tag]; }
+        if (!dialog.AllPages) { pages = [PathOf(selected!)]; } // „Nur markierte Seite" ist ohne Markierung nicht wählbar
         document.PrinterSettings = dialog.DriverSettings; // Treiber-Extras aus dem Eigenschaften-Dialog mitnehmen
         ApplySharedPrinterSettings(document); // wendet die eben übernommenen Vorgaben an
         var pageIndex = 0;
@@ -1594,12 +1597,12 @@ public partial class MainForm : Form, IMessageFilter
             using var image = ScanService.LoadUnlocked(pages[pageIndex]);
             if (dialog.FitToPage)
             {
-                args.Graphics.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
+                args.Graphics!.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
             }
             else
             {
                 // Originalgröße: die Druck-Graphics rechnet in 1/100 Zoll
-                args.Graphics.DrawImage(image, 0, 0, image.Width * 100f / image.HorizontalResolution, image.Height * 100f / image.VerticalResolution);
+                args.Graphics!.DrawImage(image, 0, 0, image.Width * 100f / image.HorizontalResolution, image.Height * 100f / image.VerticalResolution);
             }
             pageIndex++;
             args.HasMorePages = pageIndex < pages.Count;
@@ -1728,8 +1731,8 @@ public partial class MainForm : Form, IMessageFilter
         using FaxForm dialog = new(selected != null);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         List<string> pages = dialog.AllPages
-            ? [.. flowPanel.Controls.Cast<Panel>().Select(b => (string)b.Tag)]
-            : [(string)selected.Tag];
+            ? [.. flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b))]
+            : [PathOf(selected!)]; // „Nur markierte Seite" ist ohne Markierung nicht wählbar
         using PrintDocument document = new();
         document.DocumentName = "ScanView";
         document.PrinterSettings.PrinterName = settings.FaxPrinter;
@@ -1737,7 +1740,7 @@ public partial class MainForm : Form, IMessageFilter
         document.PrintPage += (s, args) =>
         {
             using var image = ScanService.LoadUnlocked(pages[pageIndex]);
-            args.Graphics.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
+            args.Graphics!.DrawImage(image, args.MarginBounds); // in die Ränder eingepasst
             pageIndex++;
             args.HasMorePages = pageIndex < pages.Count;
         };

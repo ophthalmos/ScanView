@@ -1,4 +1,4 @@
-namespace ScanView.Classes;
+﻿namespace ScanView.Classes;
 
 /// <summary>Ein Eintrag der Sprachauswahl — zeigt den Klarnamen, trägt den Tesseract-Code.</summary>
 internal sealed record OcrLanguageItem(string Code)
@@ -32,7 +32,7 @@ internal static class OcrLanguages
         {
             var folder = Path.Combine(AppContext.BaseDirectory, "tessdata");
             result.AddRange(Directory.EnumerateFiles(folder, "*.traineddata")
-                .Select(Path.GetFileNameWithoutExtension)
+                .Select(file => Path.GetFileNameWithoutExtension(file))
                 .OrderBy(code => code, StringComparer.OrdinalIgnoreCase));
         }
         catch (Exception ex) when (ex is IOException or UnauthorizedAccessException or DirectoryNotFoundException) { }

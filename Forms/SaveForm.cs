@@ -1,4 +1,4 @@
-using ScanView.Classes;
+﻿using ScanView.Classes;
 
 namespace ScanView.Forms;
 
@@ -21,7 +21,7 @@ internal sealed partial class SaveForm : Form
     public SaveFileType FileType => comboFileType.SelectedIndex switch { 1 => SaveFileType.PdfA, 2 => SaveFileType.Jpeg, 3 => SaveFileType.Png, 4 => SaveFileType.Tiff, _ => SaveFileType.Pdf };
 
     /// <summary>Gewählte OCR-Sprache — null bei „Ohne Texterkennung" oder Bild-Dateitypen.</summary>
-    public string OcrLanguage => FileType == SaveFileType.Pdf && comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
+    public string? OcrLanguage => FileType == SaveFileType.Pdf && comboOcr.SelectedItem is OcrLanguageItem item ? item.Code : null;
 
     /// <summary>JPEG-Qualität für den Encoder (30–100) — der Slider läuft intern in 5er-Einheiten.</summary>
     public int JpgQuality => trackQuality.Value * 5;

@@ -1,4 +1,4 @@
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using ScanView.Classes;
 
 namespace ScanView.Forms;
@@ -10,10 +10,10 @@ internal sealed partial class ScannerForm : Form
     private readonly List<ScannerInfo> scanners;
 
     /// <summary>Das gewählte Gerät (gültig nach DialogResult.OK); null, wenn keines gefunden wurde.</summary>
-    public ScannerInfo SelectedScanner =>
+    public ScannerInfo? SelectedScanner =>
         comboScanner.SelectedIndex >= 0 && comboScanner.SelectedIndex < scanners.Count ? scanners[comboScanner.SelectedIndex] : null;
 
-    public ScannerForm(string currentScannerId)
+    public ScannerForm(string? currentScannerId)
     {
         InitializeComponent();
         Lng.Apply(this);

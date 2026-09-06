@@ -1,4 +1,4 @@
-using System.Drawing.Printing;
+﻿using System.Drawing.Printing;
 using ScanView.Classes;
 
 namespace ScanView.Forms;
@@ -14,11 +14,11 @@ internal sealed partial class PrintForm : Form
     public string PrinterName => comboPrinter.SelectedItem as string ?? string.Empty;
 
     /// <summary>Gewähltes Papierformat — null, wenn der Treiber keines meldet.</summary>
-    public PaperSize SelectedPaper => comboPaper.SelectedIndex >= 0 && comboPaper.SelectedIndex < paperSizes.Count
+    public PaperSize? SelectedPaper => comboPaper.SelectedIndex >= 0 && comboPaper.SelectedIndex < paperSizes.Count
         ? paperSizes[comboPaper.SelectedIndex] : null;
 
     /// <summary>Gewählte Papierzufuhr — null, wenn der Treiber keine meldet.</summary>
-    public PaperSource SelectedSource => comboSource.SelectedIndex >= 0 && comboSource.SelectedIndex < paperSources.Count
+    public PaperSource? SelectedSource => comboSource.SelectedIndex >= 0 && comboSource.SelectedIndex < paperSources.Count
         ? paperSources[comboSource.SelectedIndex] : null;
 
     public int DuplexIndex => Math.Max(0, comboDuplex.SelectedIndex);

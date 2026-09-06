@@ -1,4 +1,4 @@
-using System.Drawing.Printing;
+﻿using System.Drawing.Printing;
 using ScanView.Classes;
 
 namespace ScanView.Forms;
@@ -9,7 +9,7 @@ internal sealed partial class FaxPrinterForm : Form
 {
     /// <summary>Gewählter Faxdrucker — leer beim Eintrag „(kein Faxdrucker)", dann bleibt
     /// der Faxen-Button in der Toolbar ausgeblendet.</summary>
-    public string FaxPrinter => comboPrinter.SelectedIndex > 0 ? (string)comboPrinter.SelectedItem : string.Empty;
+    public string FaxPrinter => comboPrinter.SelectedIndex > 0 && comboPrinter.SelectedItem is string name ? name : string.Empty;
 
     public FaxPrinterForm(string currentPrinter)
     {
