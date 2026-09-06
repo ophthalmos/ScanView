@@ -47,17 +47,18 @@ internal static class TaskDlg
         return TaskDialog.ShowDialog(hwnd, page) == TaskDialogButton.Yes;
     }
 
-    /// <summary>Import-Rückfrage für Bilder, die keinem Papierformat entsprechen: auf eine A4-Seite
-    /// einpassen (true), Originalgröße behalten (false) oder Import abbrechen (null).</summary>
-    public static bool? FitToPageTaskDlg(nint hwnd, Icon icon, int offFormatCount, int totalCount)
+    /// <summary>Import-Rückfrage für Bilder, die keinem Papierformat entsprechen: auf eine Seite im
+    /// Zielformat (z. B. "A4", nach dem Scanbereich) einpassen (true), Originalgröße behalten (false)
+    /// oder Import abbrechen (null).</summary>
+    public static bool? FitToPageTaskDlg(nint hwnd, Icon icon, string formatName, int offFormatCount, int totalCount)
     {
-        TaskDialogButton fitButton = new TaskDialogCommandLinkButton(Lng.T("Auf A4-Seite einpassen"), Lng.T("Weiße A4-Seite mit 300 dpi, die Grafik wird zentriert"));
+        TaskDialogButton fitButton = new TaskDialogCommandLinkButton(string.Format(Lng.T("Auf {0}-Seite einpassen"), formatName), string.Format(Lng.T("Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert"), formatName));
         TaskDialogButton keepButton = new TaskDialogCommandLinkButton(Lng.T("Originalgröße beibehalten"), Lng.T("Die PDF-Seite wird nur so groß wie das Bild"));
         using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante
         TaskDialogPage page = new()
         {
             Caption = Application.ProductName,
-            Heading = Lng.T("Grafik auf eine A4-Seite legen?"),
+            Heading = string.Format(Lng.T("Grafik auf eine {0}-Seite legen?"), formatName),
             Text = string.Format(Lng.T("Bei {0} von {1} Dateien entspricht die Bildgröße keinem Papierformat."), offFormatCount, totalCount),
             Icon = icon32 == null ? TaskDialogIcon.None : new TaskDialogIcon(icon32),
             AllowCancel = true,
