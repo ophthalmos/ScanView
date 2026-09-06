@@ -359,4 +359,6 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>Página {0} blanca a 300 dpi, el gráfico se centra</value></data>
   <data name="Originalgröße beibehalten" xml:space="preserve"><value>Mantener el tamaño original</value></data>
   <data name="Beim Speichern wird die PDF-Seite nur so groß wie das Bild" xml:space="preserve"><value>Al guardar, la página PDF solo tendrá el tamaño de la imagen</value></data>
+  <data name="Das Zielformat {0} folgt dem eingestellten Scanbereich." xml:space="preserve"><value>El formato de destino {0} sigue el área de escaneo seleccionada.</value></data>
+  <data name="Der eingestellte Scanbereich ergibt kein Seitenformat, daher {0}." xml:space="preserve"><value>El área de escaneo seleccionada no corresponde a un formato de página, por eso {0}.</value></data>
 </root>

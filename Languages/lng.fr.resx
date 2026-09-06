@@ -359,4 +359,6 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Weiße {0}-Seite mit 300 dpi, die Grafik wird zentriert" xml:space="preserve"><value>Page {0} blanche à 300 dpi, le graphique est centré</value></data>
   <data name="Originalgröße beibehalten" xml:space="preserve"><value>Conserver la taille d'origine</value></data>
   <data name="Beim Speichern wird die PDF-Seite nur so groß wie das Bild" xml:space="preserve"><value>À l'enregistrement, la page PDF n'aura que la taille de l'image</value></data>
+  <data name="Das Zielformat {0} folgt dem eingestellten Scanbereich." xml:space="preserve"><value>Le format cible {0} suit la zone de numérisation sélectionnée.</value></data>
+  <data name="Der eingestellte Scanbereich ergibt kein Seitenformat, daher {0}." xml:space="preserve"><value>La zone de numérisation sélectionnée ne correspond à aucun format de page, d'où {0}.</value></data>
 </root>
