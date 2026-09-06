@@ -66,8 +66,8 @@ internal static class TaskDlg
             Buttons = { fitButton, keepButton, TaskDialogButton.Cancel },
             DefaultButton = fitButton,
             Footnote = new TaskDialogFootnote(string.Format(formatFromScanArea
-                ? Lng.T("Das Zielformat {0} folgt dem eingestellten Scanbereich.")
-                : Lng.T("Der eingestellte Scanbereich ergibt kein Seitenformat, daher {0}."), formatName))
+                ? Lng.T("Hinweis: Das Zielformat „{0}“ folgt dem eingestellten Scanbereich.")
+                : Lng.T("Hinweis: Der eingestellte Scanbereich ergibt kein Seitenformat, daher „{0}“."), formatName))
         };
         var result = TaskDialog.ShowDialog(hwnd, page);
         return result == fitButton ? true : result == keepButton ? false : null;
