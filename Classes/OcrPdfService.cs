@@ -79,6 +79,15 @@ internal static class OcrPdfService
                     using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
                         new Dictionary<string, object> { { "user_defined_dpi", 300 }, { "jpg_quality", jpgQuality } }, false);
                     using var pix = Pix.LoadFromFile(tiffFiles[i]);
+
+                    // Optimierungs-Prüfung: Ist das Bild binarisiert?
+                    if (pix.Depth > 1)
+                    {
+                        // Warnung: Ein Bild mit mehr als 1 Bit Farbtiefe führt zu sehr großen PDF-Dateien. 
+                        // Hier sollte das Bild idealerweise binarisiert werden. 
+                        // Leptonica bietet hierfür Methoden wie ConvertRGBToGray() und BinarizeOtsu().
+                    }
+
                     // zweiter Parameter = Bilddateiname: daraus lädt der PDF-Renderer das einzubettende Bild
                     using var page = engine.Process(pix, tiffFiles[i], PageSegMode.Auto);
                     renderer.AddPage(page);

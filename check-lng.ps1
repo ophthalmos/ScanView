@@ -64,6 +64,10 @@ foreach ($file in $sources) {
     foreach ($m in [regex]::Matches($text, "\b(?:Text|ToolTipText|ShortcutKeyDisplayString|HeaderText)\s*=\s*$literal\s*;")) {
         [void]$used.Add((ConvertFrom-CSharpLiteral $m.Groups[1].Value))
     }
+    # 3b) ToolTip-Komponenten des Designers: toolTip.SetToolTip(control, "…") — übersetzt Lng.Apply(ToolTip, …)
+    foreach ($m in [regex]::Matches($text, "\.SetToolTip\(\s*\w+\s*,\s*$literal\s*\)")) {
+        [void]$used.Add((ConvertFrom-CSharpLiteral $m.Groups[1].Value))
+    }
     # 4) Combo-Listen des Designers und Dictionary-Werte (["ita"] = "Italienisch") — beides
     #    übersetzt die Anwendung zur Laufzeit über Lng.T
     foreach ($m in [regex]::Matches($text, "Items\.AddRange\(new object\[\]\s*\{([^}]*)\}")) {
@@ -75,7 +79,7 @@ foreach ($file in $sources) {
     # 5) Kürzel-Tupel ("Kürzel", "Kurztext") in TaskDlg.ShortcutRows und den Kürzellisten der Formulare
     foreach ($m in [regex]::Matches($text, "\(\s*$literal\s*,\s*$literal")) {
         $key = ConvertFrom-CSharpLiteral $m.Groups[1].Value
-        if ($key -match '^(Strg|F\d|Alt\+|Bild|2×|Esc|Entf)') {
+        if ($key -match '^(Strg|F\d|Alt\+|Bild|Pfeil|Maus|Doppelklick|2×|Esc|Entf)') {
             [void]$used.Add($key)
             [void]$used.Add((ConvertFrom-CSharpLiteral $m.Groups[2].Value))
         }

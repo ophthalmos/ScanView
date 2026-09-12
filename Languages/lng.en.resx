@@ -368,4 +368,5 @@ Grayscale scans save additional space.</value></data>
   <data name="Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen." xml:space="preserve"><value>Click a page first so the overview receives the keys – otherwise they control the scan settings.</value></data>
   <data name="Mausrad" xml:space="preserve"><value>Mouse wheel</value></data>
   <data name="Seitenübersicht scrollen" xml:space="preserve"><value>scroll the page overview</value></data>
+  <data name="Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI." xml:space="preserve"><value>For the best text recognition quality, Tesseract needs a resolution of about 300 dpi.</value></data>
 </root>

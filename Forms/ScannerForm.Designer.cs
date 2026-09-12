@@ -59,7 +59,7 @@ namespace ScanView.Forms
             // 
             btnDeviceKeys.Location = new Point(6, 22);
             btnDeviceKeys.Name = "btnDeviceKeys";
-            btnDeviceKeys.Size = new Size(220, 26);
+            btnDeviceKeys.Size = new Size(208, 26);
             btnDeviceKeys.TabIndex = 2;
             btnDeviceKeys.Text = " Scanner und Kameras";
             btnDeviceKeys.UseVisualStyleBackColor = true;

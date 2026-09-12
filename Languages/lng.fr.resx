@@ -368,4 +368,5 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen." xml:space="preserve"><value>Clique d'abord sur une page pour que l'aperçu reçoive les touches – sinon elles pilotent les réglages de numérisation.</value></data>
   <data name="Mausrad" xml:space="preserve"><value>Molette</value></data>
   <data name="Seitenübersicht scrollen" xml:space="preserve"><value>faire défiler l'aperçu des pages</value></data>
+  <data name="Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI." xml:space="preserve"><value>Pour une reconnaissance de texte optimale, Tesseract a besoin d'une résolution d'environ 300 dpi.</value></data>
 </root>

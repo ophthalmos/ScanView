@@ -368,4 +368,5 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen." xml:space="preserve"><value>Haz clic primero en una página para que la vista reciba las teclas – si no, controlan los ajustes de escaneo.</value></data>
   <data name="Mausrad" xml:space="preserve"><value>Rueda del ratón</value></data>
   <data name="Seitenübersicht scrollen" xml:space="preserve"><value>desplazar la vista de páginas</value></data>
+  <data name="Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI." xml:space="preserve"><value>Para una calidad óptima de reconocimiento de texto, Tesseract necesita una resolución de unos 300 dpi.</value></data>
 </root>

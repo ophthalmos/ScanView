@@ -60,6 +60,14 @@ internal static class Lng
         foreach (ToolStripItem item in strip.Items) { TranslateItem(item); }
     }
 
+    /// <summary>Übersetzt die Texte einer ToolTip-Komponente für die genannten Controls —
+    /// die erreicht Apply(Control) nicht, weil der ToolTip kein Kind des Formulars ist.</summary>
+    public static void Apply(ToolTip toolTip, params Control[] controls)
+    {
+        if (culture == null) { return; }
+        foreach (var control in controls) { toolTip.SetToolTip(control, T(toolTip.GetToolTip(control))); }
+    }
+
     /// <summary>Übersetzt die (String-)Einträge von ComboBoxen — die erreicht Apply nicht.
     /// Nur für Combos, deren Auswertung über SelectedIndex läuft!</summary>
     public static void TranslateItems(params ComboBox[] combos)
