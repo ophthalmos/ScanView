@@ -361,4 +361,11 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Beim Speichern wird die Seite nur so groß wie das Bild" xml:space="preserve"><value>À l'enregistrement, la page n'aura que la taille de l'image</value></data>
   <data name="Hinweis: Das Zielformat „{0}“ folgt dem eingestellten Scanbereich." xml:space="preserve"><value>Remarque : Le format cible « {0} » suit la zone de numérisation sélectionnée.</value></data>
   <data name="Hinweis: Der eingestellte Scanbereich ergibt kein Seitenformat, daher „{0}“." xml:space="preserve"><value>Remarque : La zone de numérisation sélectionnée ne correspond à aucun format de page, d'où « {0} ».</value></data>
+  <data name="Strg+Pos1 / Strg+Ende" xml:space="preserve"><value>Ctrl+Début / Ctrl+Fin</value></data>
+  <data name="erste / letzte Seite markieren" xml:space="preserve"><value>sélectionner la première / dernière page</value></data>
+  <data name="Pfeiltasten / Bild↑ / Bild↓" xml:space="preserve"><value>Flèches / Page↑ / Page↓</value></data>
+  <data name="Markierung in der Seitenübersicht bewegen" xml:space="preserve"><value>déplacer la sélection dans l'aperçu des pages</value></data>
+  <data name="Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen." xml:space="preserve"><value>Clique d'abord sur une page pour que l'aperçu reçoive les touches – sinon elles pilotent les réglages de numérisation.</value></data>
+  <data name="Mausrad" xml:space="preserve"><value>Molette</value></data>
+  <data name="Seitenübersicht scrollen" xml:space="preserve"><value>faire défiler l'aperçu des pages</value></data>
 </root>

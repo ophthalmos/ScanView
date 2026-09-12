@@ -136,12 +136,13 @@
             numCopies = new NumericUpDown();
             chkCopyColor = new CheckBox();
             chkCopyFit = new CheckBox();
-            flowPanel = new FlowLayoutPanel();
+            flowPanel = new Classes.PageFlowPanel();
             statusStrip = new StatusStrip();
             statusPages = new ToolStripStatusLabel();
             statusSize = new ToolStripStatusLabel();
             statusLabel = new ToolStripStatusLabel();
             statusScanner = new ToolStripStatusLabel();
+            toolTip = new ToolTip(components);
             thumbContextMenu.SuspendLayout();
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
@@ -865,6 +866,7 @@
             comboDpi.Name = "comboDpi";
             comboDpi.Size = new Size(134, 23);
             comboDpi.TabIndex = 2;
+            toolTip.SetToolTip(comboDpi, "Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI.");
             comboDpi.SelectedIndexChanged += ScanSetting_Changed;
             // 
             // labelColor
@@ -1303,12 +1305,13 @@
         private System.Windows.Forms.ComboBox comboFeed;
         private System.Windows.Forms.Label labelBrightness;
         private System.Windows.Forms.TrackBar trackBrightness;
-        private System.Windows.Forms.FlowLayoutPanel flowPanel;
+        private Classes.PageFlowPanel flowPanel;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusPages;
         private System.Windows.Forms.ToolStripStatusLabel statusSize;
         private System.Windows.Forms.ToolStripStatusLabel statusLabel;
         private System.Windows.Forms.ToolStripStatusLabel statusScanner;
         private ToolStripSeparator menuFileSeparator1;
+        private ToolTip toolTip;
     }
 }

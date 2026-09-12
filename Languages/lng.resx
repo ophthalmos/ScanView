@@ -361,4 +361,11 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Beim Speichern wird die Seite nur so groß wie das Bild" xml:space="preserve"><value>Beim Speichern wird die Seite nur so groß wie das Bild</value></data>
   <data name="Hinweis: Das Zielformat „{0}“ folgt dem eingestellten Scanbereich." xml:space="preserve"><value>Hinweis: Das Zielformat „{0}“ folgt dem eingestellten Scanbereich.</value></data>
   <data name="Hinweis: Der eingestellte Scanbereich ergibt kein Seitenformat, daher „{0}“." xml:space="preserve"><value>Hinweis: Der eingestellte Scanbereich ergibt kein Seitenformat, daher „{0}“.</value></data>
+  <data name="Strg+Pos1 / Strg+Ende" xml:space="preserve"><value>Strg+Pos1 / Strg+Ende</value></data>
+  <data name="erste / letzte Seite markieren" xml:space="preserve"><value>erste / letzte Seite markieren</value></data>
+  <data name="Pfeiltasten / Bild↑ / Bild↓" xml:space="preserve"><value>Pfeiltasten / Bild↑ / Bild↓</value></data>
+  <data name="Markierung in der Seitenübersicht bewegen" xml:space="preserve"><value>Markierung in der Seitenübersicht bewegen</value></data>
+  <data name="Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen." xml:space="preserve"><value>Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen.</value></data>
+  <data name="Mausrad" xml:space="preserve"><value>Mausrad</value></data>
+  <data name="Seitenübersicht scrollen" xml:space="preserve"><value>Seitenübersicht scrollen</value></data>
 </root>

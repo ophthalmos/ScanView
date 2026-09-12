@@ -210,8 +210,12 @@ internal static class TaskDlg
         ("Strg++ / Strg+−", "Miniaturen vergrößern / verkleinern", null),
         ("Strg+,", "Optionen öffnen", null),
         ("Strg+Mausrad", "Miniaturen vergrößern / verkleinern", null),
+        ("Strg+Pos1 / Strg+Ende", "erste / letzte Seite markieren", null),
         ("Entf", "markierte Seite entfernen", null),
         ("Alt+← / →", "markierte Seite verschieben (auch: Ziehen mit der Maus)", null),
+        ("Pfeiltasten / Bild↑ / Bild↓", "Markierung in der Seitenübersicht bewegen",
+            "Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen."),
+        ("Mausrad", "Seitenübersicht scrollen", null),
         ("Doppelklick", "Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)", null),
         ("2× Esc / Umschalt+Esc", "Programm beenden (Option)", null),
     ];

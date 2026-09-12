@@ -361,4 +361,11 @@ Grayscale scans save additional space.</value></data>
   <data name="Beim Speichern wird die Seite nur so groß wie das Bild" xml:space="preserve"><value>When saving, the page will only be as large as the image</value></data>
   <data name="Hinweis: Das Zielformat „{0}“ folgt dem eingestellten Scanbereich." xml:space="preserve"><value>Note: The target format “{0}” follows the selected scan area.</value></data>
   <data name="Hinweis: Der eingestellte Scanbereich ergibt kein Seitenformat, daher „{0}“." xml:space="preserve"><value>Note: The selected scan area is not a page format, hence “{0}”.</value></data>
+  <data name="Strg+Pos1 / Strg+Ende" xml:space="preserve"><value>Ctrl+Home / Ctrl+End</value></data>
+  <data name="erste / letzte Seite markieren" xml:space="preserve"><value>select the first / last page</value></data>
+  <data name="Pfeiltasten / Bild↑ / Bild↓" xml:space="preserve"><value>Arrow keys / PgUp / PgDn</value></data>
+  <data name="Markierung in der Seitenübersicht bewegen" xml:space="preserve"><value>move the selection in the page overview</value></data>
+  <data name="Vorher eine Seite anklicken, damit die Übersicht die Tasten bekommt – sonst steuern sie die Scan-Einstellungen." xml:space="preserve"><value>Click a page first so the overview receives the keys – otherwise they control the scan settings.</value></data>
+  <data name="Mausrad" xml:space="preserve"><value>Mouse wheel</value></data>
+  <data name="Seitenübersicht scrollen" xml:space="preserve"><value>scroll the page overview</value></data>
 </root>

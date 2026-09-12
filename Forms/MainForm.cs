@@ -9,14 +9,20 @@ public partial class MainForm : Form, IMessageFilter
 {
     private const int WM_MOUSEWHEEL = 0x020A;
 
-    /// <summary>Strg+Mausrad über der Seitenübersicht blättert durch die Zoomstufen —
-    /// als Nachrichtenfilter, weil Radnachrichten sonst nur das fokussierte Control erreichen.</summary>
+    /// <summary>Mausrad über der Seitenübersicht: mit Strg durch die Zoomstufen, ohne Strg scrollen —
+    /// als Nachrichtenfilter, weil Radnachrichten sonst nur das fokussierte Control erreichen
+    /// (und z.B. eine fokussierte Scan-Combo verstellen würden statt die Übersicht zu bewegen).</summary>
     public bool PreFilterMessage(ref Message m)
     {
-        if (m.Msg != WM_MOUSEWHEEL || (ModifierKeys & Keys.Control) == 0) { return false; }
+        if (m.Msg != WM_MOUSEWHEEL) { return false; }
         // ActiveForm statt Enabled: ShowDialog deaktiviert den Owner nur nativ, die Enabled-Property bleibt true
         if (Form.ActiveForm != this || !flowPanel.Visible) { return false; } // Dialog offen bzw. Kopiermodus aktiv
         if (!flowPanel.RectangleToScreen(flowPanel.ClientRectangle).Contains(Cursor.Position)) { return false; }
+        if ((ModifierKeys & Keys.Control) == 0)
+        {
+            NativeMethods.SendMessage(flowPanel.Handle, WM_MOUSEWHEEL, m.WParam, m.LParam); // AutoScroll der Übersicht übernimmt
+            return true;
+        }
         var delta = (short)((long)m.WParam >> 16);
         if (delta > 0) { BtnZoomIn_Click(this, EventArgs.Empty); }
         else { BtnZoomOut_Click(this, EventArgs.Empty); }
@@ -292,6 +298,13 @@ public partial class MainForm : Form, IMessageFilter
             case Keys.Control | Keys.Subtract when !panelCopyMode.Visible: BtnZoomOut_Click(this, EventArgs.Empty); return true;
             case Keys.Alt | Keys.Left when !panelCopyMode.Visible: MoveSelected(-1); return true;
             case Keys.Alt | Keys.Right when !panelCopyMode.Visible: MoveSelected(1); return true;
+            case Keys.Control | Keys.Home when !panelCopyMode.Visible: return NavigateSelection(Keys.Home);
+            case Keys.Control | Keys.End when !panelCopyMode.Visible: return NavigateSelection(Keys.End);
+            // Pfeil-, Bild- und Pos1/Ende-Tasten nur, wenn die Übersicht den Fokus hat (Klick auf eine Miniatur) —
+            // sonst gehören sie der fokussierten Scan-Combo bzw. dem Helligkeitsregler
+            case Keys.Left or Keys.Right or Keys.Up or Keys.Down or Keys.Home or Keys.End or Keys.PageUp or Keys.PageDown
+                when flowPanel.Focused && !panelCopyMode.Visible:
+                return NavigateSelection(keyData);
             case Keys.Escape | Keys.Shift when settings.CloseOnEscape: Close(); return true; // Umschalt+Esc beendet sofort
             case Keys.Escape when menuViewFullScreen.Checked: MenuViewFullScreen_Click(this, EventArgs.Empty); return true;
             case Keys.Escape when settings.CloseOnEscape: return HandleEscapeToClose();
@@ -1167,10 +1180,11 @@ public partial class MainForm : Form, IMessageFilter
         pic.DoubleClick += (s, e) => { Select(thumb); MenuEditCrop_Click(thumb, EventArgs.Empty); }; // direkt in den Zuschneiden-Dialog
         pic.MouseDown += (s, e) =>
         {
+            flowPanel.Focus(); // Tastaturnavigation (Pfeile, Bild↑/↓, Pos1/Ende) gilt ab jetzt der Übersicht
             dragStart = e.Location;
             if (e.Button == MouseButtons.Right) { Select(thumb); } // fürs Kontextmenü zuerst markieren
         };
-        num.MouseDown += (s, e) => { if (e.Button == MouseButtons.Right) { Select(thumb); } };
+        num.MouseDown += (s, e) => { flowPanel.Focus(); if (e.Button == MouseButtons.Right) { Select(thumb); } };
         thumb.ContextMenuStrip = thumbContextMenu;
         pic.ContextMenuStrip = thumbContextMenu;
         num.ContextMenuStrip = thumbContextMenu;
@@ -1400,6 +1414,39 @@ public partial class MainForm : Form, IMessageFilter
         MoveSelected(1);
     }
 
+    /// <summary>Tastaturnavigation in der Seitenübersicht: ←/→ zur Nachbarseite, ↑/↓ zeilenweise,
+    /// Bild↑/↓ um eine sichtbare Höhe, Pos1/Ende an den Anfang bzw. ans Ende. Ohne Markierung
+    /// beginnt die Bewegung am passenden Rand; die markierte Seite wird in den sichtbaren Bereich gerollt.</summary>
+    private bool NavigateSelection(Keys key)
+    {
+        var count = flowPanel.Controls.Count;
+        if (count == 0) { return true; }
+        var index = selected != null ? flowPanel.Controls.GetChildIndex(selected) : -1;
+        var first = flowPanel.Controls[0];
+        var perRow = Math.Max(1, flowPanel.Controls.Cast<Control>().TakeWhile(t => t.Top == first.Top).Count());
+        var pageRows = Math.Max(1, flowPanel.ClientSize.Height / (first.Height + first.Margin.Vertical));
+        var target = key switch
+        {
+            Keys.Home => 0,
+            Keys.End => count - 1,
+            Keys.Left => index - 1,
+            Keys.Right => index + 1,
+            Keys.Up => index - perRow,
+            Keys.Down => index + perRow,
+            Keys.PageUp => index - perRow * pageRows,
+            Keys.PageDown => index + perRow * pageRows,
+            _ => index,
+        };
+        if (index < 0) { target = key is Keys.End or Keys.Left or Keys.Up or Keys.PageUp ? count - 1 : 0; } // ohne Markierung am Rand beginnen
+        else if (target >= count && index / perRow < (count - 1) / perRow) { target = count - 1; } // aus einer vollen in die letzte, kürzere Zeile
+        target = Math.Clamp(target, 0, count - 1);
+        if (target == index) { return true; }
+        var thumb = (Panel)flowPanel.Controls[target];
+        Select(thumb);
+        flowPanel.ScrollControlIntoView(thumb);
+        return true;
+    }
+
     private void MoveSelected(int delta)
     {
         if (selected == null) { return; }
@@ -1476,7 +1523,7 @@ public partial class MainForm : Form, IMessageFilter
             return;
         }
         List<string> files = dialog.AllPages
-            ? [.. flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b))]
+            ? [.. flowPanel.Controls.Cast<Panel>().Select(PathOf)]
             : [PathOf(selected!)]; // „Nur markierte Seite" ist ohne Markierung nicht wählbar
         // JPEG/PNG mit „Alle Seiten": jede Seite wird eine eigene nummerierte Datei (Foto-Workflow)
         var imageSeries = dialog.FileType is SaveFileType.Jpeg or SaveFileType.Png && files.Count > 1;
