@@ -1,36 +1,35 @@
 # ScanView
 
-Seiten scannen, als Miniaturen ordnen und mit Texterkennung als **durchsuchbare PDF** speichern.
-Im **Kopiermodus** wird jeder Scan direkt gedruckt — Scanner und Drucker werden zusammen zum Kopierer.
+ScanView turns your scanner into a tool for the paperless office: scan pages without the driver dialog, arrange them as thumbnails, rotate and crop them, then save them with text recognition as a **searchable PDF** – or as PDF/A, JPEG, PNG or TIFF.
 
-## Funktionen
+In **copy mode** every scan is printed right away, so scanner and printer become a copier. The button on the scanner starts a scan immediately.
 
-- Scannen ohne Treiberdialog (WIA): Auflösung, Farbmodus, Scanbereich, Papierzufuhr und Helligkeit direkt im Programm
-- Seiten per Drag&Drop ordnen, drehen, zuschneiden/freistellen/ausschneiden, importieren, Rückseiten verzahnen (Duplex von Hand)
-- Texterkennung mit Tesseract (Deutsch, Englisch oder kombiniert) — wahlweise auch reine Bild-PDF
-- Kopiermodus mit Druckerwahl, Papierformat, Papierzufuhr, Duplex und Exemplaren
-- Die Taste am Scanner startet ScanView bzw. holt die laufende Instanz nach vorn und löst sofort einen Scan aus
-- Tastenkürzel für alle wichtigen Funktionen (Übersicht als PDF über F1)
-- Oberfläche in Deutsch, Englisch, Französisch und Spanisch; alle Einstellungen bleiben erhalten
+Free and open source, for Windows 10/11, in German, English, French and Spanish.
 
-## Voraussetzungen
+## Features
 
-- Windows 10/11 (64-Bit) mit WIA-fähigem Scanner
+- Scanning via WIA without the driver dialog: resolution, colour mode, scan area, paper source and brightness are set in the program and can be saved as profiles
+- Pages as thumbnails: reorder by drag & drop or keyboard, rotate, crop/clear/cut out, import image files, interleave back sides (manual duplex), undo
+- Text recognition with Tesseract (German, English or both) – or a plain image PDF, optionally PDF/A
+- Export as JPEG, PNG or multi-page TIFF; print and fax with page selection
+- Copy mode with printer, paper size, paper source, duplex and number of copies
+- The scanner button starts ScanView (or brings the running instance to the front) and scans at once
+- Keyboard shortcuts for all important functions (overview as PDF via F1)
+
+## Requirements
+
+- Windows 10/11 (64-bit) with a WIA-capable scanner
 - [.NET Desktop Runtime 10](https://dotnet.microsoft.com/download/dotnet/10.0) (x64)
-- [Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe) (x64) für die Texterkennung
+- [Visual C++ Redistributable](https://aka.ms/vs/17/release/vc_redist.x64.exe) (x64) for text recognition
 
-## Bauen
+## Building
 
-`dotnet build` auf `ScanView.csproj` (Visual Studio 2026, .NET 10 WinForms).
-Der Installer entsteht aus `Installer.iss` mit Inno Setup; er registriert ScanView auch als
-WIA-Ereignis-Handler, damit es unter „Scanner und Kameras → Eigenschaften → Ereignisse" wählbar ist.
+`dotnet build` on `ScanView.csproj` (Visual Studio 2026, .NET 10 WinForms). The installer is built from `Installer.iss` with Inno Setup; it also registers ScanView as a WIA event handler so it can be selected under "Scanners and Cameras → Properties → Events".
 
-## Herkunft
+## Origin
 
-Das Bedienkonzept ist in Grundzügen dem Programm „Scanner-Interface 7" der Grewe Computertechnik GmbH
-Berlin (zuletzt erschienen 2012, nicht mehr erhältlich) nachempfunden. ScanView ist eine vollständige
-Neuentwicklung und enthält weder Code noch Grafiken dieses Programms.
+The user interface concept loosely follows "Scanner-Interface 7" by Grewe Computertechnik GmbH, Berlin (last released in 2012, no longer available). ScanView is a complete re-implementation and contains neither code nor graphics from that program.
 
-## Lizenz
+## License
 
 [MIT](LICENSE) · © Wilhelm Happe
