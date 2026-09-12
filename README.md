@@ -4,7 +4,7 @@ ScanView turns your scanner into a tool for the paperless office: scan pages wit
 
 In **copy mode** every scan is printed right away, so scanner and printer become a copier. The button on the scanner starts a scan immediately.
 
-Free and open source, for Windows 10/11, in German, English, French and Spanish.
+For Windows 10/11, in German, English, French and Spanish.
 
 ## Features
 
