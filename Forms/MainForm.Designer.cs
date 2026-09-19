@@ -121,6 +121,8 @@
             comboFeed = new ComboBox();
             labelBrightness = new Label();
             trackBrightness = new TrackBar();
+            labelDarker = new Label();
+            labelBrighter = new Label();
             panelCopyMode = new Panel();
             labelCopyTitle = new Label();
             labelCopyPrinter = new Label();
@@ -803,6 +805,8 @@
             panelSettings.Controls.Add(comboFeed);
             panelSettings.Controls.Add(labelBrightness);
             panelSettings.Controls.Add(trackBrightness);
+            panelSettings.Controls.Add(labelDarker);
+            panelSettings.Controls.Add(labelBrighter);
             panelSettings.Dock = DockStyle.Left;
             panelSettings.Location = new Point(0, 84);
             panelSettings.Name = "panelSettings";
@@ -948,6 +952,28 @@
             trackBrightness.TabIndex = 13;
             trackBrightness.TickFrequency = 25;
             trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
+            //
+            // labelDarker
+            //
+            labelDarker.Font = new Font("Segoe UI", 7F);
+            labelDarker.ForeColor = SystemColors.GrayText;
+            labelDarker.Location = new Point(8, 351);
+            labelDarker.Name = "labelDarker";
+            labelDarker.Size = new Size(24, 12);
+            labelDarker.TabIndex = 14;
+            labelDarker.Text = "⊖";
+            labelDarker.TextAlign = ContentAlignment.MiddleLeft;
+            //
+            // labelBrighter
+            //
+            labelBrighter.Font = new Font("Segoe UI", 7F);
+            labelBrighter.ForeColor = SystemColors.GrayText;
+            labelBrighter.Location = new Point(120, 351);
+            labelBrighter.Name = "labelBrighter";
+            labelBrighter.Size = new Size(24, 12);
+            labelBrighter.TabIndex = 15;
+            labelBrighter.Text = "⊕";
+            labelBrighter.TextAlign = ContentAlignment.MiddleRight;
             // 
             // panelCopyMode
             // 
@@ -1165,7 +1191,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1084, 461);
+            ClientSize = new Size(1084, 481);
             Controls.Add(flowPanel);
             Controls.Add(panelCopyMode);
             Controls.Add(panelSettings);
@@ -1173,7 +1199,7 @@
             Controls.Add(toolStrip);
             Controls.Add(menuStrip);
             MainMenuStrip = menuStrip;
-            MinimumSize = new Size(700, 480);
+            MinimumSize = new Size(700, 500);
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "ScanView";
@@ -1305,6 +1331,8 @@
         private System.Windows.Forms.ComboBox comboFeed;
         private System.Windows.Forms.Label labelBrightness;
         private System.Windows.Forms.TrackBar trackBrightness;
+        private System.Windows.Forms.Label labelDarker;
+        private System.Windows.Forms.Label labelBrighter;
         private Classes.PageFlowPanel flowPanel;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusPages;
