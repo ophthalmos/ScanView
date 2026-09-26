@@ -57,6 +57,7 @@
             menuEditCopy = new ToolStripMenuItem();
             menuEditPaste = new ToolStripMenuItem();
             menuEditDelete = new ToolStripMenuItem();
+            menuEditSelectAll = new ToolStripMenuItem();
             menuEditSeparator1 = new ToolStripSeparator();
             menuEditCrop = new ToolStripMenuItem();
             menuEditRotateLeft = new ToolStripMenuItem();
@@ -138,7 +139,7 @@
             numCopies = new NumericUpDown();
             chkCopyColor = new CheckBox();
             chkCopyFit = new CheckBox();
-            flowPanel = new Classes.PageFlowPanel();
+            flowPanel = new ScanView.Classes.PageFlowPanel();
             statusStrip = new StatusStrip();
             statusPages = new ToolStripStatusLabel();
             statusSize = new ToolStripStatusLabel();
@@ -316,7 +317,7 @@
             // 
             // menuEdit
             // 
-            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditUndo, menuEditSeparator0, menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
+            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditUndo, menuEditSeparator0, menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSelectAll, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
             menuEdit.Name = "menuEdit";
             menuEdit.Size = new Size(75, 20);
             menuEdit.Text = "&Bearbeiten";
@@ -375,6 +376,16 @@
             menuEditDelete.Size = new Size(260, 22);
             menuEditDelete.Text = "&Löschen";
             menuEditDelete.Click += BtnRemove_Click;
+            // 
+            // menuEditSelectAll
+            // 
+            menuEditSelectAll.Enabled = false;
+            menuEditSelectAll.Name = "menuEditSelectAll";
+            menuEditSelectAll.ShortcutKeyDisplayString = "Strg+A";
+            menuEditSelectAll.ShortcutKeys = Keys.Control | Keys.A;
+            menuEditSelectAll.Size = new Size(260, 22);
+            menuEditSelectAll.Text = "Alle &markieren";
+            menuEditSelectAll.Click += MenuEditSelectAll_Click;
             // 
             // menuEditSeparator1
             // 
@@ -811,7 +822,7 @@
             panelSettings.Location = new Point(0, 84);
             panelSettings.Name = "panelSettings";
             panelSettings.Padding = new Padding(8);
-            panelSettings.Size = new Size(153, 353);
+            panelSettings.Size = new Size(153, 373);
             panelSettings.TabIndex = 1;
             // 
             // labelSettings
@@ -952,23 +963,25 @@
             trackBrightness.TabIndex = 13;
             trackBrightness.TickFrequency = 25;
             trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
-            //
+            // 
             // labelDarker
-            //
-            labelDarker.Font = new Font("Segoe UI", 7F);
+            // 
+            labelDarker.BackColor = Color.Transparent;
+            labelDarker.Font = new Font("Segoe UI", 9F);
             labelDarker.ForeColor = SystemColors.GrayText;
-            labelDarker.Location = new Point(8, 351);
+            labelDarker.Location = new Point(8, 347);
             labelDarker.Name = "labelDarker";
             labelDarker.Size = new Size(24, 12);
             labelDarker.TabIndex = 14;
             labelDarker.Text = "⊖";
             labelDarker.TextAlign = ContentAlignment.MiddleLeft;
-            //
+            // 
             // labelBrighter
-            //
-            labelBrighter.Font = new Font("Segoe UI", 7F);
+            // 
+            labelBrighter.BackColor = Color.Transparent;
+            labelBrighter.Font = new Font("Segoe UI", 9F);
             labelBrighter.ForeColor = SystemColors.GrayText;
-            labelBrighter.Location = new Point(120, 351);
+            labelBrighter.Location = new Point(120, 347);
             labelBrighter.Name = "labelBrighter";
             labelBrighter.Size = new Size(24, 12);
             labelBrighter.TabIndex = 15;
@@ -997,7 +1010,7 @@
             panelCopyMode.Location = new Point(153, 84);
             panelCopyMode.Name = "panelCopyMode";
             panelCopyMode.Padding = new Padding(16);
-            panelCopyMode.Size = new Size(931, 353);
+            panelCopyMode.Size = new Size(931, 373);
             panelCopyMode.TabIndex = 3;
             panelCopyMode.Visible = false;
             // 
@@ -1141,15 +1154,17 @@
             flowPanel.Location = new Point(153, 84);
             flowPanel.Name = "flowPanel";
             flowPanel.Padding = new Padding(8);
-            flowPanel.Size = new Size(931, 353);
+            flowPanel.Size = new Size(931, 373);
             flowPanel.TabIndex = 2;
+            flowPanel.TabStop = true;
             flowPanel.DragEnter += FlowPanel_DragEnter;
             flowPanel.DragOver += FlowPanel_DragOver;
+            flowPanel.MouseDown += FlowPanel_MouseDown;
             // 
             // statusStrip
             // 
             statusStrip.Items.AddRange(new ToolStripItem[] { statusPages, statusSize, statusLabel, statusScanner });
-            statusStrip.Location = new Point(0, 437);
+            statusStrip.Location = new Point(0, 457);
             statusStrip.Name = "statusStrip";
             statusStrip.Size = new Size(1084, 24);
             statusStrip.TabIndex = 3;
@@ -1254,6 +1269,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuEditCopy;
         private System.Windows.Forms.ToolStripMenuItem menuEditPaste;
         private System.Windows.Forms.ToolStripMenuItem menuEditDelete;
+        private System.Windows.Forms.ToolStripMenuItem menuEditSelectAll;
         private System.Windows.Forms.ToolStripSeparator menuEditSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuEditCrop;
         private System.Windows.Forms.ToolStripMenuItem menuEditRotateLeft;

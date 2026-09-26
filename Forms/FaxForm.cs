@@ -9,10 +9,12 @@ internal sealed partial class FaxForm : Form
 {
     public bool AllPages => radioAll.Checked;
 
-    public FaxForm(bool hasSelection)
+    public FaxForm(int selectedCount)
     {
         InitializeComponent();
         Lng.Apply(this);
-        radioSelected.Enabled = hasSelection;
+        radioSelected.Enabled = selectedCount > 0;
+        if (selectedCount > 1) { radioSelected.Text = string.Format(Lng.T("Nur &markierte Seiten ({0})"), selectedCount); } // nach Lng.Apply
+        if (radioSelected.Right + 14 > ClientSize.Width) { Width += radioSelected.Right + 14 - ClientSize.Width; } // Fenster wächst mit dem Text
     }
 }

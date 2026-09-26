@@ -79,7 +79,7 @@ foreach ($file in $sources) {
     # 5) Kürzel-Tupel ("Kürzel", "Kurztext") in TaskDlg.ShortcutRows und den Kürzellisten der Formulare
     foreach ($m in [regex]::Matches($text, "\(\s*$literal\s*,\s*$literal")) {
         $key = ConvertFrom-CSharpLiteral $m.Groups[1].Value
-        if ($key -match '^(Strg|F\d|Alt\+|Bild|Pfeil|Maus|Doppelklick|2×|Esc|Entf)') {
+        if ($key -match '^(Strg|F\d|Alt\+|Umschalt|Bild|Pfeil|Maus|Doppelklick|2×|Esc|Entf)') {
             [void]$used.Add($key)
             [void]$used.Add((ConvertFrom-CSharpLiteral $m.Groups[2].Value))
         }

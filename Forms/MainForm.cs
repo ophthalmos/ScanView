@@ -44,11 +44,13 @@ public partial class MainForm : Form, IMessageFilter
     private static readonly Color SelectionColor = Color.FromArgb(0xA6, 0xD0, 0xF1); // Rahmen und Seitenzahl-Streifen der markierten Seite
     private static readonly Color FrameColor = Color.LightGray; // derselbe Rahmen im Ruhezustand
 
-    private Panel? selected; // Miniatur-Container (Bild + Seitenzahl)
+    private Panel? selected; // Anker der Markierung (zuletzt angeklickt): Ziel für Zuschneiden, Verschieben, Einfügen, Statuszeile
+    private readonly HashSet<Panel> marked = []; // alle markierten Miniaturen (enthält den Anker) — Löschen, Drehen, Speichern, Drucken, Faxen
+    private Panel? cursor; // Tastatur-Position (weicht bei Umschalt+Pfeil vom Anker ab)
     private Point dragStart; // Mausposition beim Drücken — Start des Miniatur-Ziehens
     private string? selectedScannerId; // DeviceID, TestPageId oder null (= noch kein Gerät gewählt)
     private string? selectedScannerName;
-    private string? clipboardPath; // interne Seiten-Zwischenablage (Ausschneiden/Kopieren)
+    private readonly List<string> clipboard = []; // interne Seiten-Zwischenablage (Ausschneiden/Kopieren), in Übersichtsreihenfolge
     private FormWindowState previousWindowState; // zum Verlassen des Vollbildmodus
     private readonly AppSettings settings;
     private readonly PrinterSettings copyPrinterSettings = new(); // Kopiermodus: gewählter Drucker samt Treiber-Einstellungen
@@ -237,7 +239,7 @@ public partial class MainForm : Form, IMessageFilter
     /// <summary>Der Rechtsklick hat die Miniatur bereits markiert — nur Einfügen hängt vom Zustand ab.</summary>
     private void ThumbContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
     {
-        contextPaste.Enabled = clipboardPath != null;
+        contextPaste.Enabled = clipboard.Count > 0;
     }
 
     private void ContextOpenViewer_Click(object sender, EventArgs e)
@@ -306,6 +308,10 @@ public partial class MainForm : Form, IMessageFilter
             case Keys.Left or Keys.Right or Keys.Up or Keys.Down or Keys.Home or Keys.End or Keys.PageUp or Keys.PageDown
                 when flowPanel.Focused && !panelCopyMode.Visible:
                 return NavigateSelection(keyData);
+            case Keys.Shift | Keys.Left or Keys.Shift | Keys.Right or Keys.Shift | Keys.Up or Keys.Shift | Keys.Down
+                or Keys.Shift | Keys.Home or Keys.Shift | Keys.End or Keys.Shift | Keys.PageUp or Keys.Shift | Keys.PageDown
+                when flowPanel.Focused && !panelCopyMode.Visible:
+                return NavigateSelection(keyData & ~Keys.Shift, extend: true); // Bereich vom Anker bis zur neuen Position
             case Keys.Escape | Keys.Shift when settings.CloseOnEscape: Close(); return true; // Umschalt+Esc beendet sofort
             case Keys.Escape when menuViewFullScreen.Checked: MenuViewFullScreen_Click(this, EventArgs.Empty); return true;
             case Keys.Escape when settings.CloseOnEscape: return HandleEscapeToClose();
@@ -404,7 +410,7 @@ public partial class MainForm : Form, IMessageFilter
             settingsDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, settingsDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-settings.png"));
         }
-        using (SaveForm saveDialog = new(true, sessionFolder, "Selbsttest", "deu", 75, "ScanView", true)) // und der Speichern-Dialog
+        using (SaveForm saveDialog = new(2, sessionFolder, "Selbsttest", "deu", 75, "ScanView", true)) // und der Speichern-Dialog
         {
             saveDialog.StartPosition = FormStartPosition.Manual;
             saveDialog.Show(this);
@@ -422,9 +428,22 @@ public partial class MainForm : Form, IMessageFilter
             cropDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, cropDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-crop.png"));
         }
+        // Mehrfachauswahl: Strg+A, Strg+Klick (abwählen), Umschalt (Bereich), Entfernen aller markierten Seiten und Rückgängig
+        if (panelCopyMode.Visible) { BtnCopyMode_Click(this, EventArgs.Empty); } // Rückgängig ist im Kopiermodus gesperrt
+        SelectAll();
+        var firstThumb = (Panel)flowPanel.Controls[0];
+        var multiOk = marked.Count == 2;
+        ToggleSelect(firstThumb);
+        multiOk &= marked.Count == 1 && !ReferenceEquals(selected, firstThumb);
+        SelectRange(firstThumb);
+        multiOk &= marked.Count == 2 && SelectedThumbs.Count == 2;
+        BtnRemove_Click(this, EventArgs.Empty);
+        multiOk &= flowPanel.Controls.Count == 0 && marked.Count == 0;
+        MenuEditUndo_Click(this, EventArgs.Empty);
+        multiOk &= flowPanel.Controls.Count == 2;
         Application.RemoveMessageFilter(this);
         Hide(); // keine Paint-Zyklen mehr, während der Prozess mitten im Nachrichtenbetrieb endet
-        Environment.Exit(pageCount == 2 && pageCountA == 2 && placedOk ? 0 : 1);
+        Environment.Exit(pageCount == 2 && pageCountA == 2 && placedOk && multiOk ? 0 : 1);
     }
 
     private string NextScanPath() => Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}.tif");
@@ -850,14 +869,22 @@ public partial class MainForm : Form, IMessageFilter
         ReorderPages([.. order.Where(byPath.ContainsKey).Select(p => byPath[p])]);
     }
 
-    /// <summary>Sichert die Seitendatei vor dem Überschreiben (Drehen/Zuschneiden) und merkt das
-    /// Zurückkopieren als Rückgängig-Schritt — verlustfrei auch bei JPEG-Seiten.</summary>
-    private void PushOverwriteUndo(string text, string path)
+    /// <summary>Sichert die Seitendateien vor dem Überschreiben (Drehen/Zuschneiden) und merkt das
+    /// Zurückkopieren als EINEN Rückgängig-Schritt — verlustfrei auch bei JPEG-Seiten.</summary>
+    private void PushOverwriteUndo(string text, params string[] paths)
+    {
+        var reverts = paths.Select(BackupPage).OfType<Action>().ToList();
+        if (reverts.Count == 0) { return; } // Sicherung fehlgeschlagen — dann eben ohne Undo
+        PushUndo(text, () => { foreach (var revert in reverts) { revert(); } });
+    }
+
+    /// <summary>Legt die Sicherungskopie einer Seitendatei an und liefert die Rücknahme (null, wenn das Kopieren scheitert).</summary>
+    private Action? BackupPage(string path)
     {
         var backup = Path.Combine(sessionFolder, $"undo_{++undoFileCounter}.bak");
         try { File.Copy(path, backup, true); }
-        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { return; } // dann eben ohne Undo
-        PushUndo(text, () =>
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { return null; }
+        return () =>
         {
             try
             {
@@ -867,12 +894,8 @@ public partial class MainForm : Form, IMessageFilter
             catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { return; }
             var thumb = FindThumb(path);
             if (thumb == null) { return; } // Seite ist gerade entfernt — die Datei selbst ist wiederhergestellt
-            var pic = PicOf(thumb);
-            var old = pic.Image;
-            pic.Image = ScanService.LoadThumbnail(path, ThumbImageWidth);
-            old?.Dispose();
-            UpdateUiState();
-        });
+            ReloadThumbnail(thumb);
+        };
     }
 
     /// <summary>Der Dateipfad einer Miniatur — jede Kachel trägt ihn seit AddPage im Tag.</summary>
@@ -886,7 +909,7 @@ public partial class MainForm : Form, IMessageFilter
     {
         var thumb = FindThumb(path);
         if (thumb == null) { return; }
-        if (ReferenceEquals(selected, thumb)) { Select(null); }
+        Forget(thumb);
         flowPanel.Controls.Remove(thumb);
         PicOf(thumb).Image?.Dispose();
         thumb.Dispose();
@@ -906,28 +929,36 @@ public partial class MainForm : Form, IMessageFilter
 
     private void MenuEditCut_Click(object sender, EventArgs e)
     {
-        if (selected == null) { return; }
-        clipboardPath = PathOf(selected); // Datei bleibt im Sitzungsordner liegen
+        if (marked.Count == 0) { return; }
+        MenuEditCopy_Click(sender, e); // die Dateien bleiben im Sitzungsordner liegen
         BtnRemove_Click(sender, e);
     }
 
     private void MenuEditCopy_Click(object sender, EventArgs e)
     {
-        if (selected == null) { return; }
-        clipboardPath = PathOf(selected);
+        if (marked.Count == 0) { return; }
+        clipboard.Clear();
+        clipboard.AddRange(SelectedThumbs.Select(PathOf));
         UpdateUiState();
     }
 
-    /// <summary>Fügt eine Kopie der Zwischenablage-Seite hinter der Markierung ein (ohne Markierung: ans Ende).</summary>
+    /// <summary>Fügt Kopien der Zwischenablage-Seiten hinter dem Anker ein (ohne Markierung: ans Ende).</summary>
     private void MenuEditPaste_Click(object sender, EventArgs e)
     {
-        if (clipboardPath == null || !File.Exists(clipboardPath)) { return; }
+        var sources = clipboard.Where(File.Exists).ToList();
+        if (sources.Count == 0) { return; }
         var insertAt = selected != null ? flowPanel.Controls.GetChildIndex(selected) + 1 : flowPanel.Controls.Count;
-        var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(clipboardPath)}");
-        File.Copy(clipboardPath, copy);
-        AddPage(copy);
-        flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt);
-        PushUndo(Lng.T("Seite eingefügt"), () => RemovePageByPath(copy));
+        List<string> copies = [];
+        foreach (var source in sources)
+        {
+            var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(source)}");
+            File.Copy(source, copy);
+            AddPage(copy);
+            flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt++);
+            copies.Add(copy);
+        }
+        PushUndo(copies.Count == 1 ? Lng.T("Seite eingefügt") : string.Format(Lng.T("{0} Seiten eingefügt"), copies.Count),
+            () => { foreach (var copy in copies) { RemovePageByPath(copy); } });
         UpdateUiState();
     }
 
@@ -954,29 +985,41 @@ public partial class MainForm : Form, IMessageFilter
         _ => System.Drawing.Imaging.ImageFormat.Tiff,
     };
 
-    /// <summary>Lädt die Miniatur der markierten Seite neu — nach Drehen oder Zuschneiden.</summary>
+    /// <summary>Lädt die Miniatur des Ankers neu — nach dem Zuschneiden.</summary>
     private void ReloadSelectedThumbnail()
     {
         if (selected == null) { return; }
-        var pic = PicOf(selected);
-        var old = pic.Image;
-        pic.Image = ScanService.LoadThumbnail(PathOf(selected), ThumbImageWidth);
-        old?.Dispose();
-        UpdateUiState(); // nach Drehen/Zuschneiden die Format- und Maßanzeige nachziehen
+        ReloadThumbnail(selected);
     }
 
-    /// <summary>Dreht die Seitendatei selbst (nicht nur die Miniatur), damit auch OCR und PDF die Drehung sehen.</summary>
+    /// <summary>Lädt eine Miniatur aus ihrer Seitendatei neu und zieht die Format- und Maßanzeige nach.</summary>
+    private void ReloadThumbnail(Panel thumb)
+    {
+        var pic = PicOf(thumb);
+        var old = pic.Image;
+        pic.Image = ScanService.LoadThumbnail(PathOf(thumb), ThumbImageWidth);
+        old?.Dispose();
+        UpdateUiState();
+    }
+
+    /// <summary>Dreht die Seitendateien aller markierten Seiten (nicht nur die Miniaturen), damit
+    /// auch OCR und PDF die Drehung sehen — ein Rückgängig-Schritt für die ganze Markierung.</summary>
     private void RotateSelected(RotateFlipType rotation)
     {
-        if (selected == null) { return; }
-        var path = PathOf(selected);
-        PushOverwriteUndo(Lng.T("Seite gedreht"), path);
-        using (var image = ScanService.LoadUnlocked(path))
+        var thumbs = SelectedThumbs;
+        if (thumbs.Count == 0) { return; }
+        PushOverwriteUndo(thumbs.Count == 1 ? Lng.T("Seite gedreht") : string.Format(Lng.T("{0} Seiten gedreht"), thumbs.Count),
+            [.. thumbs.Select(PathOf)]);
+        foreach (var thumb in thumbs)
         {
-            image.RotateFlip(rotation);
-            image.Save(path, ImageFormatFor(path));
+            var path = PathOf(thumb);
+            using (var image = ScanService.LoadUnlocked(path))
+            {
+                image.RotateFlip(rotation);
+                image.Save(path, ImageFormatFor(path));
+            }
+            ReloadThumbnail(thumb);
         }
-        ReloadSelectedThumbnail();
     }
 
     /// <summary>Zuschneide-Dialog für die markierte Seite: die Aktionen (Freistellen/Zuschneiden/
@@ -1176,16 +1219,16 @@ public partial class MainForm : Form, IMessageFilter
             e.Graphics.FillRectangle(shadowBrush, r.Right, r.Top + 3, 3, r.Height);
             e.Graphics.FillRectangle(shadowBrush, r.Left + 3, r.Bottom, r.Width - 3, 3);
         };
-        pic.Click += (s, e) => Select(thumb);
-        num.Click += (s, e) => Select(thumb);
+        pic.Click += (s, e) => ClickThumb(thumb);
+        num.Click += (s, e) => ClickThumb(thumb);
         pic.DoubleClick += (s, e) => { Select(thumb); MenuEditCrop_Click(thumb, EventArgs.Empty); }; // direkt in den Zuschneiden-Dialog
         pic.MouseDown += (s, e) =>
         {
             flowPanel.Focus(); // Tastaturnavigation (Pfeile, Bild↑/↓, Pos1/Ende) gilt ab jetzt der Übersicht
             dragStart = e.Location;
-            if (e.Button == MouseButtons.Right) { Select(thumb); } // fürs Kontextmenü zuerst markieren
+            if (e.Button == MouseButtons.Right && !marked.Contains(thumb)) { Select(thumb); } // fürs Kontextmenü zuerst markieren (eine bestehende Mehrfachauswahl bleibt)
         };
-        num.MouseDown += (s, e) => { flowPanel.Focus(); if (e.Button == MouseButtons.Right) { Select(thumb); } };
+        num.MouseDown += (s, e) => { flowPanel.Focus(); if (e.Button == MouseButtons.Right && !marked.Contains(thumb)) { Select(thumb); } };
         thumb.ContextMenuStrip = thumbContextMenu;
         pic.ContextMenuStrip = thumbContextMenu;
         num.ContextMenuStrip = thumbContextMenu;
@@ -1198,7 +1241,7 @@ public partial class MainForm : Form, IMessageFilter
             {
                 return;
             }
-            Select(thumb);
+            if (!marked.Contains(thumb)) { Select(thumb); } // eine Mehrfachauswahl übersteht das Ziehen (verschoben wird nur diese Seite)
             var orderBefore = CurrentPageOrder(); // DoDragDrop blockiert bis zum Loslassen
             pic.DoDragDrop(thumb, DragDropEffects.Move);
             if (!orderBefore.SequenceEqual(CurrentPageOrder()))
@@ -1282,13 +1325,87 @@ public partial class MainForm : Form, IMessageFilter
         UpdateUiState();
     }
 
+    // ------------------------------------------------------------------ Markierung (Explorer-Bedienung)
+
+    /// <summary>Alle markierten Miniaturen in Übersichtsreihenfolge.</summary>
+    private List<Panel> SelectedThumbs => [.. flowPanel.Controls.Cast<Panel>().Where(marked.Contains)];
+
+    /// <summary>Klick auf eine Miniatur: Strg schaltet einzeln zu/ab, Umschalt markiert den Bereich
+    /// ab dem Anker, sonst wird nur diese Seite markiert.</summary>
+    private void ClickThumb(Panel thumb)
+    {
+        if ((ModifierKeys & Keys.Control) != 0) { ToggleSelect(thumb); }
+        else if ((ModifierKeys & Keys.Shift) != 0) { SelectRange(thumb); }
+        else { Select(thumb); }
+    }
+
+    /// <summary>Klick auf die leere Fläche der Übersicht hebt die Markierung auf (wie im Explorer).</summary>
+    private void FlowPanel_MouseDown(object sender, MouseEventArgs e)
+    {
+        flowPanel.Focus();
+        if (e.Button == MouseButtons.Left && (ModifierKeys & (Keys.Control | Keys.Shift)) == 0) { Select(null); }
+    }
+
+    /// <summary>Markiert genau diese Seite (null: nichts) — sie wird Anker und Tastatur-Position.</summary>
     private void Select(Panel? thumb)
     {
-        // Der Rahmen (samt Seitenzahl-Streifen) bleibt immer stehen und wechselt nur die Farbe
-        selected?.BackColor = FrameColor;
+        marked.Clear();
+        if (thumb != null) { marked.Add(thumb); }
         selected = thumb;
-        selected?.BackColor = SelectionColor;
+        cursor = thumb;
+        ApplySelectionColors();
+    }
+
+    /// <summary>Strg+Klick: Seite zur Markierung hinzunehmen bzw. herausnehmen; der Anker folgt dem Klick.</summary>
+    private void ToggleSelect(Panel thumb)
+    {
+        if (!marked.Remove(thumb)) { marked.Add(thumb); selected = thumb; }
+        else if (ReferenceEquals(selected, thumb)) { selected = SelectedThumbs.LastOrDefault(); }
+        cursor = thumb;
+        ApplySelectionColors();
+    }
+
+    /// <summary>Umschalt+Klick bzw. Umschalt+Pfeil: Bereich vom Anker bis zu dieser Seite (ohne Anker: ab der ersten).</summary>
+    private void SelectRange(Panel thumb)
+    {
+        var from = selected != null ? flowPanel.Controls.GetChildIndex(selected) : 0;
+        var to = flowPanel.Controls.GetChildIndex(thumb);
+        marked.Clear();
+        for (var i = Math.Min(from, to); i <= Math.Max(from, to); i++) { marked.Add((Panel)flowPanel.Controls[i]); }
+        selected ??= (Panel)flowPanel.Controls[0];
+        cursor = thumb;
+        ApplySelectionColors();
+    }
+
+    /// <summary>Strg+A: alle Seiten markieren; der Anker bleibt (ohne Anker: die erste Seite).</summary>
+    private void SelectAll()
+    {
+        if (flowPanel.Controls.Count == 0) { return; }
+        marked.Clear();
+        marked.UnionWith(flowPanel.Controls.Cast<Panel>());
+        selected ??= (Panel)flowPanel.Controls[0];
+        cursor ??= selected;
+        ApplySelectionColors();
+    }
+
+    /// <summary>Nimmt eine Miniatur aus Markierung, Anker und Tastatur-Position — vor dem Entfernen aus der Übersicht.</summary>
+    private void Forget(Panel thumb)
+    {
+        marked.Remove(thumb);
+        if (ReferenceEquals(selected, thumb)) { selected = SelectedThumbs.LastOrDefault(); }
+        if (ReferenceEquals(cursor, thumb)) { cursor = selected; }
+    }
+
+    /// <summary>Der Rahmen (samt Seitenzahl-Streifen) bleibt immer stehen und wechselt nur die Farbe.</summary>
+    private void ApplySelectionColors()
+    {
+        foreach (Panel thumb in flowPanel.Controls) { thumb.BackColor = marked.Contains(thumb) ? SelectionColor : FrameColor; }
         UpdateUiState();
+    }
+
+    private void MenuEditSelectAll_Click(object sender, EventArgs e)
+    {
+        if (!panelCopyMode.Visible) { SelectAll(); }
     }
 
     private void UpdateUiState()
@@ -1321,7 +1438,8 @@ public partial class MainForm : Form, IMessageFilter
         UpdateUndoUi(); // Rückgängig ist im Kopiermodus gesperrt
         menuEditCut.Enabled = pagesVisible && selected != null;
         menuEditCopy.Enabled = pagesVisible && selected != null;
-        menuEditPaste.Enabled = pagesVisible && clipboardPath != null;
+        menuEditPaste.Enabled = pagesVisible && clipboard.Count > 0;
+        menuEditSelectAll.Enabled = pagesVisible && count > 0;
         menuEditDelete.Enabled = pagesVisible && selected != null;
         menuEditRotateLeft.Enabled = pagesVisible && selected != null;
         menuEditRotate180.Enabled = pagesVisible && selected != null;
@@ -1332,7 +1450,9 @@ public partial class MainForm : Form, IMessageFilter
         menuEditReverse.Enabled = pagesVisible && count >= 2;
         if (pagesVisible) // im Kopiermodus gehört die Statuszeile dem Kopiermodus
         {
-            statusPages.Text = selected != null
+            statusPages.Text = marked.Count > 1
+                ? string.Format(Lng.T("{0} von {1} Seiten markiert"), marked.Count, count)
+                : selected != null
                 ? string.Format(Lng.T("Seite {0} von {1}"), flowPanel.Controls.IndexOf(selected) + 1, count)
                 : count == 0 ? Lng.T("Noch keine Seiten") : count == 1 ? Lng.T("1 Seite") : string.Format(Lng.T("{0} Seiten"), count);
             UpdateSelectedPageStatus();
@@ -1418,11 +1538,11 @@ public partial class MainForm : Form, IMessageFilter
     /// <summary>Tastaturnavigation in der Seitenübersicht: ←/→ zur Nachbarseite, ↑/↓ zeilenweise,
     /// Bild↑/↓ um eine sichtbare Höhe, Pos1/Ende an den Anfang bzw. ans Ende. Ohne Markierung
     /// beginnt die Bewegung am passenden Rand; die markierte Seite wird in den sichtbaren Bereich gerollt.</summary>
-    private bool NavigateSelection(Keys key)
+    private bool NavigateSelection(Keys key, bool extend = false)
     {
         var count = flowPanel.Controls.Count;
         if (count == 0) { return true; }
-        var index = selected != null ? flowPanel.Controls.GetChildIndex(selected) : -1;
+        var index = cursor != null ? flowPanel.Controls.GetChildIndex(cursor) : -1;
         var first = flowPanel.Controls[0];
         var perRow = Math.Max(1, flowPanel.Controls.Cast<Control>().TakeWhile(t => t.Top == first.Top).Count());
         var pageRows = Math.Max(1, flowPanel.ClientSize.Height / (first.Height + first.Margin.Vertical));
@@ -1441,9 +1561,9 @@ public partial class MainForm : Form, IMessageFilter
         if (index < 0) { target = key is Keys.End or Keys.Left or Keys.Up or Keys.PageUp ? count - 1 : 0; } // ohne Markierung am Rand beginnen
         else if (target >= count && index / perRow < (count - 1) / perRow) { target = count - 1; } // aus einer vollen in die letzte, kürzere Zeile
         target = Math.Clamp(target, 0, count - 1);
-        if (target == index) { return true; }
+        if (target == index && !extend) { return true; }
         var thumb = (Panel)flowPanel.Controls[target];
-        Select(thumb);
+        if (extend) { SelectRange(thumb); } else { Select(thumb); }
         flowPanel.ScrollControlIntoView(thumb);
         return true;
     }
@@ -1458,20 +1578,25 @@ public partial class MainForm : Form, IMessageFilter
         UpdateUiState();
     }
 
+    /// <summary>Entfernt alle markierten Seiten (ein Rückgängig-Schritt); die nachrückende Seite übernimmt die Markierung.</summary>
     private void BtnRemove_Click(object sender, EventArgs e)
     {
-        if (selected == null) { return; }
-        var box = selected;
-        var index = flowPanel.Controls.GetChildIndex(box); // die nachrückende Seite übernimmt die Markierung
-        var removedPath = PathOf(box);
-        PushUndo(Lng.T("Seite entfernt"), () => RestorePage(removedPath, index)); // die Datei bleibt bis zum Beenden liegen
+        var boxes = SelectedThumbs;
+        if (boxes.Count == 0) { return; }
+        var removed = boxes.Select(b => (Path: PathOf(b), Index: flowPanel.Controls.GetChildIndex(b))).ToList(); // aufsteigend — so stellt RestorePage die alten Positionen wieder her
+        var first = removed[0].Index;
+        PushUndo(boxes.Count == 1 ? Lng.T("Seite entfernt") : string.Format(Lng.T("{0} Seiten entfernt"), boxes.Count),
+            () => { foreach (var (path, index) in removed) { RestorePage(path, index); } }); // die Dateien bleiben bis zum Beenden liegen
         Select(null);
-        flowPanel.Controls.Remove(box);
-        PicOf(box).Image?.Dispose();
-        box.Dispose();
+        foreach (var box in boxes)
+        {
+            flowPanel.Controls.Remove(box);
+            PicOf(box).Image?.Dispose();
+            box.Dispose();
+        }
         if (flowPanel.Controls.Count > 0)
         {
-            Select((Panel)flowPanel.Controls[Math.Min(index, flowPanel.Controls.Count - 1)]); // war es die letzte: die davor
+            Select((Panel)flowPanel.Controls[Math.Min(first, flowPanel.Controls.Count - 1)]); // war es die letzte: die davor
         }
         UpdateUiState();
     }
@@ -1509,7 +1634,7 @@ public partial class MainForm : Form, IMessageFilter
         var folder = Directory.Exists(settings.SaveDirectory) // bevorzugter Speicherort, sonst Dokumente
             ? settings.SaveDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         var author = string.IsNullOrWhiteSpace(settings.SaveAuthor) ? Environment.UserName : settings.SaveAuthor;
-        using SaveForm dialog = new(selected != null, folder, Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd"),
+        using SaveForm dialog = new(marked.Count, folder, Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd"),
             settings.OcrLanguage, settings.OcrJpgQuality, author, settings.OpenAfterSave); // Vorauswahl: bevorzugte Sprache aus den Optionen
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.SaveAuthor = dialog.MetaAuthor; // Verfasser und Öffnen-Wahl fürs nächste Mal vorbelegen
@@ -1525,7 +1650,7 @@ public partial class MainForm : Form, IMessageFilter
         }
         List<string> files = dialog.AllPages
             ? [.. flowPanel.Controls.Cast<Panel>().Select(PathOf)]
-            : [PathOf(selected!)]; // „Nur markierte Seite" ist ohne Markierung nicht wählbar
+            : [.. SelectedThumbs.Select(PathOf)]; // „Nur markierte Seiten" ist ohne Markierung nicht wählbar
         // JPEG/PNG mit „Alle Seiten": jede Seite wird eine eigene nummerierte Datei (Foto-Workflow)
         var imageSeries = dialog.FileType is SaveFileType.Jpeg or SaveFileType.Png && files.Count > 1;
         List<string> targets = imageSeries
@@ -1624,7 +1749,7 @@ public partial class MainForm : Form, IMessageFilter
         if (pages.Count == 0) { return; }
         using PrintDocument document = new();
         document.DocumentName = "ScanView";
-        using PrintForm dialog = new(selected != null, settings);
+        using PrintForm dialog = new(marked.Count, settings);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         // die Dialog-Einstellungen als gemeinsame Vorgabe übernehmen (gilt auch für den Kopiermodus)
         settings.CopyPrinter = dialog.PrinterName;
@@ -1636,7 +1761,7 @@ public partial class MainForm : Form, IMessageFilter
         settings.CopyFit = dialog.FitToPage;
         settings.Save();
         SyncCopyModeUi();
-        if (!dialog.AllPages) { pages = [PathOf(selected!)]; } // „Nur markierte Seite" ist ohne Markierung nicht wählbar
+        if (!dialog.AllPages) { pages = [.. SelectedThumbs.Select(PathOf)]; } // „Nur markierte Seiten" ist ohne Markierung nicht wählbar
         document.PrinterSettings = dialog.DriverSettings; // Treiber-Extras aus dem Eigenschaften-Dialog mitnehmen
         ApplySharedPrinterSettings(document); // wendet die eben übernommenen Vorgaben an
         var pageIndex = 0;
@@ -1776,11 +1901,11 @@ public partial class MainForm : Form, IMessageFilter
             MenuExtrasFax_Click(sender, e); // erst den Faxdrucker festlegen
             if (string.IsNullOrEmpty(settings.FaxPrinter)) { return; }
         }
-        using FaxForm dialog = new(selected != null);
+        using FaxForm dialog = new(marked.Count);
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         List<string> pages = dialog.AllPages
             ? [.. flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b))]
-            : [PathOf(selected!)]; // „Nur markierte Seite" ist ohne Markierung nicht wählbar
+            : [.. SelectedThumbs.Select(PathOf)]; // „Nur markierte Seiten" ist ohne Markierung nicht wählbar
         using PrintDocument document = new();
         document.DocumentName = "ScanView";
         document.PrinterSettings.PrinterName = settings.FaxPrinter;

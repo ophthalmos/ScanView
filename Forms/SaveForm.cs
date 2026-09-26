@@ -37,14 +37,16 @@ internal sealed partial class SaveForm : Form
     /// <summary>Die gespeicherte Datei anschließend im Standardprogramm öffnen (letzte Wahl wird gemerkt).</summary>
     public bool OpenAfter => cbOpenAfter.Checked;
 
-    public SaveForm(bool hasSelection, string folder, string fileName, string ocrLanguage, int jpgQuality, string author, bool openAfter)
+    public SaveForm(int selectedCount, string folder, string fileName, string ocrLanguage, int jpgQuality, string author, bool openAfter)
     {
         InitializeComponent();
         Lng.Apply(this);
         TextBoxMargins.Apply(this);
         Lng.TranslateItems(comboFileType); // wird über SelectedIndex ausgewertet
         textTitle.PlaceholderText = Lng.T("wie Dateiname");
-        radioSelected.Enabled = hasSelection;
+        radioSelected.Enabled = selectedCount > 0;
+        if (selectedCount > 1) { radioSelected.Text = string.Format(Lng.T("Nur &markierte Seiten ({0})"), selectedCount); } // nach Lng.Apply
+        radioSelected.Left = Math.Min(radioSelected.Left, groupScope.Width - radioSelected.Width - 10); // nicht an der GroupBox-Kante abschneiden
         textFileName.Text = fileName;
         textFolder.Text = folder;
         comboOcr.Items.Add(Lng.T("Ohne Texterkennung"));

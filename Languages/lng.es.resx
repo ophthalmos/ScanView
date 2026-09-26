@@ -369,4 +369,17 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Mausrad" xml:space="preserve"><value>Rueda del ratón</value></data>
   <data name="Seitenübersicht scrollen" xml:space="preserve"><value>desplazar la vista de páginas</value></data>
   <data name="Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI." xml:space="preserve"><value>Para una calidad óptima de reconocimiento de texto, Tesseract necesita una resolución de unos 300 dpi.</value></data>
+  <data name="Nur &amp;markierte Seiten ({0})" xml:space="preserve"><value>Solo las páginas &amp;marcadas ({0})</value></data>
+  <data name="{0} von {1} Seiten markiert" xml:space="preserve"><value>{0} de {1} páginas marcadas</value></data>
+  <data name="{0} Seiten entfernt" xml:space="preserve"><value>{0} páginas quitadas</value></data>
+  <data name="{0} Seiten gedreht" xml:space="preserve"><value>{0} páginas giradas</value></data>
+  <data name="{0} Seiten eingefügt" xml:space="preserve"><value>{0} páginas pegadas</value></data>
+  <data name="Alle &amp;markieren" xml:space="preserve"><value>Seleccionar &amp;todo</value></data>
+  <data name="Strg+A" xml:space="preserve"><value>Ctrl+A</value></data>
+  <data name="alle Seiten markieren" xml:space="preserve"><value>seleccionar todas las páginas</value></data>
+  <data name="Strg+Klick / Umschalt+Klick" xml:space="preserve"><value>Ctrl+clic / Mayús+clic</value></data>
+  <data name="mehrere Seiten markieren (einzeln / Bereich)" xml:space="preserve"><value>seleccionar varias páginas (una a una / rango)</value></data>
+  <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Eliminar, girar, cortar/copiar así como guardar, imprimir y enviar por fax con «Solo las páginas marcadas» se aplican a todas las páginas marcadas; recortar y mover a la última página en la que se hizo clic.</value></data>
+  <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Mayús+flechas</value></data>
+  <data name="Markierung erweitern" xml:space="preserve"><value>ampliar la selección</value></data>
 </root>

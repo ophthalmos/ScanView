@@ -369,4 +369,17 @@ Grayscale scans save additional space.</value></data>
   <data name="Mausrad" xml:space="preserve"><value>Mouse wheel</value></data>
   <data name="Seitenübersicht scrollen" xml:space="preserve"><value>scroll the page overview</value></data>
   <data name="Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI." xml:space="preserve"><value>For the best text recognition quality, Tesseract needs a resolution of about 300 dpi.</value></data>
+  <data name="Nur &amp;markierte Seiten ({0})" xml:space="preserve"><value>Only the selected &amp;pages ({0})</value></data>
+  <data name="{0} von {1} Seiten markiert" xml:space="preserve"><value>{0} of {1} pages selected</value></data>
+  <data name="{0} Seiten entfernt" xml:space="preserve"><value>{0} pages removed</value></data>
+  <data name="{0} Seiten gedreht" xml:space="preserve"><value>{0} pages rotated</value></data>
+  <data name="{0} Seiten eingefügt" xml:space="preserve"><value>{0} pages pasted</value></data>
+  <data name="Alle &amp;markieren" xml:space="preserve"><value>Select &amp;all</value></data>
+  <data name="Strg+A" xml:space="preserve"><value>Ctrl+A</value></data>
+  <data name="alle Seiten markieren" xml:space="preserve"><value>select all pages</value></data>
+  <data name="Strg+Klick / Umschalt+Klick" xml:space="preserve"><value>Ctrl+click / Shift+click</value></data>
+  <data name="mehrere Seiten markieren (einzeln / Bereich)" xml:space="preserve"><value>select several pages (individually / range)</value></data>
+  <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Delete, rotate, cut/copy as well as save, print and fax with “Only the selected pages” apply to all selected pages; crop and move to the page clicked last.</value></data>
+  <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Shift+arrow keys</value></data>
+  <data name="Markierung erweitern" xml:space="preserve"><value>extend the selection</value></data>
 </root>

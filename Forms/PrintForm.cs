@@ -37,13 +37,15 @@ internal sealed partial class PrintForm : Form
     private readonly List<PaperSize> paperSizes = [];         // Papierformate parallel zur Combo
     private readonly List<PaperSource> paperSources = [];     // Papierzufuhren parallel zur Combo
 
-    public PrintForm(bool hasSelection, AppSettings settings)
+    public PrintForm(int selectedCount, AppSettings settings)
     {
         InitializeComponent();
         Lng.Apply(this);
         Lng.TranslateItems(comboDuplex); // wird über SelectedIndex ausgewertet
         linkProperties.Left = comboPrinter.Right - linkProperties.Width; // rechtsbündig (Textbreite je Sprache)
-        radioSelected.Enabled = hasSelection;
+        radioSelected.Enabled = selectedCount > 0;
+        if (selectedCount > 1) { radioSelected.Text = string.Format(Lng.T("Nur &markierte Seiten ({0})"), selectedCount); } // nach Lng.Apply
+        radioSelected.Left = Math.Min(radioSelected.Left, groupScope.Width - radioSelected.Width - 10); // nicht an der GroupBox-Kante abschneiden
         foreach (string printer in PrinterSettings.InstalledPrinters) { comboPrinter.Items.Add(printer); }
         var index = comboPrinter.Items.IndexOf(settings.CopyPrinter); // gemeinsame Vorgabe, sonst der Standarddrucker
         if (index < 0) { index = comboPrinter.Items.IndexOf(printerSettings.PrinterName); }
