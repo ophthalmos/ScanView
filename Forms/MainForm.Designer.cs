@@ -122,8 +122,8 @@
             comboFeed = new ComboBox();
             labelBrightness = new Label();
             trackBrightness = new ScanView.Classes.ResetTrackBar();
-            labelDarker = new Label();
-            labelBrighter = new Label();
+            btnDarker = new Button();
+            btnBrighter = new Button();
             panelCopyMode = new Panel();
             labelCopyTitle = new Label();
             labelCopyPrinter = new Label();
@@ -816,8 +816,8 @@
             panelSettings.Controls.Add(comboFeed);
             panelSettings.Controls.Add(labelBrightness);
             panelSettings.Controls.Add(trackBrightness);
-            panelSettings.Controls.Add(labelDarker);
-            panelSettings.Controls.Add(labelBrighter);
+            panelSettings.Controls.Add(btnDarker);
+            panelSettings.Controls.Add(btnBrighter);
             panelSettings.Dock = DockStyle.Left;
             panelSettings.Location = new Point(0, 84);
             panelSettings.Name = "panelSettings";
@@ -965,29 +965,37 @@
             trackBrightness.TickFrequency = 25;
             trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
             // 
-            // labelDarker
+            // btnDarker
             // 
-            labelDarker.BackColor = Color.Transparent;
-            labelDarker.Font = new Font("Segoe UI", 9F);
-            labelDarker.ForeColor = SystemColors.GrayText;
-            labelDarker.Location = new Point(8, 347);
-            labelDarker.Name = "labelDarker";
-            labelDarker.Size = new Size(24, 12);
-            labelDarker.TabIndex = 14;
-            labelDarker.Text = "⊖";
-            labelDarker.TextAlign = ContentAlignment.MiddleLeft;
+            btnDarker.Cursor = Cursors.Hand;
+            btnDarker.FlatAppearance.BorderSize = 0;
+            btnDarker.FlatStyle = FlatStyle.Flat;
+            btnDarker.Font = new Font("Segoe UI", 9F);
+            btnDarker.ForeColor = SystemColors.GrayText;
+            btnDarker.Location = new Point(4, 352);
+            btnDarker.Name = "btnDarker";
+            btnDarker.Size = new Size(22, 20);
+            btnDarker.TabIndex = 14;
+            btnDarker.TabStop = false;
+            btnDarker.Text = "⊖";
+            btnDarker.UseVisualStyleBackColor = true;
+            btnDarker.Click += BtnDarker_Click;
             // 
-            // labelBrighter
+            // btnBrighter
             // 
-            labelBrighter.BackColor = Color.Transparent;
-            labelBrighter.Font = new Font("Segoe UI", 9F);
-            labelBrighter.ForeColor = SystemColors.GrayText;
-            labelBrighter.Location = new Point(120, 347);
-            labelBrighter.Name = "labelBrighter";
-            labelBrighter.Size = new Size(24, 12);
-            labelBrighter.TabIndex = 15;
-            labelBrighter.Text = "⊕";
-            labelBrighter.TextAlign = ContentAlignment.MiddleRight;
+            btnBrighter.Cursor = Cursors.Hand;
+            btnBrighter.FlatAppearance.BorderSize = 0;
+            btnBrighter.FlatStyle = FlatStyle.Flat;
+            btnBrighter.Font = new Font("Segoe UI", 9F);
+            btnBrighter.ForeColor = SystemColors.GrayText;
+            btnBrighter.Location = new Point(126, 352);
+            btnBrighter.Name = "btnBrighter";
+            btnBrighter.Size = new Size(22, 20);
+            btnBrighter.TabIndex = 15;
+            btnBrighter.TabStop = false;
+            btnBrighter.Text = "⊕";
+            btnBrighter.UseVisualStyleBackColor = true;
+            btnBrighter.Click += BtnBrighter_Click;
             // 
             // panelCopyMode
             // 
@@ -1348,8 +1356,8 @@
         private System.Windows.Forms.ComboBox comboFeed;
         private System.Windows.Forms.Label labelBrightness;
         private ScanView.Classes.ResetTrackBar trackBrightness;
-        private System.Windows.Forms.Label labelDarker;
-        private System.Windows.Forms.Label labelBrighter;
+        private System.Windows.Forms.Button btnDarker;
+        private System.Windows.Forms.Button btnBrighter;
         private Classes.PageFlowPanel flowPanel;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripStatusLabel statusPages;
