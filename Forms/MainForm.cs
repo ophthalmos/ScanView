@@ -479,6 +479,11 @@ public partial class MainForm : Form, IMessageFilter
     /// Prozentzeichen, in Neutralstellung ganz ohne Zahl. Ruft auch die Profil-Prüfung auf —
     /// der VS-Designer verwaltet nur EINEN Handler je Ereignis, ein zweites Wiring
     /// (ScanSetting_Changed) würde er beim Regenerieren verwerfen.</summary>
+    /// <summary>Die Endmarken ⊖/⊕ unter dem Regler wirken wie Schaltflächen: ein Schritt dunkler bzw. heller.</summary>
+    private void LabelDarker_Click(object sender, EventArgs e) => trackBrightness.Value = Math.Max(trackBrightness.Minimum, trackBrightness.Value - trackBrightness.SmallChange);
+
+    private void LabelBrighter_Click(object sender, EventArgs e) => trackBrightness.Value = Math.Min(trackBrightness.Maximum, trackBrightness.Value + trackBrightness.SmallChange);
+
     private void TrackBrightness_ValueChanged(object sender, EventArgs e)
     {
         labelBrightness.Text = trackBrightness.Value == 0
