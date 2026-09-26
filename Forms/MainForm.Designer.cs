@@ -121,7 +121,7 @@
             labelFeed = new Label();
             comboFeed = new ComboBox();
             labelBrightness = new Label();
-            trackBrightness = new TrackBar();
+            trackBrightness = new ScanView.Classes.ResetTrackBar();
             labelDarker = new Label();
             labelBrighter = new Label();
             panelCopyMode = new Panel();
@@ -882,6 +882,7 @@
             comboDpi.Size = new Size(134, 23);
             comboDpi.TabIndex = 2;
             toolTip.SetToolTip(comboDpi, "Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI.");
+            toolTip.SetToolTip(trackBrightness, "Doppelklick setzt die Helligkeit auf 0 zurück");
             comboDpi.SelectedIndexChanged += ScanSetting_Changed;
             // 
             // labelColor
@@ -1346,7 +1347,7 @@
         private System.Windows.Forms.Label labelFeed;
         private System.Windows.Forms.ComboBox comboFeed;
         private System.Windows.Forms.Label labelBrightness;
-        private System.Windows.Forms.TrackBar trackBrightness;
+        private ScanView.Classes.ResetTrackBar trackBrightness;
         private System.Windows.Forms.Label labelDarker;
         private System.Windows.Forms.Label labelBrighter;
         private Classes.PageFlowPanel flowPanel;

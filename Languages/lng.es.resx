@@ -382,4 +382,7 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Eliminar, girar, cortar/copiar así como guardar, imprimir y enviar por fax con «Solo las páginas marcadas» se aplican a todas las páginas marcadas; recortar y mover a la última página en la que se hizo clic.</value></data>
   <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Mayús+flechas</value></data>
   <data name="Markierung erweitern" xml:space="preserve"><value>ampliar la selección</value></data>
+  <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Un doble clic restablece el brillo a 0</value></data>
+  <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Doble clic en el control de brillo</value></data>
+  <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>restablecer el brillo a 0</value></data>
 </root>

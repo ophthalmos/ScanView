@@ -382,4 +382,7 @@ Grayscale scans save additional space.</value></data>
   <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Delete, rotate, cut/copy as well as save, print and fax with “Only the selected pages” apply to all selected pages; crop and move to the page clicked last.</value></data>
   <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Shift+arrow keys</value></data>
   <data name="Markierung erweitern" xml:space="preserve"><value>extend the selection</value></data>
+  <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Double-click resets the brightness to 0</value></data>
+  <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Double-click on the brightness slider</value></data>
+  <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>reset the brightness to 0</value></data>
 </root>

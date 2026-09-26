@@ -382,4 +382,7 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Supprimer, pivoter, couper/copier ainsi qu'enregistrer, imprimer et faxer avec « Seulement les pages sélectionnées » s'appliquent à toutes les pages sélectionnées ; recadrer et déplacer à la dernière page cliquée.</value></data>
   <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Maj+flèches</value></data>
   <data name="Markierung erweitern" xml:space="preserve"><value>étendre la sélection</value></data>
+  <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Un double-clic remet la luminosité à 0</value></data>
+  <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Double-clic sur le curseur de luminosité</value></data>
+  <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>remettre la luminosité à 0</value></data>
 </root>

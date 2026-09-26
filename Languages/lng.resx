@@ -382,4 +382,7 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte.</value></data>
   <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Umschalt+Pfeiltasten</value></data>
   <data name="Markierung erweitern" xml:space="preserve"><value>Markierung erweitern</value></data>
+  <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Doppelklick setzt die Helligkeit auf 0 zurück</value></data>
+  <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Doppelklick auf den Helligkeitsregler</value></data>
+  <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>Helligkeit auf 0 zurücksetzen</value></data>
 </root>

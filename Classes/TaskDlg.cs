@@ -221,6 +221,7 @@ internal static class TaskDlg
         ("Umschalt+Pfeiltasten", "Markierung erweitern", null),
         ("Mausrad", "Seitenübersicht scrollen", null),
         ("Doppelklick", "Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)", null),
+        ("Doppelklick auf den Helligkeitsregler", "Helligkeit auf 0 zurücksetzen", null),
         ("2× Esc / Umschalt+Esc", "Programm beenden (Option)", null),
     ];
 

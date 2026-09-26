@@ -82,7 +82,7 @@ public partial class MainForm : Form, IMessageFilter
         InitializeComponent();
         Lng.Apply(this); // Designer-Texte übersetzen (direkt nach InitializeComponent)
         Lng.Apply(thumbContextMenu);
-        Lng.Apply(toolTip, comboDpi); // ToolTip-Komponente (Designer) — kein Kind des Formulars
+        Lng.Apply(toolTip, comboDpi, trackBrightness); // ToolTip-Komponente (Designer) — kein Kind des Formulars
         Lng.TranslateItems(comboColor, comboArea, comboFeed, comboCopyDuplex); // alle werden über SelectedIndex ausgewertet
         linkCopyProperties.Left = comboCopyPrinter.Right - linkCopyProperties.Width; // rechtsbündig (Textbreite je Sprache)
         linkProfiles.Left = comboProfile.Right - linkProfiles.Width; // dito — der Text ist seit der Profilverwaltung statisch
