@@ -5,3 +5,6 @@ obj/
 *Setup.exe
 /CLAUDE.md
 /CLAUDE.local.md
+
+# Persönliche Claude-Code-Einstellungen (nicht auf GitHub)
+.claude/settings.local.json

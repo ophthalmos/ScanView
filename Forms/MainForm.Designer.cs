@@ -150,7 +150,7 @@
             menuStrip.SuspendLayout();
             toolStrip.SuspendLayout();
             panelSettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBrightness).BeginInit();
+            (trackBrightness).BeginInit();
             panelCopyMode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)numCopies).BeginInit();
             statusStrip.SuspendLayout();
@@ -882,7 +882,6 @@
             comboDpi.Size = new Size(134, 23);
             comboDpi.TabIndex = 2;
             toolTip.SetToolTip(comboDpi, "Für eine optimale Text-Erkennungsqualität benötigt Tesseract eine Auflösung von etwa 300 DPI.");
-            toolTip.SetToolTip(trackBrightness, "Doppelklick setzt die Helligkeit auf 0 zurück");
             comboDpi.SelectedIndexChanged += ScanSetting_Changed;
             // 
             // labelColor
@@ -963,6 +962,7 @@
             trackBrightness.SmallChange = 5;
             trackBrightness.TabIndex = 13;
             trackBrightness.TickFrequency = 25;
+            toolTip.SetToolTip(trackBrightness, "Doppelklick setzt die Helligkeit auf 0 zurück");
             trackBrightness.ValueChanged += TrackBrightness_ValueChanged;
             // 
             // btnDarker
@@ -974,7 +974,7 @@
             btnDarker.ForeColor = SystemColors.GrayText;
             btnDarker.Location = new Point(4, 352);
             btnDarker.Name = "btnDarker";
-            btnDarker.Size = new Size(22, 20);
+            btnDarker.Size = new Size(22, 22);
             btnDarker.TabIndex = 14;
             btnDarker.TabStop = false;
             btnDarker.Text = "⊖";
@@ -988,9 +988,9 @@
             btnBrighter.FlatStyle = FlatStyle.Flat;
             btnBrighter.Font = new Font("Segoe UI", 9F);
             btnBrighter.ForeColor = SystemColors.GrayText;
-            btnBrighter.Location = new Point(126, 352);
+            btnBrighter.Location = new Point(124, 352);
             btnBrighter.Name = "btnBrighter";
-            btnBrighter.Size = new Size(22, 20);
+            btnBrighter.Size = new Size(22, 22);
             btnBrighter.TabIndex = 15;
             btnBrighter.TabStop = false;
             btnBrighter.Text = "⊕";
@@ -1237,7 +1237,7 @@
             toolStrip.PerformLayout();
             panelSettings.ResumeLayout(false);
             panelSettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBrightness).EndInit();
+            (trackBrightness).EndInit();
             panelCopyMode.ResumeLayout(false);
             panelCopyMode.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)numCopies).EndInit();
