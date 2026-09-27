@@ -160,8 +160,9 @@ les enregistre en PDF interrogeable (reconnaissance de texte).
 
 En mode copie, chaque numérisation est imprimée directement.
 
-Le design s'inspire de « Scanner Interface 7 »
-(Grewe Computertechnik GmbH 2012).</value></data>
+Le concept d'utilisation s'inspire de celui du programme
+« Scanner Interface 7 » (Grewe Computertechnik GmbH,
+dernière version en 2012, plus disponible).</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Faire un don via PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>À propos de</value></data>
   <data name="Vorhandene öffnen" xml:space="preserve"><value>Ouvrir l'existant</value></data>

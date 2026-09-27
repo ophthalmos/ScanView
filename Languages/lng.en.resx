@@ -160,8 +160,9 @@ saves them as a searchable PDF with text recognition.
 
 In copy mode every scan is printed immediately.
 
-The design is modelled on &quot;Scanner Interface 7&quot;
-(Grewe Computertechnik GmbH 2012).</value></data>
+The user interface concept is based on that of the program
+&quot;Scanner Interface 7&quot; (Grewe Computertechnik GmbH,
+last released in 2012, no longer available).</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Donate appreciation via PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>About</value></data>
   <data name="Vorhandene öffnen" xml:space="preserve"><value>Open existing</value></data>

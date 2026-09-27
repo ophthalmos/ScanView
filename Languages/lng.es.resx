@@ -160,8 +160,9 @@ las guarda como PDF con reconocimiento de texto.
 
 En el modo copia cada escaneo se imprime directamente.
 
-El diseño está inspirado en «Scanner Interface 7»
-(Grewe Computertechnik GmbH 2012).</value></data>
+El concepto de manejo se inspira en el del programa
+«Scanner Interface 7» (Grewe Computertechnik GmbH,
+última versión en 2012, ya no disponible).</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Donar mediante PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>Acerca de</value></data>
   <data name="Vorhandene öffnen" xml:space="preserve"><value>Abrir existente</value></data>

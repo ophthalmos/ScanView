@@ -1664,7 +1664,7 @@ public partial class MainForm : Form, IMessageFilter
         var folder = Directory.Exists(settings.SaveDirectory) // bevorzugter Speicherort, sonst Dokumente
             ? settings.SaveDirectory : Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
         var author = string.IsNullOrWhiteSpace(settings.SaveAuthor) ? Environment.UserName : settings.SaveAuthor;
-        using SaveForm dialog = new(marked.Count, folder, Lng.T("Scan") + " " + DateTime.Now.ToString("yyyy-MM-dd"),
+        using SaveForm dialog = new(marked.Count, folder, DateTime.Now.ToString("yyyy-MM-dd") + "_" + Lng.T("Scan"),
             settings.OcrLanguage, settings.OcrJpgQuality, author, settings.OpenAfterSave); // Vorauswahl: bevorzugte Sprache aus den Optionen
         if (dialog.ShowDialog(this) != DialogResult.OK) { return; }
         settings.SaveAuthor = dialog.MetaAuthor; // Verfasser und Öffnen-Wahl fürs nächste Mal vorbelegen

@@ -160,8 +160,9 @@ speichert sie mit Texterkennung als durchsuchbare PDF.
 
 Im Kopiermodus wird jeder Scan direkt gedruckt.
 
-Das Design wurde dem Programm „Scanner Interface 7“
-(Grewe Computertechnik GmbH 2012) nachempfunden.</value></data>
+Das Bedienkonzept lehnt sich an das des Programms
+„Scanner Interface 7“ (Grewe Computertechnik GmbH,
+zuletzt erschienen 2012, nicht mehr erhältlich).</value></data>
   <data name="Anerkennung spenden via PayPal" xml:space="preserve"><value>Anerkennung spenden via PayPal</value></data>
   <data name="Über" xml:space="preserve"><value>Über</value></data>
   <data name="Vorhandene öffnen" xml:space="preserve"><value>Vorhandene öffnen</value></data>

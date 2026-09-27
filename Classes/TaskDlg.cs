@@ -85,7 +85,7 @@ internal static class TaskDlg
             "speichert sie mit Texterkennung als durchsuchbare PDF." + Environment.NewLine + Environment.NewLine +
             "Im Kopiermodus wird jeder Scan direkt gedruckt." + Environment.NewLine + Environment.NewLine +
             "Das Bedienkonzept lehnt sich an das des Programms" + Environment.NewLine +
-            "„Scanner Interface 7“ (Grewe Computertechnik GmbH,"+ Environment.NewLine +
+            "„Scanner Interface 7“ (Grewe Computertechnik GmbH," + Environment.NewLine +
             "zuletzt erschienen 2012, nicht mehr erhältlich).");
         TaskDialogButton paypalButton = new TaskDialogCommandLinkButton(Lng.T("Anerkennung spenden via PayPal"));
         using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante des Fenster-Icons
