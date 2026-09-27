@@ -74,11 +74,14 @@ internal static class OcrPdfService
                 using (var renderer = ResultRenderer.CreatePdfRenderer(pdfBase, TessData, false))
                 using (renderer.BeginDocument("ScanView"))
                 {
-                    // user_defined_dpi ist eine Init-Variable und nur der FALLBACK für Bilder ohne
-                    // dpi-Metadaten — Scans und LoadUnlocked-Kopien bringen ihre Auflösung selbst mit
-                    using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
-                        new Dictionary<string, object> { { "user_defined_dpi", 300 }, { "jpg_quality", jpgQuality } }, false);
                     using var pix = Pix.LoadFromFile(tiffFiles[i]);
+                    // user_defined_dpi ÜBERSCHREIBT in Tesseract die Auflösung des Bildes (kein bloßer
+                    // Rückfall) — daraus berechnet der PDF-Renderer die Seitengröße. Deshalb je Seite die
+                    // echte Auflösung übergeben; 300 nur, wenn das Bild keine glaubwürdige mitbringt.
+                    // (Mit fest 300 wurde ein 150-dpi-Scan zur Seite mit halber Breite und Höhe.)
+                    var dpi = pix.YRes is >= 70 and <= 2400 ? pix.YRes : 300;
+                    using TesseractEngine engine = new(TessData, language, EngineMode.LstmOnly, [],
+                        new Dictionary<string, object> { { "user_defined_dpi", dpi }, { "jpg_quality", jpgQuality } }, false);
 
                     // Optimierungs-Prüfung: Ist das Bild binarisiert?
                     if (pix.Depth > 1)

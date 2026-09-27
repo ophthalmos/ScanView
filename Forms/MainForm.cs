@@ -380,6 +380,31 @@ public partial class MainForm : Form, IMessageFilter
             pageCount = check.PageCount;
         }
         catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
+        // Seitengröße folgt der Scan-Auflösung: eine A4-Seite mit 150 dpi muss auch als A4 in der PDF landen
+        var halfRes = Path.Combine(sessionFolder, "a4-150dpi.tif");
+        using (var full = ScanService.LoadUnlocked(PathOf((Panel)flowPanel.Controls[0])))
+        using (Bitmap half = new(1240, 1754))
+        {
+            half.SetResolution(150, 150);
+            using (var g = Graphics.FromImage(half)) { g.DrawImage(full, 0, 0, 1240, 1754); }
+            half.Save(halfRes, System.Drawing.Imaging.ImageFormat.Tiff);
+        }
+        var outputHalf = Path.Combine(sessionFolder, "Selbsttest150.pdf");
+        OcrPdfService.CreateSearchablePdf([halfRes], outputHalf, "deu", 75, null);
+        var a4At150 = false;
+        try
+        {
+            using var check = PdfSharp.Pdf.IO.PdfReader.Open(outputHalf, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
+            a4At150 = Math.Abs(check.Pages[0].Width.Point - 595) < 3 && Math.Abs(check.Pages[0].Height.Point - 842) < 3; // A4 = 595 × 842 pt
+        }
+        catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { }
+        OcrPdfService.CreateImagePdf([halfRes], outputHalf, 75, null); // derselbe Test für den Weg ohne Texterkennung
+        try
+        {
+            using var check = PdfSharp.Pdf.IO.PdfReader.Open(outputHalf, PdfSharp.Pdf.IO.PdfDocumentOpenMode.Import);
+            a4At150 &= Math.Abs(check.Pages[0].Width.Point - 595) < 3 && Math.Abs(check.Pages[0].Height.Point - 842) < 3;
+        }
+        catch (Exception ex) when (ex is PdfSharp.PdfSharpException or IOException or InvalidOperationException) { a4At150 = false; }
         var outputA = Path.Combine(sessionFolder, "SelbsttestA.pdf"); // PDF/A: reiner Bild-PDF-Weg
         OcrPdfService.CreateImagePdf([.. flowPanel.Controls.Cast<Panel>().Select(b => PathOf(b))], outputA, 75, null,
             new PdfMeta("Selbsttest", "PDF/A-Prüfung", "Scan, Test", "ScanView", PdfA: true));
@@ -443,7 +468,7 @@ public partial class MainForm : Form, IMessageFilter
         multiOk &= flowPanel.Controls.Count == 2;
         Application.RemoveMessageFilter(this);
         Hide(); // keine Paint-Zyklen mehr, während der Prozess mitten im Nachrichtenbetrieb endet
-        Environment.Exit(pageCount == 2 && pageCountA == 2 && placedOk && multiOk ? 0 : 1);
+        Environment.Exit(pageCount == 2 && pageCountA == 2 && placedOk && multiOk && a4At150 ? 0 : 1);
     }
 
     private string NextScanPath() => Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}.tif");
