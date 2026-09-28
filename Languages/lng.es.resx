@@ -386,4 +386,11 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Un doble clic restablece el brillo a 0</value></data>
   <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Doble clic en el control de brillo</value></data>
   <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>restablecer el brillo a 0</value></data>
+  <data name="&amp;Duplizieren" xml:space="preserve"><value>&amp;Duplicar</value></data>
+  <data name="Markierte Seiten verdoppeln – die Kopien folgen direkt dahinter" xml:space="preserve"><value>Duplicar las páginas marcadas – las copias van justo detrás</value></data>
+  <data name="Seite dupliziert" xml:space="preserve"><value>Página duplicada</value></data>
+  <data name="{0} Seiten dupliziert" xml:space="preserve"><value>{0} páginas duplicadas</value></data>
+  <data name="Duplizieren fehlgeschlagen." xml:space="preserve"><value>Error al duplicar.</value></data>
+  <data name="markierte Seiten duplizieren" xml:space="preserve"><value>duplicar las páginas marcadas</value></data>
+  <data name="Strg+T" xml:space="preserve"><value>Ctrl+T</value></data>
 </root>

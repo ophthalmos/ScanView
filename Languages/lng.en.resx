@@ -386,4 +386,11 @@ Grayscale scans save additional space.</value></data>
   <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Double-click resets the brightness to 0</value></data>
   <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Double-click on the brightness slider</value></data>
   <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>reset the brightness to 0</value></data>
+  <data name="&amp;Duplizieren" xml:space="preserve"><value>&amp;Duplicate</value></data>
+  <data name="Markierte Seiten verdoppeln – die Kopien folgen direkt dahinter" xml:space="preserve"><value>Duplicate the selected pages – the copies follow right after them</value></data>
+  <data name="Seite dupliziert" xml:space="preserve"><value>Page duplicated</value></data>
+  <data name="{0} Seiten dupliziert" xml:space="preserve"><value>{0} pages duplicated</value></data>
+  <data name="Duplizieren fehlgeschlagen." xml:space="preserve"><value>Duplicating failed.</value></data>
+  <data name="markierte Seiten duplizieren" xml:space="preserve"><value>duplicate the selected pages</value></data>
+  <data name="Strg+T" xml:space="preserve"><value>Ctrl+T</value></data>
 </root>

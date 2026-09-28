@@ -386,4 +386,11 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Doppelklick setzt die Helligkeit auf 0 zurück</value></data>
   <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Doppelklick auf den Helligkeitsregler</value></data>
   <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>Helligkeit auf 0 zurücksetzen</value></data>
+  <data name="&amp;Duplizieren" xml:space="preserve"><value>&amp;Duplizieren</value></data>
+  <data name="Markierte Seiten verdoppeln – die Kopien folgen direkt dahinter" xml:space="preserve"><value>Markierte Seiten verdoppeln – die Kopien folgen direkt dahinter</value></data>
+  <data name="Seite dupliziert" xml:space="preserve"><value>Seite dupliziert</value></data>
+  <data name="{0} Seiten dupliziert" xml:space="preserve"><value>{0} Seiten dupliziert</value></data>
+  <data name="Duplizieren fehlgeschlagen." xml:space="preserve"><value>Duplizieren fehlgeschlagen.</value></data>
+  <data name="markierte Seiten duplizieren" xml:space="preserve"><value>markierte Seiten duplizieren</value></data>
+  <data name="Strg+T" xml:space="preserve"><value>Strg+T</value></data>
 </root>

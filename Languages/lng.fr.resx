@@ -386,4 +386,11 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Un double-clic remet la luminosité à 0</value></data>
   <data name="Doppelklick auf den Helligkeitsregler" xml:space="preserve"><value>Double-clic sur le curseur de luminosité</value></data>
   <data name="Helligkeit auf 0 zurücksetzen" xml:space="preserve"><value>remettre la luminosité à 0</value></data>
+  <data name="&amp;Duplizieren" xml:space="preserve"><value>&amp;Dupliquer</value></data>
+  <data name="Markierte Seiten verdoppeln – die Kopien folgen direkt dahinter" xml:space="preserve"><value>Dupliquer les pages sélectionnées – les copies suivent juste après</value></data>
+  <data name="Seite dupliziert" xml:space="preserve"><value>Page dupliquée</value></data>
+  <data name="{0} Seiten dupliziert" xml:space="preserve"><value>{0} pages dupliquées</value></data>
+  <data name="Duplizieren fehlgeschlagen." xml:space="preserve"><value>Échec de la duplication.</value></data>
+  <data name="markierte Seiten duplizieren" xml:space="preserve"><value>dupliquer les pages sélectionnées</value></data>
+  <data name="Strg+T" xml:space="preserve"><value>Ctrl+T</value></data>
 </root>

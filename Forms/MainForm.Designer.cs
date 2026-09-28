@@ -37,6 +37,7 @@
             contextSeparator1 = new ToolStripSeparator();
             contextCut = new ToolStripMenuItem();
             contextCopy = new ToolStripMenuItem();
+            contextDuplicate = new ToolStripMenuItem();
             contextPaste = new ToolStripMenuItem();
             contextDelete = new ToolStripMenuItem();
             contextSeparator2 = new ToolStripSeparator();
@@ -58,6 +59,7 @@
             menuEditPaste = new ToolStripMenuItem();
             menuEditDelete = new ToolStripMenuItem();
             menuEditSelectAll = new ToolStripMenuItem();
+            menuEditDuplicate = new ToolStripMenuItem();
             menuEditSeparator1 = new ToolStripSeparator();
             menuEditCrop = new ToolStripMenuItem();
             menuEditRotateLeft = new ToolStripMenuItem();
@@ -158,7 +160,7 @@
             // 
             // thumbContextMenu
             // 
-            thumbContextMenu.Items.AddRange(new ToolStripItem[] { contextCrop, contextRotateLeft, contextRotate180, contextRotateRight, contextSeparator1, contextCut, contextCopy, contextPaste, contextDelete, contextSeparator2, contextOpenViewer });
+            thumbContextMenu.Items.AddRange(new ToolStripItem[] { contextCrop, contextRotateLeft, contextRotate180, contextRotateRight, contextSeparator1, contextCut, contextCopy, contextPaste, contextDuplicate, contextDelete, contextSeparator2, contextOpenViewer });
             thumbContextMenu.Name = "thumbContextMenu";
             thumbContextMenu.Size = new Size(261, 214);
             thumbContextMenu.Opening += ThumbContextMenu_Opening;
@@ -215,6 +217,14 @@
             contextCopy.Size = new Size(260, 22);
             contextCopy.Text = "&Kopieren";
             contextCopy.Click += MenuEditCopy_Click;
+            // 
+            // contextDuplicate
+            // 
+            contextDuplicate.Name = "contextDuplicate";
+            contextDuplicate.ShortcutKeyDisplayString = "Strg+D";
+            contextDuplicate.Size = new Size(260, 22);
+            contextDuplicate.Text = "&Duplizieren";
+            contextDuplicate.Click += MenuEditDuplicate_Click;
             // 
             // contextPaste
             // 
@@ -317,7 +327,7 @@
             // 
             // menuEdit
             // 
-            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditUndo, menuEditSeparator0, menuEditCut, menuEditCopy, menuEditPaste, menuEditDelete, menuEditSelectAll, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
+            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditUndo, menuEditSeparator0, menuEditCut, menuEditCopy, menuEditPaste, menuEditDuplicate, menuEditDelete, menuEditSelectAll, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
             menuEdit.Name = "menuEdit";
             menuEdit.Size = new Size(75, 20);
             menuEdit.Text = "&Bearbeiten";
@@ -387,6 +397,17 @@
             menuEditSelectAll.Text = "Alle &markieren";
             menuEditSelectAll.Click += MenuEditSelectAll_Click;
             // 
+            // menuEditDuplicate
+            // 
+            menuEditDuplicate.Enabled = false;
+            menuEditDuplicate.Name = "menuEditDuplicate";
+            menuEditDuplicate.ShortcutKeyDisplayString = "Strg+D";
+            menuEditDuplicate.ShortcutKeys = Keys.Control | Keys.D;
+            menuEditDuplicate.Size = new Size(260, 22);
+            menuEditDuplicate.Text = "&Duplizieren";
+            menuEditDuplicate.ToolTipText = "Markierte Seiten verdoppeln – die Kopien folgen direkt dahinter";
+            menuEditDuplicate.Click += MenuEditDuplicate_Click;
+            // 
             // menuEditSeparator1
             // 
             menuEditSeparator1.Name = "menuEditSeparator1";
@@ -440,8 +461,8 @@
             // 
             menuEditBacks.Enabled = false;
             menuEditBacks.Name = "menuEditBacks";
-            menuEditBacks.ShortcutKeyDisplayString = "Strg+D";
-            menuEditBacks.ShortcutKeys = Keys.Control | Keys.D;
+            menuEditBacks.ShortcutKeyDisplayString = "Strg+T";
+            menuEditBacks.ShortcutKeys = Keys.Control | Keys.T;
             menuEditBacks.Size = new Size(260, 22);
             menuEditBacks.Text = "Rück&seiten einfügen";
             menuEditBacks.ToolTipText = "Zweite Hälfte der Seiten (Rückseiten in umgekehrter Reihenfolge) hinter die Vorderseiten einsortieren";
@@ -1258,6 +1279,7 @@
         private System.Windows.Forms.ToolStripSeparator contextSeparator1;
         private System.Windows.Forms.ToolStripMenuItem contextCut;
         private System.Windows.Forms.ToolStripMenuItem contextCopy;
+        private System.Windows.Forms.ToolStripMenuItem contextDuplicate;
         private System.Windows.Forms.ToolStripMenuItem contextPaste;
         private System.Windows.Forms.ToolStripMenuItem contextDelete;
         private System.Windows.Forms.ToolStripSeparator contextSeparator2;
@@ -1279,6 +1301,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuEditPaste;
         private System.Windows.Forms.ToolStripMenuItem menuEditDelete;
         private System.Windows.Forms.ToolStripMenuItem menuEditSelectAll;
+        private System.Windows.Forms.ToolStripMenuItem menuEditDuplicate;
         private System.Windows.Forms.ToolStripSeparator menuEditSeparator1;
         private System.Windows.Forms.ToolStripMenuItem menuEditCrop;
         private System.Windows.Forms.ToolStripMenuItem menuEditRotateLeft;

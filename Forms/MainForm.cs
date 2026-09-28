@@ -202,6 +202,7 @@ public partial class MainForm : Form, IMessageFilter
         menuEditUndo.Image = Icon16(ToolbarIcons.Undo);
         menuEditCut.Image = Icon16(ToolbarIcons.Cut);
         menuEditCopy.Image = Icon16(ToolbarIcons.Copy);
+        menuEditDuplicate.Image = Icon16(ToolbarIcons.Copy);
         menuEditPaste.Image = Icon16(ToolbarIcons.Paste);
         menuEditDelete.Image = Icon16(ToolbarIcons.Delete);
         menuEditCrop.Image = Icon16(ToolbarIcons.Crop);
@@ -231,6 +232,7 @@ public partial class MainForm : Form, IMessageFilter
         contextRotateRight.Image = Icon16(ToolbarIcons.Rotate);
         contextCut.Image = Icon16(ToolbarIcons.Cut);
         contextCopy.Image = Icon16(ToolbarIcons.Copy);
+        contextDuplicate.Image = Icon16(ToolbarIcons.Copy);
         contextPaste.Image = Icon16(ToolbarIcons.Paste);
         contextDelete.Image = Icon16(ToolbarIcons.Delete);
         contextOpenViewer.Image = Icon16(ToolbarIcons.OpenFile);
@@ -464,6 +466,11 @@ public partial class MainForm : Form, IMessageFilter
         multiOk &= marked.Count == 2 && SelectedThumbs.Count == 2;
         BtnRemove_Click(this, EventArgs.Empty);
         multiOk &= flowPanel.Controls.Count == 0 && marked.Count == 0;
+        MenuEditUndo_Click(this, EventArgs.Empty);
+        multiOk &= flowPanel.Controls.Count == 2;
+        SelectAll(); // Duplizieren: beide Seiten als Block dahinter, die Kopien sind markiert
+        MenuEditDuplicate_Click(this, EventArgs.Empty);
+        multiOk &= flowPanel.Controls.Count == 4 && marked.Count == 2 && selected != null && flowPanel.Controls.GetChildIndex(selected) == 3;
         MenuEditUndo_Click(this, EventArgs.Empty);
         multiOk &= flowPanel.Controls.Count == 2;
         Application.RemoveMessageFilter(this);
@@ -992,6 +999,42 @@ public partial class MainForm : Form, IMessageFilter
         UpdateUiState();
     }
 
+    /// <summary>Strg+D: legt Kopien der markierten Seiten als Block direkt hinter der letzten markierten
+    /// Seite an und markiert die Kopien (ein Rückgängig-Schritt) – so verdoppelt ein zweites Strg+D weiter.</summary>
+    private void MenuEditDuplicate_Click(object sender, EventArgs e)
+    {
+        var thumbs = SelectedThumbs;
+        if (thumbs.Count == 0 || panelCopyMode.Visible) { return; }
+        var insertAt = flowPanel.Controls.GetChildIndex(thumbs[^1]) + 1;
+        List<string> copies = [];
+        List<Panel> added = [];
+        foreach (var thumb in thumbs)
+        {
+            var source = PathOf(thumb);
+            var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(source)}");
+            try { File.Copy(source, copy); }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+            {
+                TaskDlg.ErrTaskDlg(Handle, Lng.T("Duplizieren fehlgeschlagen."), ex);
+                break;
+            }
+            AddPage(copy);
+            var panel = (Panel)flowPanel.Controls[flowPanel.Controls.Count - 1];
+            flowPanel.Controls.SetChildIndex(panel, insertAt++);
+            copies.Add(copy);
+            added.Add(panel);
+        }
+        if (added.Count == 0) { return; }
+        PushUndo(added.Count == 1 ? Lng.T("Seite dupliziert") : string.Format(Lng.T("{0} Seiten dupliziert"), added.Count),
+            () => { foreach (var copy in copies) { RemovePageByPath(copy); } });
+        marked.Clear();
+        marked.UnionWith(added);
+        selected = added[^1];
+        cursor = selected;
+        ApplySelectionColors();
+        flowPanel.ScrollControlIntoView(selected);
+    }
+
     private void MenuEditRotateLeft_Click(object sender, EventArgs e)
     {
         RotateSelected(RotateFlipType.Rotate270FlipNone);
@@ -1468,6 +1511,7 @@ public partial class MainForm : Form, IMessageFilter
         UpdateUndoUi(); // Rückgängig ist im Kopiermodus gesperrt
         menuEditCut.Enabled = pagesVisible && selected != null;
         menuEditCopy.Enabled = pagesVisible && selected != null;
+        menuEditDuplicate.Enabled = pagesVisible && marked.Count > 0;
         menuEditPaste.Enabled = pagesVisible && clipboard.Count > 0;
         menuEditSelectAll.Enabled = pagesVisible && count > 0;
         menuEditDelete.Enabled = pagesVisible && selected != null;
