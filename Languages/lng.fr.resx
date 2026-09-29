@@ -18,8 +18,6 @@
   <data name="Schließen" xml:space="preserve"><value>Fermer</value></data>
   <data name="&amp;Bearbeiten" xml:space="preserve"><value>&amp;Édition</value></data>
   <data name="&amp;Ausschneiden" xml:space="preserve"><value>Co&amp;uper</value></data>
-  <data name="&amp;Kopieren" xml:space="preserve"><value>&amp;Copier</value></data>
-  <data name="Ein&amp;fügen" xml:space="preserve"><value>C&amp;oller</value></data>
   <data name="&amp;Löschen" xml:space="preserve"><value>Suppri&amp;mer</value></data>
   <data name="&amp;Zuschneiden …" xml:space="preserve"><value>R&amp;ogner…</value></data>
   <data name="&amp;Zuschneiden" xml:space="preserve"><value>R&amp;ogner</value></data>
@@ -48,9 +46,6 @@
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Créer et afficher l'aperçu des raccourcis en PDF</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Numériser une page (F4) — flèche : choisir le scanner</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Vider l'aperçu des pages (F9)</value></data>
-  <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Avancer la page sélectionnée (Alt+←)</value></data>
-  <data name="Markierte Seite nach hinten schieben (Alt+→)" xml:space="preserve"><value>Reculer la page sélectionnée (Alt+→)</value></data>
-  <data name="Markierte Seite aus der Übersicht entfernen (Entf)" xml:space="preserve"><value>Retirer la page sélectionnée (Suppr)</value></data>
   <data name="Markierte Seite zuschneiden (F10)" xml:space="preserve"><value>Rogner la page sélectionnée (F10)</value></data>
   <data name="Scans direkt drucken — der Scanner wird zum Kopierer (F7)" xml:space="preserve"><value>Imprimer directement — le scanner devient un copieur (F7)</value></data>
   <data name="Scans direkt drucken — der Scanner wird zum Kopierer" xml:space="preserve"><value>Imprimer directement — le scanner devient un copieur</value></data>
@@ -182,7 +177,6 @@ dernière version en 2012, plus disponible).</value></data>
   <data name="Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein." xml:space="preserve"><value>Chaque numérisation part directement à l'imprimante — le scanner devient un copieur. Imprimante, exemplaires et mise à l'échelle se règlent dans le panneau du mode copie.</value></data>
   <data name="Seitenübersicht leeren (Neu)" xml:space="preserve"><value>vider l'aperçu des pages (Nouveau)</value></data>
   <data name="Bilddateien als Seiten importieren" xml:space="preserve"><value>importer des fichiers image comme pages</value></data>
-  <data name="Seite ausschneiden / kopieren / einfügen" xml:space="preserve"><value>couper / copier / coller la page</value></data>
   <data name="markierte Seite entfernen" xml:space="preserve"><value>retirer la page sélectionnée</value></data>
   <data name="markierte Seite zuschneiden" xml:space="preserve"><value>rogner la page sélectionnée</value></data>
   <data name="Seite nach links / rechts drehen" xml:space="preserve"><value>pivoter la page à gauche / droite</value></data>
@@ -192,7 +186,6 @@ dernière version en 2012, plus disponible).</value></data>
   <data name="Sortierung umkehren" xml:space="preserve"><value>inverser l'ordre</value></data>
   <data name="Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole" xml:space="preserve"><value>affichage : largeur optimale, page entière, deux pages, icônes</value></data>
   <data name="Miniaturen vergrößern / verkleinern" xml:space="preserve"><value>agrandir / réduire les miniatures</value></data>
-  <data name="markierte Seite verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>déplacer la page (aussi : glisser à la souris)</value></data>
   <data name="Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)" xml:space="preserve"><value>ouvrir la page dans la boîte Rogner (visionneuse : menu contextuel)</value></data>
   <data name="Vollbild ein/aus" xml:space="preserve"><value>plein écran marche/arrêt</value></data>
   <data name="Optionen öffnen" xml:space="preserve"><value>ouvrir les options</value></data>
@@ -200,9 +193,6 @@ dernière version en 2012, plus disponible).</value></data>
   <data name="diese Kürzel-Übersicht" xml:space="preserve"><value>cet aperçu des raccourcis</value></data>
   <data name="Doppelklick" xml:space="preserve"><value>Double-clic</value></data>
   <data name="Strg+I" xml:space="preserve"><value>Ctrl+I</value></data>
-  <data name="Strg+X" xml:space="preserve"><value>Ctrl+X</value></data>
-  <data name="Strg+C" xml:space="preserve"><value>Ctrl+C</value></data>
-  <data name="Strg+V" xml:space="preserve"><value>Ctrl+V</value></data>
   <data name="Entf" xml:space="preserve"><value>Suppr</value></data>
   <data name="Strg+L" xml:space="preserve"><value>Ctrl+L</value></data>
   <data name="Strg+R" xml:space="preserve"><value>Ctrl+R</value></data>
@@ -216,7 +206,6 @@ dernière version en 2012, plus disponible).</value></data>
   <data name="Strg++" xml:space="preserve"><value>Ctrl++</value></data>
   <data name="Strg+−" xml:space="preserve"><value>Ctrl+−</value></data>
   <data name="Strg+," xml:space="preserve"><value>Ctrl+,</value></data>
-  <data name="Strg+X / C / V" xml:space="preserve"><value>Ctrl+X / C / V</value></data>
   <data name="Strg+L / Strg+R" xml:space="preserve"><value>Ctrl+L / Ctrl+R</value></data>
   <data name="Strg+1 … 4" xml:space="preserve"><value>Ctrl+1 … 4</value></data>
   <data name="Strg++ / Strg+−" xml:space="preserve"><value>Ctrl++ / Ctrl+−</value></data>
@@ -340,7 +329,6 @@ un bon compromis. Le gris économise encore de la place.</value></data>
   <data name="Seite bearbeitet" xml:space="preserve"><value>Page modifiée</value></data>
   <data name="Seite gescannt" xml:space="preserve"><value>Page numérisée</value></data>
   <data name="Seite(n) importiert" xml:space="preserve"><value>Page(s) importée(s)</value></data>
-  <data name="Seite eingefügt" xml:space="preserve"><value>Page collée</value></data>
   <data name="Als neue Seite gespeichert" xml:space="preserve"><value>Enregistré comme nouvelle page</value></data>
   <data name="Seite verschoben" xml:space="preserve"><value>Page déplacée</value></data>
   <data name="Reihenfolge geändert" xml:space="preserve"><value>Ordre modifié</value></data>
@@ -374,13 +362,11 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="{0} von {1} Seiten markiert" xml:space="preserve"><value>{0} pages sur {1} sélectionnées</value></data>
   <data name="{0} Seiten entfernt" xml:space="preserve"><value>{0} pages retirées</value></data>
   <data name="{0} Seiten gedreht" xml:space="preserve"><value>{0} pages pivotées</value></data>
-  <data name="{0} Seiten eingefügt" xml:space="preserve"><value>{0} pages collées</value></data>
   <data name="Alle &amp;markieren" xml:space="preserve"><value>&amp;Tout sélectionner</value></data>
   <data name="Strg+A" xml:space="preserve"><value>Ctrl+A</value></data>
   <data name="alle Seiten markieren" xml:space="preserve"><value>sélectionner toutes les pages</value></data>
   <data name="Strg+Klick / Umschalt+Klick" xml:space="preserve"><value>Ctrl+clic / Maj+clic</value></data>
   <data name="mehrere Seiten markieren (einzeln / Bereich)" xml:space="preserve"><value>sélectionner plusieurs pages (une à une / plage)</value></data>
-  <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Supprimer, pivoter, couper/copier ainsi qu'enregistrer, imprimer et faxer avec « Seulement les pages sélectionnées » s'appliquent à toutes les pages sélectionnées ; recadrer et déplacer à la dernière page cliquée.</value></data>
   <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Maj+flèches</value></data>
   <data name="Markierung erweitern" xml:space="preserve"><value>étendre la sélection</value></data>
   <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Un double-clic remet la luminosité à 0</value></data>
@@ -393,4 +379,10 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Duplizieren fehlgeschlagen." xml:space="preserve"><value>Échec de la duplication.</value></data>
   <data name="markierte Seiten duplizieren" xml:space="preserve"><value>dupliquer les pages sélectionnées</value></data>
   <data name="Strg+T" xml:space="preserve"><value>Ctrl+T</value></data>
+  <data name="Markierte Seiten nach vorn schieben (Alt+←)" xml:space="preserve"><value>Avancer les pages sélectionnées (Alt+←)</value></data>
+  <data name="Markierte Seiten nach hinten schieben (Alt+→)" xml:space="preserve"><value>Reculer les pages sélectionnées (Alt+→)</value></data>
+  <data name="Markierte Seiten aus der Übersicht entfernen (Entf)" xml:space="preserve"><value>Retirer les pages sélectionnées (Suppr)</value></data>
+  <data name="{0} Seiten verschoben" xml:space="preserve"><value>{0} pages déplacées</value></data>
+  <data name="markierte Seiten verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>déplacer les pages sélectionnées (aussi : glisser à la souris)</value></data>
+  <data name="Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte." xml:space="preserve"><value>Retirer, pivoter, dupliquer, déplacer ainsi qu'enregistrer, imprimer et faxer avec « Seulement les pages sélectionnées » s'appliquent à toutes les pages sélectionnées ; recadrer à la dernière page cliquée.</value></data>
 </root>

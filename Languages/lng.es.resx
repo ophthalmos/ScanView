@@ -18,8 +18,6 @@
   <data name="Schließen" xml:space="preserve"><value>Cerrar</value></data>
   <data name="&amp;Bearbeiten" xml:space="preserve"><value>&amp;Edición</value></data>
   <data name="&amp;Ausschneiden" xml:space="preserve"><value>Cor&amp;tar</value></data>
-  <data name="&amp;Kopieren" xml:space="preserve"><value>&amp;Copiar</value></data>
-  <data name="Ein&amp;fügen" xml:space="preserve"><value>&amp;Pegar</value></data>
   <data name="&amp;Löschen" xml:space="preserve"><value>Elimi&amp;nar</value></data>
   <data name="&amp;Zuschneiden …" xml:space="preserve"><value>R&amp;ecortar…</value></data>
   <data name="&amp;Zuschneiden" xml:space="preserve"><value>R&amp;ecortar</value></data>
@@ -48,9 +46,6 @@
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Crear y mostrar el resumen de atajos en PDF</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Escanear una página (F4) — flecha: elegir escáner</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Vaciar la vista de páginas (F9)</value></data>
-  <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Adelantar la página seleccionada (Alt+←)</value></data>
-  <data name="Markierte Seite nach hinten schieben (Alt+→)" xml:space="preserve"><value>Atrasar la página seleccionada (Alt+→)</value></data>
-  <data name="Markierte Seite aus der Übersicht entfernen (Entf)" xml:space="preserve"><value>Quitar la página seleccionada (Supr)</value></data>
   <data name="Markierte Seite zuschneiden (F10)" xml:space="preserve"><value>Recortar la página seleccionada (F10)</value></data>
   <data name="Scans direkt drucken — der Scanner wird zum Kopierer (F7)" xml:space="preserve"><value>Imprimir directamente — el escáner se convierte en copiadora (F7)</value></data>
   <data name="Scans direkt drucken — der Scanner wird zum Kopierer" xml:space="preserve"><value>Imprimir directamente — el escáner se convierte en copiadora</value></data>
@@ -182,7 +177,6 @@ El concepto de manejo se inspira en el del programa
   <data name="Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein." xml:space="preserve"><value>Cada escaneo va directo a la impresora — el escáner se convierte en copiadora. Impresora, copias y escala se ajustan en el panel del modo copia.</value></data>
   <data name="Seitenübersicht leeren (Neu)" xml:space="preserve"><value>vaciar la vista de páginas (Nuevo)</value></data>
   <data name="Bilddateien als Seiten importieren" xml:space="preserve"><value>importar archivos de imagen como páginas</value></data>
-  <data name="Seite ausschneiden / kopieren / einfügen" xml:space="preserve"><value>cortar / copiar / pegar página</value></data>
   <data name="markierte Seite entfernen" xml:space="preserve"><value>quitar la página seleccionada</value></data>
   <data name="markierte Seite zuschneiden" xml:space="preserve"><value>recortar la página seleccionada</value></data>
   <data name="Seite nach links / rechts drehen" xml:space="preserve"><value>girar la página a la izquierda / derecha</value></data>
@@ -192,7 +186,6 @@ El concepto de manejo se inspira en el del programa
   <data name="Sortierung umkehren" xml:space="preserve"><value>invertir el orden</value></data>
   <data name="Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole" xml:space="preserve"><value>vista: ancho óptimo, página completa, dos páginas, iconos</value></data>
   <data name="Miniaturen vergrößern / verkleinern" xml:space="preserve"><value>ampliar / reducir miniaturas</value></data>
-  <data name="markierte Seite verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>mover la página (también: arrastrar con el ratón)</value></data>
   <data name="Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)" xml:space="preserve"><value>abrir la página en el diálogo Recortar (visor: menú contextual)</value></data>
   <data name="Vollbild ein/aus" xml:space="preserve"><value>pantalla completa sí/no</value></data>
   <data name="Optionen öffnen" xml:space="preserve"><value>abrir opciones</value></data>
@@ -200,9 +193,6 @@ El concepto de manejo se inspira en el del programa
   <data name="diese Kürzel-Übersicht" xml:space="preserve"><value>este resumen de atajos</value></data>
   <data name="Doppelklick" xml:space="preserve"><value>Doble clic</value></data>
   <data name="Strg+I" xml:space="preserve"><value>Ctrl+I</value></data>
-  <data name="Strg+X" xml:space="preserve"><value>Ctrl+X</value></data>
-  <data name="Strg+C" xml:space="preserve"><value>Ctrl+C</value></data>
-  <data name="Strg+V" xml:space="preserve"><value>Ctrl+V</value></data>
   <data name="Entf" xml:space="preserve"><value>Supr</value></data>
   <data name="Strg+L" xml:space="preserve"><value>Ctrl+L</value></data>
   <data name="Strg+R" xml:space="preserve"><value>Ctrl+R</value></data>
@@ -216,7 +206,6 @@ El concepto de manejo se inspira en el del programa
   <data name="Strg++" xml:space="preserve"><value>Ctrl++</value></data>
   <data name="Strg+−" xml:space="preserve"><value>Ctrl+−</value></data>
   <data name="Strg+," xml:space="preserve"><value>Ctrl+,</value></data>
-  <data name="Strg+X / C / V" xml:space="preserve"><value>Ctrl+X / C / V</value></data>
   <data name="Strg+L / Strg+R" xml:space="preserve"><value>Ctrl+L / Ctrl+R</value></data>
   <data name="Strg+1 … 4" xml:space="preserve"><value>Ctrl+1 … 4</value></data>
   <data name="Strg++ / Strg+−" xml:space="preserve"><value>Ctrl++ / Ctrl+−</value></data>
@@ -340,7 +329,6 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Seite bearbeitet" xml:space="preserve"><value>Página editada</value></data>
   <data name="Seite gescannt" xml:space="preserve"><value>Página escaneada</value></data>
   <data name="Seite(n) importiert" xml:space="preserve"><value>Página(s) importada(s)</value></data>
-  <data name="Seite eingefügt" xml:space="preserve"><value>Página pegada</value></data>
   <data name="Als neue Seite gespeichert" xml:space="preserve"><value>Guardado como página nueva</value></data>
   <data name="Seite verschoben" xml:space="preserve"><value>Página movida</value></data>
   <data name="Reihenfolge geändert" xml:space="preserve"><value>Orden cambiado</value></data>
@@ -374,13 +362,11 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="{0} von {1} Seiten markiert" xml:space="preserve"><value>{0} de {1} páginas marcadas</value></data>
   <data name="{0} Seiten entfernt" xml:space="preserve"><value>{0} páginas quitadas</value></data>
   <data name="{0} Seiten gedreht" xml:space="preserve"><value>{0} páginas giradas</value></data>
-  <data name="{0} Seiten eingefügt" xml:space="preserve"><value>{0} páginas pegadas</value></data>
   <data name="Alle &amp;markieren" xml:space="preserve"><value>Seleccionar &amp;todo</value></data>
   <data name="Strg+A" xml:space="preserve"><value>Ctrl+A</value></data>
   <data name="alle Seiten markieren" xml:space="preserve"><value>seleccionar todas las páginas</value></data>
   <data name="Strg+Klick / Umschalt+Klick" xml:space="preserve"><value>Ctrl+clic / Mayús+clic</value></data>
   <data name="mehrere Seiten markieren (einzeln / Bereich)" xml:space="preserve"><value>seleccionar varias páginas (una a una / rango)</value></data>
-  <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Eliminar, girar, cortar/copiar así como guardar, imprimir y enviar por fax con «Solo las páginas marcadas» se aplican a todas las páginas marcadas; recortar y mover a la última página en la que se hizo clic.</value></data>
   <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Mayús+flechas</value></data>
   <data name="Markierung erweitern" xml:space="preserve"><value>ampliar la selección</value></data>
   <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Un doble clic restablece el brillo a 0</value></data>
@@ -393,4 +379,10 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Duplizieren fehlgeschlagen." xml:space="preserve"><value>Error al duplicar.</value></data>
   <data name="markierte Seiten duplizieren" xml:space="preserve"><value>duplicar las páginas marcadas</value></data>
   <data name="Strg+T" xml:space="preserve"><value>Ctrl+T</value></data>
+  <data name="Markierte Seiten nach vorn schieben (Alt+←)" xml:space="preserve"><value>Adelantar las páginas marcadas (Alt+←)</value></data>
+  <data name="Markierte Seiten nach hinten schieben (Alt+→)" xml:space="preserve"><value>Atrasar las páginas marcadas (Alt+→)</value></data>
+  <data name="Markierte Seiten aus der Übersicht entfernen (Entf)" xml:space="preserve"><value>Quitar las páginas marcadas (Supr)</value></data>
+  <data name="{0} Seiten verschoben" xml:space="preserve"><value>{0} páginas movidas</value></data>
+  <data name="markierte Seiten verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>mover las páginas marcadas (también: arrastrar con el ratón)</value></data>
+  <data name="Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte." xml:space="preserve"><value>Quitar, girar, duplicar, mover así como guardar, imprimir y enviar por fax con «Solo las páginas marcadas» se aplican a todas las páginas marcadas; recortar a la última página en la que se hizo clic.</value></data>
 </root>

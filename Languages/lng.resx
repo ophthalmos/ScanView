@@ -18,8 +18,6 @@
   <data name="Schließen" xml:space="preserve"><value>Schließen</value></data>
   <data name="&amp;Bearbeiten" xml:space="preserve"><value>&amp;Bearbeiten</value></data>
   <data name="&amp;Ausschneiden" xml:space="preserve"><value>&amp;Ausschneiden</value></data>
-  <data name="&amp;Kopieren" xml:space="preserve"><value>&amp;Kopieren</value></data>
-  <data name="Ein&amp;fügen" xml:space="preserve"><value>Ein&amp;fügen</value></data>
   <data name="&amp;Löschen" xml:space="preserve"><value>&amp;Löschen</value></data>
   <data name="&amp;Zuschneiden …" xml:space="preserve"><value>&amp;Zuschneiden …</value></data>
   <data name="&amp;Zuschneiden" xml:space="preserve"><value>&amp;Zuschneiden</value></data>
@@ -48,9 +46,6 @@
   <data name="Tastenkürzel-Übersicht als PDF erstellen und anzeigen" xml:space="preserve"><value>Tastenkürzel-Übersicht als PDF erstellen und anzeigen</value></data>
   <data name="Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen" xml:space="preserve"><value>Seite vom gewählten Scanner holen (F4) — Pfeil: Scanner auswählen</value></data>
   <data name="Seitenübersicht leeren (F9)" xml:space="preserve"><value>Seitenübersicht leeren (F9)</value></data>
-  <data name="Markierte Seite nach vorn schieben (Alt+←)" xml:space="preserve"><value>Markierte Seite nach vorn schieben (Alt+←)</value></data>
-  <data name="Markierte Seite nach hinten schieben (Alt+→)" xml:space="preserve"><value>Markierte Seite nach hinten schieben (Alt+→)</value></data>
-  <data name="Markierte Seite aus der Übersicht entfernen (Entf)" xml:space="preserve"><value>Markierte Seite aus der Übersicht entfernen (Entf)</value></data>
   <data name="Markierte Seite zuschneiden (F10)" xml:space="preserve"><value>Markierte Seite zuschneiden (F10)</value></data>
   <data name="Scans direkt drucken — der Scanner wird zum Kopierer (F7)" xml:space="preserve"><value>Scans direkt drucken — der Scanner wird zum Kopierer (F7)</value></data>
   <data name="Scans direkt drucken — der Scanner wird zum Kopierer" xml:space="preserve"><value>Scans direkt drucken — der Scanner wird zum Kopierer</value></data>
@@ -182,7 +177,6 @@ zuletzt erschienen 2012, nicht mehr erhältlich).</value></data>
   <data name="Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein." xml:space="preserve"><value>Jeder Scan geht direkt an den Drucker — der Scanner wird zum Kopierer. Drucker, Exemplare und Skalierung stellst du im Kopiermodus-Bereich ein.</value></data>
   <data name="Seitenübersicht leeren (Neu)" xml:space="preserve"><value>Seitenübersicht leeren (Neu)</value></data>
   <data name="Bilddateien als Seiten importieren" xml:space="preserve"><value>Bilddateien als Seiten importieren</value></data>
-  <data name="Seite ausschneiden / kopieren / einfügen" xml:space="preserve"><value>Seite ausschneiden / kopieren / einfügen</value></data>
   <data name="markierte Seite entfernen" xml:space="preserve"><value>markierte Seite entfernen</value></data>
   <data name="markierte Seite zuschneiden" xml:space="preserve"><value>markierte Seite zuschneiden</value></data>
   <data name="Seite nach links / rechts drehen" xml:space="preserve"><value>Seite nach links / rechts drehen</value></data>
@@ -192,7 +186,6 @@ zuletzt erschienen 2012, nicht mehr erhältlich).</value></data>
   <data name="Sortierung umkehren" xml:space="preserve"><value>Sortierung umkehren</value></data>
   <data name="Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole" xml:space="preserve"><value>Ansicht: Optimale Breite, Ganze Seite, Zwei Seiten, Symbole</value></data>
   <data name="Miniaturen vergrößern / verkleinern" xml:space="preserve"><value>Miniaturen vergrößern / verkleinern</value></data>
-  <data name="markierte Seite verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>markierte Seite verschieben (auch: Ziehen mit der Maus)</value></data>
   <data name="Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)" xml:space="preserve"><value>Seite im Zuschneiden-Dialog öffnen (Bildbetrachter: Kontextmenü)</value></data>
   <data name="Vollbild ein/aus" xml:space="preserve"><value>Vollbild ein/aus</value></data>
   <data name="Optionen öffnen" xml:space="preserve"><value>Optionen öffnen</value></data>
@@ -200,9 +193,6 @@ zuletzt erschienen 2012, nicht mehr erhältlich).</value></data>
   <data name="diese Kürzel-Übersicht" xml:space="preserve"><value>diese Kürzel-Übersicht</value></data>
   <data name="Doppelklick" xml:space="preserve"><value>Doppelklick</value></data>
   <data name="Strg+I" xml:space="preserve"><value>Strg+I</value></data>
-  <data name="Strg+X" xml:space="preserve"><value>Strg+X</value></data>
-  <data name="Strg+C" xml:space="preserve"><value>Strg+C</value></data>
-  <data name="Strg+V" xml:space="preserve"><value>Strg+V</value></data>
   <data name="Entf" xml:space="preserve"><value>Entf</value></data>
   <data name="Strg+L" xml:space="preserve"><value>Strg+L</value></data>
   <data name="Strg+R" xml:space="preserve"><value>Strg+R</value></data>
@@ -216,7 +206,6 @@ zuletzt erschienen 2012, nicht mehr erhältlich).</value></data>
   <data name="Strg++" xml:space="preserve"><value>Strg++</value></data>
   <data name="Strg+−" xml:space="preserve"><value>Strg+−</value></data>
   <data name="Strg+," xml:space="preserve"><value>Strg+,</value></data>
-  <data name="Strg+X / C / V" xml:space="preserve"><value>Strg+X / C / V</value></data>
   <data name="Strg+L / Strg+R" xml:space="preserve"><value>Strg+L / Strg+R</value></data>
   <data name="Strg+1 … 4" xml:space="preserve"><value>Strg+1 … 4</value></data>
   <data name="Strg++ / Strg+−" xml:space="preserve"><value>Strg++ / Strg+−</value></data>
@@ -340,7 +329,6 @@ Kompromiss. Graustufen-Scans sparen zusätzlich Platz.</value></data>
   <data name="Seite bearbeitet" xml:space="preserve"><value>Seite bearbeitet</value></data>
   <data name="Seite gescannt" xml:space="preserve"><value>Seite gescannt</value></data>
   <data name="Seite(n) importiert" xml:space="preserve"><value>Seite(n) importiert</value></data>
-  <data name="Seite eingefügt" xml:space="preserve"><value>Seite eingefügt</value></data>
   <data name="Als neue Seite gespeichert" xml:space="preserve"><value>Als neue Seite gespeichert</value></data>
   <data name="Seite verschoben" xml:space="preserve"><value>Seite verschoben</value></data>
   <data name="Reihenfolge geändert" xml:space="preserve"><value>Reihenfolge geändert</value></data>
@@ -374,13 +362,11 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="{0} von {1} Seiten markiert" xml:space="preserve"><value>{0} von {1} Seiten markiert</value></data>
   <data name="{0} Seiten entfernt" xml:space="preserve"><value>{0} Seiten entfernt</value></data>
   <data name="{0} Seiten gedreht" xml:space="preserve"><value>{0} Seiten gedreht</value></data>
-  <data name="{0} Seiten eingefügt" xml:space="preserve"><value>{0} Seiten eingefügt</value></data>
   <data name="Alle &amp;markieren" xml:space="preserve"><value>Alle &amp;markieren</value></data>
   <data name="Strg+A" xml:space="preserve"><value>Strg+A</value></data>
   <data name="alle Seiten markieren" xml:space="preserve"><value>alle Seiten markieren</value></data>
   <data name="Strg+Klick / Umschalt+Klick" xml:space="preserve"><value>Strg+Klick / Umschalt+Klick</value></data>
   <data name="mehrere Seiten markieren (einzeln / Bereich)" xml:space="preserve"><value>mehrere Seiten markieren (einzeln / Bereich)</value></data>
-  <data name="Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte." xml:space="preserve"><value>Löschen, Drehen, Ausschneiden/Kopieren sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden und Verschieben auf die zuletzt angeklickte.</value></data>
   <data name="Umschalt+Pfeiltasten" xml:space="preserve"><value>Umschalt+Pfeiltasten</value></data>
   <data name="Markierung erweitern" xml:space="preserve"><value>Markierung erweitern</value></data>
   <data name="Doppelklick setzt die Helligkeit auf 0 zurück" xml:space="preserve"><value>Doppelklick setzt die Helligkeit auf 0 zurück</value></data>
@@ -393,4 +379,10 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Duplizieren fehlgeschlagen." xml:space="preserve"><value>Duplizieren fehlgeschlagen.</value></data>
   <data name="markierte Seiten duplizieren" xml:space="preserve"><value>markierte Seiten duplizieren</value></data>
   <data name="Strg+T" xml:space="preserve"><value>Strg+T</value></data>
+  <data name="Markierte Seiten nach vorn schieben (Alt+←)" xml:space="preserve"><value>Markierte Seiten nach vorn schieben (Alt+←)</value></data>
+  <data name="Markierte Seiten nach hinten schieben (Alt+→)" xml:space="preserve"><value>Markierte Seiten nach hinten schieben (Alt+→)</value></data>
+  <data name="Markierte Seiten aus der Übersicht entfernen (Entf)" xml:space="preserve"><value>Markierte Seiten aus der Übersicht entfernen (Entf)</value></data>
+  <data name="{0} Seiten verschoben" xml:space="preserve"><value>{0} Seiten verschoben</value></data>
+  <data name="markierte Seiten verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>markierte Seiten verschieben (auch: Ziehen mit der Maus)</value></data>
+  <data name="Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte." xml:space="preserve"><value>Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte.</value></data>
 </root>

@@ -35,10 +35,7 @@
             contextRotate180 = new ToolStripMenuItem();
             contextRotateRight = new ToolStripMenuItem();
             contextSeparator1 = new ToolStripSeparator();
-            contextCut = new ToolStripMenuItem();
-            contextCopy = new ToolStripMenuItem();
             contextDuplicate = new ToolStripMenuItem();
-            contextPaste = new ToolStripMenuItem();
             contextDelete = new ToolStripMenuItem();
             contextSeparator2 = new ToolStripSeparator();
             contextOpenViewer = new ToolStripMenuItem();
@@ -54,9 +51,6 @@
             menuEdit = new ToolStripMenuItem();
             menuEditUndo = new ToolStripMenuItem();
             menuEditSeparator0 = new ToolStripSeparator();
-            menuEditCut = new ToolStripMenuItem();
-            menuEditCopy = new ToolStripMenuItem();
-            menuEditPaste = new ToolStripMenuItem();
             menuEditDelete = new ToolStripMenuItem();
             menuEditSelectAll = new ToolStripMenuItem();
             menuEditDuplicate = new ToolStripMenuItem();
@@ -160,10 +154,9 @@
             // 
             // thumbContextMenu
             // 
-            thumbContextMenu.Items.AddRange(new ToolStripItem[] { contextCrop, contextRotateLeft, contextRotate180, contextRotateRight, contextSeparator1, contextCut, contextCopy, contextPaste, contextDuplicate, contextDelete, contextSeparator2, contextOpenViewer });
+            thumbContextMenu.Items.AddRange(new ToolStripItem[] { contextCrop, contextRotateLeft, contextRotate180, contextRotateRight, contextSeparator1, contextDuplicate, contextDelete, contextSeparator2, contextOpenViewer });
             thumbContextMenu.Name = "thumbContextMenu";
             thumbContextMenu.Size = new Size(261, 214);
-            thumbContextMenu.Opening += ThumbContextMenu_Opening;
             // 
             // contextCrop
             // 
@@ -202,22 +195,6 @@
             contextSeparator1.Name = "contextSeparator1";
             contextSeparator1.Size = new Size(257, 6);
             // 
-            // contextCut
-            // 
-            contextCut.Name = "contextCut";
-            contextCut.ShortcutKeyDisplayString = "Strg+X";
-            contextCut.Size = new Size(260, 22);
-            contextCut.Text = "&Ausschneiden";
-            contextCut.Click += MenuEditCut_Click;
-            // 
-            // contextCopy
-            // 
-            contextCopy.Name = "contextCopy";
-            contextCopy.ShortcutKeyDisplayString = "Strg+C";
-            contextCopy.Size = new Size(260, 22);
-            contextCopy.Text = "&Kopieren";
-            contextCopy.Click += MenuEditCopy_Click;
-            // 
             // contextDuplicate
             // 
             contextDuplicate.Name = "contextDuplicate";
@@ -226,20 +203,12 @@
             contextDuplicate.Text = "&Duplizieren";
             contextDuplicate.Click += MenuEditDuplicate_Click;
             // 
-            // contextPaste
-            // 
-            contextPaste.Name = "contextPaste";
-            contextPaste.ShortcutKeyDisplayString = "Strg+V";
-            contextPaste.Size = new Size(260, 22);
-            contextPaste.Text = "Ein&fügen";
-            contextPaste.Click += MenuEditPaste_Click;
-            // 
             // contextDelete
             // 
             contextDelete.Name = "contextDelete";
             contextDelete.ShortcutKeyDisplayString = "Entf";
             contextDelete.Size = new Size(260, 22);
-            contextDelete.Text = "&Löschen";
+            contextDelete.Text = "&Entfernen";
             contextDelete.Click += BtnRemove_Click;
             // 
             // contextSeparator2
@@ -327,7 +296,7 @@
             // 
             // menuEdit
             // 
-            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditUndo, menuEditSeparator0, menuEditCut, menuEditCopy, menuEditPaste, menuEditDuplicate, menuEditDelete, menuEditSelectAll, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
+            menuEdit.DropDownItems.AddRange(new ToolStripItem[] { menuEditUndo, menuEditSeparator0, menuEditDuplicate, menuEditDelete, menuEditSelectAll, menuEditSeparator1, menuEditCrop, menuEditRotateLeft, menuEditRotate180, menuEditRotateRight, menuEditSeparator2, menuEditBacks, menuEditReverse });
             menuEdit.Name = "menuEdit";
             menuEdit.Size = new Size(75, 20);
             menuEdit.Text = "&Bearbeiten";
@@ -347,36 +316,6 @@
             menuEditSeparator0.Name = "menuEditSeparator0";
             menuEditSeparator0.Size = new Size(257, 6);
             // 
-            // menuEditCut
-            // 
-            menuEditCut.Enabled = false;
-            menuEditCut.Name = "menuEditCut";
-            menuEditCut.ShortcutKeyDisplayString = "Strg+X";
-            menuEditCut.ShortcutKeys = Keys.Control | Keys.X;
-            menuEditCut.Size = new Size(260, 22);
-            menuEditCut.Text = "&Ausschneiden";
-            menuEditCut.Click += MenuEditCut_Click;
-            // 
-            // menuEditCopy
-            // 
-            menuEditCopy.Enabled = false;
-            menuEditCopy.Name = "menuEditCopy";
-            menuEditCopy.ShortcutKeyDisplayString = "Strg+C";
-            menuEditCopy.ShortcutKeys = Keys.Control | Keys.C;
-            menuEditCopy.Size = new Size(260, 22);
-            menuEditCopy.Text = "&Kopieren";
-            menuEditCopy.Click += MenuEditCopy_Click;
-            // 
-            // menuEditPaste
-            // 
-            menuEditPaste.Enabled = false;
-            menuEditPaste.Name = "menuEditPaste";
-            menuEditPaste.ShortcutKeyDisplayString = "Strg+V";
-            menuEditPaste.ShortcutKeys = Keys.Control | Keys.V;
-            menuEditPaste.Size = new Size(260, 22);
-            menuEditPaste.Text = "Ein&fügen";
-            menuEditPaste.Click += MenuEditPaste_Click;
-            // 
             // menuEditDelete
             // 
             menuEditDelete.Enabled = false;
@@ -384,7 +323,7 @@
             menuEditDelete.ShortcutKeyDisplayString = "Entf";
             menuEditDelete.ShortcutKeys = Keys.Delete;
             menuEditDelete.Size = new Size(260, 22);
-            menuEditDelete.Text = "&Löschen";
+            menuEditDelete.Text = "&Entfernen";
             menuEditDelete.Click += BtnRemove_Click;
             // 
             // menuEditSelectAll
@@ -746,7 +685,7 @@
             btnMoveLeft.Name = "btnMoveLeft";
             btnMoveLeft.Size = new Size(32, 57);
             btnMoveLeft.Text = "◀";
-            btnMoveLeft.ToolTipText = "Markierte Seite nach vorn schieben (Alt+←)";
+            btnMoveLeft.ToolTipText = "Markierte Seiten nach vorn schieben (Alt+←)";
             btnMoveLeft.Click += BtnMoveLeft_Click;
             // 
             // btnMoveRight
@@ -757,7 +696,7 @@
             btnMoveRight.Name = "btnMoveRight";
             btnMoveRight.Size = new Size(32, 57);
             btnMoveRight.Text = "▶";
-            btnMoveRight.ToolTipText = "Markierte Seite nach hinten schieben (Alt+→)";
+            btnMoveRight.ToolTipText = "Markierte Seiten nach hinten schieben (Alt+→)";
             btnMoveRight.Click += BtnMoveRight_Click;
             // 
             // btnRemove
@@ -768,7 +707,7 @@
             btnRemove.Name = "btnRemove";
             btnRemove.Size = new Size(80, 57);
             btnRemove.Text = "&Entfernen";
-            btnRemove.ToolTipText = "Markierte Seite aus der Übersicht entfernen (Entf)";
+            btnRemove.ToolTipText = "Markierte Seiten aus der Übersicht entfernen (Entf)";
             btnRemove.Click += BtnRemove_Click;
             // 
             // btnCrop
@@ -1277,10 +1216,7 @@
         private System.Windows.Forms.ToolStripMenuItem contextRotate180;
         private System.Windows.Forms.ToolStripMenuItem contextRotateRight;
         private System.Windows.Forms.ToolStripSeparator contextSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem contextCut;
-        private System.Windows.Forms.ToolStripMenuItem contextCopy;
         private System.Windows.Forms.ToolStripMenuItem contextDuplicate;
-        private System.Windows.Forms.ToolStripMenuItem contextPaste;
         private System.Windows.Forms.ToolStripMenuItem contextDelete;
         private System.Windows.Forms.ToolStripSeparator contextSeparator2;
         private System.Windows.Forms.ToolStripMenuItem contextOpenViewer;
@@ -1296,9 +1232,6 @@
         private System.Windows.Forms.ToolStripMenuItem menuEdit;
         private System.Windows.Forms.ToolStripMenuItem menuEditUndo;
         private System.Windows.Forms.ToolStripSeparator menuEditSeparator0;
-        private System.Windows.Forms.ToolStripMenuItem menuEditCut;
-        private System.Windows.Forms.ToolStripMenuItem menuEditCopy;
-        private System.Windows.Forms.ToolStripMenuItem menuEditPaste;
         private System.Windows.Forms.ToolStripMenuItem menuEditDelete;
         private System.Windows.Forms.ToolStripMenuItem menuEditSelectAll;
         private System.Windows.Forms.ToolStripMenuItem menuEditDuplicate;

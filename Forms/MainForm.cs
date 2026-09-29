@@ -50,7 +50,6 @@ public partial class MainForm : Form, IMessageFilter
     private Point dragStart; // Mausposition beim Drücken — Start des Miniatur-Ziehens
     private string? selectedScannerId; // DeviceID, TestPageId oder null (= noch kein Gerät gewählt)
     private string? selectedScannerName;
-    private readonly List<string> clipboard = []; // interne Seiten-Zwischenablage (Ausschneiden/Kopieren), in Übersichtsreihenfolge
     private FormWindowState previousWindowState; // zum Verlassen des Vollbildmodus
     private readonly AppSettings settings;
     private readonly PrinterSettings copyPrinterSettings = new(); // Kopiermodus: gewählter Drucker samt Treiber-Einstellungen
@@ -200,10 +199,7 @@ public partial class MainForm : Form, IMessageFilter
         menuFilePrint.Image = Icon16(ToolbarIcons.Print);
         menuFileClose.Image = Icon16(ToolbarIcons.Power);
         menuEditUndo.Image = Icon16(ToolbarIcons.Undo);
-        menuEditCut.Image = Icon16(ToolbarIcons.Cut);
-        menuEditCopy.Image = Icon16(ToolbarIcons.Copy);
         menuEditDuplicate.Image = Icon16(ToolbarIcons.Copy);
-        menuEditPaste.Image = Icon16(ToolbarIcons.Paste);
         menuEditDelete.Image = Icon16(ToolbarIcons.Delete);
         menuEditCrop.Image = Icon16(ToolbarIcons.Crop);
         menuEditRotateLeft.Image = ToolbarIcons.GetMirrored(ToolbarIcons.Rotate, size);
@@ -230,19 +226,11 @@ public partial class MainForm : Form, IMessageFilter
         contextRotateLeft.Image = ToolbarIcons.GetMirrored(ToolbarIcons.Rotate, size);
         contextRotate180.Image = Icon16(ToolbarIcons.Rotate180);
         contextRotateRight.Image = Icon16(ToolbarIcons.Rotate);
-        contextCut.Image = Icon16(ToolbarIcons.Cut);
-        contextCopy.Image = Icon16(ToolbarIcons.Copy);
         contextDuplicate.Image = Icon16(ToolbarIcons.Copy);
-        contextPaste.Image = Icon16(ToolbarIcons.Paste);
         contextDelete.Image = Icon16(ToolbarIcons.Delete);
         contextOpenViewer.Image = Icon16(ToolbarIcons.OpenFile);
     }
 
-    /// <summary>Der Rechtsklick hat die Miniatur bereits markiert — nur Einfügen hängt vom Zustand ab.</summary>
-    private void ThumbContextMenu_Opening(object sender, System.ComponentModel.CancelEventArgs e)
-    {
-        contextPaste.Enabled = clipboard.Count > 0;
-    }
 
     private void ContextOpenViewer_Click(object sender, EventArgs e)
     {
@@ -471,6 +459,14 @@ public partial class MainForm : Form, IMessageFilter
         SelectAll(); // Duplizieren: beide Seiten als Block dahinter, die Kopien sind markiert
         MenuEditDuplicate_Click(this, EventArgs.Empty);
         multiOk &= flowPanel.Controls.Count == 4 && marked.Count == 2 && selected != null && flowPanel.Controls.GetChildIndex(selected) == 3;
+        MoveSelected(-1); // Block-Verschieben: beide markierten Kopien rücken gemeinsam eine Position vor
+        multiOk &= SelectedThumbs.Select(t => flowPanel.Controls.GetChildIndex(t)).SequenceEqual([1, 2]);
+        MoveSelected(-1);
+        MoveSelected(-1); // am Anfang angekommen: kein weiterer Schritt
+        multiOk &= SelectedThumbs.Select(t => flowPanel.Controls.GetChildIndex(t)).SequenceEqual([0, 1]) && !CanMoveSelected(-1);
+        MenuEditUndo_Click(this, EventArgs.Empty);
+        MenuEditUndo_Click(this, EventArgs.Empty); // beide Verschiebungen zurück
+        multiOk &= SelectedThumbs.Select(t => flowPanel.Controls.GetChildIndex(t)).SequenceEqual([2, 3]);
         MenuEditUndo_Click(this, EventArgs.Empty);
         multiOk &= flowPanel.Controls.Count == 2;
         Application.RemoveMessageFilter(this);
@@ -964,41 +960,6 @@ public partial class MainForm : Form, IMessageFilter
 
     // ------------------------------------------------------------------ Menü „Bearbeiten"
 
-    private void MenuEditCut_Click(object sender, EventArgs e)
-    {
-        if (marked.Count == 0) { return; }
-        MenuEditCopy_Click(sender, e); // die Dateien bleiben im Sitzungsordner liegen
-        BtnRemove_Click(sender, e);
-    }
-
-    private void MenuEditCopy_Click(object sender, EventArgs e)
-    {
-        if (marked.Count == 0) { return; }
-        clipboard.Clear();
-        clipboard.AddRange(SelectedThumbs.Select(PathOf));
-        UpdateUiState();
-    }
-
-    /// <summary>Fügt Kopien der Zwischenablage-Seiten hinter dem Anker ein (ohne Markierung: ans Ende).</summary>
-    private void MenuEditPaste_Click(object sender, EventArgs e)
-    {
-        var sources = clipboard.Where(File.Exists).ToList();
-        if (sources.Count == 0) { return; }
-        var insertAt = selected != null ? flowPanel.Controls.GetChildIndex(selected) + 1 : flowPanel.Controls.Count;
-        List<string> copies = [];
-        foreach (var source in sources)
-        {
-            var copy = Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}{Path.GetExtension(source)}");
-            File.Copy(source, copy);
-            AddPage(copy);
-            flowPanel.Controls.SetChildIndex(flowPanel.Controls[flowPanel.Controls.Count - 1], insertAt++);
-            copies.Add(copy);
-        }
-        PushUndo(copies.Count == 1 ? Lng.T("Seite eingefügt") : string.Format(Lng.T("{0} Seiten eingefügt"), copies.Count),
-            () => { foreach (var copy in copies) { RemovePageByPath(copy); } });
-        UpdateUiState();
-    }
-
     /// <summary>Strg+D: legt Kopien der markierten Seiten als Block direkt hinter der letzten markierten
     /// Seite an und markiert die Kopien (ein Rückgängig-Schritt) – so verdoppelt ein zweites Strg+D weiter.</summary>
     private void MenuEditDuplicate_Click(object sender, EventArgs e)
@@ -1367,11 +1328,24 @@ public partial class MainForm : Form, IMessageFilter
             var offset = -flowPanel.AutoScrollPosition.Y + (point.Y < 40 ? -20 : 20);
             flowPanel.AutoScrollPosition = new Point(-flowPanel.AutoScrollPosition.X, Math.Max(0, offset));
         }
-        if (flowPanel.GetChildAtPoint(point) is Panel target && target != dragged)
+        if (flowPanel.GetChildAtPoint(point) is not Panel target || target == dragged) { return; }
+        if (marked.Count > 1 && marked.Contains(dragged)) // Mehrfachauswahl: alle markierten Seiten wandern als Block
+        {
+            if (marked.Contains(target)) { return; } // über der eigenen Markierung ändert sich nichts
+            var order = flowPanel.Controls.Cast<Panel>().ToList();
+            var forward = order.IndexOf(dragged) < order.IndexOf(target);
+            var block = order.Where(marked.Contains).ToList();
+            var rest = order.Where(p => !marked.Contains(p)).ToList();
+            rest.InsertRange(rest.IndexOf(target) + (forward ? 1 : 0), block); // wie beim Einzelziehen: vorwärts hinter, rückwärts vor das Ziel
+            flowPanel.SuspendLayout();
+            for (var i = 0; i < rest.Count; i++) { flowPanel.Controls.SetChildIndex(rest[i], i); }
+            flowPanel.ResumeLayout();
+        }
+        else
         {
             flowPanel.Controls.SetChildIndex(dragged, flowPanel.Controls.GetChildIndex(target));
-            RenumberPages();
         }
+        RenumberPages();
     }
 
     private void BtnZoomOut_Click(object sender, EventArgs e)
@@ -1497,9 +1471,8 @@ public partial class MainForm : Form, IMessageFilter
         menuFileImport.Enabled = pagesVisible;
         btnImport.Enabled = pagesVisible;
         btnRemove.Enabled = pagesVisible && selected != null;
-        var index = selected != null ? flowPanel.Controls.GetChildIndex(selected) : -1;
-        btnMoveLeft.Enabled = pagesVisible && index > 0;
-        btnMoveRight.Enabled = pagesVisible && index >= 0 && index < count - 1;
+        btnMoveLeft.Enabled = pagesVisible && CanMoveSelected(-1);
+        btnMoveRight.Enabled = pagesVisible && CanMoveSelected(1);
         btnZoomOut.Enabled = pagesVisible && thumbWidth > ThumbWidths[0];
         btnZoomIn.Enabled = pagesVisible && thumbWidth < ThumbWidths[^1];
         menuViewZoomOut.Enabled = btnZoomOut.Enabled;
@@ -1509,10 +1482,7 @@ public partial class MainForm : Form, IMessageFilter
         menuViewTwoPages.Enabled = pagesVisible;
         menuViewIcons.Enabled = pagesVisible;
         UpdateUndoUi(); // Rückgängig ist im Kopiermodus gesperrt
-        menuEditCut.Enabled = pagesVisible && selected != null;
-        menuEditCopy.Enabled = pagesVisible && selected != null;
         menuEditDuplicate.Enabled = pagesVisible && marked.Count > 0;
-        menuEditPaste.Enabled = pagesVisible && clipboard.Count > 0;
         menuEditSelectAll.Enabled = pagesVisible && count > 0;
         menuEditDelete.Enabled = pagesVisible && selected != null;
         menuEditRotateLeft.Enabled = pagesVisible && selected != null;
@@ -1642,14 +1612,36 @@ public partial class MainForm : Form, IMessageFilter
         return true;
     }
 
+    /// <summary>Alt+←/→ und die Pfeil-Buttons: verschiebt alle markierten Seiten um eine Position.
+    /// Lücken in der Markierung bleiben erhalten; eine Seite, die am Rand oder an einer anderen
+    /// markierten Seite ansteht, bleibt stehen (ein Rückgängig-Schritt).</summary>
     private void MoveSelected(int delta)
     {
-        if (selected == null) { return; }
-        var index = flowPanel.Controls.GetChildIndex(selected) + delta;
-        if (index < 0 || index >= flowPanel.Controls.Count) { return; }
-        PushOrderUndo(Lng.T("Seite verschoben"));
-        flowPanel.Controls.SetChildIndex(selected, index);
-        UpdateUiState();
+        if (!CanMoveSelected(delta)) { return; }
+        var count = marked.Count;
+        PushOrderUndo(count == 1 ? Lng.T("Seite verschoben") : string.Format(Lng.T("{0} Seiten verschoben"), count));
+        var order = flowPanel.Controls.Cast<Panel>().ToList();
+        var indices = delta < 0 ? Enumerable.Range(0, order.Count) : Enumerable.Range(0, order.Count).Reverse(); // von der Zielseite her, damit ein Block geschlossen wandert
+        foreach (var i in indices)
+        {
+            var j = i + delta;
+            if (!marked.Contains(order[i]) || j < 0 || j >= order.Count || marked.Contains(order[j])) { continue; }
+            (order[i], order[j]) = (order[j], order[i]);
+        }
+        ReorderPages(order);
+        if (selected != null) { flowPanel.ScrollControlIntoView(selected); }
+    }
+
+    /// <summary>True, wenn mindestens eine markierte Seite in diese Richtung einen unmarkierten Nachbarn hat.</summary>
+    private bool CanMoveSelected(int delta)
+    {
+        var order = flowPanel.Controls.Cast<Panel>().ToList();
+        for (var i = 0; i < order.Count; i++)
+        {
+            var j = i + delta;
+            if (marked.Contains(order[i]) && j >= 0 && j < order.Count && !marked.Contains(order[j])) { return true; }
+        }
+        return false;
     }
 
     /// <summary>Entfernt alle markierten Seiten (ein Rückgängig-Schritt); die nachrückende Seite übernimmt die Markierung.</summary>
