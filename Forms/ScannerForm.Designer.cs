@@ -1,4 +1,4 @@
-namespace ScanView.Forms
+﻿namespace ScanView.Forms
 {
     partial class ScannerForm
     {
@@ -64,7 +64,7 @@ namespace ScanView.Forms
             labelSelectHint.Name = "labelSelectHint";
             labelSelectHint.Size = new Size(254, 15);
             labelSelectHint.TabIndex = 7;
-            labelSelectHint.Text = "Auch über den Pfeil am Scannen-Button wählbar.";
+            labelSelectHint.Text = "Auch über den ▼-Pfeil am Scannen-Button wählbar.";
             //
             // btnDeviceKeys
             // 

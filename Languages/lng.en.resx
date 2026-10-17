@@ -394,5 +394,5 @@ Grayscale scans save additional space.</value></data>
   <data name="Der TWAIN-Treiber meldet einen Fehler: {0}" xml:space="preserve"><value>The TWAIN driver reports an error: {0}</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Cancelling …</value></data>
   <data name="Fertig" xml:space="preserve"><value>Done</value></data>
-  <data name="Auch über den Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Also selectable via the arrow on the Scan button.</value></data>
+  <data name="Auch über den ▼-Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Also selectable via the ▼ arrow on the Scan button.</value></data>
 </root>

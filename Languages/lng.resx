@@ -394,5 +394,5 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Der TWAIN-Treiber meldet einen Fehler: {0}" xml:space="preserve"><value>Der TWAIN-Treiber meldet einen Fehler: {0}</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Wird abgebrochen …</value></data>
   <data name="Fertig" xml:space="preserve"><value>Fertig</value></data>
-  <data name="Auch über den Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Auch über den Pfeil am Scannen-Button wählbar.</value></data>
+  <data name="Auch über den ▼-Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Auch über den ▼-Pfeil am Scannen-Button wählbar.</value></data>
 </root>
