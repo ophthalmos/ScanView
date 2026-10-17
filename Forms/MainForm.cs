@@ -443,6 +443,10 @@ public partial class MainForm : Form, IMessageFilter
             cropDialog.DrawToBitmap(shot, new Rectangle(Point.Empty, cropDialog.Size));
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-crop.png"));
         }
+        // WIA: Aufzählung mit einer unbekannten Geräte-ID (kein Scan) — die Objekte werden freigegeben, gemeldet wird „nicht gefunden"
+        var wiaOk = ScanService.ScanFromDevice("selftest-kein-geraet", NextScanPath(), 300, 1, null, 0, false, out var wiaError) == null
+            && (wiaError == Lng.T("Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?")
+                || wiaError == Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar."));
         // Mehrfachauswahl: Strg+A, Strg+Klick (abwählen), Umschalt (Bereich), Entfernen aller markierten Seiten und Rückgängig
         if (panelCopyMode.Visible) { BtnCopyMode_Click(this, EventArgs.Empty); } // Rückgängig ist im Kopiermodus gesperrt
         SelectAll();
@@ -471,7 +475,7 @@ public partial class MainForm : Form, IMessageFilter
         multiOk &= flowPanel.Controls.Count == 2;
         Application.RemoveMessageFilter(this);
         Hide(); // keine Paint-Zyklen mehr, während der Prozess mitten im Nachrichtenbetrieb endet
-        Environment.Exit(pageCount == 2 && pageCountA == 2 && placedOk && multiOk && a4At150 ? 0 : 1);
+        Environment.Exit(pageCount == 2 && pageCountA == 2 && placedOk && multiOk && a4At150 && wiaOk ? 0 : 1);
     }
 
     private string NextScanPath() => Path.Combine(sessionFolder, $"scan_{++scanCounter:D3}.tif");

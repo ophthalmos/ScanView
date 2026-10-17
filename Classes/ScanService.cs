@@ -1,4 +1,5 @@
 ﻿using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 
 namespace ScanView.Classes;
 
@@ -55,6 +56,11 @@ internal static class ScanService
     public static string? ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, out string? error)
     {
         error = null;
+        // Alle WIA-Objekte werden am Ende ausdrücklich freigegeben: Bleibt eine Geräteverbindung bis zur
+        // nächsten Garbage Collection offen (etwa nach einem gescheiterten Versuch, weil der Scanner gerade
+        // erst eingeschaltet wurde), sperrt sie jeden weiteren Scan mit E_ACCESSDENIED aus.
+        List<object> comObjects = [];
+        T Keep<T>(T value) { if (value is not null && Marshal.IsComObject(value)) { comObjects.Add(value); } return value; }
         try
         {
             var managerType = Type.GetTypeFromProgID("WIA.DeviceManager");
@@ -63,11 +69,13 @@ internal static class ScanService
                 error = Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar.");
                 return null;
             }
-            dynamic manager = Activator.CreateInstance(managerType)!;
+            dynamic manager = Keep(Activator.CreateInstance(managerType)!);
             dynamic? device = null;
-            foreach (var info in manager.DeviceInfos)
+            dynamic infos = Keep<object>(manager.DeviceInfos);
+            foreach (var info in infos)
             {
-                if ((string)info.DeviceID == deviceId) { device = info.Connect(); break; }
+                Keep<object>(info);
+                if ((string)info.DeviceID == deviceId) { device = Keep<object>(info.Connect()); break; }
             }
             if (device == null)
             {
@@ -75,7 +83,8 @@ internal static class ScanService
                 return null;
             }
             TrySetProperty(device, WiaDocumentHandlingSelect, useFeeder ? 1 : 2); // Geräte ohne Einzug kennen die Eigenschaft nicht
-            dynamic item = device.Items[1];
+            dynamic items = Keep<object>(device.Items);
+            dynamic item = Keep<object>(items[1]);
             TrySetProperty(item, WiaCurrentIntent, colorIntent);
             TrySetProperty(item, WiaHorizontalResolution, dpi);
             TrySetProperty(item, WiaVerticalResolution, dpi);
@@ -96,9 +105,11 @@ internal static class ScanService
                 error = Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar.");
                 return null;
             }
-            dynamic dialog = Activator.CreateInstance(dialogType)!;
+            dynamic dialog = Keep(Activator.CreateInstance(dialogType)!);
             dynamic image = dialog.ShowTransfer(item, WiaFormatTiff, false); // Format ist ein Wunsch — das Gerät darf abweichen
-            return image == null ? null : SaveAsTiff(image, path); // null ohne Ausnahme = Abbruch durch den Anwender
+            if (image == null) { return null; } // null ohne Ausnahme = Abbruch durch den Anwender
+            Keep<object>(image);
+            return SaveAsTiff(image, path);
         }
         catch (UnauthorizedAccessException ex) // E_ACCESSDENIED: Gerät noch nicht bereit (z.B. gerade eingeschaltet) oder von einem anderen Programm belegt
         {
@@ -106,11 +117,19 @@ internal static class ScanService
             error = Lng.T("Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut.");
             return null;
         }
-        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException or IOException)
+        catch (Exception ex) when (ex is COMException or InvalidOperationException or IOException)
         {
             System.Diagnostics.Debug.WriteLine("WIA-Scan: " + ex.Message);
             error = ex.Message;
             return null;
+        }
+        finally
+        {
+            for (var i = comObjects.Count - 1; i >= 0; i--) // in umgekehrter Reihenfolge: erst Bild und Dialog, zuletzt der Manager
+            {
+                try { Marshal.FinalReleaseComObject(comObjects[i]); }
+                catch (ArgumentException) { } // schon freigegeben oder kein COM-Objekt
+            }
         }
     }
 
