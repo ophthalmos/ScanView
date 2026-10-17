@@ -32,4 +32,5 @@ The user interface concept loosely follows "Scanner-Interface 7" by Grewe Comput
 
 ## License
 
-[MIT](LICENSE) · © Wilhelm Happe
+[GNU AGPL 3.0](LICENSE) – © 2026 Wilhelm Happe. Earlier versions were released under the MIT License.
+Bundled third-party components and their licenses are listed in [NOTICE.txt](NOTICE.txt).

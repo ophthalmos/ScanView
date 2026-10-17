@@ -395,4 +395,6 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Annulation …</value></data>
   <data name="Fertig" xml:space="preserve"><value>Terminé</value></data>
   <data name="Auch über den ▼-Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Également via la flèche ▼ du bouton Numériser.</value></data>
+  <data name="Lizenz: GNU AGPL 3.0, ohne Gewährleistung" xml:space="preserve"><value>Licence : GNU AGPL 3.0, sans aucune garantie</value></data>
+  <data name="Quelltext auf GitHub" xml:space="preserve"><value>Code source sur GitHub</value></data>
 </root>

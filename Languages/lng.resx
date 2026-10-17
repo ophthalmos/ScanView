@@ -395,4 +395,6 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Wird abgebrochen …</value></data>
   <data name="Fertig" xml:space="preserve"><value>Fertig</value></data>
   <data name="Auch über den ▼-Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Auch über den ▼-Pfeil am Scannen-Button wählbar.</value></data>
+  <data name="Lizenz: GNU AGPL 3.0, ohne Gewährleistung" xml:space="preserve"><value>Lizenz: GNU AGPL 3.0, ohne Gewährleistung</value></data>
+  <data name="Quelltext auf GitHub" xml:space="preserve"><value>Quelltext auf GitHub</value></data>
 </root>

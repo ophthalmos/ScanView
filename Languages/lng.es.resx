@@ -395,4 +395,6 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Cancelando …</value></data>
   <data name="Fertig" xml:space="preserve"><value>Listo</value></data>
   <data name="Auch über den ▼-Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>También se elige con la flecha ▼ del botón Escanear.</value></data>
+  <data name="Lizenz: GNU AGPL 3.0, ohne Gewährleistung" xml:space="preserve"><value>Licencia: GNU AGPL 3.0, sin ninguna garantía</value></data>
+  <data name="Quelltext auf GitHub" xml:space="preserve"><value>Código fuente en GitHub</value></data>
 </root>

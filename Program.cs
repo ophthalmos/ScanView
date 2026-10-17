@@ -8,6 +8,9 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        // PDFsharp steht seit 6.5 unter AGPL-3.0 oder einer kommerziellen Lizenz; ohne Wahl wirft jedes new PdfDocument()
+        // eine PdfSharpLicenseException. ScanView ist quelloffen und steht deshalb ebenfalls unter der AGPL (wie PDFlight).
+        PdfSharp.PdfSharpLicense.SetAgplLicense();
         var selfTest = args.Contains("--selftest");
         // Scanner-Taste: Windows startet ScanView mit /StiDevice:<WIA-DeviceID> /StiEvent:<GUID>
         var stiDevice = args.FirstOrDefault(a => a.StartsWith("/StiDevice:", StringComparison.OrdinalIgnoreCase))?["/StiDevice:".Length..];

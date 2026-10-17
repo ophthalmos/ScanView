@@ -395,4 +395,6 @@ Grayscale scans save additional space.</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Cancelling …</value></data>
   <data name="Fertig" xml:space="preserve"><value>Done</value></data>
   <data name="Auch über den ▼-Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Also selectable via the ▼ arrow on the Scan button.</value></data>
+  <data name="Lizenz: GNU AGPL 3.0, ohne Gewährleistung" xml:space="preserve"><value>License: GNU AGPL 3.0, without any warranty</value></data>
+  <data name="Quelltext auf GitHub" xml:space="preserve"><value>Source code on GitHub</value></data>
 </root>

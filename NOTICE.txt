@@ -1,0 +1,20 @@
+ScanView - Copyright (c) 2026 Wilhelm Happe
+Licensed under the GNU Affero General Public License version 3 (file LICENSE).
+Source code: https://github.com/ophthalmos/ScanView
+ScanView is provided WITHOUT ANY WARRANTY; see the license for details.
+
+Third-party components included:
+
+- PDFsharp (PdfSharp*.dll), (c) empira, PDFsharp Team
+  GNU AGPL 3.0 - https://www.pdfsharp.com
+- Tesseract .NET wrapper (Tesseract.dll), (c) Charles Weld
+  Apache-2.0 - https://github.com/charlesw/tesseract
+- Tesseract OCR engine (x64\tesseract50.dll, tessdata\pdf.ttf), (c) Google and the Tesseract contributors
+  Apache-2.0 - https://github.com/tesseract-ocr/tesseract
+- Leptonica image library (x64\leptonica-1.82.0.dll), (c) Dan Bloomberg and contributors
+  BSD-2-Clause style Leptonica license - http://www.leptonica.org
+- Tesseract language data (tessdata\*.traineddata), (c) Google
+  Apache-2.0 - https://github.com/tesseract-ocr/tessdata_best (file tessdata\LICENSE)
+- Microsoft.Extensions.Logging.Abstractions and
+  Microsoft.Extensions.DependencyInjection.Abstractions, (c) Microsoft
+  MIT - https://github.com/dotnet/runtime

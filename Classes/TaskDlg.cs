@@ -91,9 +91,10 @@ internal static class TaskDlg
         using var icon32 = icon == null ? null : new Icon(icon, 32, 32); // sonst nimmt der TaskDialog die 16-px-Variante des Fenster-Icons
         var indent = new string(' ', 14);
         var foot = $"{indent}© {buildDate:yyyy} Wilhelm Happe · Version {threeVersion} ({buildDate:d})" +
+            $"\n{indent}{Lng.T("Lizenz: GNU AGPL 3.0, ohne Gewährleistung")}" + // die AGPL verlangt diesen Hinweis in der Bedienoberfläche (§ 5d); seit 17.10.2026, vorher MIT
             $"\n{indent}Tesseract {typeof(Tesseract.TesseractEngine).Assembly.GetName().Version?.ToString(3)}" +
             $"\n{indent}PDFsharp {typeof(PdfSharp.Pdf.PdfDocument).Assembly.GetName().Version?.ToString(3)}" +
-            $"\n{indent}<a href=\"https://www.netradio.info\">www.netradio.info</a>";
+            $"\n{indent}<a href=\"https://www.netradio.info\">www.netradio.info</a> • <a href=\"https://github.com/ophthalmos/ScanView\">{Lng.T("Quelltext auf GitHub")}</a>";
         var page = new TaskDialogPage()
         {
             Caption = Lng.T("Über") + " " + Application.ProductName,

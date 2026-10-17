@@ -28,6 +28,7 @@ ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 AppPublisher=Wilhelm Happe
 AppCopyright=© 2026 W. Happe
+; seit 17.10.2026 steht ScanView unter der AGPL-3.0 (wie PDFsharp ab 6.5, vorher MIT); NOTICE.txt nennt die Fremdkomponenten
 LicenseFile=LICENSE
 UsePreviousAppDir=yes
 DefaultDirName={autopf}\{#appName}
@@ -94,6 +95,8 @@ Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Autoplay
 
 [Files]
 Source: "{#releaseDir}\*"; Excludes: "*.pdb,selftest*.png"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
+Source: "NOTICE.txt"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#appName}"; Filename: "{app}\{#appName}.exe"
