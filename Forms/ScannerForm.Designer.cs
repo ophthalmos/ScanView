@@ -30,6 +30,7 @@ namespace ScanView.Forms
         {
             labelDevice = new Label();
             comboScanner = new ComboBox();
+            labelSelectHint = new Label();
             btnDeviceKeys = new Button();
             labelHint = new Label();
             btnOk = new Button();
@@ -54,7 +55,17 @@ namespace ScanView.Forms
             comboScanner.Name = "comboScanner";
             comboScanner.Size = new Size(300, 23);
             comboScanner.TabIndex = 1;
-            // 
+            //
+            // labelSelectHint
+            //
+            labelSelectHint.AutoSize = true;
+            labelSelectHint.ForeColor = SystemColors.GrayText;
+            labelSelectHint.Location = new Point(12, 53);
+            labelSelectHint.Name = "labelSelectHint";
+            labelSelectHint.Size = new Size(254, 15);
+            labelSelectHint.TabIndex = 7;
+            labelSelectHint.Text = "Auch über den Pfeil am Scannen-Button wählbar.";
+            //
             // btnDeviceKeys
             // 
             btnDeviceKeys.Location = new Point(6, 22);
@@ -78,7 +89,7 @@ namespace ScanView.Forms
             // btnOk
             // 
             btnOk.DialogResult = DialogResult.OK;
-            btnOk.Location = new Point(146, 152);
+            btnOk.Location = new Point(146, 172);
             btnOk.Name = "btnOk";
             btnOk.Size = new Size(80, 26);
             btnOk.TabIndex = 4;
@@ -88,7 +99,7 @@ namespace ScanView.Forms
             // btnCancel
             // 
             btnCancel.DialogResult = DialogResult.Cancel;
-            btnCancel.Location = new Point(232, 152);
+            btnCancel.Location = new Point(232, 172);
             btnCancel.Name = "btnCancel";
             btnCancel.Size = new Size(80, 26);
             btnCancel.TabIndex = 5;
@@ -99,7 +110,7 @@ namespace ScanView.Forms
             // 
             groupBox.Controls.Add(btnDeviceKeys);
             groupBox.Controls.Add(labelHint);
-            groupBox.Location = new Point(12, 56);
+            groupBox.Location = new Point(12, 76);
             groupBox.Name = "groupBox";
             groupBox.Size = new Size(300, 90);
             groupBox.TabIndex = 6;
@@ -112,9 +123,10 @@ namespace ScanView.Forms
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = btnCancel;
-            ClientSize = new Size(324, 190);
+            ClientSize = new Size(324, 210);
             Controls.Add(labelDevice);
             Controls.Add(comboScanner);
+            Controls.Add(labelSelectHint);
             Controls.Add(btnOk);
             Controls.Add(btnCancel);
             Controls.Add(groupBox);
@@ -136,6 +148,7 @@ namespace ScanView.Forms
 
         private System.Windows.Forms.Label labelDevice;
         private System.Windows.Forms.ComboBox comboScanner;
+        private System.Windows.Forms.Label labelSelectHint;
         private System.Windows.Forms.Button btnDeviceKeys;
         private System.Windows.Forms.Label labelHint;
         private System.Windows.Forms.Button btnOk;

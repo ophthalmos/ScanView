@@ -394,4 +394,5 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Der TWAIN-Treiber meldet einen Fehler: {0}" xml:space="preserve"><value>Le pilote TWAIN signale une erreur : {0}</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Annulation …</value></data>
   <data name="Fertig" xml:space="preserve"><value>Terminé</value></data>
+  <data name="Auch über den Pfeil am Scannen-Button wählbar." xml:space="preserve"><value>Également au choix via la flèche du bouton Numériser.</value></data>
 </root>
