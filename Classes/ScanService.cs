@@ -41,7 +41,7 @@ internal static class ScanService
                 try { name = (string)info.Properties["Name"].Value; }
                 catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
                 { name = (string)info.DeviceID; }
-                result.Add(new ScannerInfo((string)info.DeviceID, name));
+                result.Add(new ScannerInfo((string)info.DeviceID, name + " (WIA)")); // Gegenstück zu „(TWAIN)" – dasselbe Gerät kann beides anbieten
             }
         }
         catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException or UnauthorizedAccessException)

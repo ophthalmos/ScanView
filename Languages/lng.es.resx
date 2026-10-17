@@ -393,4 +393,5 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Der TWAIN-Manager von Windows konnte nicht geladen werden." xml:space="preserve"><value>No se pudo cargar el administrador TWAIN de Windows.</value></data>
   <data name="Der TWAIN-Treiber meldet einen Fehler: {0}" xml:space="preserve"><value>El controlador TWAIN informa de un error: {0}</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Cancelando …</value></data>
+  <data name="Fertig" xml:space="preserve"><value>Listo</value></data>
 </root>

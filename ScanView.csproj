@@ -29,7 +29,6 @@
     <ProjectReference Include="Twain32\Twain32.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
-      <GlobalPropertiesToRemove>Platform</GlobalPropertiesToRemove>
       <Private>false</Private>
     </ProjectReference>
   </ItemGroup>

@@ -563,6 +563,7 @@ public partial class MainForm : Form, IMessageFilter
         bool ScanProgress(int percent)
         {
             if (percent < 0) { progressForm.SetIndeterminate(Lng.T("Scanne …")); } // TWAIN: Fortschritt unbekannt
+            else if (percent >= 100) { progressForm.SetProgress(Lng.T("Fertig"), 100, 100); } // alle Daten da – der Schlitten fährt nur noch zurück
             else { progressForm.SetProgress(string.Format(Lng.T("Scanne … {0} %"), percent), percent, 100); }
             Application.DoEvents();
             return !progressForm.CancelRequested;
