@@ -104,7 +104,7 @@ internal static class ScanService
             // Oktober-Update 2026 bei älteren Treibern. Nimmt der Treiber das Format nicht an: alter Weg.
             if (TrySetMemoryFormat(item))
             {
-                object wiaItem = Keep<object>(item.WiaItem);
+                var wiaItem = Keep<object>(item.WiaItem);
                 var actualDpi = TryGetProperty(item, WiaHorizontalResolution, dpi);
                 return WiaMemoryTransfer.TransferToTiff(wiaItem, path, actualDpi, progress) ? path : null; // false = Abbruch durch den Anwender
             }

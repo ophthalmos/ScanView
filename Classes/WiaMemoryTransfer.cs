@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.Marshalling;
 
 namespace ScanView.Classes;
 
@@ -8,41 +9,42 @@ namespace ScanView.Classes;
 /// EPSON Perfection V30/V300 mit E_ACCESSDENIED; der Speicher-Weg (so arbeitet auch Acrobat) funktioniert.
 /// Die Eigenschaften setzt weiterhin die WIA-Automatisierung – deren Item liefert über „WiaItem" die
 /// darunterliegende IWiaItem-Schnittstelle, die auch IWiaDataTransfer anbietet.</summary>
-internal static class WiaMemoryTransfer
+internal static partial class WiaMemoryTransfer
 {
     public const string FormatMemoryBmp = "{B96B3CAA-0728-11D3-9D7B-0000F81EF32E}"; // WiaImgFmt_MEMORYBMP
     public const int TymedCallback = 128;
+    private static readonly StrategyBasedComWrappers ComWrappersInstance = new();
     private const int ItMsgDataHeader = 1;
     private const int ItMsgData = 2;
 
     [StructLayout(LayoutKind.Sequential)]
-    private struct WiaDataTransferInfo
+    internal struct WiaDataTransferInfo
     {
         public uint Size, Section, BufferSize;
         public int DoubleBuffer;
         public uint Reserved1, Reserved2, Reserved3;
     }
 
-    [ComImport, Guid("a558a866-a5b0-11d2-a08f-00c04f72dc3c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    private interface IWiaDataCallback
+    [GeneratedComInterface, Guid("a558a866-a5b0-11d2-a08f-00c04f72dc3c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal partial interface IWiaDataCallback
     {
         [PreserveSig]
         int BandedDataCallback(int message, int status, int percentComplete, int offset, int length, int reserved, int resLength, IntPtr buffer);
     }
 
-    [ComImport, Guid("a6cef998-a5b0-11d2-a08f-00c04f72dc3c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
-    private interface IWiaDataTransfer
+    [GeneratedComInterface, Guid("a6cef998-a5b0-11d2-a08f-00c04f72dc3c"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+    internal partial interface IWiaDataTransfer
     {
-        [PreserveSig] int idtGetData(IntPtr medium, IWiaDataCallback callback);
-        [PreserveSig] int idtGetBandedData(ref WiaDataTransferInfo info, IWiaDataCallback callback);
-        [PreserveSig] int idtQueryGetData(IntPtr formatInfo);
-        [PreserveSig] int idtEnumWIA_FORMAT_INFO(out IntPtr enumerator);
-        [PreserveSig] int idtGetExtendedTransferInfo(IntPtr info);
+        [PreserveSig] int IdtGetData(IntPtr medium, IWiaDataCallback callback);
+        [PreserveSig] int IdtGetBandedData(ref WiaDataTransferInfo info, IWiaDataCallback callback);
+        [PreserveSig] int IdtQueryGetData(IntPtr formatInfo);
+        [PreserveSig] int IdtEnumWIA_FORMAT_INFO(out IntPtr enumerator);
+        [PreserveSig] int IdtGetExtendedTransferInfo(IntPtr info);
     }
 
     /// <summary>Sammelt die Datenblöcke (an ihrem Offset) und meldet den Fortschritt; S_FALSE bricht ab.</summary>
-    [ComVisible(true)]
-    private sealed class Collector(Func<int, bool>? progress) : IWiaDataCallback
+    [GeneratedComClass]
+    internal sealed partial class Collector(Func<int, bool>? progress) : IWiaDataCallback
     {
         public MemoryStream Data { get; } = new();
         public bool Cancelled { get; private set; }
@@ -74,7 +76,12 @@ internal static class WiaMemoryTransfer
     /// false und keine Datei entsteht. Fehler des Treibers kommen als COMException.</summary>
     public static bool TransferToTiff(object wiaItem, string path, int fallbackDpi, Func<int, bool>? progress)
     {
-        var transfer = (IWiaDataTransfer)wiaItem;
+        // Das Item stammt aus der WIA-Automatisierung (eingebautes COM-Interop); quellgenerierte Schnittstellen
+        // brauchen ein ComWrappers-Objekt – daher über den IUnknown-Zeiger umwandeln statt direkt zu casten
+        var unknown = Marshal.GetIUnknownForObject(wiaItem);
+        IWiaDataTransfer transfer;
+        try { transfer = (IWiaDataTransfer)ComWrappersInstance.GetOrCreateObjectForComInstance(unknown, CreateObjectFlags.None); }
+        finally { Marshal.Release(unknown); }
         Collector collector = new(progress);
         var info = new WiaDataTransferInfo
         {
@@ -82,7 +89,7 @@ internal static class WiaMemoryTransfer
             BufferSize = 256 * 1024,
             DoubleBuffer = 1,
         };
-        var hr = transfer.idtGetBandedData(ref info, collector);
+        var hr = transfer.IdtGetBandedData(ref info, collector);
         if (collector.Cancelled) { return false; }
         Marshal.ThrowExceptionForHR(hr);
         SaveAsTiff(collector.Data.ToArray(), path, fallbackDpi);
