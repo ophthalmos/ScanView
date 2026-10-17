@@ -49,6 +49,7 @@ internal static partial class WiaMemoryTransfer
         public MemoryStream Data { get; } = new();
         public bool Cancelled { get; private set; }
         private long expected; // Gesamtgröße laut Kopfmeldung – viele Treiber melden selbst keinen Prozentwert
+        private int shownPercent;
 
         public int BandedDataCallback(int message, int status, int percentComplete, int offset, int length, int reserved, int resLength, IntPtr buffer)
         {
@@ -61,7 +62,9 @@ internal static partial class WiaMemoryTransfer
                 Data.Write(chunk, 0, length);
             }
             var percent = percentComplete > 0 || expected <= 0 ? percentComplete : (int)((Data.Length * 100) / expected);
-            if (progress != null && !progress(Math.Clamp(percent, 0, 100)))
+            // nie zurücklaufen: der HP Scanjet 300 meldet nach 100 % mit der Abschlussmeldung noch einmal 0 %
+            shownPercent = Math.Max(shownPercent, Math.Clamp(percent, 0, 100));
+            if (progress != null && !progress(shownPercent))
             {
                 Cancelled = true;
                 return 1; // S_FALSE: Übertragung abbrechen
