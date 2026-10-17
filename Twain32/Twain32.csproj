@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 32-Bit-Helfer für TWAIN-Scanner: die meisten TWAIN-Treiber (z.B. Epson Perfection V30/V300) gibt es nur
+       in 32 Bit, ScanView selbst ist ein 64-Bit-Programm. .NET Framework 4.8 ist in Windows 10/11 enthalten,
+       der Helfer braucht also keine zusätzliche Laufzeitumgebung. ScanView ruft ihn über die Kommandozeile auf. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Twain32</AssemblyName>
+    <RootNamespace>ScanView.Twain32</RootNamespace>
+    <ApplicationIcon>..\ScanView.ico</ApplicationIcon>
+    <Version>1.0.2</Version>
+    <Product>ScanView</Product>
+    <Description>TWAIN-Helfer für ScanView</Description>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+</Project>

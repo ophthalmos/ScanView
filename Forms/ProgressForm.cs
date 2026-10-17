@@ -31,14 +31,23 @@ internal sealed partial class ProgressForm : Form
     private void BtnCancel_Click(object sender, EventArgs e)
     {
         CancelRequested = true;
-        btnCancel.Enabled = false; // der Treiber beendet die Übertragung beim nächsten Datenblock
+        btnCancel.Enabled = false; // WIA bricht beim nächsten Datenblock ab, TWAIN nach dem geordneten Beenden des Treibers
+        labelStatus.Text = Lng.T("Wird abgebrochen …");
     }
 
     /// <summary>Text und Balkenstand aktualisieren (auf dem UI-Thread aufzurufen).</summary>
     public void SetProgress(string text, int done, int total)
     {
-        labelStatus.Text = text;
+        if (!CancelRequested) { labelStatus.Text = text; } // nach dem Abbrechen bleibt der Hinweis stehen
+        if (progressBar.Style != ProgressBarStyle.Continuous) { progressBar.Style = ProgressBarStyle.Continuous; }
         progressBar.Maximum = Math.Max(1, total);
         progressBar.Value = Math.Clamp(done, 0, progressBar.Maximum);
+    }
+
+    /// <summary>Fortschritt unbekannt (TWAIN): laufender Balken statt Prozentwert.</summary>
+    public void SetIndeterminate(string text)
+    {
+        if (!CancelRequested) { labelStatus.Text = text; }
+        if (progressBar.Style != ProgressBarStyle.Marquee) { progressBar.Style = ProgressBarStyle.Marquee; }
     }
 }

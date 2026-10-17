@@ -45,7 +45,7 @@ $literal = '"((?:[^"\\]|\\.)*)"'
 $verbatim = '@"((?:[^"]|"")*)"'
 $tokens = '@"(?<v>(?:[^"]|"")*)"|"(?<s>(?:[^"\\]|\\.)*)"|' + "'" + '(?:\\.|[^' + "'" + '\\])' + "'" + '|//[^\r\n]*|/\*[\s\S]*?\*/'
 $used = New-Object 'System.Collections.Generic.HashSet[string]'
-$sources = Get-ChildItem $root -Recurse -Include *.cs -File | Where-Object { $_.FullName -notmatch '\\(obj|bin|\.claude)\\' }
+$sources = Get-ChildItem $root -Recurse -Include *.cs -File | Where-Object { $_.FullName -notmatch '\\(obj|bin|\.claude|Twain32)\\' } # Twain32: 32-Bit-Helfer ohne Benutzertexte
 foreach ($file in $sources) {
     $text = Get-Content $file.FullName -Raw -Encoding UTF8
     # 1) direkte Lng.T-Aufrufe (auch innerhalb interpolierter Strings; Verbatim-Variante mit @"…")

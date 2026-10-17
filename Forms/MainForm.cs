@@ -122,7 +122,7 @@ public partial class MainForm : Form, IMessageFilter
             Select(null);
             if (stiDeviceId != null) // Start über die Scanner-Taste: das auslösende Gerät verwenden und sofort scannen
             {
-                var device = ScanService.ListScanners().FirstOrDefault(s => string.Equals(s.Id, stiDeviceId, StringComparison.OrdinalIgnoreCase));
+                var device = ScanService.ListScanners(includeTwain: false).FirstOrDefault(s => string.Equals(s.Id, stiDeviceId, StringComparison.OrdinalIgnoreCase)); // die Taste meldet ein WIA-Gerät
                 if (device != null)
                 {
                     selectedScannerId = device.Id;
@@ -447,6 +447,8 @@ public partial class MainForm : Form, IMessageFilter
         var wiaOk = ScanService.ScanFromDevice("selftest-kein-geraet", NextScanPath(), 300, 1, null, 0, false, null, out var wiaError) == null
             && (wiaError == Lng.T("Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?")
                 || wiaError == Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar."));
+        TwainService.ListSources(refresh: true); // TWAIN-Helfer: startet und listet (auch ohne Scanner), löst keinen Scan aus
+        wiaOk &= TwainService.LastListSucceeded;
         // Mehrfachauswahl: Strg+A, Strg+Klick (abwählen), Umschalt (Bereich), Entfernen aller markierten Seiten und Rückgängig
         if (panelCopyMode.Visible) { BtnCopyMode_Click(this, EventArgs.Empty); } // Rückgängig ist im Kopiermodus gesperrt
         SelectAll();
@@ -560,7 +562,8 @@ public partial class MainForm : Form, IMessageFilter
         progressForm.Refresh();
         bool ScanProgress(int percent)
         {
-            progressForm.SetProgress(string.Format(Lng.T("Scanne … {0} %"), percent), percent, 100);
+            if (percent < 0) { progressForm.SetIndeterminate(Lng.T("Scanne …")); } // TWAIN: Fortschritt unbekannt
+            else { progressForm.SetProgress(string.Format(Lng.T("Scanne … {0} %"), percent), percent, 100); }
             Application.DoEvents();
             return !progressForm.CancelRequested;
         }

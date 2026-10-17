@@ -4,4 +4,5 @@
     <Platform Name="x64" />
   </Configurations>
   <Project Path="ScanView.csproj" />
+  <Project Path="Twain32/Twain32.csproj" />
 </Solution>

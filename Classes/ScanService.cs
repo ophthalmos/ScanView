@@ -24,8 +24,9 @@ internal static class ScanService
     private const int WiaTymed = 4108;                // Übertragungsart: 128 = TYMED_CALLBACK (Speicher)
     private const int WiaDocumentHandlingSelect = 3088; // GERÄTE-Eigenschaft: 1 = Einzug, 2 = Flachbett
 
-    /// <summary>Alle angeschlossenen Scanner (WIA-Gerätetyp 1).</summary>
-    public static List<ScannerInfo> ListScanners()
+    /// <summary>Alle angeschlossenen Scanner: WIA-Geräte (Typ 1) und – mit includeTwain – die TWAIN-Quellen
+    /// des 32-Bit-Helfers (einmal je Sitzung abgefragt, s. TwainService).</summary>
+    public static List<ScannerInfo> ListScanners(bool includeTwain = true)
     {
         List<ScannerInfo> result = [];
         try
@@ -47,6 +48,7 @@ internal static class ScanService
         {
             System.Diagnostics.Debug.WriteLine("WIA-Aufzählung: " + ex.Message);
         }
+        if (includeTwain) { result.AddRange(TwainService.ListSources()); }
         return result;
     }
 
@@ -54,9 +56,14 @@ internal static class ScanService
     /// speichert sie als TIFF. Auflösung, Farbmodus, Scanfenster (areaMm, null = maximal),
     /// Helligkeit (−100 … +100, 0 = neutral) und Papierzufuhr werden gesetzt, soweit das
     /// Gerät sie annimmt. Null bei Fehlern — error beschreibt sie (übersetzt); beim
-    /// Nutzer-Abbruch im WIA-Fortschritt bleibt error null.</summary>
+    /// Nutzer-Abbruch bleibt error null. progress bekommt den Fortschritt in Prozent (−1 = unbekannt)
+    /// und liefert false zum Abbrechen. TWAIN-Quellen (ID „twain:…") gehen an den 32-Bit-Helfer.</summary>
     public static string? ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, Func<int, bool>? progress, out string? error)
     {
+        if (TwainService.IsTwainId(deviceId))
+        {
+            return TwainService.Scan(deviceId, path, dpi, colorIntent, areaMm, brightnessPercent, useFeeder, progress, out error);
+        }
         error = null;
         // Alle WIA-Objekte werden am Ende ausdrücklich freigegeben: Bleibt eine Geräteverbindung bis zur
         // nächsten Garbage Collection offen (etwa nach einem gescheiterten Versuch, weil der Scanner gerade
