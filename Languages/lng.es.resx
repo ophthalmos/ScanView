@@ -385,4 +385,5 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="{0} Seiten verschoben" xml:space="preserve"><value>{0} páginas movidas</value></data>
   <data name="markierte Seiten verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>mover las páginas marcadas (también: arrastrar con el ratón)</value></data>
   <data name="Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte." xml:space="preserve"><value>Quitar, girar, duplicar, mover así como guardar, imprimir y enviar por fax con «Solo las páginas marcadas» se aplican a todas las páginas marcadas; recortar a la última página en la que se hizo clic.</value></data>
+  <data name="Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut." xml:space="preserve"><value>El escáner deniega el acceso. Quizá todavía no esté listo o lo esté usando otro programa. Espera un momento y vuelve a escanear.</value></data>
 </root>

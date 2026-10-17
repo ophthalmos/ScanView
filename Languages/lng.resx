@@ -385,4 +385,5 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="{0} Seiten verschoben" xml:space="preserve"><value>{0} Seiten verschoben</value></data>
   <data name="markierte Seiten verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>markierte Seiten verschieben (auch: Ziehen mit der Maus)</value></data>
   <data name="Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte." xml:space="preserve"><value>Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte.</value></data>
+  <data name="Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut." xml:space="preserve"><value>Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut.</value></data>
 </root>

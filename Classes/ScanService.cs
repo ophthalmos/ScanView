@@ -40,7 +40,7 @@ internal static class ScanService
                 result.Add(new ScannerInfo((string)info.DeviceID, name));
             }
         }
-        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException)
+        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException or UnauthorizedAccessException)
         {
             System.Diagnostics.Debug.WriteLine("WIA-Aufzählung: " + ex.Message);
         }
@@ -100,7 +100,13 @@ internal static class ScanService
             dynamic image = dialog.ShowTransfer(item, WiaFormatTiff, false); // Format ist ein Wunsch — das Gerät darf abweichen
             return image == null ? null : SaveAsTiff(image, path); // null ohne Ausnahme = Abbruch durch den Anwender
         }
-        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException)
+        catch (UnauthorizedAccessException ex) // E_ACCESSDENIED: Gerät noch nicht bereit (z.B. gerade eingeschaltet) oder von einem anderen Programm belegt
+        {
+            System.Diagnostics.Debug.WriteLine("WIA-Scan: " + ex.Message);
+            error = Lng.T("Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut.");
+            return null;
+        }
+        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException or IOException)
         {
             System.Diagnostics.Debug.WriteLine("WIA-Scan: " + ex.Message);
             error = ex.Message;
@@ -119,7 +125,7 @@ internal static class ScanService
             dynamic image = dialog.ShowAcquireImage();
             return image == null ? null : SaveAsTiff(image, path);
         }
-        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException)
+        catch (Exception ex) when (ex is System.Runtime.InteropServices.COMException or InvalidOperationException or UnauthorizedAccessException or IOException)
         {
             System.Diagnostics.Debug.WriteLine("WIA-Dialog: " + ex.Message);
             return null;
