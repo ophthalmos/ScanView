@@ -8,3 +8,4 @@ obj/
 
 # Persönliche Claude-Code-Einstellungen (nicht auf GitHub)
 .claude/settings.local.json
+/check-lng.ps1
