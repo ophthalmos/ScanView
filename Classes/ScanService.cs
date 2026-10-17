@@ -20,6 +20,8 @@ internal static class ScanService
     private const int WiaHorizontalExtent = 6151;
     private const int WiaVerticalExtent = 6152;
     private const int WiaBrightness = 6154;
+    private const int WiaFormat = 4106;               // Bildformat der Übertragung (GUID)
+    private const int WiaTymed = 4108;                // Übertragungsart: 128 = TYMED_CALLBACK (Speicher)
     private const int WiaDocumentHandlingSelect = 3088; // GERÄTE-Eigenschaft: 1 = Einzug, 2 = Flachbett
 
     /// <summary>Alle angeschlossenen Scanner (WIA-Gerätetyp 1).</summary>
@@ -53,7 +55,7 @@ internal static class ScanService
     /// Helligkeit (−100 … +100, 0 = neutral) und Papierzufuhr werden gesetzt, soweit das
     /// Gerät sie annimmt. Null bei Fehlern — error beschreibt sie (übersetzt); beim
     /// Nutzer-Abbruch im WIA-Fortschritt bleibt error null.</summary>
-    public static string? ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, out string? error)
+    public static string? ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, Func<int, bool>? progress, out string? error)
     {
         error = null;
         // Alle WIA-Objekte werden am Ende ausdrücklich freigegeben: Bleibt eine Geräteverbindung bis zur
@@ -98,6 +100,14 @@ internal static class ScanService
                 TrySetProperty(item, WiaVerticalExtent, (int)Math.Round(area.Height / 25.4 * actualDpi));
             }
             if (brightnessPercent != 0) { TrySetScaledProperty(item, WiaBrightness, brightnessPercent); }
+            // Bevorzugt über den Speicher (s. WiaMemoryTransfer) – der Datei-Weg scheitert seit dem
+            // Oktober-Update 2026 bei älteren Treibern. Nimmt der Treiber das Format nicht an: alter Weg.
+            if (TrySetMemoryFormat(item))
+            {
+                object wiaItem = Keep<object>(item.WiaItem);
+                var actualDpi = TryGetProperty(item, WiaHorizontalResolution, dpi);
+                return WiaMemoryTransfer.TransferToTiff(wiaItem, path, actualDpi, progress) ? path : null; // false = Abbruch durch den Anwender
+            }
             // ShowTransfer zeigt nur eine schlichte Fortschrittsanzeige (keinen Einstellungsdialog)
             var dialogType = Type.GetTypeFromProgID("WIA.CommonDialog");
             if (dialogType == null)
@@ -117,7 +127,7 @@ internal static class ScanService
             error = Lng.T("Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut.");
             return null;
         }
-        catch (Exception ex) when (ex is COMException or InvalidOperationException or IOException)
+        catch (Exception ex) when (ex is COMException or InvalidOperationException or IOException or ArgumentException or InvalidCastException)
         {
             System.Diagnostics.Debug.WriteLine("WIA-Scan: " + ex.Message);
             error = ex.Message;
@@ -148,6 +158,21 @@ internal static class ScanService
         {
             System.Diagnostics.Debug.WriteLine("WIA-Dialog: " + ex.Message);
             return null;
+        }
+    }
+
+    /// <summary>Stellt das Item auf Speicher-Übertragung um (MEMORYBMP über TYMED_CALLBACK); false, wenn der Treiber das ablehnt.</summary>
+    private static bool TrySetMemoryFormat(dynamic item)
+    {
+        try
+        {
+            item.Properties[WiaTymed.ToString()].Value = WiaMemoryTransfer.TymedCallback;
+            item.Properties[WiaFormat.ToString()].Value = WiaMemoryTransfer.FormatMemoryBmp;
+            return true;
+        }
+        catch (Exception ex) when (ex is COMException or Microsoft.CSharp.RuntimeBinder.RuntimeBinderException or ArgumentException)
+        {
+            return false;
         }
     }
 

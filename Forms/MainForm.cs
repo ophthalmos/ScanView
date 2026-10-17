@@ -444,7 +444,7 @@ public partial class MainForm : Form, IMessageFilter
             shot.Save(Path.Combine(AppContext.BaseDirectory, "selftest-crop.png"));
         }
         // WIA: Aufzählung mit einer unbekannten Geräte-ID (kein Scan) — die Objekte werden freigegeben, gemeldet wird „nicht gefunden"
-        var wiaOk = ScanService.ScanFromDevice("selftest-kein-geraet", NextScanPath(), 300, 1, null, 0, false, out var wiaError) == null
+        var wiaOk = ScanService.ScanFromDevice("selftest-kein-geraet", NextScanPath(), 300, 1, null, 0, false, null, out var wiaError) == null
             && (wiaError == Lng.T("Der gewählte Scanner wurde nicht gefunden. Ist er angeschlossen und eingeschaltet?")
                 || wiaError == Lng.T("Die Windows-Bilderfassung (WIA) ist nicht verfügbar."));
         // Mehrfachauswahl: Strg+A, Strg+Klick (abwählen), Umschalt (Bereich), Entfernen aller markierten Seiten und Rückgängig
@@ -547,16 +547,34 @@ public partial class MainForm : Form, IMessageFilter
         }
         statusLabel.Text = Lng.T("Scanne …");
         statusStrip.Refresh();
-        // UseWaitCursor statt Cursor.Current: die WIA-Fortschrittsanzeige pumpt Nachrichten und würde Cursor.Current sofort zurücksetzen
+        // UseWaitCursor statt Cursor.Current: der Fortschritt pumpt Nachrichten und würde Cursor.Current sofort zurücksetzen
         Application.UseWaitCursor = true;
+        // Eigene Fortschrittsanzeige mit Abbrechen (die WIA-Anzeige gibt es beim Speicher-Weg nicht); das
+        // Hauptfenster ist währenddessen gesperrt, weil der Fortschritt über DoEvents Nachrichten verarbeitet
+        using ProgressForm progressForm = new();
+        progressForm.Text = Lng.T("Scannen");
+        progressForm.CanCancel = true;
+        progressForm.SetProgress(Lng.T("Scanne …"), 0, 100);
+        Enabled = false;
+        progressForm.Show(this);
+        progressForm.Refresh();
+        bool ScanProgress(int percent)
+        {
+            progressForm.SetProgress(string.Format(Lng.T("Scanne … {0} %"), percent), percent, 100);
+            Application.DoEvents();
+            return !progressForm.CancelRequested;
+        }
         string? scanned;
         string? scanError;
         try
         {
-            scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1, out scanError);
+            scanned = ScanService.ScanFromDevice(selectedScannerId, NextScanPath(), SelectedDpi, SelectedColorIntent, SelectedAreaMm, trackBrightness.Value, comboFeed.SelectedIndex == 1, ScanProgress, out scanError);
         }
         finally
         {
+            progressForm.Close();
+            Enabled = true;
+            Activate();
             Application.UseWaitCursor = false;
         }
         if (scanned == null)

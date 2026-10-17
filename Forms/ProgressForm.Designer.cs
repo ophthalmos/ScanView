@@ -1,4 +1,4 @@
-namespace ScanView.Forms
+﻿namespace ScanView.Forms
 {
     partial class ProgressForm
     {
@@ -30,6 +30,7 @@ namespace ScanView.Forms
         {
             labelStatus = new Label();
             progressBar = new ProgressBar();
+            btnCancel = new Button();
             SuspendLayout();
             //
             // labelStatus
@@ -46,6 +47,17 @@ namespace ScanView.Forms
             progressBar.Size = new Size(296, 20);
             progressBar.Style = ProgressBarStyle.Continuous;
             progressBar.TabIndex = 1;
+            // 
+            // btnCancel
+            // 
+            btnCancel.Location = new Point(220, 64);
+            btnCancel.Name = "btnCancel";
+            btnCancel.Size = new Size(88, 26);
+            btnCancel.TabIndex = 2;
+            btnCancel.Text = "Abbrechen";
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Visible = false;
+            btnCancel.Click += BtnCancel_Click;
             //
             // ProgressForm
             //
@@ -55,6 +67,7 @@ namespace ScanView.Forms
             ControlBox = false;
             Controls.Add(labelStatus);
             Controls.Add(progressBar);
+            Controls.Add(btnCancel);
             FormBorderStyle = FormBorderStyle.FixedDialog;
             MaximizeBox = false;
             MinimizeBox = false;
@@ -69,5 +82,6 @@ namespace ScanView.Forms
 
         private System.Windows.Forms.Label labelStatus;
         private System.Windows.Forms.ProgressBar progressBar;
+        private System.Windows.Forms.Button btnCancel;
     }
 }

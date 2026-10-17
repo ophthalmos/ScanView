@@ -386,4 +386,7 @@ Grayscale scans save additional space.</value></data>
   <data name="markierte Seiten verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>move selected pages (also: drag with the mouse)</value></data>
   <data name="Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte." xml:space="preserve"><value>Remove, rotate, duplicate, move as well as save, print and fax with “Only the selected pages” apply to all selected pages; crop to the page clicked last.</value></data>
   <data name="Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut." xml:space="preserve"><value>The scanner denies access. It may not be ready yet or may be in use by another program. Wait a moment and scan again.</value></data>
+  <data name="Scannen" xml:space="preserve"><value>Scanning</value></data>
+  <data name="Scanne … {0} %" xml:space="preserve"><value>Scanning … {0} %</value></data>
+  <data name="Der Scanner hat kein Bild geliefert." xml:space="preserve"><value>The scanner did not deliver an image.</value></data>
 </root>

@@ -386,4 +386,7 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="markierte Seiten verschieben (auch: Ziehen mit der Maus)" xml:space="preserve"><value>déplacer les pages sélectionnées (aussi : glisser à la souris)</value></data>
   <data name="Entfernen, Drehen, Duplizieren, Verschieben sowie Speichern, Drucken und Faxen mit „Nur markierte Seiten“ wirken auf alle markierten Seiten; Zuschneiden auf die zuletzt angeklickte." xml:space="preserve"><value>Retirer, pivoter, dupliquer, déplacer ainsi qu'enregistrer, imprimer et faxer avec « Seulement les pages sélectionnées » s'appliquent à toutes les pages sélectionnées ; recadrer à la dernière page cliquée.</value></data>
   <data name="Der Scanner verweigert den Zugriff. Vielleicht ist er noch nicht bereit oder wird gerade von einem anderen Programm benutzt. Warte einen Moment und scanne erneut." xml:space="preserve"><value>Le scanner refuse l'accès. Il n'est peut-être pas encore prêt ou est utilisé par un autre programme. Patiente un instant et numérise à nouveau.</value></data>
+  <data name="Scannen" xml:space="preserve"><value>Numérisation</value></data>
+  <data name="Scanne … {0} %" xml:space="preserve"><value>Numérisation … {0} %</value></data>
+  <data name="Der Scanner hat kein Bild geliefert." xml:space="preserve"><value>Le scanner n'a fourni aucune image.</value></data>
 </root>
