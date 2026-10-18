@@ -97,6 +97,14 @@ Root: HKLM; Subkey: "SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Autoplay
 Source: "{#releaseDir}\*"; Excludes: "*.pdb,selftest*.png"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 Source: "LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "NOTICE.txt"; DestDir: "{app}"; Flags: ignoreversion
+; TWAIN-Manager TWAINDSM.dll der TWAIN Working Group (LGPL-2.1, signiert) in die Systemordner – dorthin gehört er,
+; Treiber und andere Programme teilen ihn sich. Windows bringt nur den alten 32-Bit-Manager twain_32.dll mit, über den
+; die Übertragung in Streifen (Fortschrittsanzeige) spürbar langsamer ist; ohne TWAINDSM.dll scannen die TWAIN-Helfer
+; in einem Stück. Ohne ignoreversion: eine vorhandene gleiche oder neuere Fassung bleibt. Nie deinstallieren – andere
+; Programme und Treiber brauchen ihn womöglich.
+Source: "Redist\TWAINDSM\x64\TWAINDSM.dll"; DestDir: "{sys}"; Flags: uninsneveruninstall restartreplace
+Source: "Redist\TWAINDSM\x86\TWAINDSM.dll"; DestDir: "{syswow64}"; Flags: uninsneveruninstall restartreplace
+Source: "Redist\TWAINDSM\LICENSE-LGPL-2.1.txt"; DestDir: "{app}"; Flags: ignoreversion
 
 [Icons]
 Name: "{group}\{#appName}"; Filename: "{app}\{#appName}.exe"

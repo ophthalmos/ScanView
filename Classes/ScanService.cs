@@ -57,7 +57,7 @@ internal static class ScanService
     /// Helligkeit (−100 … +100, 0 = neutral) und Papierzufuhr werden gesetzt, soweit das
     /// Gerät sie annimmt. Null bei Fehlern — error beschreibt sie (übersetzt); beim
     /// Nutzer-Abbruch bleibt error null. progress bekommt den Fortschritt in Prozent (−1 = unbekannt)
-    /// und liefert false zum Abbrechen. TWAIN-Quellen (ID „twain:…") gehen an den 32-Bit-Helfer.</summary>
+    /// und liefert false zum Abbrechen. TWAIN-Quellen (ID „twain:…"/„twain64:…") gehen an die TWAIN-Helfer.</summary>
     public static string? ScanFromDevice(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, Func<int, bool>? progress, out string? error)
     {
         if (TwainService.IsTwainId(deviceId))

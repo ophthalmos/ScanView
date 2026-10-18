@@ -10,10 +10,14 @@ namespace ScanView.Twain32;
 ///   Twain32.exe list
 ///       eine Zeile je TWAIN-Quelle auf stdout: Produktname TAB Hersteller (UTF-8)
 ///   Twain32.exe scan --source NAME --out DATEI [--dpi 300] [--mode color|gray|bw]
-///                    [--area BREITE,HÖHE (mm)] [--brightness -100..100] [--feeder]
+///                    [--area BREITE,HÖHE (mm)] [--brightness -100..100] [--feeder] [--native]
 ///       scannt eine Seite ohne Treiberoberfläche (falls der Treiber das ablehnt: mit) und speichert sie als TIFF.
+///       Mit dem Manager TWAINDSM.dll kommt das Bild in Streifen (Speicherübertragung), dabei je Prozentschritt
+///       eine Zeile „progress N" auf stdout; mit --native, mit dem alten Manager twain_32.dll oder wenn der Treiber
+///       das ablehnt in einem Stück, ohne Fortschritt.
 /// Rückgabewert: 0 = erfolgreich, 1 = abgebrochen, 2 = Fehler (Meldung auf stderr),
-/// 3 = Quelle nicht gefunden, 4 = TWAIN-Manager nicht verfügbar, 5 = falsche Aufrufparameter.</summary>
+/// 3 = Quelle nicht gefunden, 4 = TWAIN-Manager nicht verfügbar, 5 = falsche Aufrufparameter,
+/// 6 = Speicherübertragung gescheitert, bevor Bilddaten kamen (dann mit --native wiederholen).</summary>
 internal static class Program
 {
     [STAThread]
@@ -26,10 +30,11 @@ internal static class Program
             var request = TwainRequest.Parse(args);
             if (request == null)
             {
-                stderr.WriteLine("Aufruf: " + Path.GetFileName(Application.ExecutablePath) + " list | scan --source NAME --out DATEI [--dpi N] [--mode color|gray|bw] [--area B,H] [--brightness N] [--feeder]");
+                stderr.WriteLine("Aufruf: " + Path.GetFileName(Application.ExecutablePath) + " list | scan --source NAME --out DATEI [--dpi N] [--mode color|gray|bw] [--area B,H] [--brightness N] [--feeder] [--native]");
                 return TwainExitCode.BadArguments;
             }
             using TwainSession session = new(request);
+            session.Progress = percent => stdout.WriteLine("progress " + percent.ToString(CultureInfo.InvariantCulture)); // sofort, nicht erst am Ende
             Application.Run(session);
             foreach (var line in session.Output) { stdout.WriteLine(line); }
             if (session.Error != null) { stderr.WriteLine(session.Error); }
@@ -45,7 +50,7 @@ internal static class Program
 
 internal static class TwainExitCode
 {
-    public const int Success = 0, Cancelled = 1, Error = 2, SourceNotFound = 3, NoTwain = 4, BadArguments = 5;
+    public const int Success = 0, Cancelled = 1, Error = 2, SourceNotFound = 3, NoTwain = 4, BadArguments = 5, MemoryTransferFailed = 6;
 }
 
 internal enum TwainMode { Color, Gray, BlackWhite }
@@ -62,6 +67,7 @@ internal sealed class TwainRequest
     public double? AreaHeightMm { get; private set; }
     public int Brightness { get; private set; }
     public bool Feeder { get; private set; }
+    public bool Native { get; private set; }
 
     public static TwainRequest? Parse(string[] args)
     {
@@ -87,6 +93,7 @@ internal sealed class TwainRequest
                     break;
                 case "--brightness": request.Brightness = Math.Max(-100, Math.Min(100, int.Parse(Next(), CultureInfo.InvariantCulture))); break;
                 case "--feeder": request.Feeder = true; break;
+                case "--native": request.Native = true; break;
                 default: return null;
             }
         }

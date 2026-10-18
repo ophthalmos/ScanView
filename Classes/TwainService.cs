@@ -8,12 +8,15 @@ namespace ScanView.Classes;
 /// laden – und die meisten TWAIN-Treiber gibt es nur in 32 Bit). TWAIN-Geräte tragen die ID „twain:" bzw. „twain64:"
 /// + Produktname; ScanService leitet sie hierher weiter. Die Quellenliste wird je Sitzung einmal abgefragt (ein
 /// Helferstart dauert spürbar). Der 64-Bit-Helfer läuft nur, wenn der 64-Bit-Manager TWAINDSM.dll installiert ist
-/// (Windows bringt nur den 32-Bit-Manager mit; 64-Bit-Treiber installieren TWAINDSM.dll selbst).</summary>
+/// (Windows bringt nur den alten 32-Bit-Manager twain_32.dll mit; ScanViews Setup installiert TWAINDSM.dll in
+/// 32 und 64 Bit, ebenso viele Treiber). Mit TWAINDSM.dll melden die Helfer auch den Fortschritt.</summary>
 internal static class TwainService
 {
     public const string IdPrefix = "twain:", IdPrefix64 = "twain64:";
-    private const int ExitSuccess = 0, ExitCancelled = 1, ExitSourceNotFound = 3, ExitNoTwain = 4;
+    private const int ExitSuccess = 0, ExitCancelled = 1, ExitSourceNotFound = 3, ExitNoTwain = 4, ExitMemoryTransferFailed = 6;
+    private const string ProgressPrefix = "progress ";
     private static List<(string Name, string Manufacturer, bool Is64)>? cachedSources;
+    private static readonly HashSet<string> nativeOnlySources = []; // Quellen ohne Übertragung in Streifen (je Sitzung)
 
     private static string HelperName(bool is64) => is64 ? "Twain64.exe" : "Twain32.exe";
 
@@ -75,8 +78,9 @@ internal static class TwainService
     }
 
     /// <summary>Scannt eine Seite über den Helfer und speichert sie als TIFF unter path. Null bei Abbruch (error null)
-    /// oder Fehler (error beschreibt ihn, übersetzt). progress wird mit −1 (Fortschritt unbekannt) aufgerufen und
-    /// liefert false zum Abbrechen – dann wird der Helfer beendet.</summary>
+    /// oder Fehler (error beschreibt ihn, übersetzt). progress bekommt den Fortschritt in Prozent – oder −1, solange
+    /// er unbekannt ist (vor dem ersten Streifen, Native Transfer, Bildhöhe vorab unbekannt) – und liefert false zum
+    /// Abbrechen; dann beendet der Helfer den Treiber geordnet.</summary>
     public static string? Scan(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, Func<int, bool>? progress, out string? error)
     {
         error = null;
@@ -102,7 +106,15 @@ internal static class TwainService
         ];
         if (areaMm is { } area) { arguments.AddRange(["--area", string.Format(CultureInfo.InvariantCulture, "{0},{1}", area.Width, area.Height)]); }
         if (useFeeder) { arguments.Add("--feeder"); }
-        var (exitCode, _, errorText) = RunHelper(is64, arguments, Timeout.InfiniteTimeSpan, keepWaiting: progress == null ? null : () => progress(-1));
+        if (nativeOnlySources.Contains(deviceId)) { arguments.Add("--native"); }
+        var (exitCode, _, errorText) = RunHelper(is64, arguments, Timeout.InfiniteTimeSpan, keepWaiting: progress);
+        if (exitCode == ExitMemoryTransferFailed)
+        { // Treiber kann die Übertragung in Streifen nicht: einmal in einem Stück wiederholen und sich das merken
+            Debug.WriteLine("TWAIN-Speicherübertragung: " + errorText.Trim());
+            nativeOnlySources.Add(deviceId);
+            arguments.Add("--native");
+            (exitCode, _, errorText) = RunHelper(is64, arguments, Timeout.InfiniteTimeSpan, keepWaiting: progress);
+        }
         switch (exitCode)
         {
             case ExitSuccess when File.Exists(path):
@@ -123,11 +135,12 @@ internal static class TwainService
     }
 
     /// <summary>Startet den Helfer ohne Fenster und wartet auf sein Ende. keepWaiting wird etwa zehnmal je Sekunde
-    /// aufgerufen (Oberfläche bedienbar halten); liefert es false oder läuft timeout ab, bekommt der Helfer
-    /// „cancel" und beendet den Treiber geordnet – ein hart beendeter Treiber hält den Scanner sonst fest, bis
-    /// er aus- und wieder eingeschaltet wird. Nur wenn der Helfer danach eine Minute lang nicht reagiert, wird
-    /// er beendet; dann ist der Rückgabecode null.</summary>
-    private static (int? ExitCode, string Output, string Error) RunHelper(bool is64, IEnumerable<string> arguments, TimeSpan timeout, Func<bool>? keepWaiting)
+    /// mit dem zuletzt gemeldeten Fortschritt aufgerufen (Zeilen „progress N" auf stdout, sonst −1) und hält die
+    /// Oberfläche bedienbar; liefert es false oder läuft timeout ab, bekommt der Helfer „cancel" und beendet den
+    /// Treiber geordnet – ein hart beendeter Treiber hält den Scanner sonst fest, bis er aus- und wieder
+    /// eingeschaltet wird. Nur wenn der Helfer danach eine Minute lang nicht reagiert, wird er beendet; dann ist
+    /// der Rückgabecode null. Output enthält alle übrigen Zeilen.</summary>
+    private static (int? ExitCode, string Output, string Error) RunHelper(bool is64, IEnumerable<string> arguments, TimeSpan timeout, Func<int, bool>? keepWaiting)
     {
         ProcessStartInfo info = new(HelperPath(is64))
         {
@@ -144,13 +157,27 @@ internal static class TwainService
         try
         {
             using var process = Process.Start(info)!;
-            var outputTask = process.StandardOutput.ReadToEndAsync();
+            var percent = -1;
+            var outputTask = Task.Run(async () =>
+            {
+                StringBuilder output = new();
+                while (await process.StandardOutput.ReadLineAsync() is { } line)
+                {
+                    if (line.StartsWith(ProgressPrefix, StringComparison.Ordinal)
+                        && int.TryParse(line.AsSpan(ProgressPrefix.Length), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
+                    {
+                        Volatile.Write(ref percent, value);
+                    }
+                    else { output.AppendLine(line); }
+                }
+                return output.ToString();
+            });
             var errorTask = process.StandardError.ReadToEndAsync();
             var watch = Stopwatch.StartNew();
             TimeSpan? cancelSentAt = null;
             while (!process.WaitForExit(100))
             {
-                var keep = keepWaiting?.Invoke() ?? true; // auch nach dem Abbruchwunsch weiter aufrufen: die Oberfläche bleibt lebendig
+                var keep = keepWaiting?.Invoke(Volatile.Read(ref percent)) ?? true; // auch nach dem Abbruchwunsch weiter aufrufen: die Oberfläche bleibt lebendig
                 if (cancelSentAt == null && (!keep || (timeout != Timeout.InfiniteTimeSpan && watch.Elapsed > timeout)))
                 {
                     cancelSentAt = watch.Elapsed;

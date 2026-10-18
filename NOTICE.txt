@@ -15,6 +15,8 @@ Third-party components included:
   BSD-2-Clause style Leptonica license - http://www.leptonica.org
 - Tesseract language data (tessdata\*.traineddata), (c) Google
   Apache-2.0 - https://github.com/tesseract-ocr/tessdata_best (file tessdata\LICENSE)
+- TWAIN Data Source Manager (TWAINDSM.dll, installed into the Windows system folders), (c) TWAIN Working Group
+  GNU LGPL 2.1 (file LICENSE-LGPL-2.1.txt) - source code: https://github.com/twain/twain-dsm
 - Microsoft.Extensions.Logging.Abstractions and
   Microsoft.Extensions.DependencyInjection.Abstractions, (c) Microsoft
   MIT - https://github.com/dotnet/runtime
