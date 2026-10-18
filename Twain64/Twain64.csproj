@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- 64-Bit-Gegenstück zu Twain32 für TWAIN-Treiber, die es nur in 64 Bit gibt (TWAIN 2.x, Manager TWAINDSM.dll
+       in System32, Quellen in Windows\twain_64). Derselbe Quelltext wie Twain32 (dort liegt er), nur für x64 gebaut;
+       TwainSession wählt den Manager nach der Bitbreite des Prozesses. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseWindowsForms>true</UseWindowsForms>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Twain64</AssemblyName>
+    <RootNamespace>ScanView.Twain32</RootNamespace>
+    <ApplicationIcon>..\ScanView.ico</ApplicationIcon>
+    <Version>1.0.2</Version>
+    <Product>ScanView</Product>
+    <Description>TWAIN-Helfer (64 Bit) für ScanView</Description>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\Twain32\*.cs" />
+  </ItemGroup>
+</Project>

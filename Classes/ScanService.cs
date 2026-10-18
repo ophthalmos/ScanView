@@ -25,7 +25,7 @@ internal static class ScanService
     private const int WiaDocumentHandlingSelect = 3088; // GERÄTE-Eigenschaft: 1 = Einzug, 2 = Flachbett
 
     /// <summary>Alle angeschlossenen Scanner: WIA-Geräte (Typ 1) und – mit includeTwain – die TWAIN-Quellen
-    /// des 32-Bit-Helfers (einmal je Sitzung abgefragt, s. TwainService).</summary>
+    /// der TWAIN-Helfer (einmal je Sitzung abgefragt, s. TwainService).</summary>
     public static List<ScannerInfo> ListScanners(bool includeTwain = true)
     {
         List<ScannerInfo> result = [];

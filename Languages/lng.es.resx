@@ -389,7 +389,7 @@ mino medio. Los escaneos en grises ahorran espacio adicional.</value></data>
   <data name="Scannen" xml:space="preserve"><value>Escaneo</value></data>
   <data name="Scanne … {0} %" xml:space="preserve"><value>Escaneando … {0} %</value></data>
   <data name="Der Scanner hat kein Bild geliefert." xml:space="preserve"><value>El escáner no ha entregado ninguna imagen.</value></data>
-  <data name="Das Hilfsprogramm Twain32.exe fehlt im Programmordner – bitte ScanView neu installieren." xml:space="preserve"><value>Falta el programa auxiliar Twain32.exe en la carpeta del programa: vuelve a instalar ScanView.</value></data>
+  <data name="Das Hilfsprogramm {0} fehlt im Programmordner – bitte ScanView neu installieren." xml:space="preserve"><value>Falta el programa auxiliar {0} en la carpeta del programa: vuelve a instalar ScanView.</value></data>
   <data name="Der TWAIN-Manager von Windows konnte nicht geladen werden." xml:space="preserve"><value>No se pudo cargar el administrador TWAIN de Windows.</value></data>
   <data name="Der TWAIN-Treiber meldet einen Fehler: {0}" xml:space="preserve"><value>El controlador TWAIN informa de un error: {0}</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Cancelando …</value></data>

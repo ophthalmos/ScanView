@@ -389,7 +389,7 @@ Ohne Eintrag wird keine Schaltfläche eingeblendet.</value></data>
   <data name="Scannen" xml:space="preserve"><value>Scannen</value></data>
   <data name="Scanne … {0} %" xml:space="preserve"><value>Scanne … {0} %</value></data>
   <data name="Der Scanner hat kein Bild geliefert." xml:space="preserve"><value>Der Scanner hat kein Bild geliefert.</value></data>
-  <data name="Das Hilfsprogramm Twain32.exe fehlt im Programmordner – bitte ScanView neu installieren." xml:space="preserve"><value>Das Hilfsprogramm Twain32.exe fehlt im Programmordner – bitte ScanView neu installieren.</value></data>
+  <data name="Das Hilfsprogramm {0} fehlt im Programmordner – bitte ScanView neu installieren." xml:space="preserve"><value>Das Hilfsprogramm {0} fehlt im Programmordner – bitte ScanView neu installieren.</value></data>
   <data name="Der TWAIN-Manager von Windows konnte nicht geladen werden." xml:space="preserve"><value>Der TWAIN-Manager von Windows konnte nicht geladen werden.</value></data>
   <data name="Der TWAIN-Treiber meldet einen Fehler: {0}" xml:space="preserve"><value>Der TWAIN-Treiber meldet einen Fehler: {0}</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Wird abgebrochen …</value></data>

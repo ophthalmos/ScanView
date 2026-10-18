@@ -10,8 +10,9 @@ namespace ScanView.Twain32;
 
 /// <summary>Eine TWAIN-Sitzung (TWAIN 1.x-Protokoll): unsichtbares Fenster als Eltern- und Nachrichtenfenster,
 /// das der TWAIN-Manager braucht. Auflisten der Quellen oder ein Scan mit Native Transfer (DIB → TIFF).
-/// Der Manager wird zur Laufzeit geladen (twain_32.dll im 32-Bit-Prozess) – so lässt sich derselbe Code
-/// später auch in einem 64-Bit-Prozess mit TWAINDSM.dll verwenden. Keine Abhängigkeit zu ScanView.</summary>
+/// Der Manager wird zur Laufzeit geladen: twain_32.dll im 32-Bit-Prozess (Twain32.exe), TWAINDSM.dll im
+/// 64-Bit-Prozess (Twain64.exe, derselbe Quelltext). Zeiger und Handles sind deshalb überall IntPtr; TW_IDENTITY.Id
+/// bleibt unter Windows auch in 64 Bit ein TW_UINT32 (twain.h). Keine Abhängigkeit zu ScanView.</summary>
 internal sealed class TwainSession : Form, IMessageFilter
 {
     // ------------------------------------------------------------------ TWAIN-Konstanten (twain.h)

@@ -20,23 +20,24 @@
   <ItemGroup>
     <None Update="tessdata\**" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
-  <!-- TWAIN-Helfer Twain32.exe (eigenes 32-Bit-Projekt für .NET Framework 4.8 im Unterordner Twain32): nicht in
-       ScanView mitkompilieren, aber mitbauen und neben ScanView.exe in die Ausgabe kopieren -->
+  <!-- TWAIN-Helfer Twain32.exe und Twain64.exe (eigene Projekte für .NET Framework 4.8 in den Unterordnern Twain32
+       und Twain64, gemeinsamer Quelltext in Twain32): nicht in ScanView mitkompilieren, aber mitbauen und neben
+       ScanView.exe in die Ausgabe kopieren -->
   <ItemGroup>
-    <Compile Remove="Twain32\**" />
-    <EmbeddedResource Remove="Twain32\**" />
-    <None Remove="Twain32\**" />
-    <ProjectReference Include="Twain32\Twain32.csproj">
+    <Compile Remove="Twain32\**;Twain64\**" />
+    <EmbeddedResource Remove="Twain32\**;Twain64\**" />
+    <None Remove="Twain32\**;Twain64\**" />
+    <ProjectReference Include="Twain32\Twain32.csproj;Twain64\Twain64.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
       <SkipGetTargetFrameworkProperties>true</SkipGetTargetFrameworkProperties>
       <Private>false</Private>
     </ProjectReference>
   </ItemGroup>
-  <Target Name="CopyTwain32" AfterTargets="Build">
-    <MSBuild Projects="Twain32\Twain32.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration)" RemoveProperties="Platform">
-      <Output TaskParameter="TargetOutputs" ItemName="_Twain32Exe" />
+  <Target Name="CopyTwainHelpers" AfterTargets="Build">
+    <MSBuild Projects="Twain32\Twain32.csproj;Twain64\Twain64.csproj" Targets="GetTargetPath" Properties="Configuration=$(Configuration)" RemoveProperties="Platform">
+      <Output TaskParameter="TargetOutputs" ItemName="_TwainHelperExe" />
     </MSBuild>
-    <Copy SourceFiles="@(_Twain32Exe)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(_TwainHelperExe)" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
   </Target>
   <!-- Nur 64-Bit: die x86-Natives des Tesseract-Pakets (build\Tesseract.targets verlinkt x86\ UND x64\)
        nicht in die Ausgabe kopieren — das Paket-Target wird nach der Projektdatei importiert,

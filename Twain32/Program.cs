@@ -26,7 +26,7 @@ internal static class Program
             var request = TwainRequest.Parse(args);
             if (request == null)
             {
-                stderr.WriteLine("Aufruf: Twain32.exe list | scan --source NAME --out DATEI [--dpi N] [--mode color|gray|bw] [--area B,H] [--brightness N] [--feeder]");
+                stderr.WriteLine("Aufruf: " + Path.GetFileName(Application.ExecutablePath) + " list | scan --source NAME --out DATEI [--dpi N] [--mode color|gray|bw] [--area B,H] [--brightness N] [--feeder]");
                 return TwainExitCode.BadArguments;
             }
             using TwainSession session = new(request);

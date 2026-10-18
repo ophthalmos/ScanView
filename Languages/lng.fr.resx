@@ -389,7 +389,7 @@ de fax (p. ex. FRITZ!fax) avec les pages imprimées.</value></data>
   <data name="Scannen" xml:space="preserve"><value>Numérisation</value></data>
   <data name="Scanne … {0} %" xml:space="preserve"><value>Numérisation … {0} %</value></data>
   <data name="Der Scanner hat kein Bild geliefert." xml:space="preserve"><value>Le scanner n'a fourni aucune image.</value></data>
-  <data name="Das Hilfsprogramm Twain32.exe fehlt im Programmordner – bitte ScanView neu installieren." xml:space="preserve"><value>Le programme auxiliaire Twain32.exe est absent du dossier du programme – réinstalle ScanView.</value></data>
+  <data name="Das Hilfsprogramm {0} fehlt im Programmordner – bitte ScanView neu installieren." xml:space="preserve"><value>Le programme auxiliaire {0} est absent du dossier du programme – réinstalle ScanView.</value></data>
   <data name="Der TWAIN-Manager von Windows konnte nicht geladen werden." xml:space="preserve"><value>Le gestionnaire TWAIN de Windows n'a pas pu être chargé.</value></data>
   <data name="Der TWAIN-Treiber meldet einen Fehler: {0}" xml:space="preserve"><value>Le pilote TWAIN signale une erreur : {0}</value></data>
   <data name="Wird abgebrochen …" xml:space="preserve"><value>Annulation …</value></data>

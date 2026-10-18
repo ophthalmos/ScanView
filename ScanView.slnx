@@ -5,4 +5,5 @@
   </Configurations>
   <Project Path="ScanView.csproj" />
   <Project Path="Twain32/Twain32.csproj" />
+  <Project Path="Twain64/Twain64.csproj" />
 </Solution>
