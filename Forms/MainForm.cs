@@ -552,13 +552,15 @@ public partial class MainForm : Form, IMessageFilter
         // UseWaitCursor statt Cursor.Current: der Fortschritt pumpt Nachrichten und würde Cursor.Current sofort zurücksetzen
         Application.UseWaitCursor = true;
         // Eigene Fortschrittsanzeige mit Abbrechen (die WIA-Anzeige gibt es beim Speicher-Weg nicht); das
-        // Hauptfenster ist währenddessen gesperrt, weil der Fortschritt über DoEvents Nachrichten verarbeitet
+        // Hauptfenster ist währenddessen gesperrt, weil der Fortschritt über DoEvents Nachrichten verarbeitet –
+        // per EnableWindow wie bei einem modalen Dialog, nicht per Enabled (das zeichnet alle Steuerelemente neu)
         using ProgressForm progressForm = new();
         progressForm.Text = Lng.T("Scannen");
         progressForm.CanCancel = true;
         progressForm.SetProgress(Lng.T("Scanne …"), 0, 100);
-        Enabled = false;
+        NativeMethods.EnableWindow(Handle, false);
         progressForm.Show(this);
+        progressForm.Activate(); // Fokus auf den Dialog, sonst bleibt das gesperrte Hauptfenster aktiv
         progressForm.Refresh();
         bool ScanProgress(int percent)
         {
@@ -576,8 +578,8 @@ public partial class MainForm : Form, IMessageFilter
         }
         finally
         {
+            NativeMethods.EnableWindow(Handle, true); // vor dem Schließen freigeben, sonst springt die Aktivierung zu einem anderen Programm
             progressForm.Close();
-            Enabled = true;
             Activate();
             Application.UseWaitCursor = false;
         }

@@ -147,6 +147,9 @@ internal sealed class TwainSession : Form, IMessageFilter
         watchdog.Tick += Watchdog_Tick;
     }
 
+    /// <summary>Das unsichtbare Fenster darf ScanViews Fortschrittsdialog nicht die Aktivierung (den Fokus) wegnehmen.</summary>
+    protected override bool ShowWithoutActivation => true;
+
     /// <summary>ScanView schreibt „cancel" auf die Standardeingabe – der Helfer darf nicht hart beendet werden:
     /// ein mitten im Scan beendeter Treiber hält den Scanner fest, bis er aus- und wieder eingeschaltet wird.</summary>
     private void ListenForCancel()

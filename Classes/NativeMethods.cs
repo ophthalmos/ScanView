@@ -21,6 +21,12 @@ internal static partial class NativeMethods
     [return: MarshalAs(UnmanagedType.Bool)]
     public static partial bool PostMessage(nint hWnd, uint msg, nint wParam, nint lParam);
 
+    // Hauptfenster während des Scans sperren wie bei einem modalen Dialog – Form.Enabled würde jedes Steuerelement
+    // neu zeichnen lassen (die Seitenansicht flackert dann einmal kräftig)
+    [LibraryImport("user32.dll")]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    public static partial bool EnableWindow(nint hWnd, [MarshalAs(UnmanagedType.Bool)] bool enable);
+
     // Für EM_SETMARGINS (Innenabstand der TextBoxen, s. TextBoxMargins.Apply)
     [LibraryImport("user32.dll", EntryPoint = "SendMessageW")]
     public static partial nint SendMessage(nint hWnd, uint msg, nint wParam, nint lParam);
