@@ -13,7 +13,8 @@ namespace ScanView.Twain32;
 ///                    [--area BREITE,HÖHE (mm)] [--brightness -100..100] [--feeder] [--native]
 ///       scannt eine Seite ohne Treiberoberfläche (falls der Treiber das ablehnt: mit) und speichert sie als TIFF.
 ///       Mit dem Manager TWAINDSM.dll kommt das Bild in Streifen (Speicherübertragung), dabei je Prozentschritt
-///       eine Zeile „progress N" auf stdout; mit --native, mit dem alten Manager twain_32.dll oder wenn der Treiber
+///       eine Zeile „progress N" auf stdout (gleich zu Beginn „progress 0", oder „progress -1", wenn kein
+///       Fortschritt kommt); mit --native, mit dem alten Manager twain_32.dll oder wenn der Treiber
 ///       das ablehnt in einem Stück, ohne Fortschritt.
 /// Rückgabewert: 0 = erfolgreich, 1 = abgebrochen, 2 = Fehler (Meldung auf stderr),
 /// 3 = Quelle nicht gefunden, 4 = TWAIN-Manager nicht verfügbar, 5 = falsche Aufrufparameter,

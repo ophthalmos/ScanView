@@ -78,8 +78,8 @@ internal static class TwainService
     }
 
     /// <summary>Scannt eine Seite über den Helfer und speichert sie als TIFF unter path. Null bei Abbruch (error null)
-    /// oder Fehler (error beschreibt ihn, übersetzt). progress bekommt den Fortschritt in Prozent – oder −1, solange
-    /// er unbekannt ist (vor dem ersten Streifen, Native Transfer, Bildhöhe vorab unbekannt) – und liefert false zum
+    /// oder Fehler (error beschreibt ihn, übersetzt). progress bekommt den Fortschritt in Prozent – oder −1, wenn er
+    /// sich nicht bestimmen lässt (Native Transfer, Bildhöhe vorab unbekannt) – und liefert false zum
     /// Abbrechen; dann beendet der Helfer den Treiber geordnet.</summary>
     public static string? Scan(string deviceId, string path, int dpi, int colorIntent, SizeF? areaMm, int brightnessPercent, bool useFeeder, Func<int, bool>? progress, out string? error)
     {
@@ -135,7 +135,7 @@ internal static class TwainService
     }
 
     /// <summary>Startet den Helfer ohne Fenster und wartet auf sein Ende. keepWaiting wird etwa zehnmal je Sekunde
-    /// mit dem zuletzt gemeldeten Fortschritt aufgerufen (Zeilen „progress N" auf stdout, sonst −1) und hält die
+    /// mit dem zuletzt gemeldeten Fortschritt aufgerufen (Zeilen „progress N" auf stdout, bis zur ersten 0) und hält die
     /// Oberfläche bedienbar; liefert es false oder läuft timeout ab, bekommt der Helfer „cancel" und beendet den
     /// Treiber geordnet – ein hart beendeter Treiber hält den Scanner sonst fest, bis er aus- und wieder
     /// eingeschaltet wird. Nur wenn der Helfer danach eine Minute lang nicht reagiert, wird er beendet; dann ist
@@ -157,7 +157,7 @@ internal static class TwainService
         try
         {
             using var process = Process.Start(info)!;
-            var percent = -1;
+            var percent = 0; // bis der Helfer meldet, ob Prozente kommen (0) oder nicht (−1): stehender Balken statt laufendem
             var outputTask = Task.Run(async () =>
             {
                 StringBuilder output = new();

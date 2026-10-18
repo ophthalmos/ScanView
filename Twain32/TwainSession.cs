@@ -282,6 +282,7 @@ internal sealed class TwainSession : Form, IMessageFilter
             SetOneValue(ICAP_BITDEPTH, TWTY_UINT16, request.Mode == TwainMode.BlackWhite ? 1u : 8u); // je Farbkanal
             vanilla = GetCurrentValue(ICAP_PIXELFLAVOR) == TWPF_VANILLA;
         }
+        Progress?.Invoke(memoryTransfer ? 0 : -1); // gleich sagen, ob ein Fortschritt kommt – sonst zeigt ScanView bis zum ersten Streifen einen laufenden Balken
         SetOneValue(ICAP_XRESOLUTION, TWTY_FIX32, ToFix32Bits(request.Dpi));
         SetOneValue(ICAP_YRESOLUTION, TWTY_FIX32, ToFix32Bits(request.Dpi));
         SetOneValue(ICAP_BRIGHTNESS, TWTY_FIX32, ToFix32Bits(request.Brightness * 10)); // TWAIN: −1000 … +1000
@@ -376,6 +377,7 @@ internal sealed class TwainSession : Form, IMessageFilter
             else
             {
                 info = Marshal.PtrToStructure<TwImageInfo>(infoBuffer);
+                if (info.ImageLength <= 0) { Progress?.Invoke(-1); } // Höhe vorab unbekannt: kein Prozentwert möglich
                 if (info.Compression != TWCP_NONE || info.Planar != 0 || info.BitsPerPixel is not (1 or 8 or 24))
                 {
                     failure = "Bildformat nicht unterstützt (" + info.BitsPerPixel + " Bit, Kompression " + info.Compression + ", planar " + info.Planar + ")";
