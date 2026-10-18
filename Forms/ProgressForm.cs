@@ -40,8 +40,16 @@ internal sealed partial class ProgressForm : Form
     {
         if (!CancelRequested) { labelStatus.Text = text; } // nach dem Abbrechen bleibt der Hinweis stehen
         if (progressBar.Style != ProgressBarStyle.Continuous) { progressBar.Style = ProgressBarStyle.Continuous; }
-        progressBar.Maximum = Math.Max(1, total);
-        progressBar.Value = Math.Clamp(done, 0, progressBar.Maximum);
+        var maximum = Math.Max(1, total);
+        var value = Math.Clamp(done, 0, maximum);
+        if (progressBar.Maximum == maximum && progressBar.Value == value) { return; }
+        // Mit visuellen Stilen läuft der Balken dem Wert animiert hinterher und erreicht ihn vor dem Schließen oft
+        // nicht (WIA: Text „Fertig", Balken bei gut 90 %). Rückwärts setzt Windows ihn sofort – daher erst eins
+        // weiter, dann auf den Wert; bei 100 % dafür kurz das Maximum anheben.
+        progressBar.Maximum = maximum + 1;
+        progressBar.Value = value + 1;
+        progressBar.Value = value;
+        progressBar.Maximum = maximum;
     }
 
     /// <summary>Fortschritt unbekannt (TWAIN): laufender Balken statt Prozentwert.</summary>
